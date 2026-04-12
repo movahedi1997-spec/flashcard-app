@@ -153,3 +153,105 @@ Required by lib/db.ts and app/api/auth/* routes.
 - updateCardScore() calls must be removed — replaced by POST /api/study/grade
 
 ---
+
+## [FRONTEND] TASK-001 — Remove Vite /src/ directory
+**Date:** 2026-04-12
+**Status:** Complete
+
+### What was done
+- Verified zero imports from /app or /components referencing /src/ (grep confirmed clean)
+- Deleted /src/ directory entirely (App.tsx, main.tsx, index.css, App.css, assets/, components/, hooks/, types/, utils/)
+- package.json already had no Vite dependencies (Next.js-only since prior consolidation) — no changes needed
+- vite.config.ts was already absent from root
+
+### Acceptance criteria met
+- /src/ directory deleted ✓
+- No broken imports in /app or /components ✓
+- Vite config and entry point gone ✓
+- npm run build unblocked ✓
+
+---
+
+## [FRONTEND] TASK-006 — Update study session UI to new SRS API
+**Date:** 2026-04-12
+**Status:** Complete
+
+### What was built
+
+#### components/flashcard/study/StudySession.tsx (full rewrite)
+- Fetches due cards from GET /api/study/session?deckId=… on mount
+- Grades each card via POST /api/study/grade on every button press
+- Smart Catch-Up modal rendered when isCatchup=true, showing totalDue vs session card count
+- 4 grade buttons: Again / Hard / Good / Easy — each labelled with next interval from preview object
+  (e.g. "Good · 4d", "Easy · 9d") using fmtDays() helper
+- CSS 3D flip (globals.css .flashcard / .flipped) with 550ms cubic-bezier transition
+- prefers-reduced-motion respected via @media query in globals.css + JS ref in component
+- Session complete screen shows per-grade stats (Again/Hard/Good/Easy) + retention %
+- Loading spinner and retry-able error state
+- AI-generated badge shown on front face when card.aiGenerated=true
+- Props simplified to: { deck: Deck, onBack: () => void } — no more box/cards/mode/onScoreUpdate
+
+#### components/flashcard/boxes/BoxCard.tsx (updated)
+- Migrated from Box (name) to Deck (title)
+- Shows deck.description when present
+- Delete dialog copy updated to "Delete Deck"
+
+#### components/flashcard/boxes/BoxList.tsx (updated)
+- Props: decks: Deck[], loading, error, onCreateBox/onUpdateBox/onDeleteBox (async), onImport (async)
+- Loading skeleton and red error banner added
+- handleImport maps legacy JSON schema (question/answer/questionImage/answerImage)
+  to new schema (front/back/frontImageUrl/backImageUrl) — backwards-compatible
+- Export helper inlined (no longer imports from lib/flashcard/study)
+- BoxForm wired to onCreateBox(name) / onUpdateBox(id, { title: name })
+
+#### components/flashcard/cards/CardItem.tsx (updated)
+- Migrated from Card (question/answer/score) to ApiCard (front/back/frontImageUrl/backImageUrl/srs)
+- Score badge replaced with SRS due-date badge: New / Due / Xd / Xw / Xmo
+- AI-generated badge shown when card.aiGenerated=true
+- Accessible aria-labels on all icon buttons
+
+#### components/flashcard/cards/CardForm.tsx (updated)
+- Migrated initialCard prop from Card to ApiCard
+- onSubmit: (front, back, frontImageUrl?, backImageUrl?) consistent with useCards API
+- Internal state renamed question→front, answer→back
+
+#### components/flashcard/cards/CardList.tsx (updated)
+- Props: deck: Deck, cards: ApiCard[], loading, error, onCreateCard/onUpdateCard/onDeleteCard (async)
+- Loading spinner and error banner added
+- Score-based sort options removed; "Due soonest" sort added (uses srs.dueDate)
+- Search updated to card.front / card.back
+
+#### app/flashcards/page.tsx (updated)
+- updateCardScore removed from useCards destructuring — 0 call sites remaining
+- study-select view and ModeSelector bypassed — study goes directly from deck to StudySession
+- View type simplified to: { type: 'study'; deckId: string } (no mode param)
+- loadCards(deckId) called on goToBox() and via useEffect on view change
+- handleImport orchestrates createBox(title) then importCards([…]) with new deckId
+- StudySession receives deck + onBack only
+
+#### app/globals.css (updated)
+- @media (prefers-reduced-motion: reduce) block: disables flip transition, shows back face inline
+
+### File locations
+- components/flashcard/study/StudySession.tsx   (rewritten)
+- components/flashcard/boxes/BoxCard.tsx         (updated)
+- components/flashcard/boxes/BoxList.tsx         (updated)
+- components/flashcard/cards/CardItem.tsx        (updated)
+- components/flashcard/cards/CardForm.tsx        (updated)
+- components/flashcard/cards/CardList.tsx        (updated)
+- app/flashcards/page.tsx                        (updated)
+- app/globals.css                                (updated)
+
+### Breaking changes resolved
+- updateCardScore() call sites: 0 remaining ✓
+- Box.name → Deck.title throughout all updated components ✓
+- Card.question/answer/score → ApiCard.front/back/srs ✓
+- All hook mutations async — components await or fire-and-forget correctly ✓
+- StudySession no longer receives or calls onScoreUpdate ✓
+
+### Notes
+- ModeSelector.tsx not deleted (not imported anywhere — safe dead code; repurpose in Phase 2)
+- types/flashcard.ts retained (ModeSelector still references it; safe until Phase 2 cleanup)
+- lib/flashcard/study.ts + lib/flashcard/helpers.ts still exist — delete after TASK-010 QA sign-off
+
+---

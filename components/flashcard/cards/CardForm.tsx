@@ -1,97 +1,136 @@
 'use client';
 
+/**
+ * components/flashcard/cards/CardForm.tsx  (TASK-006 update)
+ *
+ * Updated from legacy Card type (question/answer/questionImage/answerImage)
+ * to ApiCard type (front/back/frontImageUrl/backImageUrl).
+ * onSubmit signature updated to match useCards.createCard / updateCard.
+ */
+
 import { type FormEvent, useState } from 'react';
 import Modal from '@/components/ui/Modal';
 import Textarea from '@/components/ui/Textarea';
 import ImageUpload from '@/components/ui/ImageUpload';
 import Button from '@/components/ui/Button';
-import type { Card } from '@/types/flashcard';
+import type { ApiCard } from '@/types/api';
 
 interface Props {
   open: boolean;
   onClose: () => void;
-  onSubmit: (question: string, answer: string, questionImage?: string, answerImage?: string) => void;
-  initialCard?: Card;
+  onSubmit: (
+    front: string,
+    back: string,
+    frontImageUrl?: string,
+    backImageUrl?: string,
+  ) => void;
+  initialCard?: ApiCard;
   mode: 'create' | 'edit';
 }
 
 export default function CardForm({ open, onClose, onSubmit, initialCard, mode }: Props) {
-  const [question, setQuestion] = useState(initialCard?.question ?? '');
-  const [answer, setAnswer] = useState(initialCard?.answer ?? '');
-  const [questionImage, setQuestionImage] = useState<string | undefined>(initialCard?.questionImage);
-  const [answerImage, setAnswerImage] = useState<string | undefined>(initialCard?.answerImage);
-  const [errors, setErrors] = useState({ question: '', answer: '' });
+  const [front, setFront] = useState(initialCard?.front ?? '');
+  const [back, setBack] = useState(initialCard?.back ?? '');
+  const [frontImageUrl, setFrontImageUrl] = useState<string | undefined>(
+    initialCard?.frontImageUrl ?? undefined,
+  );
+  const [backImageUrl, setBackImageUrl] = useState<string | undefined>(
+    initialCard?.backImageUrl ?? undefined,
+  );
+  const [errors, setErrors] = useState({ front: '', back: '' });
 
+  // Sync state when switching to a different card in edit mode
   if (mode === 'edit' && open && initialCard) {
     const inSync =
-      question === initialCard.question &&
-      answer === initialCard.answer &&
-      questionImage === initialCard.questionImage &&
-      answerImage === initialCard.answerImage;
+      front === initialCard.front &&
+      back === initialCard.back &&
+      frontImageUrl === (initialCard.frontImageUrl ?? undefined) &&
+      backImageUrl === (initialCard.backImageUrl ?? undefined);
     if (!inSync) {
-      setQuestion(initialCard.question);
-      setAnswer(initialCard.answer);
-      setQuestionImage(initialCard.questionImage);
-      setAnswerImage(initialCard.answerImage);
+      setFront(initialCard.front);
+      setBack(initialCard.back);
+      setFrontImageUrl(initialCard.frontImageUrl ?? undefined);
+      setBackImageUrl(initialCard.backImageUrl ?? undefined);
     }
   }
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    const errs = { question: '', answer: '' };
-    if (!question.trim() && !questionImage) errs.question = 'Add a question text or image.';
-    if (!answer.trim() && !answerImage) errs.answer = 'Add an answer text or image.';
-    if (errs.question || errs.answer) { setErrors(errs); return; }
-    onSubmit(question.trim(), answer.trim(), questionImage, answerImage);
+    const errs = { front: '', back: '' };
+    if (!front.trim() && !frontImageUrl) errs.front = 'Add a question text or image.';
+    if (!back.trim() && !backImageUrl) errs.back = 'Add an answer text or image.';
+    if (errs.front || errs.back) { setErrors(errs); return; }
+    onSubmit(front.trim(), back.trim(), frontImageUrl, backImageUrl);
     resetForm();
     onClose();
   }
 
   function resetForm() {
-    setQuestion(''); setAnswer('');
-    setQuestionImage(undefined); setAnswerImage(undefined);
-    setErrors({ question: '', answer: '' });
+    setFront('');
+    setBack('');
+    setFrontImageUrl(undefined);
+    setBackImageUrl(undefined);
+    setErrors({ front: '', back: '' });
   }
 
   function handleClose() {
-    setQuestion(initialCard?.question ?? '');
-    setAnswer(initialCard?.answer ?? '');
-    setQuestionImage(initialCard?.questionImage);
-    setAnswerImage(initialCard?.answerImage);
-    setErrors({ question: '', answer: '' });
+    setFront(initialCard?.front ?? '');
+    setBack(initialCard?.back ?? '');
+    setFrontImageUrl(initialCard?.frontImageUrl ?? undefined);
+    setBackImageUrl(initialCard?.backImageUrl ?? undefined);
+    setErrors({ front: '', back: '' });
     onClose();
   }
 
   return (
-    <Modal open={open} onClose={handleClose} title={mode === 'create' ? 'New Card' : 'Edit Card'} maxWidth="max-w-lg">
+    <Modal
+      open={open}
+      onClose={handleClose}
+      title={mode === 'create' ? 'New Card' : 'Edit Card'}
+      maxWidth="max-w-lg"
+    >
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         <div className="rounded-xl bg-slate-50 border border-slate-200 p-4 flex flex-col gap-3">
-          <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">Front · Question</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
+            Front · Question
+          </p>
           <Textarea
             placeholder="What is the capital of France?"
-            value={question}
-            onChange={e => { setQuestion(e.target.value); setErrors(p => ({ ...p, question: '' })); }}
-            error={errors.question}
+            value={front}
+            onChange={(e) => { setFront(e.target.value); setErrors((p) => ({ ...p, front: '' })); }}
+            error={errors.front}
             rows={2}
             autoFocus
           />
-          <ImageUpload label="Image (optional)" value={questionImage} onChange={v => setQuestionImage(v)} />
+          <ImageUpload
+            label="Image (optional)"
+            value={frontImageUrl}
+            onChange={(v) => setFrontImageUrl(v)}
+          />
         </div>
 
         <div className="rounded-xl bg-indigo-50/60 border border-indigo-100 p-4 flex flex-col gap-3">
-          <p className="text-xs font-semibold uppercase tracking-widest text-indigo-400">Back · Answer</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-indigo-400">
+            Back · Answer
+          </p>
           <Textarea
             placeholder="Paris"
-            value={answer}
-            onChange={e => { setAnswer(e.target.value); setErrors(p => ({ ...p, answer: '' })); }}
-            error={errors.answer}
+            value={back}
+            onChange={(e) => { setBack(e.target.value); setErrors((p) => ({ ...p, back: '' })); }}
+            error={errors.back}
             rows={2}
           />
-          <ImageUpload label="Image (optional)" value={answerImage} onChange={v => setAnswerImage(v)} />
+          <ImageUpload
+            label="Image (optional)"
+            value={backImageUrl}
+            onChange={(v) => setBackImageUrl(v)}
+          />
         </div>
 
         <div className="flex gap-3 justify-end">
-          <Button variant="secondary" type="button" onClick={handleClose}>Cancel</Button>
+          <Button variant="secondary" type="button" onClick={handleClose}>
+            Cancel
+          </Button>
           <Button type="submit">{mode === 'create' ? 'Add Card' : 'Save Changes'}</Button>
         </div>
       </form>

@@ -24,6 +24,16 @@
 }
 .flashcard.flipped { transform: rotateY(180deg); }
 
+/* Respect the OS reduced-motion preference — disable the flip */
+@media (prefers-reduced-motion: reduce) {
+  .flashcard { transition: none; }
+  .flashcard.flipped { transform: none; }
+  .flashcard-face { backface-visibility: visible; -webkit-backface-visibility: visible; }
+  .flashcard-back { transform: none; display: none; }
+  .flashcard.flipped .flashcard-back { display: flex; }
+  .flashcard.flipped .flashcard-face:not(.flashcard-back) { display: none; }
+}
+
 .flashcard-face {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;

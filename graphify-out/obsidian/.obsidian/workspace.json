@@ -4,17 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "74471dee2b82900e",
+        "id": "b43173f85faf882c",
         "type": "tabs",
         "children": [
           {
-            "id": "1fab2c590f268a54",
+            "id": "31e2164293db1f95",
             "type": "leaf",
             "state": {
-              "type": "graph",
+              "type": "empty",
               "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "icon": "lucide-file",
+              "title": "New tab"
             }
           }
         ]
@@ -161,6 +161,6 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "1fab2c590f268a54",
+  "active": "31e2164293db1f95",
   "lastOpenFiles": []
 }
