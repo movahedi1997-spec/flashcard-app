@@ -255,3 +255,35 @@ Required by lib/db.ts and app/api/auth/* routes.
 - lib/flashcard/study.ts + lib/flashcard/helpers.ts still exist — delete after TASK-010 QA sign-off
 
 ---
+
+[DEVOPS] TASK-008 complete — Date: 2026-04-11
+
+### TASK-008: CI/CD pipeline
+
+#### Files created
+- `.github/workflows/ci.yml` — lint + typecheck + build on every PR and push to main
+- `.github/workflows/deploy.yml` — staging auto-deploy on push to main; prod deploy on version tags; DB migrations run before app deploy
+- `.env.example` — updated with full secret list (DATABASE_URL, ACCESS_JWT_SECRET, REFRESH_JWT_SECRET, OPENAI_API_KEY, STRIPE_SECRET_KEY, SENTRY_DSN, VERCEL_*)
+
+#### CI pipeline (ci.yml)
+- Triggers on PRs to main and pushes to main
+- Jobs: lint → typecheck → build (sequential, must all pass)
+- Minimal placeholder env vars for build to succeed without real DB
+
+#### Deploy pipeline (deploy.yml)
+- Staging environment: push to main → run migrations → build → Vercel preview deploy
+- Production environment: tag push (v*.*.*) → run migrations → build → Vercel prod deploy
+- Migrations: iterates migrations/*.sql files alphabetically via psql
+- Secrets injected from GitHub Environments (staging / production)
+
+#### Bug fix
+- Removed stale `/api/:path*` rewrite from `next.config.js` that redirected Next.js API routes to Express localhost:3001 — would have broken all API calls after migration
+
+#### GitHub Environments to configure
+Add these secrets to Settings → Environments → staging & production:
+- DATABASE_URL, ACCESS_JWT_SECRET, REFRESH_JWT_SECRET
+- SENTRY_DSN, OPENAI_API_KEY, STRIPE_SECRET_KEY, NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+- VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID
+Variable (non-secret): NEXT_PUBLIC_APP_NAME
+
+---
