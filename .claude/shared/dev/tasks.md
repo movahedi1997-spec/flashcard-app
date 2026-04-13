@@ -482,6 +482,274 @@
 
 ---
 
+## Phase 4 — Internationalisation, iOS/iPad & Post-Launch Growth Features
+### Target: Month 1–3 post-launch | Gate: Phase 3 QA sign-off + analytics trigger (>10% non-English signups OR specific community launch reason confirmed by founder)
+### Source: CONSULT-001 (Critical Consultant, 2026-04-13) — multilanguage deferred here from pre-launch scope
+
+---
+
+### TASK-032
+- **Title:** i18n Infrastructure — Next.js internationalisation routing + translation pipeline
+- **Owner:** Frontend + Backend
+- **Priority:** High
+- **Dependencies:** TASK-030 (Phase 3 full QA complete)
+- **Description:** Set up the full i18n foundation before any translation work begins.
+  (1) Configure Next.js `i18n` routing in `next.config.js` with locales: `en`, `de`, `fr`, `es`, `fa`. Default locale: `en`.
+  (2) Install and configure `next-intl` (or equivalent) for server and client components.
+  (3) Create translation namespace structure: `messages/en/`, `messages/de/`, `messages/fr/`, `messages/es/`, `messages/fa/` — each with files: `common.json`, `auth.json`, `dashboard.json`, `flashcards.json`, `study.json`, `explore.json`, `settings.json`, `pricing.json`, `errors.json`.
+  (4) Extract all hardcoded UI strings from existing components into the `en` namespace files. No string should remain hardcoded in JSX after this task.
+  (5) Add locale detection middleware: reads `Accept-Language` header, sets locale cookie, respects explicit locale in URL prefix.
+  (6) Add locale switcher component (flag + language name) for the Navbar and settings page.
+  (7) Update `middleware.ts` to handle locale routing without breaking auth protection.
+- **Acceptance Criteria:**
+  - `next build` passes with all 5 locales configured
+  - All English UI strings extracted to `messages/en/*.json` — zero hardcoded strings in JSX
+  - Locale switcher visible in Navbar; switching locale updates URL and UI without page reload
+  - Middleware correctly protects `/[locale]/dashboard`, `/[locale]/flashcards`, `/[locale]/settings`
+  - `en` locale renders identically to pre-i18n build (no regressions)
+
+---
+
+### TASK-033
+- **Title:** RTL layout support — Persian/Farsi right-to-left rendering
+- **Owner:** Frontend
+- **Priority:** High
+- **Dependencies:** TASK-032
+- **Description:** Persian (`fa`) is a right-to-left language. This requires dedicated layout work beyond simply swapping text.
+  (1) Add `dir="rtl"` to `<html>` when locale is `fa`; `dir="ltr"` for all others.
+  (2) Load a Persian-compatible font: `Vazirmatn` (Google Fonts, open licence) — covers Persian and Arabic script. Add to `next/font` config.
+  (3) Audit every flex/grid layout in the codebase: directional classes (`pl-*`, `pr-*`, `ml-*`, `mr-*`, `text-left`, `text-right`, `justify-start`, `justify-end`) must be replaced with logical equivalents (`ps-*`, `pe-*`, `ms-*`, `me-*`, `text-start`, `text-end`) so they flip automatically with `dir`.
+  (4) Test the flashcard 3D flip animation in RTL — the rotateY direction may need to be mirrored.
+  (5) Test all form inputs, dropdowns, and modals in RTL for layout correctness.
+  (6) The Navbar and Footer must render correctly mirrored in RTL.
+- **Acceptance Criteria:**
+  - Switching to `fa` locale: full app renders RTL with no broken layouts
+  - Vazirmatn font loads for `fa` locale; all other locales use existing Inter/sans-serif
+  - No directional utility class (pl-, pr-, ml-, mr-) remains in any component — all replaced with logical equivalents
+  - Flashcard flip animation works correctly in RTL
+  - All 5 other locales remain unaffected (regression check)
+
+---
+
+### TASK-034
+- **Title:** German translation — UI strings, error messages, onboarding (de)
+- **Owner:** Technical Writer + Frontend
+- **Priority:** High
+- **Dependencies:** TASK-032
+- **Description:** Produce and integrate the full German (`de`) translation set.
+  (1) Translate all namespace files from `messages/en/` into `messages/de/`.
+  (2) German medical education context: terminology must match German exam systems (Staatsexamen, Physikum) in marketing copy and onboarding subject selectors. Subject options should include German-specific categories in the explore page (Vorklinik, Klinik, Pharmakologie).
+  (3) Have all translations reviewed by a native German-speaking medical or pharmacy student before merge — do NOT use unreviewed machine translation for medical content (same quality mandate as AI generation from DECISION-006).
+  (4) Date, number, and currency formats must use German locale (`de-DE`): periods as thousand separators, commas as decimal separators, € for pricing.
+  (5) Update SEO meta tags (`title`, `description`, `og:locale`) to `de` for German pages.
+- **Acceptance Criteria:**
+  - All `messages/de/*.json` files complete — zero missing keys (CI check with `next-intl` missing-key detection)
+  - Native German review sign-off on medical/pharmacy terminology
+  - Date and number formatting correct in German locale
+  - `de` locale pages pass the same QA P0 flow checklist as `en`
+
+---
+
+### TASK-035
+- **Title:** French translation — UI strings, error messages, onboarding (fr)
+- **Owner:** Technical Writer + Frontend
+- **Priority:** High
+- **Dependencies:** TASK-032
+- **Description:** Produce and integrate the full French (`fr`) translation set.
+  (1) Translate all namespace files from `messages/en/` into `messages/fr/`.
+  (2) French medical education context: ECN/iECN (Épreuves Classantes Nationales) terminology for medical students, DFGSM/DFASM levels. Subject selectors should include French-specific categories.
+  (3) Native French-speaking medical or pharmacy student review required before merge.
+  (4) French locale formatting (`fr-FR`): spaces as thousand separators, comma as decimal, € for pricing, 24h time format.
+  (5) Update SEO meta tags for French pages.
+- **Acceptance Criteria:**
+  - All `messages/fr/*.json` files complete with zero missing keys
+  - Native French review sign-off on medical/pharmacy terminology
+  - Date and number formatting correct in `fr-FR` locale
+  - `fr` locale pages pass P0 QA checklist
+
+---
+
+### TASK-036
+- **Title:** Spanish translation — UI strings, error messages, onboarding (es)
+- **Owner:** Technical Writer + Frontend
+- **Priority:** High
+- **Dependencies:** TASK-032
+- **Description:** Produce and integrate the full Spanish (`es`) translation set.
+  (1) Translate all namespace files from `messages/en/` into `messages/es/`.
+  (2) Spanish medical education context: MIR (Médico Interno Residente) exam terminology, Licenciatura en Medicina. Subject selectors should include Spanish-specific medical categories.
+  (3) Use Latin American–neutral Spanish where possible (the product serves Spain and Latin America). Flag any region-specific terminology for review.
+  (4) Native Spanish-speaking medical or pharmacy student review required before merge.
+  (5) Spanish locale formatting (`es-ES`): periods as thousand separators, commas as decimal. Note: Latin American sublocale (`es-419`) may differ — use `Intl.NumberFormat` with the user's detected locale.
+  (6) Update SEO meta tags for Spanish pages.
+- **Acceptance Criteria:**
+  - All `messages/es/*.json` files complete with zero missing keys
+  - Native Spanish review sign-off on medical terminology
+  - Number and date formatting correct
+  - `es` locale pages pass P0 QA checklist
+
+---
+
+### TASK-037
+- **Title:** Persian/Farsi translation — UI strings, error messages, onboarding (fa)
+- **Owner:** Technical Writer + Frontend
+- **Priority:** High
+- **Dependencies:** TASK-032, TASK-033 (RTL must be complete first)
+- **Description:** Produce and integrate the full Persian (`fa`) translation set.
+  (1) Translate all namespace files from `messages/en/` into `messages/fa/`.
+  (2) Iranian medical education context: Konkur (کنکور علوم پزشکی), pre-med and medical university curriculum. Subject selectors should include Persian-specific categories (علوم پایه پزشکی, داروسازی, شیمی آلی).
+  (3) Native Farsi-speaking medical or pharmacy student review is mandatory — medical terminology in Persian has strict conventions and mistranslation carries a patient safety risk.
+  (4) Persian uses Eastern Arabic numerals (۰۱۲۳۴۵۶۷۸۹) by default. Decide and document whether to use Eastern Arabic or Western Arabic numerals in the UI; apply consistently using `Intl.NumberFormat` with `numberingSystem: 'arab'` or `'latn'`.
+  (5) Persian locale formatting (`fa-IR`): calendar is Solar Hijri (Jalali) for dates. Evaluate whether to display Gregorian dates (simpler) or Jalali dates (culturally correct) for SRS due dates and review history. This is a product decision — flag to Product Owner before implementing.
+  (6) Update SEO meta tags for Persian pages.
+- **Acceptance Criteria:**
+  - All `messages/fa/*.json` files complete with zero missing keys
+  - Native Farsi review sign-off — mandatory, not optional
+  - RTL rendering correct (TASK-033 prerequisite verified)
+  - Numeral and calendar decision documented and implemented consistently
+  - `fa` locale pages pass P0 QA checklist in RTL
+
+---
+
+### TASK-038
+- **Title:** Locale-specific seed decks — German, French, Spanish, Persian exam content
+- **Owner:** Backend + Technical Writer
+- **Priority:** High
+- **Dependencies:** TASK-018 (English seed deck pipeline already built), TASK-034, TASK-035, TASK-036, TASK-037
+- **Description:** Extend the seed deck import pipeline (TASK-018) to create locale-specific public decks for each new market. The explore page must have real, high-quality content for each locale at the time that locale goes live — an empty explore page in a new language destroys the activation funnel.
+  (1) German: minimum 5 decks — Vorklinik anatomy/physiology, Pharmakologie Top-50 Wirkstoffe, Biochemie Grundlagen, Organische Chemie Reaktionen, Physikum Prüfungsvorbereitung. All deck content in German.
+  (2) French: minimum 5 decks — Sémiologie médicale, Pharmacologie ECN Top 50, Biochimie DFGSM, Chimie organique réactions, QCM ECN préparation.
+  (3) Spanish: minimum 5 decks — Anatomía MIR, Farmacología Top 50 fármacos, Bioquímica, Química orgánica mecanismos, Preparación MIR.
+  (4) Persian: minimum 5 decks — آناتومی پایه, فارماکولوژی داروهای اساسی, بیوشیمی, شیمی آلی, آمادگی کنکور علوم پزشکی. All content in Persian script.
+  (5) Each deck: minimum 30 cards, medically reviewed, marked as Verified Creator.
+  (6) Seed decks must be live 48h before the corresponding locale goes live in production.
+- **Acceptance Criteria:**
+  - 5 decks per locale (20 total) live in staging before locale launch
+  - Each deck ≥30 cards with verified medical accuracy
+  - Decks appear correctly in locale-filtered explore page
+  - Persian decks render correctly in RTL with Persian script
+
+---
+
+### TASK-039
+- **Title:** Locale SEO — hreflang tags, locale meta tags, sitemap per locale
+- **Owner:** Frontend + Backend
+- **Priority:** High
+- **Dependencies:** TASK-032, TASK-038
+- **Description:** Internationalise the SEO infrastructure so each locale's pages are correctly indexed by search engines and do not compete with or penalise the English pages.
+  (1) Add `<link rel="alternate" hreflang="x">` tags to every page for all 5 locales — this tells Google which language version to show which user.
+  (2) Add `og:locale` and `og:locale:alternate` meta tags to all pages.
+  (3) Generate locale-specific XML sitemaps: `/sitemap-en.xml`, `/sitemap-de.xml`, `/sitemap-fr.xml`, `/sitemap-es.xml`, `/sitemap-fa.xml`. Include all public deck pages per locale.
+  (4) Add a sitemap index at `/sitemap.xml` that references all locale sitemaps.
+  (5) Verify Google Search Console correctly identifies locale variants (manual check).
+  (6) Test that changing locale in the URL prefix (`/de/`, `/fr/`, etc.) does not break the existing `/en/` SEO rankings.
+- **Acceptance Criteria:**
+  - All pages have correct `hreflang` alternate tags for all 5 locales
+  - Locale-specific sitemaps generated and submitted to Search Console
+  - No duplicate content flags between locales (verified with Screaming Frog or equivalent)
+  - Existing English SEO rankings unaffected after deploy (monitor for 2 weeks)
+
+---
+
+### TASK-040
+- **Title:** iOS/iPad native app — React Native or Flutter implementation
+- **Owner:** Frontend + DevOps
+- **Priority:** High
+- **Dependencies:** TASK-030 (Phase 3 complete)
+- **Description:** Build the native iOS/iPad app per DECISION-004. Target: App Store release Month 3–4 post-launch (November–December 2026).
+  (1) PM to evaluate React Native vs. Flutter in Week 1 of Phase 4 — document the decision in `dev/decisions.md` with rationale. Key criteria: code reuse with Next.js TypeScript codebase, Expo ecosystem maturity, iPad layout flexibility, SRS animation performance.
+  (2) Implement all P0 flows in the native app: signup, login, create deck, create card, study session (SRS with 3D flip), dashboard stats, settings, account deletion.
+  (3) iPad-optimised layout: split-pane deck browser + card list on iPad, full-screen study on iPhone.
+  (4) Native push notifications: SRS study reminders, streak alerts, daily review nudge. Must use APNs (Apple Push Notification Service).
+  (5) Offline study mode: cache the active study session's due cards locally; sync grades on reconnect.
+  (6) App Store Optimisation (ASO): title must include "AI Flashcards"; subtitle targets USMLE, MCAT, Med School keywords; screenshots show the 3D flip and AI generation flow.
+  (7) The free iOS tier directly competes with Anki's $24.99 one-time iOS purchase — ensure the free tier value is clear in the App Store listing.
+- **Acceptance Criteria:**
+  - App passes App Store review on first submission (or within 2 rounds)
+  - All P0 flows work on iPhone 14+ and iPad (M1 and later)
+  - Push notifications work via APNs
+  - Offline study session works with sync on reconnect
+  - Lighthouse equivalent (Instruments) performance: 60fps scroll and card flip on iPhone 14
+  - ASO keywords included in metadata
+
+---
+
+### TASK-041
+- **Title:** i18n Code Review — translation completeness, RTL correctness, locale security
+- **Owner:** Code Reviewer
+- **Priority:** High
+- **Dependencies:** TASK-033, TASK-034, TASK-035, TASK-036, TASK-037
+- **Description:** Review the full i18n implementation before any locale goes live.
+  (1) Verify zero hardcoded strings remain in any component (grep for common hardcoded patterns: English words in JSX className strings that are UI copy, not Tailwind classes).
+  (2) Verify RTL implementation (TASK-033): no remaining directional utility classes; `dir` attribute applied correctly at `<html>` level; Vazirmatn font scoped to `fa` locale only.
+  (3) Verify locale routing security: locale prefix must not bypass middleware auth checks. A URL like `/fa/dashboard` must redirect unauthenticated users to `/fa/login`, not `/login`.
+  (4) Check translation files for missing keys vs. the English baseline — the CI check (TASK-032 AC) must be passing.
+  (5) Verify `Intl` usage (number formatting, date formatting) is consistent across all locales and does not use hardcoded locale strings.
+  (6) Check Persian numeral/calendar decision is implemented consistently (no mixed Eastern/Western numerals on the same page).
+- **Acceptance Criteria:**
+  - Code Reviewer sign-off logged in `dev/decisions.md`
+  - Zero directional utility classes remaining in any component
+  - Locale routing auth protection verified for all 5 locales
+  - All translation files pass missing-key CI check
+  - No hardcoded English UI strings found in JSX
+
+---
+
+### TASK-042
+- **Title:** i18n + iOS QA — P0 flows in all 5 locales + iOS/iPad regression
+- **Owner:** QA Tester
+- **Priority:** High
+- **Dependencies:** TASK-041, TASK-040
+- **Description:** Full QA pass across the internationalised web app and iOS native app.
+  (1) Web i18n QA: run the P0 flow checklist (signup, login, create deck, create card, study session, account deletion) in all 5 locales on Chrome desktop, Safari desktop, Safari iPad.
+  (2) RTL-specific checks for `fa` locale: all layouts correct, no text overflow, no overlapping elements, flashcard flip direction correct.
+  (3) Translation completeness check: every screen in every locale must have no missing-translation fallbacks visible to the user (English strings showing through in a non-English locale is a launch blocker).
+  (4) Locale switching: switching locale mid-session must not cause data loss or auth issues.
+  (5) iOS QA: run P0 flows on iPhone 14 and iPad Pro 11-inch. Verify push notifications fire correctly. Verify offline mode (airplane mode study session then reconnect sync).
+  (6) Seed deck visibility: confirm locale-specific seed decks from TASK-038 appear in the correct locale's explore page and not in others.
+- **Acceptance Criteria:**
+  - All P0 flows pass in all 5 locales on Chrome + Safari
+  - RTL layout verified with zero broken components in `fa` locale
+  - Zero missing-translation strings visible in any locale
+  - iOS P0 flows pass on iPhone 14 and iPad Pro
+  - Offline study + sync verified
+  - QA sign-off logged in `dev/progress.md`
+
+---
+
+### TASK-043
+- **Title:** Post-launch growth features — Anki importer, Study Wrapped, advanced SRS analytics
+- **Owner:** Frontend + Backend
+- **Priority:** Medium
+- **Dependencies:** TASK-030 (Phase 3 complete)
+- **Description:** Implement the P2 growth features from DECISION-002 that were deferred from pre-launch scope.
+  (1) Anki `.apkg` importer: parse the SQLite-based `.apkg` format, extract cards (front/back/tags), create a new deck, import SRS history where possible. This is a major acquisition tool for Anki switchers.
+  (2) Study Wrapped: end-of-session shareable stats card (cards reviewed, grades breakdown, streak, retention %). Generates a 1080×1920 image (Instagram Story format) via `@vercel/og`. This feeds the viral sharing flywheel from RESEARCH-008.
+  (3) Advanced SRS Analytics dashboard: per-deck retention curve chart (projected mastery date per card), accuracy trends over time, predicted exam readiness score. Extends the existing StudyChart component.
+- **Acceptance Criteria:**
+  - Anki `.apkg` import works on a sample AnKing deck (5,000+ cards) without timeout
+  - Study Wrapped image generates in under 2 seconds and shares correctly on iOS Messages and Instagram
+  - Advanced analytics charts render correctly and use real DB data (not hardcoded)
+
+---
+
+### TASK-044
+- **Title:** Campus Ambassador tooling — school referral links, signup banners, B2B pilot dashboard
+- **Owner:** Frontend + Backend
+- **Priority:** Medium
+- **Dependencies:** TASK-026 (Stripe complete), TASK-030
+- **Description:** Build the institutional and campus growth infrastructure from DECISION-002 P2.
+  (1) Campus referral links: unique signup URLs per institution (`/join/harvard-med`, `/join/usc-pharmacy`) that track which school drove the signup, auto-apply a 30-day Pro trial, and tag the user as a campus user.
+  (2) Campus signup banner: a dismissible banner on the dashboard for users who signed up via a campus link — "You joined via [School Name]. Invite your classmates →" with a one-tap invite.
+  (3) B2B pilot dashboard (read-only, admin-only): list of campus links, signup counts per institution, activation rate per campus, top decks being studied. This feeds the institutional sales conversation.
+  (4) Faculty deck sharing: a special deck permission level — "faculty-shared" — that makes a deck accessible to all users who signed up via a specific campus link. Lets professors share a deck with their entire class without making it fully public.
+- **Acceptance Criteria:**
+  - Campus referral link creates correctly tagged users with 30-day Pro trial
+  - Admin dashboard shows per-campus signup and activation metrics
+  - Faculty-shared deck visible only to campus-linked users, not the public explore page
+  - Campus banner appears and dismisses correctly
+
+---
+
 ## Hard Launch Blockers — All Must Pass Before Launch Day
 
 | Task | Blocker |

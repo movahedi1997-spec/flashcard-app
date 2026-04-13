@@ -440,3 +440,41 @@ All P0 flows pass code review. Two bugs found and resolved inline (BUG-001 cosme
 
 **[QA] Phase 1 QA sign-off granted — Phase 2 may begin.**
 **Date:** 2026-04-13
+
+---
+
+## [PM] Phase 4 Planning — Internationalisation + Post-Launch Growth
+**Date:** 2026-04-13
+
+### Source
+CONSULT-001 (Critical Consultant, 2026-04-13): multilanguage (German, Persian, French, Spanish) deferred from pre-launch scope to Phase 4. Trigger: Phase 3 QA complete + analytics confirm >10% non-English signups OR founder confirms specific community launch reason.
+
+### Tasks created: TASK-032 through TASK-044
+
+| Task | Title | Owner | Priority | Gate |
+|------|-------|-------|----------|------|
+| TASK-032 | i18n Infrastructure (Next.js routing + translation pipeline) | Frontend + Backend | High | Phase 3 complete |
+| TASK-033 | RTL layout support — Persian/Farsi | Frontend | High | TASK-032 |
+| TASK-034 | German translation (de) | Technical Writer + Frontend | High | TASK-032 |
+| TASK-035 | French translation (fr) | Technical Writer + Frontend | High | TASK-032 |
+| TASK-036 | Spanish translation (es) | Technical Writer + Frontend | High | TASK-032 |
+| TASK-037 | Persian/Farsi translation (fa) | Technical Writer + Frontend | High | TASK-032 + TASK-033 |
+| TASK-038 | Locale-specific seed decks (de/fr/es/fa) | Backend + Technical Writer | High | TASK-034–037 |
+| TASK-039 | Locale SEO — hreflang, sitemaps per locale | Frontend + Backend | High | TASK-032 + TASK-038 |
+| TASK-040 | iOS/iPad native app (React Native or Flutter) | Frontend + DevOps | High | Phase 3 complete |
+| TASK-041 | i18n Code Review | Code Reviewer | High | TASK-033–037 |
+| TASK-042 | i18n + iOS QA — P0 flows in all 5 locales | QA Tester | High | TASK-041 + TASK-040 |
+| TASK-043 | Post-launch growth: Anki importer, Study Wrapped, advanced analytics | Frontend + Backend | Medium | Phase 3 complete |
+| TASK-044 | Campus Ambassador tooling — referral links, B2B pilot dashboard | Frontend + Backend | Medium | TASK-026 + TASK-030 |
+
+### Critical notes for dev team
+1. **TASK-033 (RTL) must complete before TASK-037 (Persian translation)** — starting Persian text work before RTL layout is correct produces unusable output.
+2. **TASK-038 seed decks require native-speaker medical review** — same quality mandate as English seed decks (DECISION-006). Do not ship locale seed decks with unreviewed machine-translated medical content.
+3. **TASK-037 (Persian) has two open product decisions** requiring founder input before implementation: (a) Eastern Arabic vs. Western Arabic numerals, (b) Solar Hijri vs. Gregorian calendar for SRS due dates. PM will flag these to Product Owner before TASK-037 begins.
+4. **Phase 4 gate is not the same as Phase 3 gate** — Phase 4 begins only after Phase 3 QA sign-off AND the analytics trigger is confirmed. Do not start TASK-032 until both conditions are met.
+
+### Next milestone
+Phase 2 sprint begins immediately (TASK-011: Explore API backend). Phase 4 is planned and ready; execution begins post-launch.
+
+[PM] Phase 4 planning complete.
+**Date:** 2026-04-13

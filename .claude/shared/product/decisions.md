@@ -518,6 +518,36 @@ Each resolution is referenced within the relevant decision.
 
 ---
 
+[CONSULT-001] Phase 1 Post-Mortem + Multilanguage Timing Challenge
+- Date: 2026-04-13
+- Triggered by: Phase 1 QA sign-off (TASK-010) + user request to add German, Persian, French, Spanish
+- Participants: critical-consultant, user (founder)
+- Prior answers on record: activation-first, explore/sharing as P0, all three segments, web-first, build it right, August 2026 target
+- Key assumptions challenged:
+  1. "Adding 4 languages now improves the product" — verdict: unvalidated and premature
+  2. "Phase 1 completion means we have a shippable product" — verdict: valid foundation, but the two core differentiators (Explore + AI) do not exist yet
+  3. "August 2026 is achievable with current scope" — verdict: achievable but zero slack; any unplanned scope addition risks the deadline
+- Risks identified:
+  1. Multilanguage before PMF validation — likelihood: high — impact: high
+     (Every Phase 2/3 component becomes translation-dependent; English SEO strategy is diluted; exam ecosystems differ per locale; no seed decks for non-English markets)
+  2. August 2026 deadline with 22 tasks remaining — likelihood: medium — impact: high
+     (Tight but achievable if no scope additions are made before Phase 2 and 3 complete)
+  3. Premature feature expansion vs. core loop delivery — likelihood: medium — impact: high
+     (The explore page, AI generation, and Stripe do not exist yet; these ARE the product)
+- Contradictions found:
+  1. User requested 4 languages while 22 tasks remain before the hard August launch deadline — this is a direct contradiction of the "build it right, no scope creep" quality mandate from DECISION-006
+  2. Target audience is US medical/pharmacy/chemistry students (USMLE, NAPLEX, Orgo) — adding German, Persian, French, Spanish targets exam ecosystems (Staatsexamen, Konkur, ECN) with completely different content needs and no seed decks
+- Recommended path forward:
+  1. Start Phase 2 (TASK-011: Explore API) immediately — this is the P0 differentiator
+  2. Defer multilanguage to Phase 4 (post-launch, Month 1-2) with a trigger condition: add i18n when analytics show >10% of signups from a non-English locale, OR if a specific community launch (e.g. Persian-speaking medical students) justifies targeted locale first
+  3. PM to produce a week-by-week August schedule this sprint — 22 tasks in ~15 weeks needs explicit sequencing; any slip must be caught now not in week 12
+  4. Exception: if the founder has a specific launch-channel reason for one of these languages (an existing community, a school partnership, a co-founder market), that one language can be scoped as a targeted launch feature — but 4 languages simultaneously before Phase 2 is complete is not defensible
+- Confidence level: high
+- Next review: when Phase 2 (TASK-011–021) is complete, or if founder provides a specific strategic reason for a targeted language at launch
+- Status: discussed — awaiting founder decision on multilanguage timing
+
+---
+
 ---
 
 [PRODUCT OWNER] Handoff to PM — Decision Set 001
