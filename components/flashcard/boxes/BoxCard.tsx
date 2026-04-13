@@ -96,7 +96,7 @@ export default function BoxCard({
                     onClick={() => { onRename(); setMenuOpen(false); }}
                     className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 cursor-pointer"
                   >
-                    <Pencil size={14} /> Rename
+                    <Pencil size={14} /> Edit
                   </button>
                   <button
                     onClick={() => { onExport(); setMenuOpen(false); }}
