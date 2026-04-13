@@ -16,7 +16,7 @@ import { Plus, BookOpen, Upload, Loader2, AlertCircle } from 'lucide-react';
 import type { Deck } from '@/types/api';
 import type { DeckUpdate } from '@/hooks/useBoxes';
 import BoxCard from './BoxCard';
-import BoxForm from './BoxForm';
+import BoxForm, { type DeckFormValues } from './BoxForm';
 import EmptyState from '@/components/ui/EmptyState';
 import Button from '@/components/ui/Button';
 
@@ -35,7 +35,7 @@ interface Props {
   decks: Deck[];
   loading: boolean;
   error: string | null;
-  onCreateBox: (name: string, description?: string) => Promise<Deck | null>;
+  onCreateBox: (name: string, description?: string, subject?: undefined, color?: string, emoji?: string) => Promise<Deck | null>;
   onUpdateBox: (id: string, updates: DeckUpdate) => Promise<void>;
   onDeleteBox: (id: string) => Promise<void>;
   onOpenBox: (deckId: string) => void;
@@ -193,19 +193,26 @@ export default function BoxList({
       <BoxForm
         open={createOpen}
         onClose={() => setCreateOpen(false)}
-        onSubmit={(name) => void onCreateBox(name)}
+        onSubmit={({ name, description, color, emoji }: DeckFormValues) =>
+          void onCreateBox(name, description, undefined, color, emoji)
+        }
         mode="create"
       />
 
-      {/* Edit / rename deck form */}
+      {/* Edit deck form */}
       <BoxForm
         open={!!editDeck}
         onClose={() => setEditDeck(null)}
-        onSubmit={(name) => {
-          if (editDeck) void onUpdateBox(editDeck.id, { title: name });
+        onSubmit={({ name, description, color, emoji }: DeckFormValues) => {
+          if (editDeck) void onUpdateBox(editDeck.id, { title: name, description, color, emoji });
           setEditDeck(null);
         }}
-        initialName={editDeck?.title ?? ''}
+        initial={editDeck ? {
+          name: editDeck.title,
+          description: editDeck.description,
+          color: editDeck.color,
+          emoji: editDeck.emoji,
+        } : undefined}
         mode="edit"
       />
     </div>

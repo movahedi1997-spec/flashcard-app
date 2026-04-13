@@ -21,6 +21,8 @@ interface DeckRow {
   user_id: string;
   title: string;
   description: string;
+  color: string;
+  emoji: string;
   is_public: boolean;
   slug: string | null;
   subject: string | null;
@@ -40,7 +42,7 @@ export async function GET(req: NextRequest) {
     // Join with cards to get card count per deck in a single query
     const result = await query<DeckRow>(
       `SELECT
-         d.id, d.user_id, d.title, d.description,
+         d.id, d.user_id, d.title, d.description, d.color, d.emoji,
          d.is_public, d.slug, d.subject,
          COUNT(c.id)::text AS card_count,
          d.created_at, d.updated_at
@@ -57,6 +59,8 @@ export async function GET(req: NextRequest) {
       userId: row.user_id,
       title: row.title,
       description: row.description,
+      color: row.color ?? 'indigo',
+      emoji: row.emoji ?? '📚',
       isPublic: row.is_public,
       slug: row.slug,
       subject: row.subject,
@@ -80,7 +84,7 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json().catch(() => null) as Record<string, unknown> | null;
-  const { title, description = '', subject = null } = body ?? {};
+  const { title, description = '', subject = null, color = 'indigo', emoji = '📚' } = body ?? {};
 
   // ── Validation ──────────────────────────────────────────────────────────────
   if (!title || typeof title !== 'string' || title.trim().length === 0) {
@@ -106,10 +110,10 @@ export async function POST(req: NextRequest) {
 
   try {
     const result = await query<DeckRow>(
-      `INSERT INTO decks (user_id, title, description, subject)
-       VALUES ($1, $2, $3, $4)
-       RETURNING id, user_id, title, description, is_public, slug, subject, created_at, updated_at`,
-      [user.userId, title.trim(), String(description).slice(0, 1000), subject],
+      `INSERT INTO decks (user_id, title, description, subject, color, emoji)
+       VALUES ($1, $2, $3, $4, $5, $6)
+       RETURNING id, user_id, title, description, color, emoji, is_public, slug, subject, created_at, updated_at`,
+      [user.userId, title.trim(), String(description).slice(0, 1000), subject, String(color), String(emoji)],
     );
 
     const row = result.rows[0];
@@ -118,6 +122,8 @@ export async function POST(req: NextRequest) {
       userId: row.user_id,
       title: row.title,
       description: row.description,
+      color: row.color ?? 'indigo',
+      emoji: row.emoji ?? '📚',
       isPublic: row.is_public,
       slug: row.slug,
       subject: row.subject,

@@ -29,7 +29,6 @@ import StudySession from '@/components/flashcard/study/StudySession';
 import CramSession from '@/components/flashcard/study/CramSession';
 import ModeSelector from '@/components/flashcard/study/ModeSelector';
 import SplashPage from '@/components/flashcard/SplashPage';
-import Link from 'next/link';
 
 // ── View state ────────────────────────────────────────────────────────────────
 
@@ -319,14 +318,6 @@ export default function FlashcardsPage() {
             </div>
           )}
 
-          <div className="ml-auto">
-            <Link
-              href="/dashboard"
-              className="text-sm text-slate-500 hover:text-indigo-600 transition-colors"
-            >
-              ← Dashboard
-            </Link>
-          </div>
         </div>
       </header>
 

@@ -19,6 +19,8 @@ interface DeckRow {
   user_id: string;
   title: string;
   description: string;
+  color: string;
+  emoji: string;
   is_public: boolean;
   slug: string | null;
   subject: string | null;
@@ -41,7 +43,7 @@ export async function GET(req: NextRequest, { params }: RouteContext) {
   try {
     const result = await query<DeckRow>(
       `SELECT
-         d.id, d.user_id, d.title, d.description,
+         d.id, d.user_id, d.title, d.description, d.color, d.emoji,
          d.is_public, d.slug, d.subject,
          COUNT(c.id)::text AS card_count,
          d.created_at, d.updated_at
@@ -64,6 +66,8 @@ export async function GET(req: NextRequest, { params }: RouteContext) {
         userId: row.user_id,
         title: row.title,
         description: row.description,
+        color: row.color ?? 'indigo',
+        emoji: row.emoji ?? '📚',
         isPublic: row.is_public,
         slug: row.slug,
         subject: row.subject,
@@ -93,7 +97,7 @@ export async function PATCH(req: NextRequest, { params }: RouteContext) {
   }
 
   // Build dynamic SET clause from allowed fields only
-  const ALLOWED = ['title', 'description', 'is_public', 'subject'] as const;
+  const ALLOWED = ['title', 'description', 'is_public', 'subject', 'color', 'emoji'] as const;
   const updates: string[] = [];
   const values: unknown[] = [];
 
@@ -130,7 +134,7 @@ export async function PATCH(req: NextRequest, { params }: RouteContext) {
       `UPDATE decks
        SET ${updates.join(', ')}
        WHERE id = $${whereIdx - 1} AND user_id = $${whereIdx}
-       RETURNING id, user_id, title, description, is_public, slug, subject, created_at, updated_at`,
+       RETURNING id, user_id, title, description, color, emoji, is_public, slug, subject, created_at, updated_at`,
       values,
     );
 
@@ -145,6 +149,8 @@ export async function PATCH(req: NextRequest, { params }: RouteContext) {
         userId: row.user_id,
         title: row.title,
         description: row.description,
+        color: row.color ?? 'indigo',
+        emoji: row.emoji ?? '📚',
         isPublic: row.is_public,
         slug: row.slug,
         subject: row.subject,

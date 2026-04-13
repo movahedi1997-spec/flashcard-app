@@ -20,6 +20,8 @@ export interface Deck {
   userId: string;
   title: string;
   description: string;
+  color: string;   // palette key: 'indigo' | 'emerald' | 'amber' | 'rose' | 'sky'
+  emoji: string;   // single emoji character, e.g. '📚'
   isPublic: boolean;
   slug: string | null;
   subject: Subject | null;

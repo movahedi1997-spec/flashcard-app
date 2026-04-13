@@ -34,7 +34,7 @@ export type Box = Deck; // legacy alias — TASK-006 will remove this
 
 // ── Update shape ──────────────────────────────────────────────────────────────
 
-export type DeckUpdate = Partial<Pick<Deck, 'title' | 'description' | 'subject' | 'isPublic'>>;
+export type DeckUpdate = Partial<Pick<Deck, 'title' | 'description' | 'subject' | 'isPublic' | 'color' | 'emoji'>>;
 
 // ── Hook state ────────────────────────────────────────────────────────────────
 
@@ -97,6 +97,8 @@ export function useBoxes() {
       name: string,
       description = '',
       subject?: Subject,
+      color = 'indigo',
+      emoji = '📚',
     ): Promise<Deck | null> => {
       try {
         const res = await fetch('/api/decks', {
@@ -106,6 +108,8 @@ export function useBoxes() {
             title: name.trim(),
             description: description.trim(),
             subject: subject ?? null,
+            color,
+            emoji,
           }),
         });
 
@@ -151,6 +155,8 @@ export function useBoxes() {
         if ('description' in updates) body.description = updates.description;
         if ('subject' in updates) body.subject = updates.subject;
         if ('isPublic' in updates) body.is_public = updates.isPublic;
+        if ('color' in updates)   body.color     = updates.color;
+        if ('emoji' in updates)   body.emoji     = updates.emoji;
 
         const res = await fetch(`/api/decks/${id}`, {
           method: 'PATCH',
