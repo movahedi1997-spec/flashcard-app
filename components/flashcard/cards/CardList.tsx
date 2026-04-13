@@ -12,13 +12,14 @@
  */
 
 import { useState, useMemo } from 'react';
-import { Plus, Search, SlidersHorizontal, CreditCard, Play, Loader2, AlertCircle } from 'lucide-react';
+import { Plus, Search, SlidersHorizontal, CreditCard, Play, Loader2, AlertCircle, Share2 } from 'lucide-react';
 import type { Deck, ApiCard } from '@/types/api';
 import type { CardUpdate } from '@/hooks/useCards';
 import CardItem from './CardItem';
 import CardForm from './CardForm';
 import EmptyState from '@/components/ui/EmptyState';
 import Button from '@/components/ui/Button';
+import ShareDeckPanel from '@/components/flashcard/boxes/ShareDeckPanel';
 
 // ── Sort options (score-based removed) ───────────────────────────────────────
 
@@ -48,6 +49,7 @@ interface Props {
   onDeleteCard: (id: string) => Promise<void>;
   onBack: () => void;
   onStudy: () => void;
+  onUpdateDeck?: (updated: Deck) => void;
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -62,12 +64,21 @@ export default function CardList({
   onDeleteCard,
   onBack,
   onStudy,
+  onUpdateDeck,
 }: Props) {
   const [createOpen, setCreateOpen] = useState(false);
   const [editCard, setEditCard] = useState<ApiCard | null>(null);
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState<SortOption>('newest');
   const [showSort, setShowSort] = useState(false);
+  const [showShare, setShowShare] = useState(false);
+
+  // Local copy of deck so ShareDeckPanel changes reflect immediately
+  const [localDeck, setLocalDeck] = useState<Deck>(deck);
+  function handleDeckUpdated(updated: Deck) {
+    setLocalDeck(updated);
+    onUpdateDeck?.(updated);
+  }
 
   const filtered = useMemo(() => {
     let result = [...cards];
@@ -123,6 +134,14 @@ export default function CardList({
         <Button
           variant="secondary"
           size="sm"
+          onClick={() => setShowShare((p) => !p)}
+          aria-pressed={showShare}
+        >
+          <Share2 size={13} /> Share
+        </Button>
+        <Button
+          variant="secondary"
+          size="sm"
           onClick={onStudy}
           disabled={cards.length === 0 || loading}
         >
@@ -132,6 +151,13 @@ export default function CardList({
           <Plus size={14} /> Add Card
         </Button>
       </div>
+
+      {/* ── Share panel ──────────────────────────────────────────────────────── */}
+      {showShare && (
+        <div className="mb-6">
+          <ShareDeckPanel deck={localDeck} onUpdated={handleDeckUpdated} />
+        </div>
+      )}
 
       {/* ── Error banner ────────────────────────────────────────────────────── */}
       {error && (

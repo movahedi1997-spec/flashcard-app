@@ -12,6 +12,24 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getAuthUser } from '@/lib/auth';
 import { query } from '@/lib/db';
 
+/**
+ * Generates a URL-safe slug from a deck title.
+ * Appends a 6-character random suffix to ensure uniqueness.
+ * e.g. "USMLE Step 1 Cardiology" → "usmle-step-1-cardiology-a3b4c5"
+ */
+function generateSlug(title: string): string {
+  const base = title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .slice(0, 50)
+    .replace(/-$/, '');
+  const suffix = Math.random().toString(36).slice(2, 8);
+  return `${base || 'deck'}-${suffix}`;
+}
+
 export const runtime = 'nodejs';
 
 interface DeckRow {
@@ -123,6 +141,35 @@ export async function PATCH(req: NextRequest, { params }: RouteContext) {
     }
     // Replace the value with trimmed version
     values[updates.findIndex(u => u.startsWith('title'))] = title.trim();
+  }
+
+  // Auto-generate a slug when the deck is being made public for the first time.
+  // If the deck already has a slug, keep it (making a deck private then public
+  // again preserves its original shareable URL).
+  if (body.is_public === true) {
+    const existing = await query<{ slug: string | null; title: string }>(
+      'SELECT slug, title FROM decks WHERE id = $1 AND user_id = $2',
+      [id, user.userId],
+    );
+    if ((existing.rowCount ?? 0) > 0 && !existing.rows[0].slug) {
+      const deckTitle = ('title' in body && typeof body.title === 'string')
+        ? body.title.trim()
+        : existing.rows[0].title;
+
+      // Retry up to 5 times on the (astronomically unlikely) slug collision
+      let slug = generateSlug(deckTitle);
+      for (let attempt = 0; attempt < 5; attempt++) {
+        const collision = await query<{ id: string }>(
+          'SELECT id FROM decks WHERE slug = $1',
+          [slug],
+        );
+        if ((collision.rowCount ?? 0) === 0) break;
+        slug = generateSlug(deckTitle); // regenerate on collision
+      }
+
+      updates.push(`slug = $${values.length + 1}`);
+      values.push(slug);
+    }
   }
 
   // Append WHERE params

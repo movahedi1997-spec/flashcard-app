@@ -239,6 +239,20 @@ export function useBoxes() {
     [createBox],
   );
 
+  // ── syncDeck ────────────────────────────────────────────────────────────────
+
+  /**
+   * syncDeck — apply a server-authoritative Deck to local state, no API call.
+   * Used when a child component has already made the PATCH request itself
+   * (e.g. ShareDeckPanel) and just needs to propagate the result upward.
+   */
+  const syncDeck = useCallback((updated: Deck) => {
+    setState((prev) => ({
+      ...prev,
+      decks: prev.decks.map((d) => (d.id === updated.id ? updated : d)),
+    }));
+  }, []);
+
   // ── Public API ──────────────────────────────────────────────────────────────
 
   return {
@@ -252,5 +266,6 @@ export function useBoxes() {
     deleteBox,
     importBoxes,
     reload,
+    syncDeck,
   };
 }

@@ -478,3 +478,44 @@ Phase 2 sprint begins immediately (TASK-011: Explore API backend). Phase 4 is pl
 
 [PM] Phase 4 planning complete.
 **Date:** 2026-04-13
+
+---
+
+## [BACKEND] TASK-011 — Explore API
+**Date:** 2026-04-13
+**Status:** Complete
+
+### What was built
+- `app/api/explore/route.ts` — cursor-based paginated feed of public decks; subject filter, search, optional auth; returns `alreadyCopied` for logged-in users
+- `app/api/explore/categories/route.ts` — 4 subject hub tiles with live deck counts from DB
+- `app/api/explore/[slug]/route.ts` — single public deck by slug; front-only preview for unauthenticated users (back blurred to drive sign-ups); always 404 for private/missing slugs (prevents IDOR)
+- `app/api/decks/[id]/copy/route.ts` — atomic deck copy: `BEGIN` / INSERT deck + bulk INSERT cards / UPDATE copy_count / `COMMIT`; prevents self-copy (400), duplicate copy (409)
+- `app/api/decks/[id]/route.ts` — PATCH updated with `generateSlug()` auto-generation on first publish (up to 5 retry attempts on collision)
+- `migrations/006_explore_phase2.sql` — `copied_from_id`, `is_verified_creator`, `copy_count` columns + indexes
+- `types/api.ts` — `PublicDeck` (+ `copyCount`, `isVerifiedCreator` optional fields) and `ExploreCategory` interfaces added
+
+---
+
+## [FRONTEND] TASK-012 + TASK-013 + TASK-014 + TASK-017 — Explore frontend + share widget
+**Date:** 2026-04-13
+**Status:** Complete
+
+### What was built
+- `components/flashcard/boxes/ShareDeckPanel.tsx` — Public/Private toggle switch + shareable URL copy + WhatsApp and Twitter/X pre-written share messages
+- `components/ExploreDeckCard.tsx` — individual deck card for explore feed; gradient header matches deck palette; "Copy to Library" CTA with in-flight / already-copied states; unauthenticated copy → redirect to /signup
+- `components/ExploreGrid.tsx` — client component: debounced search, subject filter pills, cursor-based load-more, copy-optimistic state sync
+- `app/explore/page.tsx` — SSR server component; fetches category counts directly from DB; renders 4 subject hub tiles + ExploreGrid; full OG metadata
+- `app/explore/[slug]/page.tsx` — ISR (revalidate: 3600); per-deck OG title/description; card preview (10 cards); backs hidden for unauthenticated users with blur; sticky CTA panel; soft auth gate redirects to /signup?next=
+- `app/explore/[slug]/CopyDeckButton.tsx` — thin client component for copy interactivity on the ISR page
+- `components/flashcard/cards/CardList.tsx` — added "Share" button toggle in header; shows ShareDeckPanel inline when toggled; `onUpdateDeck` prop added
+- `hooks/useBoxes.ts` — added `syncDeck(updated)` for direct state sync without a second API call (used by ShareDeckPanel result propagation)
+- `app/flashcards/page.tsx` — wired `syncDeck` as `onUpdateDeck` prop on CardList
+
+### Key decisions
+- Explore page is a server component for SSR/SEO; interactivity delegated to client ExploreGrid
+- Deck landing page uses ISR (not SSR) — stale-while-revalidate for high-traffic SEO pages without DB pressure on every request
+- Back face is blurred for unauthenticated users to incentivise sign-up without blocking discovery
+- ShareDeckPanel makes its own PATCH; parent uses `syncDeck` (no second API call) to propagate result
+
+[FRONTEND] Phase 2 frontend complete. Pending: TASK-015 (OG image gen), TASK-016 (creator profiles), TASK-018 (seed decks), TASK-019 (onboarding flow).
+**Date:** 2026-04-13

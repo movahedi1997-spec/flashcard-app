@@ -30,6 +30,32 @@ export interface Deck {
   updatedAt: string;
 }
 
+// ── Public Deck (/api/explore) ────────────────────────────────────────────────
+
+/**
+ * A deck visible in the Explore feed. Extends Deck with creator info.
+ * Returned by GET /api/explore and GET /api/explore/categories.
+ */
+export interface PublicDeck extends Omit<Deck, 'slug'> {
+  slug: string;               // guaranteed non-null for public decks
+  creatorName: string;        // display name of the deck author
+  alreadyCopied: boolean;     // true when the authenticated user already has a copy
+  copyCount?: number;         // denormalised copy count (explore feed + deck page)
+  isVerifiedCreator?: boolean; // verified badge shown next to creator name
+}
+
+/**
+ * A subject category hub — returned by GET /api/explore/categories.
+ */
+export interface ExploreCategory {
+  subject: Subject;
+  label: string;
+  description: string;
+  color: string;   // Tailwind gradient class string
+  emoji: string;
+  deckCount: number;
+}
+
 // ── SRS state (embedded in CardWithSrs) ───────────────────────────────────────
 
 export type Grade = 'again' | 'hard' | 'good' | 'easy';

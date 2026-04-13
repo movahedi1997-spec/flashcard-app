@@ -64,6 +64,7 @@ export default function FlashcardsPage() {
     updateBox,
     deleteBox,
     importBoxes,
+    syncDeck,
   } = useBoxes();
 
   const {
@@ -195,6 +196,7 @@ export default function FlashcardsPage() {
           onDeleteCard={deleteCard}
           onBack={goHome}
           onStudy={() => goToStudy(view.deckId)}
+          onUpdateDeck={syncDeck}
         />
       );
     }
