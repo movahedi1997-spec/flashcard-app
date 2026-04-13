@@ -20,6 +20,7 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { BookOpen } from 'lucide-react';
+import Link from 'next/link';
 import { useBoxes } from '@/hooks/useBoxes';
 import { useCards } from '@/hooks/useCards';
 import type { Deck } from '@/types/api';
@@ -272,6 +273,17 @@ export default function FlashcardsPage() {
             </div>
             <span className="font-bold text-slate-800">FlashCards</span>
           </button>
+
+          {view.type === 'home' && (
+            <div className="ml-auto">
+              <Link
+                href="/dashboard"
+                className="text-sm text-slate-500 hover:text-indigo-600 transition-colors"
+              >
+                ← Dashboard
+              </Link>
+            </div>
+          )}
 
           {view.type !== 'home' && (
             <div className="flex items-center gap-1.5 text-sm text-slate-500 ml-2">
