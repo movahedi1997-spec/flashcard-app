@@ -119,31 +119,20 @@ export default async function DashboardPage() {
         {/* ── Quick Actions (CTA — shown first so they're immediately visible) ── */}
         <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm">
           <h2 className="mb-6 text-xl font-bold text-gray-900">Start Study</h2>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <Link
-              href="/flashcards"
-              className="flex items-center gap-4 rounded-xl border border-indigo-100 bg-indigo-50 p-5 transition hover:bg-indigo-100"
-            >
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 text-white">
-                <BookOpen className="h-5 w-5" />
-              </div>
-              <div>
-                <p className="font-semibold text-gray-900">My Decks</p>
-                <p className="text-sm text-gray-500">
-                  Create and manage your flashcard decks
-                </p>
-              </div>
-            </Link>
-            <div className="flex items-center gap-4 rounded-xl border border-gray-100 bg-gray-50 p-5">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500 text-white">
-                <Zap className="h-5 w-5" />
-              </div>
-              <div>
-                <p className="font-semibold text-gray-900">Quick Study</p>
-                <p className="text-sm text-gray-500">Review your due cards now</p>
-              </div>
+          <Link
+            href="/flashcards"
+            className="flex items-center gap-4 rounded-xl border border-indigo-100 bg-indigo-50 p-5 transition hover:bg-indigo-100"
+          >
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 text-white">
+              <BookOpen className="h-5 w-5" />
             </div>
-          </div>
+            <div>
+              <p className="font-semibold text-gray-900">My Decks</p>
+              <p className="text-sm text-gray-500">
+                Create and manage your flashcard decks
+              </p>
+            </div>
+          </Link>
         </div>
 
         {/* ── Stats ────────────────────────────────────────────────────── */}
