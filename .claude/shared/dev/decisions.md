@@ -3,6 +3,145 @@
 
 ---
 
+## [CODE REVIEWER] TASK-009 — Code Review: Phase 1 (SRS algorithm, auth, schema)
+**Date:** 2026-04-13
+**Status:** ✅ Sign-off granted with two required follow-up items (see below)
+
+---
+
+### Scope reviewed
+- `lib/srs.ts` — SM-2 algorithm implementation
+- `lib/auth.ts` — JWT signing, cookie config, IP extraction
+- `app/api/auth/register/route.ts` — registration flow
+- `app/api/auth/refresh/route.ts` — token rotation
+- `app/api/study/grade/route.ts` — card grading + IDOR protection
+- `app/api/decks/route.ts` + `app/api/decks/[id]/route.ts` — CRUD ownership checks
+- `migrations/001_initial_schema.sql` — schema design
+- `migrations/002_refresh_tokens.sql` — refresh token table
+
+---
+
+### SRS Algorithm — PASS
+
+**Correctness vs SM-2 reference:**
+| Check | Result |
+|---|---|
+| Grade→quality mapping (again=0, hard=2, good=4, easy=5) | ✅ Correct |
+| EF formula: EF + (0.1 − (5−q) × (0.08 + (5−q) × 0.02)) | ✅ Correct |
+| MIN_EASE_FACTOR floor = 1.3 | ✅ Correct |
+| Interval: again→1, hard→×1.2, good→SM-2, easy→×1.3 bonus | ✅ Correct |
+| First review good → 1d, second → 6d, subsequent → interval×EF | ✅ Correct |
+| reviewCount resets to 0 on 'again' | ✅ Correct |
+| overdueScore uses (days)^1.5 for catch-up prioritisation | ✅ Correct |
+
+**Notes:**
+- Hard+new card (reviewCount=0, interval=1): Math.max(1, round(1×1.2)) = 1 — same as 'again'. This is **intentional Anki behaviour** for brand-new cards. ✅
+- `previewIntervals` calls `schedule()` four times — pure functions, zero I/O overhead. ✅
+- `formatInterval('<1d')` branch is unreachable in normal flow (minimum interval = 1). Low risk, cosmetic only.
+
+---
+
+### Authentication — PASS with FINDING-08
+
+**Cookie security:**
+| Check | Result |
+|---|---|
+| Access token: HTTP-only cookie, 15 min expiry | ✅ |
+| Refresh token: HTTP-only cookie, 30 days, path=/api/auth | ✅ |
+| secure: true in production | ✅ |
+| sameSite: 'lax' | ✅ Appropriate for same-site flows |
+| Refresh jti stored in DB for revocation | ✅ |
+| Revoked jti re-presentation invalidates all sessions | ✅ |
+
+**Registration route:**
+| Check | Result |
+|---|---|
+| Rate limit: 5/min per IP | ✅ |
+| COPPA gate: coppa_verified required | ✅ |
+| bcrypt cost factor = 12 | ✅ Appropriate |
+| Email normalised to lowercase before DB insert | ✅ |
+| Password: ≥8 chars, letter+number/symbol required | ✅ |
+| Fallback dev secrets explicitly named "change-in-production" | ⚠️ See FINDING-08 |
+
+**FINDING-08 (Medium — must fix before Phase 2 launch):**
+`lib/auth.ts` uses inline fallback secrets:
+```ts
+process.env.ACCESS_JWT_SECRET ?? 'dev-access-secret-change-in-production-32x'
+```
+If environment variables are accidentally missing in a staging/prod deploy, real user tokens will be signed with a publicly-known secret string. Recommendation: add a startup guard in `lib/auth.ts`:
+```ts
+if (process.env.NODE_ENV === 'production' && !process.env.ACCESS_JWT_SECRET) {
+  throw new Error('ACCESS_JWT_SECRET must be set in production');
+}
+```
+**Assigned to:** Backend | **Priority:** High | **Block Phase 2:** Yes
+
+---
+
+### SQL Injection — PASS
+
+All queries reviewed use parameterized placeholders ($1, $2, …):
+- `/api/decks` GET, POST ✅
+- `/api/decks/[id]` GET, PATCH (dynamic SET clause), DELETE ✅
+- `/api/study/grade` UPSERT ✅
+- `/api/auth/register` INSERT ✅
+
+The PATCH route builds a dynamic SET clause from `const ALLOWED = ['title', 'description', 'is_public', 'subject', 'color', 'emoji']`. Since `ALLOWED` is a hardcoded const array (no user input reaches column names), there is **no SQL injection vector** here. ✅
+
+---
+
+### IDOR (Insecure Direct Object Reference) — PASS
+
+| Route | Ownership enforcement | Result |
+|---|---|---|
+| GET /api/decks | `WHERE user_id = $1` | ✅ |
+| POST /api/decks | `user_id` from JWT | ✅ |
+| GET /api/decks/[id] | `user_id = $2 OR is_public = true` | ✅ |
+| PATCH /api/decks/[id] | `user_id = $2` in WHERE | ✅ |
+| DELETE /api/decks/[id] | `user_id = $2` in WHERE | ✅ |
+| POST /api/study/grade | `cards WHERE id=$1 AND user_id=$2` before grade | ✅ |
+| GET /api/decks/[id]/cards | Deck ownership verified before card fetch | ✅ |
+
+---
+
+### Rate Limiting — FINDING-09 (required before launch)
+
+**FINDING-09 (Medium — must fix before public launch):**
+`checkRateLimit` in `lib/rateLimit.ts` uses **in-process memory** (Map or similar). On serverless/Vercel deployments each function instance has isolated memory, so a single attacker can bypass the 5-attempt limit by routing requests to different cold instances.
+
+Recommendation: Replace with a Redis-backed rate limiter (e.g. Upstash Redis + `@upstash/ratelimit`) before public launch. For the current dev/staging environment, the in-memory limiter is acceptable.
+
+**Assigned to:** Backend | **Priority:** High | **Block launch:** Yes
+
+---
+
+### Schema Review — PASS
+
+- All foreign keys use `ON DELETE CASCADE` — GDPR account deletion is clean. ✅
+- `srs_state` has `UNIQUE (card_id, user_id)` — UPSERT is safe. ✅
+- `refresh_tokens` table supports jti-based revocation. ✅
+- `review_log` (migration 004) is append-only — correct for analytics. ✅
+- `decks` color/emoji columns have sensible defaults (migration 005). ✅
+
+---
+
+### Summary
+
+| Area | Verdict |
+|---|---|
+| SRS Algorithm correctness | ✅ PASS |
+| SQL injection | ✅ PASS |
+| IDOR | ✅ PASS |
+| Cookie security | ✅ PASS |
+| Auth flow | ✅ PASS |
+| Rate limiting | ⚠️ FINDING-09 — fix before launch |
+| Fallback secrets | ⚠️ FINDING-08 — fix before Phase 2 |
+
+**Sign-off: GRANTED** — Phase 1 QA (TASK-010) may proceed in parallel.
+FINDING-08 and FINDING-09 must be resolved before Phase 2 deployment.
+
+---
+
 ## [BACKEND] TASK-002 — PostgreSQL Schema Design
 **Date:** 2026-04-12
 **Status:** Approved — TASK-003 may proceed

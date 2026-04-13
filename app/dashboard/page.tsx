@@ -118,7 +118,7 @@ export default async function DashboardPage() {
 
         {/* ── Quick Actions (CTA — shown first so they're immediately visible) ── */}
         <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm">
-          <h2 className="mb-6 text-xl font-bold text-gray-900">Quick Actions</h2>
+          <h2 className="mb-6 text-xl font-bold text-gray-900">Start Study</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             <Link
               href="/flashcards"

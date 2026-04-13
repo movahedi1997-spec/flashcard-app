@@ -27,7 +27,7 @@ export default function HomeButton() {
     >
       <FlashLogoMark size={26} />
       <span>
-        Flash<span className="text-indigo-600">Card</span>
+        Flashcard<span className="text-violet-600">AI</span>
       </span>
     </button>
   );

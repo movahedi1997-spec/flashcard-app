@@ -271,7 +271,7 @@ export default function FlashcardsPage() {
             <div className="p-1.5 rounded-lg bg-indigo-600 text-white">
               <BookOpen size={16} />
             </div>
-            <span className="font-bold text-slate-800">FlashCards</span>
+            <span className="font-bold text-slate-800">Flashcard<span className="text-violet-600">AI</span></span>
           </button>
 
           {view.type === 'home' && (

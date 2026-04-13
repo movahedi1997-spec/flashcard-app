@@ -15,7 +15,7 @@ export default function Navbar() {
         <Link href="/" className="flex items-center gap-2.5 font-bold text-gray-900">
           <FlashLogoMark size={30} />
           <span className="text-lg tracking-tight">
-            Flash<span className="text-indigo-600">Card</span>
+            Flashcard<span className="text-violet-600">AI</span>
           </span>
         </Link>
 

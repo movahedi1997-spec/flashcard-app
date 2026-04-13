@@ -137,79 +137,102 @@ export default function StudyChart() {
           <p className="text-sm">No reviews yet — start studying to see your activity!</p>
         </div>
       ) : (
-        <div className="relative">
-          {/* Bars */}
-          <div className="flex items-end gap-0.5 h-40 pb-0">
-            {data.map((point, idx) => {
-              const visibleTotal = GRADES.reduce(
-                (s, g) => s + (visible[g.key] ? point[g.key] : 0),
-                0,
-              );
-              const heightPct = visibleTotal / maxTotal;
-
-              return (
-                <div
-                  key={point.period}
-                  className="relative flex flex-1 flex-col justify-end"
-                  onMouseEnter={(e) => {
-                    const rect = (e.currentTarget as HTMLElement)
-                      .closest('.relative')!
-                      .getBoundingClientRect();
-                    setTooltip({
-                      x: e.clientX - rect.left,
-                      y: e.clientY - rect.top - 8,
-                      point,
-                    });
-                  }}
-                  onMouseLeave={() => setTooltip(null)}
-                >
-                  {/* Stacked bar */}
-                  <div
-                    className="flex flex-col rounded-t overflow-hidden transition-all duration-300 min-h-[2px]"
-                    style={{ height: `${heightPct * 100}%` }}
-                  >
-                    {GRADES.map((g) =>
-                      visible[g.key] && point[g.key] > 0 ? (
-                        <div
-                          key={g.key}
-                          className={`${g.bar} transition-all`}
-                          style={{ flex: point[g.key] }}
-                        />
-                      ) : null,
-                    )}
-                  </div>
-
-                  {/* X-axis label */}
-                  {idx % labelEvery === 0 && (
-                    <p className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[9px] text-gray-400 whitespace-nowrap">
-                      {point.label}
-                    </p>
-                  )}
-                </div>
-              );
-            })}
+        /* Chart: Y-axis labels + gridlines + bars */
+        <div className="flex gap-2">
+          {/* Y-axis labels */}
+          <div className="flex flex-col justify-between items-end pr-1 h-40 shrink-0">
+            {[1, 0.75, 0.5, 0.25, 0].map((frac) => (
+              <span key={frac} className="text-[10px] text-gray-400 leading-none">
+                {Math.round(maxTotal * frac)}
+              </span>
+            ))}
           </div>
 
-          {/* Tooltip */}
-          {tooltip && (
-            <div
-              className="pointer-events-none absolute z-10 rounded-xl border border-gray-100 bg-white shadow-lg px-3 py-2 text-xs"
-              style={{ left: tooltip.x + 12, top: tooltip.y - 60 }}
-            >
-              <p className="font-semibold text-gray-700 mb-1">{tooltip.point.label}</p>
-              {GRADES.map((g) => (
-                <div key={g.key} className="flex items-center gap-1.5">
-                  <span className={`h-2 w-2 rounded-sm ${g.legend}`} />
-                  <span className="text-gray-500">{g.label}:</span>
-                  <span className="font-medium text-gray-800">{tooltip.point[g.key]}</span>
-                </div>
+          {/* Bar area */}
+          <div className="relative flex-1">
+            {/* Horizontal gridlines */}
+            <div className="absolute inset-0 flex flex-col justify-between pointer-events-none">
+              {[0, 1, 2, 3, 4].map((i) => (
+                <div key={i} className="w-full border-t border-gray-100" />
               ))}
-              <div className="mt-1 border-t border-gray-100 pt-1 flex justify-between gap-3">
-                <span className="text-gray-500">Total</span>
-                <span className="font-semibold text-gray-900">{tooltip.point.total}</span>
-              </div>
             </div>
-          )}
+
+            {/* Bars + X labels */}
+            <div className="relative h-40 flex items-end gap-0.5"
+              onMouseLeave={() => setTooltip(null)}>
+              {data.map((point, idx) => {
+                const visibleTotal = GRADES.reduce(
+                  (s, g) => s + (visible[g.key] ? point[g.key] : 0),
+                  0,
+                );
+                const heightPct = visibleTotal / maxTotal;
+
+                return (
+                  <div
+                    key={point.period}
+                    className="relative flex flex-1 flex-col justify-end h-full"
+                    onMouseEnter={(e) => {
+                      const rect = (e.currentTarget as HTMLElement)
+                        .closest('.relative')!
+                        .getBoundingClientRect();
+                      setTooltip({
+                        x: e.clientX - rect.left,
+                        y: e.clientY - rect.top,
+                        point,
+                      });
+                    }}
+                  >
+                    {/* Stacked bar */}
+                    <div
+                      className="flex flex-col rounded-t overflow-hidden transition-all duration-300 min-h-[2px]"
+                      style={{ height: `${heightPct * 100}%` }}
+                    >
+                      {GRADES.map((g) =>
+                        visible[g.key] && point[g.key] > 0 ? (
+                          <div
+                            key={g.key}
+                            className={`${g.bar}`}
+                            style={{ flex: point[g.key] }}
+                          />
+                        ) : null,
+                      )}
+                    </div>
+
+                    {/* X-axis label */}
+                    {idx % labelEvery === 0 && (
+                      <p className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[9px] text-gray-400 whitespace-nowrap select-none">
+                        {point.label}
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
+
+              {/* Tooltip */}
+              {tooltip && (
+                <div
+                  className="pointer-events-none absolute z-10 rounded-xl border border-gray-100 bg-white shadow-lg px-3 py-2 text-xs"
+                  style={{
+                    left: Math.min(tooltip.x + 12, 220),
+                    top: Math.max(tooltip.y - 90, 0),
+                  }}
+                >
+                  <p className="font-semibold text-gray-700 mb-1">{tooltip.point.label}</p>
+                  {GRADES.map((g) => (
+                    <div key={g.key} className="flex items-center gap-1.5">
+                      <span className={`h-2 w-2 rounded-sm ${g.legend}`} />
+                      <span className="text-gray-500">{g.label}:</span>
+                      <span className="font-medium text-gray-800">{tooltip.point[g.key]}</span>
+                    </div>
+                  ))}
+                  <div className="mt-1 border-t border-gray-100 pt-1 flex justify-between gap-3">
+                    <span className="text-gray-500">Total</span>
+                    <span className="font-semibold text-gray-900">{tooltip.point.total}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       )}
 

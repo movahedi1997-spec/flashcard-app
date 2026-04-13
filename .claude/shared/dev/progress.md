@@ -256,6 +256,88 @@ Required by lib/db.ts and app/api/auth/* routes.
 
 ---
 
+---
+
+## [FRONTEND] UI Overhaul Session — Multi-feature sprint
+**Date:** 2026-04-13
+**Status:** Complete
+
+### What was built
+
+#### Landing page & branding
+- `components/Hero.tsx` — full redesign with animated card stack, gradient headline, dual CTA
+- `components/Navbar.tsx` — glass-morphism fixed header; added How It Works / Features / Subjects nav links
+- `components/HowItWorks.tsx` (new) — 4-step horizontal how-it-works section
+- `components/Features.tsx` — redesigned feature grid with icon cards
+- `components/SubjectHubs.tsx` (new) — 3-column subject hub with sample flashcard preview (Medicine / Pharmacy / Chemistry)
+- `components/CTABanner.tsx` — redesigned bottom CTA with gradient background
+- `components/Footer.tsx` — clean footer with nav links and legal copy
+- App rebranded from "FlashCard" → **FlashcardAI** throughout; `FlashLogoMark` now renders real logo image (`/logo-icon.jpg`)
+- Full logo with text available at `/logo-full.jpg` (public asset)
+
+#### Deck management (My Decks)
+- `BoxCard.tsx` — complete visual redesign matching SubjectHubs card style:
+  - Per-deck gradient header (5 colour palettes: indigo/emerald/amber/rose/sky)
+  - Emoji icon + description in floating stub card overlapping the header
+  - No default shadow — shadow only appears on hover (performance + UX)
+  - 3-dot dropdown z-index fixed: card elevates to z-50 when menu open, preventing clipping behind adjacent cards
+- `BoxForm.tsx` — redesigned create/edit modal with:
+  - Description textarea (up to 300 chars)
+  - Colour palette picker (5 swatches)
+  - Emoji grid (30 presets) + free-text emoji input
+- `migrations/005_deck_appearance.sql` — adds `color TEXT DEFAULT 'indigo'` and `emoji TEXT DEFAULT '📚'` to decks table
+- `types/api.ts` — Deck interface extended with `color` and `emoji` fields
+- `hooks/useBoxes.ts` — `createBox` and `DeckUpdate` extended with color/emoji
+- `/api/decks` POST + GET, `/api/decks/[id]` GET + PATCH — all updated to read/write/return color and emoji
+
+#### Dashboard improvements
+- `HomeButton.tsx` (new) — logo button that logs out then redirects to `/`, so clicking the logo always exits the authenticated session cleanly
+- "Quick Actions" section renamed to **"Start Study"** and repositioned above the stats grid
+- "Quick Actions" → "Start Study" heading change
+
+#### Study activity chart
+- `migrations/004_review_log.sql` (new) — append-only `review_log` table with per-event grade logging
+- `app/api/study/grade/route.ts` — now appends to `review_log` on every grade (fire-and-forget, never blocks response)
+- `app/api/stats/reviews/route.ts` (new) — `GET /api/stats/reviews?period=day|week|month`; returns zero-filled per-period grade counts
+- `components/dashboard/StudyChart.tsx` (new) — stacked bar chart:
+  - X axis: individual periods (days / ISO weeks / calendar months) with labels
+  - Y axis: numeric card count labels + horizontal gridlines
+  - Period toggle: Daily / Weekly / Monthly
+  - Grade breakdown: Again (red) / Hard (orange) / Good (green) / Easy (blue)
+  - Click legend to show/hide individual grades
+  - Hover tooltip showing full breakdown per period
+
+#### Flashcards page navigation
+- "← Dashboard" link restored to My Decks home view only (`view.type === 'home'`)
+- Link is hidden during deck view, card list, mode selector, SRS study, and cram sessions
+- Removed "← Dashboard" link from all study views (was confusing "back to decks" with "back to dashboard")
+
+### Migrations applied to flashcard_dev
+- `migrations/004_review_log.sql` — applied 2026-04-13
+- `migrations/005_deck_appearance.sql` — applied 2026-04-13
+
+### Files changed (summary)
+```
+Modified: components/Navbar.tsx, components/Hero.tsx, components/Features.tsx,
+          components/CTABanner.tsx, components/Footer.tsx, components/FlashLogoMark.tsx,
+          components/flashcard/boxes/BoxCard.tsx, components/flashcard/boxes/BoxList.tsx,
+          components/flashcard/boxes/BoxForm.tsx,
+          app/flashcards/page.tsx, app/dashboard/page.tsx,
+          app/api/decks/route.ts, app/api/decks/[id]/route.ts,
+          app/api/study/grade/route.ts,
+          hooks/useBoxes.ts, types/api.ts
+
+New:      components/HowItWorks.tsx, components/SubjectHubs.tsx,
+          components/FlashLogoMark.tsx (rewritten to real image),
+          components/dashboard/StudyChart.tsx,
+          app/dashboard/HomeButton.tsx,
+          app/api/stats/reviews/route.ts,
+          migrations/004_review_log.sql, migrations/005_deck_appearance.sql,
+          public/logo-icon.jpg, public/logo-full.jpg
+```
+
+---
+
 [DEVOPS] TASK-008 complete — Date: 2026-04-11
 
 ### TASK-008: CI/CD pipeline
