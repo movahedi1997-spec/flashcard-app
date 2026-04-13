@@ -136,6 +136,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     `Study "${deck.title}" with free spaced-repetition flashcards on FlashcardAI. Copy this deck and start learning today.`;
   const siteUrl     = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://flashcard.app';
   const pageUrl     = `${siteUrl}/explore/${deck.slug}`;
+  const ogImageUrl  = `${siteUrl}/api/og?deckId=${deck.id}&format=landscape`;
 
   return {
     title,
@@ -146,11 +147,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: pageUrl,
       type: 'website',
       siteName: 'FlashcardAI',
+      images: [{ url: ogImageUrl, width: 1200, height: 630, alt: deck.title }],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
+      images: [ogImageUrl],
     },
     alternates: { canonical: pageUrl },
   };
