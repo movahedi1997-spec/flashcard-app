@@ -33,6 +33,7 @@
 
 import { useState, useCallback } from 'react';
 import type { ApiCard, SrsState } from '@/types/api';
+import { fetchWithRefresh } from '@/lib/fetchWithRefresh';
 
 // Re-export for consumers
 export type { ApiCard };
@@ -83,7 +84,7 @@ export function useCards() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`/api/decks/${deckId}/cards`);
+      const res = await fetchWithRefresh(`/api/decks/${deckId}/cards`);
       if (!res.ok) {
         const body = (await res.json().catch(() => ({}))) as { error?: string };
         throw new Error(body.error ?? `Server error ${res.status}`);
@@ -132,7 +133,7 @@ export function useCards() {
       backImageUrl?: string,
     ): Promise<ApiCard | null> => {
       try {
-        const res = await fetch('/api/cards', {
+        const res = await fetchWithRefresh('/api/cards', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -186,7 +187,7 @@ export function useCards() {
       );
 
       try {
-        const res = await fetch(`/api/cards/${id}`, {
+        const res = await fetchWithRefresh(`/api/cards/${id}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(updates),
@@ -221,7 +222,7 @@ export function useCards() {
   const deleteCard = useCallback(async (id: string): Promise<void> => {
     setCards((prev) => prev.filter((c) => c.id !== id));
     try {
-      const res = await fetch(`/api/cards/${id}`, { method: 'DELETE' });
+      const res = await fetchWithRefresh(`/api/cards/${id}`, { method: 'DELETE' });
       if (!res.ok) {
         const body = (await res.json().catch(() => ({}))) as { error?: string };
         throw new Error(body.error ?? 'Failed to delete card.');

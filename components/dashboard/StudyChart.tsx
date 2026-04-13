@@ -13,6 +13,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { BarChart2 } from 'lucide-react';
+import { fetchWithRefresh } from '@/lib/fetchWithRefresh';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -63,7 +64,7 @@ export default function StudyChart() {
   const fetchData = useCallback(async (p: Period) => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/stats/reviews?period=${p}`, { credentials: 'include' });
+      const res = await fetchWithRefresh(`/api/stats/reviews?period=${p}`, { credentials: 'include' });
       const json = await res.json() as { data?: DataPoint[] };
       setData(json.data ?? []);
     } catch {

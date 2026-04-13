@@ -27,6 +27,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import type { Deck, Subject } from '@/types/api';
+import { fetchWithRefresh } from '@/lib/fetchWithRefresh';
 
 // Re-export for consumers that still import Box from here
 export type { Deck };
@@ -66,7 +67,7 @@ export function useBoxes() {
   const reload = useCallback(async () => {
     setState((prev) => ({ ...prev, loading: true, error: null }));
     try {
-      const res = await fetch('/api/decks');
+      const res = await fetchWithRefresh('/api/decks');
       if (!res.ok) {
         const body = (await res.json().catch(() => ({}))) as { error?: string };
         throw new Error(body.error ?? `Server error ${res.status}`);
@@ -101,7 +102,7 @@ export function useBoxes() {
       emoji = '📚',
     ): Promise<Deck | null> => {
       try {
-        const res = await fetch('/api/decks', {
+        const res = await fetchWithRefresh('/api/decks', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -158,7 +159,7 @@ export function useBoxes() {
         if ('color' in updates)   body.color     = updates.color;
         if ('emoji' in updates)   body.emoji     = updates.emoji;
 
-        const res = await fetch(`/api/decks/${id}`, {
+        const res = await fetchWithRefresh(`/api/decks/${id}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body),
@@ -201,7 +202,7 @@ export function useBoxes() {
       }));
 
       try {
-        const res = await fetch(`/api/decks/${id}`, { method: 'DELETE' });
+        const res = await fetchWithRefresh(`/api/decks/${id}`, { method: 'DELETE' });
         if (!res.ok) {
           // Rollback
           await reload();

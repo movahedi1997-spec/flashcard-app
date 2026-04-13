@@ -30,13 +30,13 @@ export default async function SettingsPage() {
   const user = await getUserFromCookie();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       {/* Header */}
       <header className="border-b border-gray-100 bg-white">
         <div className="mx-auto flex max-w-2xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center gap-2.5 font-bold text-gray-900">
             <FlashLogoMark size={26} />
-            <span>Flash<span className="text-indigo-600">Card</span></span>
+            <span>Flashcard<span className="text-violet-600">AI</span></span>
           </Link>
           <Link
             href="/dashboard"

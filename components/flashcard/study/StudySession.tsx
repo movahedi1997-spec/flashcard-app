@@ -13,6 +13,7 @@
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { fetchWithRefresh } from '@/lib/fetchWithRefresh';
 import { ArrowLeft, Trophy, RotateCcw, AlertTriangle, Loader2 } from 'lucide-react';
 import type {
   Deck,
@@ -139,7 +140,7 @@ export default function StudySession({ deck, onBack }: Props) {
     setAnimKey((k) => k + 1);
 
     try {
-      const res = await fetch(`/api/study/session?deckId=${encodeURIComponent(deck.id)}`);
+      const res = await fetchWithRefresh(`/api/study/session?deckId=${encodeURIComponent(deck.id)}`);
       if (!res.ok) {
         const body = (await res.json().catch(() => ({}))) as { error?: string };
         throw new Error(body.error ?? `Server error ${res.status}`);
@@ -192,7 +193,7 @@ export default function StudySession({ deck, onBack }: Props) {
       setStats((prev) => ({ ...prev, [g]: prev[g] + 1 }));
 
       try {
-        const res = await fetch('/api/study/grade', {
+        const res = await fetchWithRefresh('/api/study/grade', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ cardId: cards[index].id, grade: g }),
