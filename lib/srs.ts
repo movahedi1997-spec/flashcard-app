@@ -139,6 +139,9 @@ export function schedule(
   // ── 1. Update ease factor (SM-2 formula) ─────────────────────────────────
   //   EF' = EF + (0.1 − (5 − q) × (0.08 + (5 − q) × 0.02))
   //   Clamped to MIN_EASE_FACTOR so cards never become unschedulably hard.
+  // NOTE: Anki adaptation — original SM-2 does not change EF on q < 3 (failure).
+  // We apply the penalty on 'again' (q=0) and 'hard' (q=2) for more conservative
+  // scheduling. Ref: https://faqs.ankiweb.net/what-spaced-repetition-algorithm.html
   const rawEF = easeFactor + (0.1 - (5 - q) * (0.08 + (5 - q) * 0.02));
   const newEF = parseFloat(Math.max(MIN_EASE_FACTOR, rawEF).toFixed(4));
 

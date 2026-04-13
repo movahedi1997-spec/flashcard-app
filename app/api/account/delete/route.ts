@@ -28,6 +28,7 @@ import { query } from '@/lib/db';
 import {
   getAuthUser,
   verifyRefreshToken,
+  getClientIp,
   COOKIE_NAME,
   REFRESH_COOKIE_NAME,
 } from '@/lib/auth';
@@ -38,10 +39,7 @@ export const runtime = 'nodejs';
 export async function POST(req: NextRequest) {
   // ── Rate limit ─────────────────────────────────────────────────────────────
   // Tighter window for a destructive operation: 3 attempts / 15 min
-  const ip =
-    req.headers.get('x-forwarded-for')?.split(',')[0].trim() ??
-    req.headers.get('x-real-ip') ??
-    'unknown';
+  const ip = getClientIp(req);
 
   const rl = checkRateLimit(`account-delete:${ip}`, 3, 15 * 60 * 1000);
 
@@ -112,6 +110,29 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // ── GDPR audit log (written BEFORE delete) ────────────────────────────
+    // GDPR Art. 17 requires demonstrable proof of erasure. The record is written
+    // before the DELETE so that a server crash between audit write and DELETE leaves
+    // a visible, actionable record rather than a silent gap.
+    // Stored in audit_log (durable, searchable) — see migrations/003_audit_log.sql.
+    const auditMeta = JSON.stringify({
+      email: authUser.email,
+      ip,
+      timestamp: new Date().toISOString(),
+    });
+    await query(
+      `INSERT INTO audit_log (event, user_id, metadata)
+       VALUES ('gdpr.account_deletion', $1, $2::jsonb)`,
+      [authUser.userId, auditMeta],
+    ).catch((auditErr) => {
+      // Non-fatal: log to stderr so the aggregator captures it even if the
+      // audit_log table is unavailable. The deletion proceeds regardless.
+      console.error('[GDPR] Failed to write audit_log entry:', auditErr);
+      console.info(
+        `[GDPR] Fallback audit — user_id=${authUser.userId} email=${authUser.email} ip=${ip}`,
+      );
+    });
+
     // ── Cascade delete ─────────────────────────────────────────────────────
     // Deleting the users row triggers ON DELETE CASCADE across:
     //   decks → cards → srs_state (chained CASCADE)
@@ -119,13 +140,6 @@ export async function POST(req: NextRequest) {
     //   ai_usage  (direct from users)
     //   refresh_tokens (direct from users)
     await query('DELETE FROM users WHERE id = $1', [authUser.userId]);
-
-    // ── GDPR audit log ─────────────────────────────────────────────────────
-    // In production, pipe this to your structured logging / Sentry / audit DB.
-    console.info(
-      `[GDPR] Account deletion complete. user_id=${authUser.userId} ` +
-      `email=${authUser.email} ip=${ip} timestamp=${new Date().toISOString()}`,
-    );
 
     // ── Clear both auth cookies ────────────────────────────────────────────
     const response = NextResponse.json({

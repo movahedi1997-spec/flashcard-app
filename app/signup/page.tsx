@@ -11,11 +11,29 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [form, setForm] = useState({ name: '', email: '', password: '' });
+  const [dob, setDob] = useState('');
+
+  function calculateAge(dobStr: string): number {
+    const birth = new Date(dobStr);
+    const now = new Date();
+    let age = now.getFullYear() - birth.getFullYear();
+    const m = now.getMonth() - birth.getMonth();
+    if (m < 0 || (m === 0 && now.getDate() < birth.getDate())) age--;
+    return age;
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (form.password.length < 8) {
       setError('Password must be at least 8 characters.');
+      return;
+    }
+    if (!dob) {
+      setError('Date of birth is required.');
+      return;
+    }
+    if (calculateAge(dob) < 13) {
+      setError('You must be 13 or older to create an account.');
       return;
     }
     setLoading(true);
@@ -25,7 +43,7 @@ export default function SignupPage() {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, coppa_verified: true }),
         credentials: 'include',
       });
       const data = await res.json();
@@ -142,6 +160,25 @@ export default function SignupPage() {
                   )}
                 </button>
               </div>
+            </div>
+
+            <div>
+              <label
+                htmlFor="dob"
+                className="mb-1.5 block text-sm font-medium text-gray-700"
+              >
+                Date of birth{' '}
+                <span className="text-gray-400">(must be 13 or older)</span>
+              </label>
+              <input
+                id="dob"
+                type="date"
+                required
+                value={dob}
+                onChange={(e) => setDob(e.target.value)}
+                max={new Date().toISOString().split('T')[0]}
+                className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+              />
             </div>
 
             <button

@@ -43,10 +43,18 @@ function getPool(): Pool {
 
   const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    // Use SSL in production (e.g. Supabase, Railway, Neon)
+    // Use SSL in production (e.g. Supabase, Railway, Neon).
+    // DATABASE_SSL_CA: PEM-encoded CA cert. For managed providers (Neon, Supabase, Railway)
+    // that append ?sslmode=verify-full to DATABASE_URL, pg resolves the CA from the system
+    // trust store and DATABASE_SSL_CA can be left unset.
     ssl:
       process.env.NODE_ENV === 'production'
-        ? { rejectUnauthorized: false }
+        ? {
+            rejectUnauthorized: true,
+            ...(process.env.DATABASE_SSL_CA
+              ? { ca: process.env.DATABASE_SSL_CA }
+              : {}),
+          }
         : false,
     max: 10,
     idleTimeoutMillis: 30_000,

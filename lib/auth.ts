@@ -26,7 +26,7 @@ import type { NextRequest } from 'next/server';
 // ─── Secrets ─────────────────────────────────────────────────────────────────
 
 const ACCESS_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET ?? 'dev-access-secret-change-in-production',
+  process.env.ACCESS_JWT_SECRET ?? 'dev-access-secret-change-in-production-32x',
 );
 
 const REFRESH_SECRET = new TextEncoder().encode(
@@ -171,17 +171,29 @@ export async function getAuthUser(req: NextRequest): Promise<JwtPayload | null> 
  * getClientIp — extracts the real client IP from request headers.
  * Used by the rate limiter. Prefers x-forwarded-for (set by proxies/CDNs),
  * falls back to x-real-ip, then 'unknown'.
+ *
+ * SECURITY NOTE: x-forwarded-for is client-controlled and can be spoofed unless
+ * the deployment platform strips and rewrites it at the edge (e.g. Vercel's
+ * x-vercel-forwarded-for). The extracted value is validated as a well-formed
+ * IPv4/IPv6 address before use; malformed values fall back to 'unknown'.
+ * For multi-instance hardening see FINDING-07 in dev/decisions.md.
  */
 export function getClientIp(req: NextRequest): string {
-  return (
+  const raw =
     req.headers.get('x-forwarded-for')?.split(',')[0].trim() ??
     req.headers.get('x-real-ip') ??
-    'unknown'
-  );
+    'unknown';
+  return isValidIp(raw) ? raw : 'unknown';
 }
 
-// ─── Backward-compat alias ────────────────────────────────────────────────────
-// signToken was the pre-TASK-005 name. Routes are updated to call signAccessToken
-// directly, but this alias prevents a hard build break if any file was missed.
-/** @deprecated Use signAccessToken instead. */
-export const signToken = signAccessToken;
+/** Returns true for well-formed IPv4 or IPv6 addresses. */
+function isValidIp(value: string): boolean {
+  // IPv4
+  if (/^(\d{1,3}\.){3}\d{1,3}$/.test(value)) {
+    return value.split('.').every((octet) => parseInt(octet, 10) <= 255);
+  }
+  // IPv6 (simplified: presence of colons and valid hex chars)
+  if (/^[0-9a-fA-F:]+$/.test(value) && value.includes(':')) return true;
+  return false;
+}
+

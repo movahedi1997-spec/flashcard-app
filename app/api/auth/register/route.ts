@@ -96,6 +96,19 @@ export async function POST(req: NextRequest) {
       { status: 400 },
     );
   }
+  // Reject trivially weak passwords: all-same-character or no letter present.
+  if (/^(.)\1+$/.test(password)) {
+    return NextResponse.json(
+      { error: 'Password is too weak. Avoid repeated characters.' },
+      { status: 400 },
+    );
+  }
+  if (!/[a-zA-Z]/.test(password) || !/[0-9!@#$%^&*()\-_=+[\]{}|;:'",.<>?/\\`~]/.test(password)) {
+    return NextResponse.json(
+      { error: 'Password must contain at least one letter and one number or symbol.' },
+      { status: 400 },
+    );
+  }
 
   const normalizedEmail = email.toLowerCase().trim();
 

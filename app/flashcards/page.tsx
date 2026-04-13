@@ -8,9 +8,10 @@
  * Key changes from legacy version:
  *  - useBoxes / useCards now async (no localStorage)
  *  - updateCardScore removed — SRS grading is handled inside StudySession
- *  - ModeSelector bypassed — SRS algorithm determines session cards automatically
- *  - View state simplified: no 'study-select' step, no StudyMode param
- *  - loadCards(deckId) called whenever the user navigates into a box/study view
+ *  - ModeSelector re-introduced: Study → Choose Mode → SRS Study | Cram/Turbo
+ *  - SRS Study: fetches due cards from API, grades recorded, schedule adapts
+ *  - Cram/Turbo: read-only, shows all cards shuffled, nothing recorded
+ *  - loadCards(deckId) called on goToStudy so ModeSelector + CramSession have data
  *  - BoxList / CardList receive loading + error props from hooks
  *  - StudySession receives deck object + onBack only
  *  - Import flow: BoxList notifies via onImport(title, rawCards); parent creates
@@ -25,6 +26,8 @@ import type { Deck } from '@/types/api';
 import BoxList from '@/components/flashcard/boxes/BoxList';
 import CardList from '@/components/flashcard/cards/CardList';
 import StudySession from '@/components/flashcard/study/StudySession';
+import CramSession from '@/components/flashcard/study/CramSession';
+import ModeSelector from '@/components/flashcard/study/ModeSelector';
 import SplashPage from '@/components/flashcard/SplashPage';
 import Link from 'next/link';
 
@@ -33,7 +36,9 @@ import Link from 'next/link';
 type View =
   | { type: 'home' }
   | { type: 'box'; deckId: string }
-  | { type: 'study'; deckId: string };
+  | { type: 'study-select'; deckId: string }
+  | { type: 'study-srs'; deckId: string }
+  | { type: 'study-cram'; deckId: string };
 
 // ── Raw card shape from BoxList JSON import ───────────────────────────────────
 
@@ -88,9 +93,12 @@ export default function FlashcardsPage() {
 
   const goToStudy = useCallback(
     (deckId: string) => {
-      setView({ type: 'study', deckId });
+      // Load cards first so ModeSelector can show total count
+      // and CramSession has cards ready without an extra fetch.
+      void loadCards(deckId);
+      setView({ type: 'study-select', deckId });
     },
-    [],
+    [loadCards],
   );
 
   // Reload cards whenever the box view is re-entered (handles edits, deletes, etc.)
@@ -191,14 +199,49 @@ export default function FlashcardsPage() {
       );
     }
 
+    // ── Study: mode selector ─────────────────────────────────────────────────
+    if (view.type === 'study-select') {
+      const deck = getCurrentDeck();
+      if (!deck) { goHome(); return null; }
+      const boxCards = getBoxCards(view.deckId);
+      return (
+        <ModeSelector
+          deck={deck}
+          cardCount={boxCards.length}
+          dueCount={boxCards.filter((c) => {
+            const due = c.srs?.dueDate;
+            return !due || new Date(due) <= new Date();
+          }).length}
+          onSelect={(mode) =>
+            setView({ type: mode === 'srs' ? 'study-srs' : 'study-cram', deckId: view.deckId })
+          }
+          onBack={() => goToBox(view.deckId)}
+        />
+      );
+    }
+
     // ── Study: SRS session ───────────────────────────────────────────────────
-    if (view.type === 'study') {
+    if (view.type === 'study-srs') {
       const deck = getCurrentDeck();
       if (!deck) { goHome(); return null; }
       return (
         <StudySession
           deck={deck}
-          onBack={() => goToBox(view.deckId)}
+          onBack={() => setView({ type: 'study-select', deckId: view.deckId })}
+        />
+      );
+    }
+
+    // ── Study: Cram / Turbo session ──────────────────────────────────────────
+    if (view.type === 'study-cram') {
+      const deck = getCurrentDeck();
+      if (!deck) { goHome(); return null; }
+      const boxCards = getBoxCards(view.deckId);
+      return (
+        <CramSession
+          deck={deck}
+          cards={boxCards}
+          onBack={() => setView({ type: 'study-select', deckId: view.deckId })}
         />
       );
     }
@@ -248,17 +291,29 @@ export default function FlashcardsPage() {
                       view.type !== 'box' ? goToBox(activeDeck.id) : undefined
                     }
                     className={`hover:text-indigo-600 transition-colors cursor-pointer ${
-                      view.type === 'box' ? 'text-slate-800 font-medium' : ''
+                      view.type === 'box' ? 'text-slate-800 font-medium pointer-events-none' : ''
                     }`}
                   >
                     {activeDeck.title}
                   </button>
                 </>
               )}
-              {view.type === 'study' && (
+              {view.type === 'study-select' && (
                 <>
                   <span>/</span>
-                  <span className="text-slate-800 font-medium">Study</span>
+                  <span className="text-slate-800 font-medium">Choose Mode</span>
+                </>
+              )}
+              {view.type === 'study-srs' && (
+                <>
+                  <span>/</span>
+                  <span className="text-slate-800 font-medium">SRS Study</span>
+                </>
+              )}
+              {view.type === 'study-cram' && (
+                <>
+                  <span>/</span>
+                  <span className="text-slate-800 font-medium">Turbo</span>
                 </>
               )}
             </div>

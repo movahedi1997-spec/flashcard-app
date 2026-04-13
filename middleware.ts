@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 
 const secret = new TextEncoder().encode(
-  process.env.JWT_SECRET ?? 'dev-secret-key-change-in-production',
+  process.env.ACCESS_JWT_SECRET ?? 'dev-access-secret-change-in-production-32x',
 );
 
 async function verifyToken(token: string) {
@@ -18,8 +18,12 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get('token')?.value;
 
-  // Protect /dashboard and /flashcards
-  if (pathname.startsWith('/dashboard') || pathname.startsWith('/flashcards')) {
+  // Protect /dashboard, /flashcards, and /settings
+  if (
+    pathname.startsWith('/dashboard') ||
+    pathname.startsWith('/flashcards') ||
+    pathname.startsWith('/settings')
+  ) {
     if (!token || !(await verifyToken(token))) {
       return NextResponse.redirect(new URL('/login', request.url));
     }
@@ -38,5 +42,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/flashcards/:path*', '/login', '/signup'],
+  matcher: ['/dashboard/:path*', '/flashcards/:path*', '/settings/:path*', '/login', '/signup'],
 };

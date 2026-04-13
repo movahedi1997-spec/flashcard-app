@@ -24,7 +24,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { query } from '@/lib/db';
+import { query, getDbPool } from '@/lib/db';
 import {
   verifyRefreshToken,
   signAccessToken,
@@ -39,12 +39,16 @@ import { checkRateLimit } from '@/lib/rateLimit';
 
 export const runtime = 'nodejs';
 
-// Shared 401 response — never hint at *why* the token was rejected to prevent
-// oracle attacks (was it expired? revoked? wrong user? client must re-login).
-const INVALID_RESPONSE = NextResponse.json(
-  { error: 'Invalid or expired session. Please log in again.' },
-  { status: 401 },
-);
+// Factory for the 401 response — never hint at *why* the token was rejected to
+// prevent oracle attacks (was it expired? revoked? wrong user?). A new instance
+// is created per call because Response bodies are single-use streams in Node 18+;
+// a shared singleton would exhaust the stream on concurrent requests.
+function invalidResponse() {
+  return NextResponse.json(
+    { error: 'Invalid or expired session. Please log in again.' },
+    { status: 401 },
+  );
+}
 
 function clearBothCookies(response: NextResponse) {
   response.cookies.set(COOKIE_NAME, '', {
@@ -84,10 +88,10 @@ export async function POST(req: NextRequest) {
 
   // ── Read + verify refresh token JWT ───────────────────────────────────────
   const rawToken = req.cookies.get(REFRESH_COOKIE_NAME)?.value;
-  if (!rawToken) return INVALID_RESPONSE;
+  if (!rawToken) return invalidResponse();
 
   const refreshPayload = await verifyRefreshToken(rawToken);
-  if (!refreshPayload) return INVALID_RESPONSE; // expired or bad signature
+  if (!refreshPayload) return invalidResponse(); // expired or bad signature
 
   const { userId, jti } = refreshPayload;
 
@@ -105,7 +109,7 @@ export async function POST(req: NextRequest) {
     );
 
     // Token not found in DB (pruned, or spoofed jti with valid signature)
-    if ((tokenRow.rowCount ?? 0) === 0) return INVALID_RESPONSE;
+    if ((tokenRow.rowCount ?? 0) === 0) return invalidResponse();
 
     const row = tokenRow.rows[0];
 
@@ -128,14 +132,14 @@ export async function POST(req: NextRequest) {
     }
 
     // DB-side expiry check (belt-and-suspenders on top of JWT exp)
-    if (new Date(row.expires_at) < new Date()) return INVALID_RESPONSE;
+    if (new Date(row.expires_at) < new Date()) return invalidResponse();
 
     // ── Fetch user for new access token claims ─────────────────────────────
     const userRow = await query<{ id: string; name: string; email: string }>(
       'SELECT id, name, email FROM users WHERE id = $1',
       [userId],
     );
-    if ((userRow.rowCount ?? 0) === 0) return INVALID_RESPONSE;
+    if ((userRow.rowCount ?? 0) === 0) return invalidResponse();
     const user = userRow.rows[0];
 
     // ── Rotate: revoke old jti, issue new token pair ───────────────────────
@@ -144,22 +148,28 @@ export async function POST(req: NextRequest) {
       signRefreshToken(user.id),
     ]);
 
-    // Run revocation and new-jti insert in a single round-trip via transaction
-    await query('BEGIN');
+    // Revocation + new-jti insert must be atomic. We acquire a dedicated client
+    // from the pool so BEGIN/UPDATE/INSERT/COMMIT all execute on the same
+    // physical connection. Using query() here would send each statement to a
+    // different connection (pool round-robin), breaking transaction isolation.
+    const client = await getDbPool().connect();
     try {
-      await query(
+      await client.query('BEGIN');
+      await client.query(
         `UPDATE refresh_tokens SET revoked = true WHERE jti = $1`,
         [jti],
       );
-      await query(
+      await client.query(
         `INSERT INTO refresh_tokens (jti, user_id, expires_at)
          VALUES ($1, $2, $3)`,
         [newRefresh.jti, user.id, newRefresh.expiresAt],
       );
-      await query('COMMIT');
+      await client.query('COMMIT');
     } catch (txErr) {
-      await query('ROLLBACK');
+      await client.query('ROLLBACK');
       throw txErr;
+    } finally {
+      client.release();
     }
 
     // ── Issue new cookies ──────────────────────────────────────────────────

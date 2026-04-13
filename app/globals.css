@@ -48,6 +48,13 @@
 }
 .flashcard-back { transform: rotateY(180deg); }
 
+/* ── Hero card float ── */
+@keyframes heroCardsFloat {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-14px); }
+}
+.hero-cards-float { animation: heroCardsFloat 5s ease-in-out infinite; }
+
 /* ── Animations ── */
 @keyframes fadeSlideIn {
   from { opacity: 0; transform: translateY(8px); }

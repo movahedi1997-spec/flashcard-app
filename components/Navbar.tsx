@@ -2,33 +2,55 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { Menu, X, Layers } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import FlashLogoMark from './FlashLogoMark';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-gray-100 bg-white/80 backdrop-blur-md">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-gray-100/80 bg-white/75 backdrop-blur-xl">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3.5">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 font-bold text-indigo-600">
-          <Layers className="h-6 w-6" />
-          <span className="text-lg tracking-tight">FlashCard</span>
+        <Link href="/" className="flex items-center gap-2.5 font-bold text-gray-900">
+          <FlashLogoMark size={30} />
+          <span className="text-lg tracking-tight">
+            Flash<span className="text-indigo-600">Card</span>
+          </span>
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden items-center gap-1 md:flex">
+          <a
+            href="#how-it-works"
+            className="rounded-lg px-4 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-100 hover:text-gray-900"
+          >
+            How it works
+          </a>
+          <a
+            href="#features"
+            className="rounded-lg px-4 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-100 hover:text-gray-900"
+          >
+            Features
+          </a>
+          <a
+            href="#subjects"
+            className="rounded-lg px-4 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-100 hover:text-gray-900"
+          >
+            Subjects
+          </a>
+          <div className="mx-3 h-5 w-px bg-gray-200" />
           <Link
             href="/login"
             className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100"
           >
-            Login
+            Log in
           </Link>
           <Link
             href="/signup"
-            className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-indigo-700 active:scale-95"
+            className="ml-1 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-indigo-200 transition hover:bg-indigo-700 active:scale-95"
           >
-            Get Started
+            Get Started Free
           </Link>
         </div>
 
@@ -44,22 +66,14 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="border-t border-gray-100 bg-white px-6 pb-4 md:hidden">
-          <div className="flex flex-col gap-2 pt-3">
-            <Link
-              href="/login"
-              onClick={() => setOpen(false)}
-              className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100"
-            >
-              Login
-            </Link>
-            <Link
-              href="/signup"
-              onClick={() => setOpen(false)}
-              className="rounded-lg bg-indigo-600 px-4 py-2.5 text-center text-sm font-medium text-white hover:bg-indigo-700"
-            >
-              Get Started
-            </Link>
+        <div className="border-t border-gray-100 bg-white/95 backdrop-blur-xl px-6 pb-5 md:hidden">
+          <div className="flex flex-col gap-1 pt-3">
+            <a href="#how-it-works" onClick={() => setOpen(false)} className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100">How it works</a>
+            <a href="#features"     onClick={() => setOpen(false)} className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100">Features</a>
+            <a href="#subjects"     onClick={() => setOpen(false)} className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100">Subjects</a>
+            <div className="my-1 h-px bg-gray-100" />
+            <Link href="/login"  onClick={() => setOpen(false)} className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100">Log in</Link>
+            <Link href="/signup" onClick={() => setOpen(false)} className="rounded-xl bg-indigo-600 px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-indigo-700">Get Started Free</Link>
           </div>
         </div>
       )}
