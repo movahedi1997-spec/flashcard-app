@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import FlashLogoMark from './FlashLogoMark';
 
+
 export default function Footer() {
   return (
     <footer className="border-t border-gray-100 bg-white py-14">
@@ -11,14 +12,14 @@ export default function Footer() {
             <Link href="/" className="flex items-center gap-2.5 font-bold text-gray-900">
               <FlashLogoMark size={26} />
               <span className="text-lg tracking-tight">
-                Flash<span className="text-indigo-600">Card</span>
+                Flashcard<span className="text-violet-600">AI</span>
               </span>
             </Link>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-gray-400">
               Study smarter with intelligent spaced repetition. Built for medical, pharmacy, and chemistry students who take their exams seriously.
             </p>
             <p className="mt-4 text-xs text-gray-300">
-              © {new Date().getFullYear()} FlashCard. All rights reserved.
+              © {new Date().getFullYear()} FlashcardAI. All rights reserved.
             </p>
           </div>
 

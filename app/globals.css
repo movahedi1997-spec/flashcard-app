@@ -4,7 +4,15 @@
 
 @layer base {
   html { scroll-behavior: smooth; }
-  body { @apply font-sans text-gray-900 antialiased; }
+  body {
+    @apply font-sans text-gray-900 antialiased;
+    /* Squared notebook paper — subtle grid on every page */
+    background-color: #f5f6fa;
+    background-image:
+      linear-gradient(rgba(156, 163, 175, 0.22) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(156, 163, 175, 0.22) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
 }
 
 @layer utilities {

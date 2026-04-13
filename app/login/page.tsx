@@ -3,7 +3,8 @@
 import { useState, FormEvent } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Layers, Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
+import FlashLogoMark from '@/components/FlashLogoMark';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -40,15 +41,15 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-16">
+    <div className="flex min-h-screen items-center justify-center px-4 py-16">
       <div className="w-full max-w-md">
         {/* Logo */}
         <Link
           href="/"
-          className="mb-8 flex items-center justify-center gap-2 font-bold text-indigo-600"
+          className="mb-8 flex items-center justify-center gap-2 font-bold text-gray-900"
         >
-          <Layers className="h-7 w-7" />
-          <span className="text-xl">FlashCard</span>
+          <FlashLogoMark size={32} />
+          <span className="text-xl">Flashcard<span className="text-violet-600">AI</span></span>
         </Link>
 
         {/* Card */}

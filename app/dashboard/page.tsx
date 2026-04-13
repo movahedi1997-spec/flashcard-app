@@ -86,7 +86,7 @@ export default async function DashboardPage() {
   const dbStats = await getDashboardStats(user!.userId);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       {/* ── Top bar ────────────────────────────────────────────────────── */}
       <header className="border-b border-gray-100 bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
