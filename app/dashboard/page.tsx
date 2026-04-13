@@ -2,9 +2,10 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { jwtVerify } from 'jose';
 import { BookOpen, Zap, Trophy, Settings, LayoutGrid } from 'lucide-react';
-import FlashLogoMark from '@/components/FlashLogoMark';
 import Link from 'next/link';
+import HomeButton from './HomeButton';
 import LogoutButton from './LogoutButton';
+import StudyChart from '@/components/dashboard/StudyChart';
 import { query } from '@/lib/db';
 
 const secret = new TextEncoder().encode(
@@ -32,7 +33,6 @@ function calculateStreak(sortedDates: string[]): number {
   if (sortedDates.length === 0) return 0;
   const todayStr = new Date().toISOString().split('T')[0];
   const yesterdayStr = new Date(Date.now() - 86_400_000).toISOString().split('T')[0];
-  // Streak is only active if the user reviewed today or yesterday
   if (sortedDates[0] !== todayStr && sortedDates[0] !== yesterdayStr) return 0;
   let streak = 1;
   for (let i = 1; i < sortedDates.length; i++) {
@@ -87,13 +87,11 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Top bar */}
+      {/* ── Top bar ────────────────────────────────────────────────────── */}
       <header className="border-b border-gray-100 bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2.5 font-bold text-gray-900">
-            <FlashLogoMark size={26} />
-            <span>Flash<span className="text-indigo-600">Card</span></span>
-          </Link>
+          {/* Logo → logs out and returns to marketing homepage */}
+          <HomeButton />
           <div className="flex items-center gap-2">
             <Link
               href="/settings"
@@ -107,9 +105,9 @@ export default async function DashboardPage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-6 py-12">
-        {/* Welcome */}
-        <div className="mb-10">
+      <main className="mx-auto max-w-6xl px-6 py-12 space-y-8">
+        {/* ── Welcome ──────────────────────────────────────────────────── */}
+        <div>
           <h1 className="text-3xl font-extrabold text-gray-900">
             Welcome back, {user.name.split(' ')[0]}! 👋
           </h1>
@@ -118,34 +116,9 @@ export default async function DashboardPage() {
           </p>
         </div>
 
-        {/* Stats */}
-        <div className="mb-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            { icon: BookOpen, label: 'Total Decks', value: String(dbStats.totalDecks), color: 'text-indigo-600 bg-indigo-50' },
-            { icon: LayoutGrid, label: 'Total Cards', value: String(dbStats.totalCards), color: 'text-violet-600 bg-violet-50' },
-            { icon: Zap,      label: 'Cards Today', value: String(dbStats.cardsToday), color: 'text-amber-600 bg-amber-50'   },
-            { icon: Trophy,   label: 'Day Streak',  value: String(dbStats.streak),     color: 'text-emerald-600 bg-emerald-50' },
-          ].map(({ icon: Icon, label, value, color }) => (
-            <div
-              key={label}
-              className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm"
-            >
-              <div
-                className={`mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl ${color}`}
-              >
-                <Icon className="h-5 w-5" />
-              </div>
-              <p className="text-2xl font-bold text-gray-900">{value}</p>
-              <p className="mt-0.5 text-sm text-gray-500">{label}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Quick actions */}
+        {/* ── Quick Actions (CTA — shown first so they're immediately visible) ── */}
         <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm">
-          <h2 className="mb-6 text-xl font-bold text-gray-900">
-            Quick Actions
-          </h2>
+          <h2 className="mb-6 text-xl font-bold text-gray-900">Quick Actions</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             <Link
               href="/flashcards"
@@ -167,16 +140,38 @@ export default async function DashboardPage() {
               </div>
               <div>
                 <p className="font-semibold text-gray-900">Quick Study</p>
-                <p className="text-sm text-gray-500">
-                  Review your due cards now
-                </p>
+                <p className="text-sm text-gray-500">Review your due cards now</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Account info */}
-        <p className="mt-6 text-center text-xs text-gray-400">
+        {/* ── Stats ────────────────────────────────────────────────────── */}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { icon: BookOpen,    label: 'Total Decks', value: String(dbStats.totalDecks), color: 'text-indigo-600 bg-indigo-50'   },
+            { icon: LayoutGrid,  label: 'Total Cards', value: String(dbStats.totalCards), color: 'text-violet-600 bg-violet-50'   },
+            { icon: Zap,         label: 'Cards Today', value: String(dbStats.cardsToday), color: 'text-amber-600 bg-amber-50'     },
+            { icon: Trophy,      label: 'Day Streak',  value: String(dbStats.streak),     color: 'text-emerald-600 bg-emerald-50' },
+          ].map(({ icon: Icon, label, value, color }) => (
+            <div
+              key={label}
+              className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm"
+            >
+              <div className={`mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl ${color}`}>
+                <Icon className="h-5 w-5" />
+              </div>
+              <p className="text-2xl font-bold text-gray-900">{value}</p>
+              <p className="mt-0.5 text-sm text-gray-500">{label}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* ── Study activity chart ──────────────────────────────────────── */}
+        <StudyChart />
+
+        {/* ── Account info ─────────────────────────────────────────────── */}
+        <p className="text-center text-xs text-gray-400">
           Logged in as {user.email}
         </p>
       </main>

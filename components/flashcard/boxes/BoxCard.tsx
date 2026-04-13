@@ -1,13 +1,17 @@
 'use client';
 
 /**
- * components/flashcard/boxes/BoxCard.tsx  (TASK-006 update)
+ * components/flashcard/boxes/BoxCard.tsx
  *
- * Updated from legacy Box type (name) to new Deck type (title).
+ * Redesigned to match the SubjectHubs card style:
+ *  - Gradient header (color per deck via ID hash)
+ *  - Rounded-3xl with hover-lift effect
+ *  - NO overflow-hidden on outer container → dropdown never clips
+ *  - z-50 + conditional z-index on card when menu open → floats above sibling cards
  */
 
 import { useState } from 'react';
-import { BookOpen, MoreVertical, Pencil, Trash2, Play, Download } from 'lucide-react';
+import { MoreVertical, Pencil, Trash2, Play, Download, BookOpen } from 'lucide-react';
 import type { Deck } from '@/types/api';
 import ConfirmDialog from '@/components/ui/ConfirmDialog';
 import Button from '@/components/ui/Button';
@@ -22,6 +26,23 @@ interface Props {
   onExport: () => void;
 }
 
+// ── Color palettes — one per deck, picked by ID hash ──────────────────────────
+
+const PALETTES = [
+  { gradient: 'from-indigo-600 to-violet-600', border: 'border-indigo-100', glow: 'shadow-indigo-200/50' },
+  { gradient: 'from-emerald-600 to-teal-600',  border: 'border-emerald-100', glow: 'shadow-emerald-200/50' },
+  { gradient: 'from-amber-500 to-orange-500',  border: 'border-amber-100',   glow: 'shadow-amber-200/50' },
+  { gradient: 'from-rose-500 to-pink-600',     border: 'border-rose-100',    glow: 'shadow-rose-200/50' },
+  { gradient: 'from-sky-500 to-cyan-600',      border: 'border-sky-100',     glow: 'shadow-sky-200/50' },
+];
+
+function getPalette(id: string) {
+  const hash = id.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  return PALETTES[hash % PALETTES.length];
+}
+
+// ── Component ─────────────────────────────────────────────────────────────────
+
 export default function BoxCard({
   deck,
   cardCount,
@@ -33,84 +54,104 @@ export default function BoxCard({
 }: Props) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const palette = getPalette(deck.id);
 
   return (
     <>
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow p-5 flex flex-col gap-4 fade-in">
-        <div className="flex items-start justify-between gap-2">
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="p-2.5 rounded-xl bg-indigo-50 text-indigo-600 shrink-0">
-              <BookOpen size={20} />
-            </div>
+      {/*
+        No overflow-hidden here — keeps the dropdown from being clipped.
+        When the menu is open we elevate the entire card (z-50) so its
+        dropdown floats above all sibling cards in the grid.
+      */}
+      <div
+        className={`group relative flex flex-col rounded-3xl border ${palette.border} bg-white shadow-xl ${palette.glow} transition duration-300 hover:-translate-y-1 fade-in ${
+          menuOpen ? 'z-50' : 'z-0'
+        }`}
+      >
+        {/* ── Gradient header ────────────────────────────────────────────── */}
+        {/* rounded-t-3xl clips the top corners to match the outer border-radius */}
+        <div className={`bg-gradient-to-br ${palette.gradient} rounded-t-3xl px-5 pt-5 pb-9`}>
+          <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
+              <p className="text-white/60 text-[11px] font-semibold uppercase tracking-widest mb-1.5">
+                {cardCount} {cardCount === 1 ? 'card' : 'cards'}
+              </p>
               <h3
-                className="font-semibold text-slate-800 truncate cursor-pointer hover:text-indigo-600 transition-colors"
+                className="text-white font-extrabold text-lg leading-snug line-clamp-2 cursor-pointer hover:underline decoration-white/40"
                 onClick={onOpen}
                 title={deck.title}
               >
                 {deck.title}
               </h3>
-              <p className="text-xs text-slate-400 mt-0.5">
-                {cardCount} {cardCount === 1 ? 'card' : 'cards'}
+            </div>
+
+            {/* ── 3-dot menu ─────────────────────────────────────────────── */}
+            <div className="relative shrink-0">
+              <button
+                onClick={() => setMenuOpen((p) => !p)}
+                aria-label="Deck options"
+                className="p-1.5 rounded-lg text-white/70 hover:text-white hover:bg-white/20 transition-colors cursor-pointer"
+              >
+                <MoreVertical size={16} />
+              </button>
+
+              {menuOpen && (
+                <div
+                  className="absolute right-0 top-full mt-1 w-44 bg-white rounded-xl shadow-lg border border-slate-200 py-1 z-50"
+                  onMouseLeave={() => setMenuOpen(false)}
+                >
+                  <button
+                    onClick={() => { onRename(); setMenuOpen(false); }}
+                    className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 cursor-pointer"
+                  >
+                    <Pencil size={14} /> Rename
+                  </button>
+                  <button
+                    onClick={() => { onExport(); setMenuOpen(false); }}
+                    className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 cursor-pointer"
+                  >
+                    <Download size={14} /> Export JSON
+                  </button>
+                  <div className="border-t border-slate-100 my-1" />
+                  <button
+                    onClick={() => { setConfirmOpen(true); setMenuOpen(false); }}
+                    className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-red-500 hover:bg-red-50 cursor-pointer"
+                  >
+                    <Trash2 size={14} /> Delete Deck
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* ── White body ─────────────────────────────────────────────────── */}
+        <div className="px-5 pb-5 flex flex-col gap-3 flex-1">
+          {/* Floating stub card — overlaps the gradient header */}
+          <div className="rounded-2xl border border-gray-100 bg-white shadow-md px-4 py-3 -mt-5 z-10 relative">
+            <div className="flex items-center gap-2">
+              <BookOpen size={13} className="shrink-0 text-slate-400" />
+              <p className="text-xs text-slate-500 truncate">
+                {deck.description || 'No description'}
               </p>
             </div>
           </div>
 
-          <div className="relative shrink-0">
-            <button
-              onClick={() => setMenuOpen((p) => !p)}
-              aria-label="Deck options"
-              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
+          {/* Action buttons */}
+          <div className="flex gap-2">
+            <Button variant="secondary" size="sm" onClick={onOpen} className="flex-1">
+              Open
+            </Button>
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={onStudy}
+              disabled={cardCount === 0}
+              className="flex-1"
             >
-              <MoreVertical size={16} />
-            </button>
-
-            {menuOpen && (
-              <div
-                className="absolute right-0 mt-1 w-44 bg-white rounded-xl shadow-lg border border-slate-200 py-1 z-10"
-                onMouseLeave={() => setMenuOpen(false)}
-              >
-                <button
-                  onClick={() => { onRename(); setMenuOpen(false); }}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 cursor-pointer"
-                >
-                  <Pencil size={14} /> Rename
-                </button>
-                <button
-                  onClick={() => { onExport(); setMenuOpen(false); }}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 cursor-pointer"
-                >
-                  <Download size={14} /> Export JSON
-                </button>
-                <div className="border-t border-slate-100 my-1" />
-                <button
-                  onClick={() => { setConfirmOpen(true); setMenuOpen(false); }}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-red-500 hover:bg-red-50 cursor-pointer"
-                >
-                  <Trash2 size={14} /> Delete Deck
-                </button>
-              </div>
-            )}
+              <Play size={13} /> Study
+            </Button>
           </div>
-        </div>
-
-        {deck.description && (
-          <p className="text-xs text-slate-500 -mt-2 line-clamp-2">{deck.description}</p>
-        )}
-
-        <div className="flex gap-2">
-          <Button variant="secondary" size="sm" onClick={onOpen} className="flex-1">
-            Open
-          </Button>
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={onStudy}
-            disabled={cardCount === 0}
-            className="flex-1"
-          >
-            <Play size={13} /> Study
-          </Button>
         </div>
       </div>
 

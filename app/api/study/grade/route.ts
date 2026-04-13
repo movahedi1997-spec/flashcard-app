@@ -165,6 +165,14 @@ export async function POST(req: NextRequest) {
       ],
     );
 
+    // ── Append to review_log (analytics / dashboard chart) ────────────────────
+    // Fire-and-forget — a failure here must never block the grade response.
+    query(
+      `INSERT INTO review_log (user_id, card_id, grade, reviewed_at)
+       VALUES ($1, $2, $3, $4)`,
+      [user.userId, cardId, validGrade, now.toISOString()],
+    ).catch((err) => console.error('[review_log insert]', err));
+
     // ── Compute preview intervals for the updated state ────────────────────────
     // The UI uses these to label the grade buttons on the NEXT card shown,
     // so it can pre-render them without another fetch.
