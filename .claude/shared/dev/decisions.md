@@ -655,3 +655,137 @@ in the WHERE clause — ownership enforced at query level, not just application 
 ### Verdict
 **SIGNED OFF** — Phase 2 code is safe to proceed to QA (TASK-021).
 Two bugs fixed as part of this review (CR02 and CR04).
+
+---
+
+## [SECURITY AUDITOR] TASK-022 — Phase 2 Security Audit
+Date: 2026-04-14
+
+### Scope
+Full authentication stack, GDPR/COPPA compliance, private deck isolation,
+API hardening, and cross-cutting security controls.
+
+---
+
+### AUTH HARDENING
+
+#### SA-01 — JWT storage: HTTP-only cookies ✓
+Access token (`token`): httpOnly, secure (production), sameSite=lax, 15min, path=/
+Refresh token (`refresh_token`): httpOnly, secure (production), sameSite=lax, 30 days, path=/api/auth
+Refresh token scoped to `/api/auth` — browser never sends it to /api/decks, /api/cards etc.
+XSS cannot steal tokens. ✓
+
+#### SA-02 — Refresh token rotation with jti revocation ✓
+Each refresh token contains a unique jti (UUID) stored in `refresh_tokens` DB table.
+On refresh: old jti marked revoked → new jti issued. If a revoked jti is re-presented:
+all user sessions invalidated (theft detection). Prevents token replay attacks. ✓
+
+#### SA-03 — Access token expiry ✓
+15-minute access tokens. Compromised tokens have narrow window.
+`fetchWithRefresh` client wrapper silently rotates on 401. ✓
+
+#### SA-04 — Auth middleware protection ✓
+`middleware.ts` guards `/dashboard/:path*`, `/flashcards/:path*`, `/settings/:path*`.
+Unauthenticated access → redirect to /login. ✓
+Note: `/onboarding` not guarded by middleware (intentional — unauthenticated
+users briefly see it if cookie expired; POST /api/onboarding/subject returns 401).
+
+#### SA-05 — Password hashing ✓
+bcrypt with salt rounds = 10. Passwords never stored plaintext. ✓
+
+#### SA-06 — Rate limiting on auth endpoints ✓
+register: 5 attempts/60s per IP.
+login: 5 attempts/60s per IP.
+refresh: rate-limited.
+account/delete: 3 attempts/15min per IP.
+Uses in-memory LRU; production should replace with Redis (FINDING-04, tracked). ✓
+
+#### SA-07 — CSRF protection ✓
+sameSite=lax on all auth cookies prevents cross-site request forgery for POST requests.
+Account deletion requires password confirmation (double confirmation defence). ✓
+
+---
+
+### GDPR / COPPA
+
+#### SA-08 — COPPA gate ✓
+Registration requires `coppa_verified: true` in POST body.
+Client-side age gate (DOB field; < 13 rejected before form submit).
+Server rejects registration if COPPA flag absent — UI bypass prevented. ✓
+
+#### SA-09 — GDPR Article 17 (right to erasure) ✓
+POST /api/account/delete: password confirmation + cascade delete of entire user row.
+DB schema enforces ON DELETE CASCADE: users → decks → cards → srs_state → ai_usage → refresh_tokens.
+Deletion logged to audit trail. No orphaned data possible. ✓
+
+#### SA-10 — GDPR Article 20 (data portability) ⚠ OPEN
+Data export endpoint not yet implemented. Tracked as Phase 3 task.
+Action: build GET /api/account/export returning full user dataset as JSON.
+
+---
+
+### ACCESS CONTROL & IDOR
+
+#### SA-11 — Private deck isolation ✓
+All public-facing endpoints filter `is_public = true` before returning deck data.
+Private decks return 404 (not 403) to prevent existence leakage.
+Verified at: /api/explore, /api/og, /api/decks/[id]/copy, /explore/[slug].
+
+#### SA-12 — Ownership enforcement on mutations ✓
+PATCH and DELETE on /api/decks/[id] require `AND user_id = $userId` in WHERE clause.
+Horizontal privilege escalation not possible via ID manipulation.
+
+#### SA-13 — Copy-deck self-copy prevention ✓
+`source.user_id === user.userId` check → 400 (cannot copy own deck).
+
+---
+
+### INPUT VALIDATION
+
+#### SA-14 — UUID format validation on OG endpoint ✓
+Fixed in TASK-020. UUID regex guard before DB query.
+
+#### SA-15 — SQL injection ✓
+All DB queries use parameterised statements (pg library `query(sql, [params])`).
+No string interpolation into SQL. ✓
+
+#### SA-16 — Username / bio field sanitisation ✓
+Username regex `/^[a-zA-Z0-9_-]{3,30}$/` enforced server-side.
+Bio max 300 chars, name max 80 chars. Lengths checked before DB insert. ✓
+
+#### SA-17 — Search input safety ✓
+Explore search uses LIKE with `%` wildcards — not ILIKE raw injection.
+Value is parameterised (`$N`). Wildcard abuse (e.g. 1000-char search) possible
+but only loads public deck data — not a data leakage risk. Consider search input
+length cap (256 chars) as low-priority hardening. Tracked for Phase 3.
+
+---
+
+### SECRETS MANAGEMENT
+
+#### SA-18 — JWT secrets ⚠ REQUIRES PRODUCTION ACTION
+Default fallback secrets exist in auth.ts for development convenience:
+  `'dev-access-secret-change-in-production-32x'`
+  `'dev-refresh-secret-change-in-production'`
+**Action required before production deployment**: Set `ACCESS_JWT_SECRET` and
+`REFRESH_JWT_SECRET` environment variables to cryptographically random 32+ byte values.
+Document in deployment runbook.
+
+#### SA-19 — DB connection string ✓
+`DATABASE_URL` env var only. Not committed to repo. ✓
+
+---
+
+### OPEN FINDINGS (tracked for Phase 3)
+
+| ID | Finding | Priority |
+|----|---------|----------|
+| SA-10 | GDPR Article 20: data export endpoint missing | Medium |
+| SA-17 | Search input no max-length guard | Low |
+| SA-18 | JWT fallback secrets must be replaced in production | **Critical (pre-deploy)** |
+| FINDING-04 | Rate limiter in-memory only; needs Redis for multi-instance | Medium |
+| FINDING-07 | x-forwarded-for trust model per-platform | Medium |
+
+### SECURITY AUDIT VERDICT
+**SIGNED OFF for Phase 2** with SA-18 flagged as a required pre-production action.
+No critical vulnerabilities in Phase 2 code. All IDOR, auth, and injection vectors confirmed clear.
