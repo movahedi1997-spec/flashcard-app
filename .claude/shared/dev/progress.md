@@ -519,3 +519,92 @@ Phase 2 sprint begins immediately (TASK-011: Explore API backend). Phase 4 is pl
 
 [FRONTEND] Phase 2 frontend complete. Pending: TASK-015 (OG image gen), TASK-016 (creator profiles), TASK-018 (seed decks), TASK-019 (onboarding flow).
 **Date:** 2026-04-13
+
+---
+
+## [QA TESTER] TASK-021 — Phase 2 QA Sign-Off
+Date: 2026-04-14
+
+### Test matrix
+
+#### 1. Explore page — filtering and search
+| Test | Result |
+|------|--------|
+| Loads without authentication | PASS — no auth required |
+| Subject filter pills narrow results | PASS — `subject=medicine/pharmacy/chemistry` filter applied via query param |
+| Search input debounces 350ms | PASS — debounceRef clears on each keypress |
+| Cursor-based Load More | PASS — keyset pagination on (created_at DESC, id DESC) |
+| Empty state when no results | PASS — ExploreGrid shows "No decks found" fallback |
+| Total count display updates with filter | PASS — total from API reflected in UI |
+
+#### 2. Deck landing page /explore/[slug]
+| Test | Result |
+|------|--------|
+| Unauthenticated: 10 card fronts visible | PASS — preview renders from DB |
+| Unauthenticated: card backs blurred | PASS — `filter: blur(6px)` applied |
+| Authenticated owner: "This is your deck" badge | PASS — cookie checked in server component |
+| Authenticated non-owner: CopyDeckButton rendered | PASS |
+| Private deck accessed via slug | PASS — returns 404 via Next.js `notFound()` |
+| OG metadata present for social sharing | PASS — title, description, ogImage in <head> |
+
+#### 3. OG image endpoint /api/og
+| Test | Result |
+|------|--------|
+| Valid public deck → image rendered | PASS |
+| Private deck → 404 | PASS — `AND d.is_public = true` filter |
+| Missing deckId → 400 | PASS |
+| Invalid UUID format → 400 | PASS — UUID regex added in TASK-020 review |
+| Non-existent UUID → 404 | PASS |
+| Cache headers present | PASS — `public, max-age=3600, s-maxage=86400` |
+
+#### 4. Copy-deck endpoint POST /api/decks/[id]/copy
+| Test | Result |
+|------|--------|
+| Unauthenticated → 401 | PASS |
+| Copy public deck → 201 with independent clone | PASS — new UUIDs, no SRS state |
+| Copy own deck → 400 | PASS — `source.user_id === user.userId` check |
+| Copy private deck → 404 | PASS — `is_public = true` filter |
+| Duplicate copy attempt → 409 | PASS — title collision check |
+| Copy count incremented on source | PASS — `UPDATE decks SET copy_count = copy_count + 1` |
+| Card edits on copy do NOT affect source | PASS — fully independent deck_id |
+
+#### 5. Private deck isolation
+| Test | Result |
+|------|--------|
+| Private deck excluded from /api/explore | PASS |
+| Private deck returns 404 at /explore/[slug] | PASS |
+| Private deck OG image → 404 | PASS |
+| Private deck cannot be copied via API | PASS |
+
+#### 6. Onboarding flow
+| Test | Result |
+|------|--------|
+| Browse Explore → zero auth required | PASS |
+| Upload PDF CTA → redirects to /signup | PASS |
+| Create Deck CTA → redirects to /signup | PASS |
+| After signup → redirected to /onboarding | PASS |
+| Subject selector renders 4 options | PASS |
+| Continue disabled until selection made | PASS |
+| POST /api/onboarding/subject → stores subject_preference | PASS |
+| Starter deck seeded if verified creator exists | PASS — copied_from_id column used correctly |
+| No seed creator → deckAdded: false, continues to dashboard | PASS — fail-silent |
+| ?next= param preserved through signup → onboarding | PASS |
+
+#### 7. Sharing (ShareDeckPanel)
+| Test | Result |
+|------|--------|
+| Toggle public → PATCH sets is_public=true, generates slug | PASS |
+| ShareDeckPanel shows copy URL | PASS |
+| WhatsApp link pre-filled with deck URL | PASS |
+| Twitter/X link pre-filled | PASS |
+| Clipboard copy button | PASS |
+| Parent state synced via syncDeck (no second API call) | PASS |
+
+### Issues found and resolved
+1. **TASK-020-CR02**: OG endpoint accepted non-UUID deckId strings → fixed (UUID validation added)
+2. **TASK-020-CR04**: Onboarding route used `copied_from` instead of `copied_from_id` → fixed
+3. **Migration 008**: Attempted duplicate column `copied_from` already defined in 006 → removed
+
+### QA SIGN-OFF
+All Phase 2 acceptance criteria met. No blocking issues remain.
+**QA sign-off granted — Phase 3 may begin.**
