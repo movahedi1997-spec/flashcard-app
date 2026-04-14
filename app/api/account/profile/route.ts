@@ -23,6 +23,7 @@ import { getAuthUser } from '@/lib/auth';
 import { query } from '@/lib/db';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 const USERNAME_RE = /^[a-zA-Z0-9_-]{3,30}$/;
 

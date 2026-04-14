@@ -34,6 +34,7 @@ import { query } from '@/lib/db';
 import type { Subject } from '@/types/api';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 const VALID_SUBJECTS: Subject[] = ['medicine', 'pharmacy', 'chemistry', 'other'];
 const MAX_LIMIT = 50;

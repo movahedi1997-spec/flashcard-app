@@ -21,6 +21,7 @@ import { getAuthUser } from '@/lib/auth';
 import { query } from '@/lib/db';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 type RouteContext = { params: { slug: string } };
 

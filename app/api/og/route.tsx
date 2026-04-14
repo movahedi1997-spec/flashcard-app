@@ -18,7 +18,8 @@ import { ImageResponse } from 'next/og';
 import { NextRequest }    from 'next/server';
 import { query }          from '@/lib/db';
 
-export const runtime = 'nodejs'; // @vercel/og works in nodejs runtime too
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic'; // @vercel/og works in nodejs runtime too
 
 // ── Palette — mirrors front-end PALETTES map ─────────────────────────────────
 

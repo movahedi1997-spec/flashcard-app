@@ -134,17 +134,15 @@ async function main() {
       );
       const deckId = newDeck.rows[0].id;
 
-      // Bulk insert cards
+      // Bulk insert cards — each card row uses explicit $1/$2 for deck_id/user_id
+      // and unique params for front/back to avoid UUID type coercion issues
       if (deck.cards.length > 0) {
         const placeholders = deck.cards
-          .map((_, i) => `($${i * 3 + 1}, $${i * 3 + 2}, $${i * 3 + 3})`)
+          .map((_, i) => `($1::uuid, $2::uuid, $${i * 2 + 3}, $${i * 2 + 4})`)
           .join(', ');
-        const values = deck.cards.flatMap((c) => [deckId, c.front, c.back]);
+        const values: unknown[] = [deckId, creator.id, ...deck.cards.flatMap((c) => [c.front, c.back])];
         await client.query(
-          `INSERT INTO cards (deck_id, user_id, front, back)
-           SELECT v.deck_id, d.user_id, v.front, v.back
-           FROM (VALUES ${placeholders}) AS v(deck_id, front, back)
-           JOIN decks d ON d.id = v.deck_id::uuid`,
+          `INSERT INTO cards (deck_id, user_id, front, back) VALUES ${placeholders}`,
           values,
         );
       }

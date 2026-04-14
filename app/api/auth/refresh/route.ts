@@ -38,6 +38,7 @@ import {
 import { checkRateLimit } from '@/lib/rateLimit';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 // Factory for the 401 response — never hint at *why* the token was rejected to
 // prevent oracle attacks (was it expired? revoked? wrong user?). A new instance

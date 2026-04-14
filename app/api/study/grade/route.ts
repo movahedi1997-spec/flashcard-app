@@ -53,6 +53,7 @@ import { schedule, previewIntervals, DEFAULT_SRS } from '@/lib/srs';
 import type { Grade, GradeResponse, SrsState } from '@/types/api';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 // Valid grade values — validated at runtime (never trust client input)
 const VALID_GRADES: readonly Grade[] = ['again', 'hard', 'good', 'easy'];

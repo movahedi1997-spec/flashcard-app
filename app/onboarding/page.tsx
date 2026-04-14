@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { FlaskConical, Pill, Stethoscope, BookOpen, ArrowRight, Sparkles } from 'lucide-react';
 
@@ -55,7 +55,8 @@ const SUBJECTS = [
   },
 ];
 
-export default function OnboardingPage() {
+// Inner component that uses useSearchParams — must be wrapped in Suspense
+function OnboardingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selected, setSelected] = useState<string | null>(null);
@@ -175,5 +176,18 @@ export default function OnboardingPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+// Wrap in Suspense — required because useSearchParams() opts out of static rendering
+export default function OnboardingPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex min-h-screen items-center justify-center">
+        <span className="h-6 w-6 animate-spin rounded-full border-2 border-indigo-600 border-t-transparent" />
+      </div>
+    }>
+      <OnboardingContent />
+    </Suspense>
   );
 }

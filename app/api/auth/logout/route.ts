@@ -22,6 +22,7 @@ import {
 } from '@/lib/auth';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   // ── Attempt to revoke the refresh token ───────────────────────────────────

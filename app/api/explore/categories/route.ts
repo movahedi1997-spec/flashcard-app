@@ -24,6 +24,7 @@ import { NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 // Static category metadata — deck counts are merged in dynamically from DB
 const CATEGORY_META: Record<

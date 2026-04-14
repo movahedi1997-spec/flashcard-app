@@ -48,6 +48,7 @@ import {
 import type { StudyCard, StudySessionResponse, SrsState } from '@/types/api';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 // ── DB row shape ──────────────────────────────────────────────────────────────
 
