@@ -593,3 +593,65 @@ Team decisions needed and must be logged in dev/decisions.md:
   FINDING-07: Deployment decision — which proxy headers to trust per platform.
 
 ---
+
+---
+
+## [CODE REVIEWER] TASK-020 — Phase 2 Code Review Sign-Off
+Date: 2026-04-14
+
+### Scope reviewed
+- `app/api/explore/route.ts`
+- `app/api/og/route.tsx`
+- `app/api/decks/[id]/route.ts` (PATCH/DELETE)
+- `app/api/decks/[id]/copy/route.ts`
+- `app/explore/[slug]/page.tsx`
+- `app/api/onboarding/subject/route.ts`
+- `migrations/006_explore_phase2.sql`, `008_onboarding.sql`
+
+### Findings & resolutions
+
+#### FINDING-CR01 — IDOR on private decks: PASS ✓
+All data-access queries filter `is_public = true` before returning deck content.
+Private decks return 404 (not 403) to prevent information leakage about deck existence.
+- `/api/og`: `WHERE d.id = $1 AND d.is_public = true` → 404 for private ✓
+- `/api/decks/[id]/copy`: `WHERE id = $1 AND is_public = true` → 404 ✓
+- `/explore/[slug]`: `WHERE d.slug = $1 AND d.is_public = true` → notFound() ✓
+- `/api/explore`: `WHERE d.is_public = true` → no private decks in feed ✓
+
+#### FINDING-CR02 — OG endpoint UUID validation: FIXED ✓
+**Issue found**: `/api/og?deckId=` accepted arbitrary strings — no UUID format validation.
+An attacker could pass extremely long strings or non-UUID values causing unnecessary DB load.
+**Fix applied**: Added regex `/^[0-9a-f]{8}-[0-9a-f]{4}-...$/i` guard — returns 400 for invalid format.
+
+#### FINDING-CR03 — OG endpoint SSRF: NOT APPLICABLE ✓
+Endpoint only takes a `deckId` and queries the local DB. Does not fetch any external URLs.
+No SSRF surface exists.
+
+#### FINDING-CR04 — copy-deck column name mismatch: FIXED ✓
+**Issue found**: `app/api/onboarding/subject/route.ts` referenced `copied_from` but migration 006
+defines the column as `copied_from_id`. Migration 008 also incorrectly tried to add `copied_from`.
+**Fix applied**: Corrected column name to `copied_from_id` in onboarding route; removed
+duplicate column from migration 008.
+
+#### FINDING-CR05 — copy-deck access control: PASS ✓
+- Cannot copy own deck: `source.user_id === user.userId` → 400 ✓
+- Cannot copy private deck: `is_public = true` filter → 404 ✓
+- Auth required: `getAuthUser(req)` → 401 if unauthenticated ✓
+- Copy is truly independent: new UUIDs, no SRS state copied ✓
+
+#### FINDING-CR06 — ISR cache poisoning: LOW RISK ✓
+`/explore/[slug]` uses `revalidate = 3600` (ISR). Auth-dependent UI (owner badge,
+copy button state) is computed per-request by reading the access cookie in the server component.
+No cached HTML contains user-specific data. Risk is LOW.
+
+#### FINDING-CR07 — slug collision: PASS ✓
+Public deck slugs are unique at DB level (unique index on `decks.slug`). Copy endpoint
+creates private decks with no slug. Onboarding seed uses 5-retry collision loop.
+
+#### FINDING-CR08 — PATCH ownership enforcement: PASS ✓
+All PATCH and DELETE operations on `/api/decks/[id]` include `AND user_id = $2`
+in the WHERE clause — ownership enforced at query level, not just application level.
+
+### Verdict
+**SIGNED OFF** — Phase 2 code is safe to proceed to QA (TASK-021).
+Two bugs fixed as part of this review (CR02 and CR04).

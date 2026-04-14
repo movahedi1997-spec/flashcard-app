@@ -5,14 +5,8 @@ ALTER TABLE users
   ADD COLUMN IF NOT EXISTS subject_preference TEXT
     CHECK (subject_preference IN ('medicine', 'pharmacy', 'chemistry', 'other'));
 
--- Track which deck a copy originated from
-ALTER TABLE decks
-  ADD COLUMN IF NOT EXISTS copied_from UUID REFERENCES decks(id) ON DELETE SET NULL;
-
--- Copy count on source decks (for explore ordering)
--- Note: copy_count may already exist from migration 006; guard with IF NOT EXISTS
-ALTER TABLE decks
-  ADD COLUMN IF NOT EXISTS copy_count INTEGER DEFAULT 0 NOT NULL;
+-- Note: copied_from_id and copy_count were added in migration 006_explore_phase2.sql
+-- No duplicate column additions needed here.
 
 -- Onboarding completion flag (optional analytics)
 ALTER TABLE users

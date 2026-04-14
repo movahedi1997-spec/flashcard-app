@@ -86,7 +86,7 @@ export async function POST(req: NextRequest) {
 
   // 5. Copy deck record
   const newDeck = await query<{ id: string }>(
-    `INSERT INTO decks (user_id, title, description, emoji, color, subject, slug, is_public, copied_from)
+    `INSERT INTO decks (user_id, title, description, emoji, color, subject, slug, is_public, copied_from_id)
      VALUES ($1, $2, $3, $4, $5, $6, $7, false, $8)
      RETURNING id`,
     [

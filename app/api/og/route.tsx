@@ -56,6 +56,12 @@ export async function GET(req: NextRequest) {
     return new Response('Missing deckId', { status: 400 });
   }
 
+  // Validate UUID format to prevent injection or DB abuse via arbitrary strings
+  const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  if (!UUID_RE.test(deckId)) {
+    return new Response('Invalid deckId', { status: 400 });
+  }
+
   // ── Fetch deck ──────────────────────────────────────────────────────────────
   let deck: DeckRow | null = null;
   try {
