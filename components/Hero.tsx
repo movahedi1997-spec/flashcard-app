@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, CheckCircle2, BookOpen, Upload, LayoutGrid } from 'lucide-react';
 
 const GRADE_BUTTONS = [
   { label: 'Again', sub: '1d',  bg: 'bg-red-50',     text: 'text-red-600',     sub_text: 'text-red-400'     },
@@ -50,26 +50,46 @@ export default function Hero() {
               ))}
             </ul>
 
-            {/* CTAs */}
-            <div className="mt-10 flex flex-wrap items-center gap-4">
+            {/* 3 activation path CTAs */}
+            <div className="mt-10 space-y-3">
+              {/* Primary CTA — Browse Explore (zero auth) */}
               <Link
-                href="/signup"
-                className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-indigo-200/60 transition hover:bg-indigo-700 active:scale-95"
+                href="/explore"
+                className="group flex w-full items-center gap-3 rounded-2xl bg-indigo-600 px-5 py-4 text-base font-semibold text-white shadow-lg shadow-indigo-200/60 transition hover:bg-indigo-700 active:scale-[0.98] sm:w-auto sm:inline-flex"
               >
-                Get Started Free
-                <ArrowRight className="h-4 w-4" />
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/20">
+                  <LayoutGrid className="h-4 w-4" />
+                </span>
+                <span className="flex-1">Browse 1,000+ Free Flashcard Decks</span>
+                <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
               </Link>
-              <a
-                href="#how-it-works"
-                className="text-sm font-semibold text-gray-500 transition hover:text-indigo-600 underline underline-offset-4 decoration-gray-300 hover:decoration-indigo-400"
-              >
-                See how it works →
-              </a>
+
+              {/* Secondary CTAs row */}
+              <div className="flex flex-wrap gap-3">
+                <Link
+                  href="/signup"
+                  className="group flex flex-1 items-center gap-2.5 rounded-2xl border-2 border-gray-100 bg-white px-5 py-3.5 text-sm font-semibold text-gray-700 shadow-sm transition hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-700 active:scale-[0.98]"
+                >
+                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gray-100 group-hover:bg-indigo-100">
+                    <Upload className="h-3.5 w-3.5" />
+                  </span>
+                  Upload PDF or AI Generate
+                </Link>
+                <Link
+                  href="/signup"
+                  className="group flex flex-1 items-center gap-2.5 rounded-2xl border-2 border-gray-100 bg-white px-5 py-3.5 text-sm font-semibold text-gray-700 shadow-sm transition hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-700 active:scale-[0.98]"
+                >
+                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gray-100 group-hover:bg-indigo-100">
+                    <BookOpen className="h-3.5 w-3.5" />
+                  </span>
+                  Create Deck Manually
+                </Link>
+              </div>
             </div>
 
             {/* Social proof */}
-            <p className="mt-8 text-xs text-gray-400">
-              Free forever · No credit card required · Works on all devices
+            <p className="mt-5 text-xs text-gray-400">
+              No account needed to browse · Free forever · Works on all devices
             </p>
           </div>
 
