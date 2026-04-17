@@ -5,48 +5,205 @@
   "color": "indigo",
   "subject": "pharmacy",
   "cards": [
-    { "front": "REMS (Risk Evaluation and Mitigation Strategy): definition and examples", "back": "FDA-mandated program for drugs with serious risk that requires safety oversight beyond standard labeling. Examples: isotretinoin (iPLEDGE — teratogenicity), clozapine (REMS — agranulocytosis, mandatory ANC monitoring), opioids (Opioid Analgesic REMS), thalidomide/lenalidomide (THALOMID REMS — teratogenicity)" },
-    { "front": "Isotretinoin (iPLEDGE REMS): requirements", "back": "All prescribers, pharmacies, and patients must enroll in iPLEDGE. Female patients of childbearing potential: 2 negative pregnancy tests before starting, monthly pregnancy tests, 2 forms of contraception. No more than 30-day supply dispensed. 7-day authorization window to dispense. No blood donation during treatment and 1 month after" },
-    { "front": "Clozapine: mechanism and critical monitoring", "back": "Atypical antipsychotic — most effective for treatment-resistant schizophrenia and suicidality. Mechanism: D4 and 5-HT2A antagonist. Critical ADR: agranulocytosis (1–2%) and potentially fatal. ANC monitoring: weekly × 6 months → biweekly × 6 months → monthly. REMS program enrollment mandatory" },
-    { "front": "Imatinib (Gleevec): mechanism and clinical uses", "back": "Tyrosine kinase inhibitor (TKI): BCR-ABL inhibitor → CML (Philadelphia chromosome). Also KIT and PDGFR inhibitor → GIST (gastrointestinal stromal tumor). First targeted oncology drug. Oral, once daily. Side effects: fluid retention, GI (nausea), myelosuppression, hepatotoxicity" },
-    { "front": "Pembrolizumab (Keytruda): mechanism and immune-related toxicities", "back": "Anti-PD-1 monoclonal antibody. Blocks PD-1/PD-L1 interaction → T-cell activation against tumor cells. Indications: melanoma, NSCLC, head/neck, MSI-H/dMMR cancers, many others (pembrolizumab is approved for > 20 tumor types). Immune-related adverse events (irAEs): colitis, pneumonitis, hepatitis, hypothyroidism, adrenal insufficiency" },
-    { "front": "Trastuzumab (Herceptin): target, indication, and cardiac toxicity", "back": "Anti-HER2 monoclonal antibody. Indications: HER2-positive breast cancer, gastric cancer. Cardiac toxicity: cardiomyopathy (non-dose-dependent, reversible) → baseline and regular echocardiograms (every 3 months). Avoid concurrent anthracyclines (↑ cardiac risk). Hold if LVEF drops > 16%" },
-    { "front": "Bevacizumab (Avastin): mechanism and unique toxicities", "back": "Anti-VEGF monoclonal antibody → inhibits angiogenesis. Indications: metastatic colorectal cancer, NSCLC, cervical cancer, glioblastoma, ovarian cancer. Unique toxicities: hypertension, proteinuria, wound healing impairment (hold 28 days before/after surgery), GI perforation/fistula, arterial thromboembolism" },
-    { "front": "CAR-T cell therapy: mechanism and toxicity profile", "back": "Chimeric antigen receptor T cells: patient's own T cells engineered to express antigen receptor → retargeted against cancer. Examples: axicabtagene ciloleucel (Yescarta), tisagenlecleucel (Kymriah) for relapsed/refractory B-cell lymphoma, ALL. Key toxicities: cytokine release syndrome (CRS — fever, hypotension, hypoxia), neurotoxicity (ICANS)" },
-    { "front": "Cytokine release syndrome (CRS): grading and treatment", "back": "Grade 1: fever ≥ 38°C. Grade 2: hypotension/hypoxia responding to supportive care. Grade 3-4: life-threatening, severe hypotension/hypoxia. Treatment: Grade 1–2 supportive (antipyretics, fluids); Grade 2+ severe: tocilizumab (anti-IL-6R) ± corticosteroids. Tocilizumab is first-line for severe CRS" },
-    { "front": "HIV antiretroviral drug classes: 6 classes", "back": "NRTIs (nucleoside reverse transcriptase inhibitors), NNRTIs (non-nucleoside RTIs), PIs (protease inhibitors), INSTIs (integrase strand transfer inhibitors), FIs (fusion inhibitors), CCR5 antagonists. Standard regimen: 2 NRTIs + 1 INSTI (preferred) or 1 NNRTI or 1 PI (boosted)" },
-    { "front": "Preferred first-line ART regimen (DHHS 2024)", "back": "Bictegravir/tenofovir alafenamide/emtricitabine (Biktarvy) — single tablet regimen. Alternative: Dolutegravir + tenofovir/emtricitabine (Dovato or separate). INSTIs preferred over PIs due to: once daily, fewer drug interactions, tolerability. No food requirement for most INSTIs" },
-    { "front": "NRTI: tenofovir (TDF vs TAF) — difference", "back": "TDF (tenofovir disoproxil fumarate): older prodrug — higher systemic tenofovir → ↑ nephrotoxicity and bone density loss. TAF (tenofovir alafenamide): newer prodrug → higher intracellular levels at lower plasma levels → ↓ renal/bone toxicity. TAF preferred for patients with CKD/osteoporosis risk" },
-    { "front": "NNRTIs: mechanism and resistance concern", "back": "Non-nucleoside RTIs bind allosteric site on reverse transcriptase (different from NRTIs). Single resistance mutation (K103N) confers broad resistance to efavirenz and nevirapine. Rilpivirine and doravirine: second-generation, active against some K103N-resistant strains. Efavirenz: vivid dreams, CNS toxicity" },
-    { "front": "Protease inhibitors: pharmacokinetic boosting", "back": "PIs require pharmacokinetic boosting (↑ levels) because of extensive CYP3A4 metabolism. Cobicistat or ritonavir used as boosters (CYP3A4 inhibitors). Examples: atazanavir/cobicistat (Evotaz), darunavir/cobicistat (Prezcobix). Boosting → many drug interactions (CYP3A4 substrates affected)" },
-    { "front": "Pre-exposure prophylaxis (PrEP) for HIV: drugs and schedule", "back": "Daily oral: tenofovir/emtricitabine (Truvada or Descovy). HIV-negative confirmed, eGFR ≥ 30 (Truvada), eGFR ≥ 30 (Descovy preferred if CKD/osteoporosis risk). On-demand (2-1-1): 2 doses 2–24 hr before sex, then 1 dose at 24 hr, 1 dose at 48 hr after first dose. Cabotegravir IM (Apretude): q2 months injection for PrEP" },
-    { "front": "Antiretroviral therapy during pregnancy: key considerations", "back": "Continue ART throughout pregnancy. Biktarvy: data limited — use alternatives if possible. Dolutegravir: neural tube defect risk with periconceptional use — counsel, but benefits outweigh risks if already on dolutegravir. Zidovudine IV intrapartum if viral load > 1000 copies/mL near delivery. Infant: AZT prophylaxis × 4–6 weeks" },
-    { "front": "Sacubitril/valsartan (Entresto): mechanism and use", "back": "ARNi (angiotensin receptor–neprilysin inhibitor). Sacubitril inhibits neprilysin → ↑ natriuretic peptides (vasodilation, natriuresis). Valsartan: ARB. Indicated for HFrEF (EF ≤ 40%) to reduce CV death/hospitalizations (PARADIGM-HF). Contraindicated: concurrent ACE inhibitor (36-hr washout required), pregnancy, history of ACE inhibitor angioedema" },
-    { "front": "SGLT2 inhibitors in heart failure: drugs and evidence", "back": "Dapagliflozin (Farxiga), Empagliflozin (Jardiance): reduce hospitalizations and CV death in HFrEF regardless of diabetes status. Mechanism: ↑ glucosuria, osmotic diuresis, metabolic effects. Benefits in HFpEF: dapagliflozin (DELIVER trial). Class effects: UTI, genital mycotic infections, DKA (rare), Fournier's gangrene (rare)" },
-    { "front": "PCSK9 inhibitors: mechanism, drugs, and indications", "back": "Evolocumab (Repatha), Alirocumab (Praluent): anti-PCSK9 monoclonal antibodies → ↑ LDL receptor recycling → ↑ LDL clearance. Reduce LDL 50–60% on top of statin. SQ injection q2 or q4 weeks. Indications: atherosclerotic CVD not at LDL goal on max statin, heterozygous/homozygous FH" },
-    { "front": "Ivabradine (Corlanor): mechanism and use", "back": "Selective If (funny current) inhibitor in SA node → ↓ heart rate without affecting contractility or blood pressure. Use: HFrEF (EF ≤ 35%) + HR ≥ 70 bpm in sinus rhythm despite max tolerated β-blocker. Also: chronic stable angina. Contraindication: acute decompensated HF, BP < 90/50, sick sinus syndrome" },
-    { "front": "Amiodarone: unique pharmacokinetics and monitoring", "back": "Class III antiarrhythmic (but has properties of all 4 classes). Extremely long t½ (40–55 days). Extensive tissue distribution. Toxicities: pulmonary fibrosis (most dangerous), thyroid dysfunction (both hypo and hyper), hepatotoxicity, peripheral neuropathy, photosensitivity, corneal deposits. Monitor: TFTs, LFTs, PFTs, CXR annually. Many drug interactions (CYP2C9, CYP3A4 inhibition)" },
-    { "front": "Eculizumab (Soliris): mechanism and indication", "back": "Anti-complement C5 monoclonal antibody → blocks terminal complement activation → prevents MAC (membrane attack complex) formation. Indications: PNH (paroxysmal nocturnal hemoglobinuria), atypical HUS, neuromyelitis optica, myasthenia gravis. Risk: meningococcal infection — vaccinate before starting, chemoprophylaxis (penicillin)" },
-    { "front": "Vedolizumab (Entyvio): mechanism and selectivity advantage", "back": "Anti-α4β7 integrin monoclonal antibody → gut-selective, blocks lymphocyte trafficking to intestinal mucosa. Indications: ulcerative colitis, Crohn's disease. Advantage over anti-TNF: gut-selective → fewer systemic immunosuppressive effects, safer infection profile. Slow onset (16 weeks for full effect)" },
-    { "front": "Dupilumab (Dupixent): mechanism and indications", "back": "IL-4/IL-13 receptor antagonist (anti-IL-4Rα) → blocks type 2 inflammation. Indications: moderate-to-severe atopic dermatitis, asthma (eosinophilic/moderate-severe), chronic rhinosinusitis with nasal polyps, EoE, prurigo nodularis. Biologic — SQ injection q2 weeks. Notable for expanding indications rapidly" },
-    { "front": "Ustekinumab (Stelara): mechanism and uses", "back": "Anti-IL-12/IL-23 monoclonal antibody (blocks p40 subunit shared by both cytokines) → inhibits Th1 and Th17 pathways. Indications: plaque psoriasis, psoriatic arthritis, Crohn's disease, ulcerative colitis. Dosing: IV loading dose → SQ maintenance. Favorable safety profile vs anti-TNF" },
-    { "front": "Abatacept (Orencia): mechanism and use in RA", "back": "CTLA-4-Ig fusion protein → blocks CD80/CD86 co-stimulation of T cells → inhibits T-cell activation. Indications: RA (first-line biologic for some patients), JIA, psoriatic arthritis. Do not combine with other biologics (↑ infection risk). Can be used in patients who failed anti-TNF" },
-    { "front": "Lenalidomide/Pomalidomide (IMiDs): mechanism and REMS", "back": "Immunomodulatory drugs (IMiDs): multiple mechanisms — anti-angiogenic, anti-tumor, immune modulation (T-cell and NK cell activation). Indications: multiple myeloma, del5q MDS. REMS: THALOMID (thalidomide), REVLIMID (lenalidomide) — teratogenic: mandatory pregnancy testing and contraception (2 forms for females). No blood/sperm donation" },
-    { "front": "Venetoclax (Venclexta): mechanism and tumor lysis syndrome risk", "back": "BCL-2 inhibitor → restores apoptosis in cancer cells. Indications: CLL, AML (with azacitidine). Critical risk: tumor lysis syndrome — mandatory ramp-up dosing over 5 weeks (20 → 50 → 100 → 200 → 400 mg), lab monitoring, hydration, uric acid-lowering therapy (allopurinol or rasburicase) before and during ramp-up" },
-    { "front": "Osimertinib (Tagrisso): mutation targeted and monitoring", "back": "Third-generation EGFR-TKI — targets EGFR exon 19/21 mutations AND T790M resistance mutation. Use: NSCLC with EGFR mutations (first-line or after first-gen TKI + T790M resistance). Toxicities: rash, diarrhea, QTc prolongation, interstitial lung disease (rare but serious — monitor for new respiratory symptoms)" },
-    { "front": "Naltrexone (oral vs IM): differences and uses", "back": "Oral naltrexone (ReVia): opioid antagonist for opioid use disorder and alcohol use disorder. 50 mg/day. IM extended-release (Vivitrol): 380 mg IM monthly — improves adherence. No opioid dependence at time of initiation (precipitates withdrawal). Wait 7–10 days after last opioid" },
-    { "front": "Dabigatran (Pradaxa): reversal agent and dialyzability", "back": "Direct thrombin inhibitor (DTI). Reversal: idarucizumab (Praxbind) — specific monoclonal antibody antidote, FDA approved. Unlike apixaban/rivaroxaban, dabigatran is dialyzable (~60% removed in 2–3 hours) — relevant in life-threatening bleeding with no idarucizumab available" },
-    { "front": "Andexanet alfa (Andexxa): reversal agent for Factor Xa inhibitors", "back": "Recombinant Factor Xa decoy protein — binds and sequesters apixaban and rivaroxaban. Indicated for life-threatening/uncontrolled bleeding. Limitations: expensive, short duration of action, may increase thrombotic risk. 4-factor PCC (off-label) is often used as alternative for urgency" },
-    { "front": "Semaglutide (Ozempic/Wegovy): cardiovascular and renal benefits", "back": "GLP-1 receptor agonist. Approved for T2DM (Ozempic, Rybelsus) and obesity (Wegovy). Cardiovascular benefit: SELECT trial (2023) — 20% reduction in MACE in overweight/obese patients without diabetes. Weight loss: 15–17% body weight. Renal protection in DM (FLOW trial). GI side effects limit tolerability" },
-    { "front": "Finerenone (Kerendia): class and use", "back": "Non-steroidal mineralocorticoid receptor antagonist (MRA). Indicated for CKD in T2DM to reduce eGFR decline, ESKD, CV death. Advantages over spironolactone: more selective, less gynecomastia/hyperkalemia. Monitor: K+ and eGFR at baseline and 4 weeks after initiation" },
-    { "front": "Biologic vs biosimilar: interchangeability concept", "back": "Biologic: manufactured in living cells → complex, large molecule. Biosimilar: highly similar (not identical) to reference biologic. Interchangeable biosimilar: can be substituted without prescriber intervention (like generics). FDA has approved several interchangeable biosimilars (e.g., insulin glargine-yfgn [Semglee]). Pharmacists must follow state laws on automatic substitution" },
-    { "front": "Specialty pharmacy: definition and role", "back": "Specialty drugs: complex, high-cost biologics/oral oncology agents requiring special handling, patient education, monitoring, adherence support. Specialty pharmacies provide: prior authorization support, cold chain delivery, copay assistance coordination, clinical monitoring calls, REMS compliance. Many require closed distribution (restricted pharmacy networks)" },
-    { "front": "Oral oncolytic drugs: safety counseling points", "back": "Must treat as chemotherapy despite oral route. Counseling: wear gloves when handling, avoid crushing/splitting, flush twice if tablet goes in toilet. Storage: often controlled room temperature (check each drug). Caregiver safety (pregnant individuals avoid contact). Return unused medications to pharmacy (hazardous waste)" },
-    { "front": "Medication therapy management (MTM) for specialty patients", "back": "Comprehensive medication reviews identify: drug interactions (specialty + chronic medications), adherence issues, adverse effect management, duplicate therapy, monitoring gaps. MTM pharmacist role: optimize the regimen, prevent ADE-related hospitalizations, document interventions. CMS requires MTM for qualifying Medicare Part D beneficiaries" },
-    { "front": "Cold chain management for specialty biologics", "back": "Most biologics: 2–8°C refrigerated. Some: frozen (some CAR-T, some vaccines). Frozen specialty: adalimumab, some insulins. Room temperature products: some biologics (e.g., ustekinumab 2–8°C or up to 25°C for 28 days if needed). Breaks in cold chain may require product assessment per manufacturer — consult before dispensing" },
-    { "front": "Immune checkpoint inhibitor + steroids: paradox", "back": "Immune-related adverse events (irAEs) from checkpoint inhibitors (colitis, pneumonitis, hepatitis) are treated with high-dose corticosteroids (0.5–2 mg/kg prednisone). Despite immunosuppression from steroids, checkpoint inhibitor efficacy is generally preserved. Do NOT use steroids prophylactically — they would blunt antitumor immunity" },
-    { "front": "Tucatinib (Tukysa): role and key drug interaction", "back": "HER2-targeted TKI used with trastuzumab + capecitabine for HER2+ metastatic breast cancer (HER2CLIMB trial). Unique: penetrates CNS — effective for brain metastases. Drug interaction: tucatinib inhibits CYP2C8 → ↑ capecitabine → ↑ diarrhea (dose-limiting toxicity). Also CYP3A4 substrate" },
-    { "front": "Precision oncology: biomarker testing before initiating targeted therapy", "back": "Required testing before starting targeted therapy: EGFR (lung — erlotinib/osimertinib), ALK/ROS1 (lung — crizotinib/alectinib), BRAF V600E (melanoma/lung — vemurafenib/dabrafenib), HER2 (breast/gastric — trastuzumab), MSI-H/TMB-high (pembrolizumab), PD-L1 (nivolumab/pembrolizumab dosing). Companion diagnostics FDA-approved" },
-    { "front": "Prophylactic G-CSF: when and which drugs", "back": "G-CSF (filgrastim, pegfilgrastim): stimulates neutrophil production. Prophylactic use: chemotherapy regimens with > 20% febrile neutropenia risk. Pegfilgrastim (Neulasta): single dose per cycle (given 24–72 hrs after last chemo dose, NOT same day). Biosimilar: pegfilgrastim-jmdb (Fulphila). On-body injector device: 27-hr delayed delivery" }
+    {
+      "front": "REMS (Risk Evaluation and Mitigation Strategy): definition and examples",
+      "back": "FDA-mandated program for drugs with serious risk that requires safety oversight beyond standard labeling. Examples: isotretinoin (iPLEDGE — teratogenicity), clozapine (REMS — agranulocytosis, mandatory ANC monitoring), opioids (Opioid Analgesic REMS), thalidomide/lenalidomide (THALOMID REMS — teratogenicity)"
+    },
+    {
+      "front": "Isotretinoin (iPLEDGE REMS): requirements",
+      "back": "All prescribers, pharmacies, and patients must enroll in iPLEDGE. Female patients of childbearing potential: 2 negative pregnancy tests before starting, monthly pregnancy tests, 2 forms of contraception. No more than 30-day supply dispensed. 7-day authorization window to dispense. No blood donation during treatment and 1 month after"
+    },
+    {
+      "front": "Clozapine: mechanism and critical monitoring",
+      "back": "Atypical antipsychotic — most effective for treatment-resistant schizophrenia and suicidality. Mechanism: D4 and 5-HT2A antagonist. Critical ADR: agranulocytosis (1–2%) and potentially fatal. ANC monitoring: weekly × 6 months → biweekly × 6 months → monthly. REMS program enrollment mandatory"
+    },
+    {
+      "front": "Imatinib (Gleevec): mechanism and clinical uses",
+      "back": "Tyrosine kinase inhibitor (TKI): BCR-ABL inhibitor → CML (Philadelphia chromosome). Also KIT and PDGFR inhibitor → GIST (gastrointestinal stromal tumor). First targeted oncology drug. Oral, once daily. Side effects: fluid retention, GI (nausea), myelosuppression, hepatotoxicity"
+    },
+    {
+      "front": "Pembrolizumab (Keytruda): mechanism and immune-related toxicities",
+      "back": "Anti-PD-1 monoclonal antibody. Blocks PD-1/PD-L1 interaction → T-cell activation against tumor cells. Indications: melanoma, NSCLC, head/neck, MSI-H/dMMR cancers, many others (pembrolizumab is approved for > 20 tumor types). Immune-related adverse events (irAEs): colitis, pneumonitis, hepatitis, hypothyroidism, adrenal insufficiency"
+    },
+    {
+      "front": "Trastuzumab (Herceptin): target, indication, and cardiac toxicity",
+      "back": "Anti-HER2 monoclonal antibody. Indications: HER2-positive breast cancer, gastric cancer. Cardiac toxicity: cardiomyopathy (non-dose-dependent, reversible) → baseline and regular echocardiograms (every 3 months). Avoid concurrent anthracyclines (↑ cardiac risk). Hold if LVEF drops > 16%"
+    },
+    {
+      "front": "Bevacizumab (Avastin): mechanism and unique toxicities",
+      "back": "Anti-VEGF monoclonal antibody → inhibits angiogenesis. Indications: metastatic colorectal cancer, NSCLC, cervical cancer, glioblastoma, ovarian cancer. Unique toxicities: hypertension, proteinuria, wound healing impairment (hold 28 days before/after surgery), GI perforation/fistula, arterial thromboembolism"
+    },
+    {
+      "front": "CAR-T cell therapy: mechanism and toxicity profile",
+      "back": "Chimeric antigen receptor T cells: patient's own T cells engineered to express antigen receptor → retargeted against cancer. Examples: axicabtagene ciloleucel (Yescarta), tisagenlecleucel (Kymriah) for relapsed/refractory B-cell lymphoma, ALL. Key toxicities: cytokine release syndrome (CRS — fever, hypotension, hypoxia), neurotoxicity (ICANS)"
+    },
+    {
+      "front": "Cytokine release syndrome (CRS): grading and treatment",
+      "back": "Grade 1: fever ≥ 38°C. Grade 2: hypotension/hypoxia responding to supportive care. Grade 3-4: life-threatening, severe hypotension/hypoxia. Treatment: Grade 1–2 supportive (antipyretics, fluids); Grade 2+ severe: tocilizumab (anti-IL-6R) ± corticosteroids. Tocilizumab is first-line for severe CRS"
+    },
+    {
+      "front": "HIV antiretroviral drug classes: 6 classes",
+      "back": "NRTIs (nucleoside reverse transcriptase inhibitors), NNRTIs (non-nucleoside RTIs), PIs (protease inhibitors), INSTIs (integrase strand transfer inhibitors), FIs (fusion inhibitors), CCR5 antagonists. Standard regimen: 2 NRTIs + 1 INSTI (preferred) or 1 NNRTI or 1 PI (boosted)"
+    },
+    {
+      "front": "Preferred first-line ART regimen (DHHS 2024)",
+      "back": "Bictegravir/tenofovir alafenamide/emtricitabine (Biktarvy) — single tablet regimen. Alternative: Dolutegravir + tenofovir/emtricitabine (Dovato or separate). INSTIs preferred over PIs due to: once daily, fewer drug interactions, tolerability. No food requirement for most INSTIs"
+    },
+    {
+      "front": "NRTI: tenofovir (TDF vs TAF) — difference",
+      "back": "TDF (tenofovir disoproxil fumarate): older prodrug — higher systemic tenofovir → ↑ nephrotoxicity and bone density loss. TAF (tenofovir alafenamide): newer prodrug → higher intracellular levels at lower plasma levels → ↓ renal/bone toxicity. TAF preferred for patients with CKD/osteoporosis risk"
+    },
+    {
+      "front": "NNRTIs: mechanism and resistance concern",
+      "back": "Non-nucleoside RTIs bind allosteric site on reverse transcriptase (different from NRTIs). Single resistance mutation (K103N) confers broad resistance to efavirenz and nevirapine. Rilpivirine and doravirine: second-generation, active against some K103N-resistant strains. Efavirenz: vivid dreams, CNS toxicity"
+    },
+    {
+      "front": "Protease inhibitors: pharmacokinetic boosting",
+      "back": "PIs require pharmacokinetic boosting (↑ levels) because of extensive CYP3A4 metabolism. Cobicistat or ritonavir used as boosters (CYP3A4 inhibitors). Examples: atazanavir/cobicistat (Evotaz), darunavir/cobicistat (Prezcobix). Boosting → many drug interactions (CYP3A4 substrates affected)"
+    },
+    {
+      "front": "Pre-exposure prophylaxis (PrEP) for HIV: drugs and schedule",
+      "back": "Daily oral: tenofovir/emtricitabine (Truvada or Descovy). HIV-negative confirmed, eGFR ≥ 30 (Truvada), eGFR ≥ 30 (Descovy preferred if CKD/osteoporosis risk). On-demand (2-1-1): 2 doses 2–24 hr before sex, then 1 dose at 24 hr, 1 dose at 48 hr after first dose. Cabotegravir IM (Apretude): q2 months injection for PrEP"
+    },
+    {
+      "front": "Antiretroviral therapy during pregnancy: key considerations",
+      "back": "Continue ART throughout pregnancy. Biktarvy: data limited — use alternatives if possible. Dolutegravir: neural tube defect risk with periconceptional use — counsel, but benefits outweigh risks if already on dolutegravir. Zidovudine IV intrapartum if viral load > 1000 copies/mL near delivery. Infant: AZT prophylaxis × 4–6 weeks"
+    },
+    {
+      "front": "Sacubitril/valsartan (Entresto): mechanism and use",
+      "back": "ARNi (angiotensin receptor–neprilysin inhibitor). Sacubitril inhibits neprilysin → ↑ natriuretic peptides (vasodilation, natriuresis). Valsartan: ARB. Indicated for HFrEF (EF ≤ 40%) to reduce CV death/hospitalizations (PARADIGM-HF). Contraindicated: concurrent ACE inhibitor (36-hr washout required), pregnancy, history of ACE inhibitor angioedema"
+    },
+    {
+      "front": "SGLT2 inhibitors in heart failure: drugs and evidence",
+      "back": "Dapagliflozin (Farxiga), Empagliflozin (Jardiance): reduce hospitalizations and CV death in HFrEF regardless of diabetes status. Mechanism: ↑ glucosuria, osmotic diuresis, metabolic effects. Benefits in HFpEF: dapagliflozin (DELIVER trial). Class effects: UTI, genital mycotic infections, DKA (rare), Fournier's gangrene (rare)"
+    },
+    {
+      "front": "PCSK9 inhibitors: mechanism, drugs, and indications",
+      "back": "Evolocumab (Repatha), Alirocumab (Praluent): anti-PCSK9 monoclonal antibodies → ↑ LDL receptor recycling → ↑ LDL clearance. Reduce LDL 50–60% on top of statin. SQ injection q2 or q4 weeks. Indications: atherosclerotic CVD not at LDL goal on max statin, heterozygous/homozygous FH"
+    },
+    {
+      "front": "Ivabradine (Corlanor): mechanism and use",
+      "back": "Selective If (funny current) inhibitor in SA node → ↓ heart rate without affecting contractility or blood pressure. Use: HFrEF (EF ≤ 35%) + HR ≥ 70 bpm in sinus rhythm despite max tolerated β-blocker. Also: chronic stable angina. Contraindication: acute decompensated HF, BP < 90/50, sick sinus syndrome"
+    },
+    {
+      "front": "Amiodarone: unique pharmacokinetics and monitoring",
+      "back": "Class III antiarrhythmic (but has properties of all 4 classes). Extremely long t½ (40–55 days). Extensive tissue distribution. Toxicities: pulmonary fibrosis (most dangerous), thyroid dysfunction (both hypo and hyper), hepatotoxicity, peripheral neuropathy, photosensitivity, corneal deposits. Monitor: TFTs, LFTs, PFTs, CXR annually. Many drug interactions (CYP2C9, CYP3A4 inhibition)"
+    },
+    {
+      "front": "Eculizumab (Soliris): mechanism and indication",
+      "back": "Anti-complement C5 monoclonal antibody → blocks terminal complement activation → prevents MAC (membrane attack complex) formation. Indications: PNH (paroxysmal nocturnal hemoglobinuria), atypical HUS, neuromyelitis optica, myasthenia gravis. Risk: meningococcal infection — vaccinate before starting, chemoprophylaxis (penicillin)"
+    },
+    {
+      "front": "Vedolizumab (Entyvio): mechanism and selectivity advantage",
+      "back": "Anti-α4β7 integrin monoclonal antibody → gut-selective, blocks lymphocyte trafficking to intestinal mucosa. Indications: ulcerative colitis, Crohn's disease. Advantage over anti-TNF: gut-selective → fewer systemic immunosuppressive effects, safer infection profile. Slow onset (16 weeks for full effect)"
+    },
+    {
+      "front": "Dupilumab (Dupixent): mechanism and indications",
+      "back": "IL-4/IL-13 receptor antagonist (anti-IL-4Rα) → blocks type 2 inflammation. Indications: moderate-to-severe atopic dermatitis, asthma (eosinophilic/moderate-severe), chronic rhinosinusitis with nasal polyps, EoE, prurigo nodularis. Biologic — SQ injection q2 weeks. Notable for expanding indications rapidly"
+    },
+    {
+      "front": "Ustekinumab (Stelara): mechanism and uses",
+      "back": "Anti-IL-12/IL-23 monoclonal antibody (blocks p40 subunit shared by both cytokines) → inhibits Th1 and Th17 pathways. Indications: plaque psoriasis, psoriatic arthritis, Crohn's disease, ulcerative colitis. Dosing: IV loading dose → SQ maintenance. Favorable safety profile vs anti-TNF"
+    },
+    {
+      "front": "Abatacept (Orencia): mechanism and use in RA",
+      "back": "CTLA-4-Ig fusion protein → blocks CD80/CD86 co-stimulation of T cells → inhibits T-cell activation. Indications: RA (first-line biologic for some patients), JIA, psoriatic arthritis. Do not combine with other biologics (↑ infection risk). Can be used in patients who failed anti-TNF"
+    },
+    {
+      "front": "Lenalidomide/Pomalidomide (IMiDs): mechanism and REMS",
+      "back": "Immunomodulatory drugs (IMiDs): multiple mechanisms — anti-angiogenic, anti-tumor, immune modulation (T-cell and NK cell activation). Indications: multiple myeloma, del5q MDS. REMS: THALOMID (thalidomide), REVLIMID (lenalidomide) — teratogenic: mandatory pregnancy testing and contraception (2 forms for females). No blood/sperm donation"
+    },
+    {
+      "front": "Venetoclax (Venclexta): mechanism and tumor lysis syndrome risk",
+      "back": "BCL-2 inhibitor → restores apoptosis in cancer cells. Indications: CLL, AML (with azacitidine). Critical risk: tumor lysis syndrome — mandatory ramp-up dosing over 5 weeks (20 → 50 → 100 → 200 → 400 mg), lab monitoring, hydration, uric acid-lowering therapy (allopurinol or rasburicase) before and during ramp-up"
+    },
+    {
+      "front": "Osimertinib (Tagrisso): mutation targeted and monitoring",
+      "back": "Third-generation EGFR-TKI — targets EGFR exon 19/21 mutations AND T790M resistance mutation. Use: NSCLC with EGFR mutations (first-line or after first-gen TKI + T790M resistance). Toxicities: rash, diarrhea, QTc prolongation, interstitial lung disease (rare but serious — monitor for new respiratory symptoms)"
+    },
+    {
+      "front": "Naltrexone (oral vs IM): differences and uses",
+      "back": "Oral naltrexone (ReVia): opioid antagonist for opioid use disorder and alcohol use disorder. 50 mg/day. IM extended-release (Vivitrol): 380 mg IM monthly — improves adherence. No opioid dependence at time of initiation (precipitates withdrawal). Wait 7–10 days after last opioid"
+    },
+    {
+      "front": "Dabigatran (Pradaxa): reversal agent and dialyzability",
+      "back": "Direct thrombin inhibitor (DTI). Reversal: idarucizumab (Praxbind) — specific monoclonal antibody antidote, FDA approved. Unlike apixaban/rivaroxaban, dabigatran is dialyzable (~60% removed in 2–3 hours) — relevant in life-threatening bleeding with no idarucizumab available"
+    },
+    {
+      "front": "Andexanet alfa (Andexxa): reversal agent for Factor Xa inhibitors",
+      "back": "Recombinant Factor Xa decoy protein — binds and sequesters apixaban and rivaroxaban. Indicated for life-threatening/uncontrolled bleeding. Limitations: expensive, short duration of action, may increase thrombotic risk. 4-factor PCC (off-label) is often used as alternative for urgency"
+    },
+    {
+      "front": "Semaglutide (Ozempic/Wegovy): cardiovascular and renal benefits",
+      "back": "GLP-1 receptor agonist. Approved for T2DM (Ozempic, Rybelsus) and obesity (Wegovy). Cardiovascular benefit: SELECT trial (2023) — 20% reduction in MACE in overweight/obese patients without diabetes. Weight loss: 15–17% body weight. Renal protection in DM (FLOW trial). GI side effects limit tolerability"
+    },
+    {
+      "front": "Finerenone (Kerendia): class and use",
+      "back": "Non-steroidal mineralocorticoid receptor antagonist (MRA). Indicated for CKD in T2DM to reduce eGFR decline, ESKD, CV death. Advantages over spironolactone: more selective, less gynecomastia/hyperkalemia. Monitor: K+ and eGFR at baseline and 4 weeks after initiation"
+    },
+    {
+      "front": "Biologic vs biosimilar: interchangeability concept",
+      "back": "Biologic: manufactured in living cells → complex, large molecule. Biosimilar: highly similar (not identical) to reference biologic. Interchangeable biosimilar: can be substituted without prescriber intervention (like generics). FDA has approved several interchangeable biosimilars (e.g., insulin glargine-yfgn [Semglee]). Pharmacists must follow state laws on automatic substitution"
+    },
+    {
+      "front": "Specialty pharmacy: definition and role",
+      "back": "Specialty drugs: complex, high-cost biologics/oral oncology agents requiring special handling, patient education, monitoring, adherence support. Specialty pharmacies provide: prior authorization support, cold chain delivery, copay assistance coordination, clinical monitoring calls, REMS compliance. Many require closed distribution (restricted pharmacy networks)"
+    },
+    {
+      "front": "Oral oncolytic drugs: safety counseling points",
+      "back": "Must treat as chemotherapy despite oral route. Counseling: wear gloves when handling, avoid crushing/splitting, flush twice if tablet goes in toilet. Storage: often controlled room temperature (check each drug). Caregiver safety (pregnant individuals avoid contact). Return unused medications to pharmacy (hazardous waste)"
+    },
+    {
+      "front": "Medication therapy management (MTM) for specialty patients",
+      "back": "Comprehensive medication reviews identify: drug interactions (specialty + chronic medications), adherence issues, adverse effect management, duplicate therapy, monitoring gaps. MTM pharmacist role: optimize the regimen, prevent ADE-related hospitalizations, document interventions. CMS requires MTM for qualifying Medicare Part D beneficiaries"
+    },
+    {
+      "front": "Cold chain management for specialty biologics",
+      "back": "Most biologics: 2–8°C refrigerated. Some: frozen (some CAR-T, some vaccines). Frozen specialty: adalimumab, some insulins. Room temperature products: some biologics (e.g., ustekinumab 2–8°C or up to 25°C for 28 days if needed). Breaks in cold chain may require product assessment per manufacturer — consult before dispensing"
+    },
+    {
+      "front": "Immune checkpoint inhibitor + steroids: paradox",
+      "back": "Immune-related adverse events (irAEs) from checkpoint inhibitors (colitis, pneumonitis, hepatitis) are treated with high-dose corticosteroids (0.5–2 mg/kg prednisone). Despite immunosuppression from steroids, checkpoint inhibitor efficacy is generally preserved. Do NOT use steroids prophylactically — they would blunt antitumor immunity"
+    },
+    {
+      "front": "Tucatinib (Tukysa): role and key drug interaction",
+      "back": "HER2-targeted TKI used with trastuzumab + capecitabine for HER2+ metastatic breast cancer (HER2CLIMB trial). Unique: penetrates CNS — effective for brain metastases. Drug interaction: tucatinib inhibits CYP2C8 → ↑ capecitabine → ↑ diarrhea (dose-limiting toxicity). Also CYP3A4 substrate"
+    },
+    {
+      "front": "Precision oncology: biomarker testing before initiating targeted therapy",
+      "back": "Required testing before starting targeted therapy: EGFR (lung — erlotinib/osimertinib), ALK/ROS1 (lung — crizotinib/alectinib), BRAF V600E (melanoma/lung — vemurafenib/dabrafenib), HER2 (breast/gastric — trastuzumab), MSI-H/TMB-high (pembrolizumab), PD-L1 (nivolumab/pembrolizumab dosing). Companion diagnostics FDA-approved"
+    },
+    {
+      "front": "Prophylactic G-CSF: when and which drugs",
+      "back": "G-CSF (filgrastim, pegfilgrastim): stimulates neutrophil production. Prophylactic use: chemotherapy regimens with > 20% febrile neutropenia risk. Pegfilgrastim (Neulasta): single dose per cycle (given 24–72 hrs after last chemo dose, NOT same day). Biosimilar: pegfilgrastim-jmdb (Fulphila). On-body injector device: 27-hr delayed delivery"
+    },
+    {
+      "front": "Checkpoint inhibitor immune-related adverse events (irAEs): management",
+      "back": "PD-1/PD-L1/CTLA-4 inhibitors → immune activation. irAEs: colitis (diarrhea), pneumonitis, hepatitis, endocrinopathies (thyroiditis, adrenal insufficiency), dermatitis. Management: Grade 1 — monitor; Grade 2 — hold drug + corticosteroids (prednisone 1 mg/kg); Grade 3–4 — permanently discontinue + IV methylprednisolone."
+    },
+    {
+      "front": "Venetoclax (Venclexta): mechanism, indication, and ramp-up protocol",
+      "back": "BCL-2 inhibitor → promotes apoptosis in malignant B cells. Indications: CLL (+ obinutuzumab or ibrutinib), AML (+ azacitidine/decitabine in older patients). Ramp-up dosing over 5 weeks (20→50→100→200→400 mg) to prevent tumor lysis syndrome (TLS). Monitor uric acid, K, phosphate, creatinine."
+    },
+    {
+      "front": "CAR-T cell therapy: mechanism and cytokine release syndrome (CRS)",
+      "back": "Chimeric antigen receptor T-cells: patient T-cells engineered to express antigen receptor (e.g., CD19 for B-cell malignancies). CRS: fever, hypotension, hypoxia (grade 3–4 = life-threatening). Treatment: tocilizumab (IL-6 receptor antagonist) ± corticosteroids. Neurotoxicity (ICANS) treated with dexamethasone."
+    },
+    {
+      "front": "Antiretroviral therapy: current preferred regimen for treatment-naive HIV",
+      "back": "Preferred: bictegravir/tenofovir alafenamide/emtricitabine (Biktarvy) — 1 pill/day. Alternative: dolutegravir + TAF/FTC (Dovato). Principle: 2 NRTIs + 1 INSTI. Key INSTI side effect: weight gain. Dolutegravir: neural tube defect risk in 1st trimester — use raltegravir in pregnancy. Monitor: CD4, viral load, renal function."
+    },
+    {
+      "front": "Amiodarone: class, indications, and toxicity monitoring",
+      "back": "Class III antiarrhythmic (also I, II, IV effects). Indications: VT, VF, AF maintenance, Wolff-Parkinson-White. Toxicities (iodine-rich, lipophilic): pulmonary toxicity (most lethal — check CXR/PFTs), thyroid dysfunction (hypo or hyper), hepatotoxicity, corneal microdeposits, photosensitivity, peripheral neuropathy. Monitor: TFTs, LFTs, CXR q6–12 months."
+    },
+    {
+      "front": "PARP inhibitors: mechanism, indications, and key toxicity",
+      "back": "Poly(ADP-ribose) polymerase inhibition → accumulation of single-strand DNA breaks → double-strand breaks → synthetic lethality in BRCA1/2-mutated cells (impaired homologous recombination). Agents: olaparib, niraparib, rucaparib, talazoparib. Indications: BRCA+ ovarian, breast, prostate, pancreatic cancer. Key toxicity: myelosuppression (especially niraparib — thrombocytopenia)."
+    },
+    {
+      "front": "Sacubitril/valsartan (Entresto): mechanism and clinical use",
+      "back": "Sacubitril: neprilysin inhibitor → ↑ ANP/BNP → vasodilation + natriuresis. Valsartan: ARB → ↓ angiotensin II. Combined ARNI: reduces HFrEF hospitalization/mortality (PARADIGM-HF). Switch from ACEi: must have 36-hour washout period to avoid angioedema. Contraindicated with ACEi, in pregnancy. eGFR ≥30 required."
+    }
   ]
 }

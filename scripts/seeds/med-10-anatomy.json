@@ -5,46 +5,205 @@
   "color": "sky",
   "subject": "medicine",
   "cards": [
-    { "front": "Brachial plexus: roots, trunks, divisions, cords, branches (mnemonic)", "back": "Real Texans Drink Cold Beer — Roots (C5-T1), Trunks (upper/middle/lower), Divisions, Cords (lateral/posterior/medial), Branches (musculocutaneous, axillary, radial, median, ulnar)" },
-    { "front": "Erb's palsy: root and position", "back": "Upper brachial plexus injury (C5–C6) — shoulder dystocia or downward traction. 'Waiter's tip' position: arm adducted, internally rotated, forearm pronated, wrist flexed" },
-    { "front": "Klumpke palsy: root and position", "back": "Lower brachial plexus injury (C8–T1) — upward traction (breech delivery, grabbing to stop fall). Intrinsic hand muscle weakness, claw hand, Horner syndrome (T1 sympathetics)" },
-    { "front": "Median nerve injury at wrist: findings", "back": "Carpal tunnel: lateral 3½ digits paresthesias/weakness, thenar wasting. 'Ape hand' (unable to oppose thumb). Cannot make OK sign" },
-    { "front": "Ulnar nerve injury at medial epicondyle: findings", "back": "'Claw hand' (hyperextension of 4th/5th MCPs, flexion of 4th/5th IPJs due to loss of intrinsics). Loss of medial 1½ digits sensation. Wasting of hypothenar eminence and interossei" },
-    { "front": "Radial nerve injury: findings by level", "back": "Saturday night palsy (spiral groove): wrist drop + loss of finger extension + sensory loss dorsal hand. Posterior interosseous nerve (deep branch): finger drop only, no sensory loss, wrist extension preserved (ECRB intact)" },
-    { "front": "Femoral nerve injury: findings", "back": "L2–L4. Loss of knee extension (quadriceps), loss of hip flexion, loss of patellar reflex. Sensory loss: anterior thigh and medial leg" },
-    { "front": "Sciatic nerve injury: findings", "back": "L4–S3. Weak knee flexion (hamstrings). All foot/ankle movements lost. Loss of ankle jerk. Foot drop if common peroneal component predominant" },
-    { "front": "Common peroneal (fibular) nerve injury: findings", "back": "Foot drop (loss of dorsiflexion and eversion), sensory loss lateral leg and dorsum of foot. Injured at fibular head (fracture or pressure)" },
-    { "front": "Obturator nerve injury: findings", "back": "L2–L4. Loss of hip adduction and rotation. Sensory loss medial thigh. Injured in pelvic surgery/malignancy" },
-    { "front": "Appendix: surface anatomy location", "back": "McBurney's point = 1/3 of the way from ASIS to umbilicus. Rovsing's sign: palpation of LLQ causes pain in RLQ. Psoas sign, obturator sign in appendicitis" },
-    { "front": "Inguinal canal boundaries and contents", "back": "Floor: inguinal ligament. Roof: transversalis fascia + internal oblique. Anterior: external oblique. Posterior: transversalis fascia. Contents: spermatic cord (male) / round ligament of uterus (female)" },
-    { "front": "Indirect vs direct inguinal hernia", "back": "Indirect: through internal inguinal ring → lateral to inferior epigastric vessels. Congenital (patent processus vaginalis). Direct: through Hesselbach's triangle (weakness in abdominal wall) → medial to inferior epigastrics" },
-    { "front": "Hesselbach's triangle boundaries", "back": "Inferior epigastric artery (lateral), inguinal ligament (inferior), rectus abdominis (medial)" },
-    { "front": "Femoral triangle: borders and contents", "back": "Superior: inguinal ligament. Medial: adductor longus. Lateral: sartorius. Contents (lateral to medial): NAVEL — Nerve, Artery, Vein, Empty space, Lymphatics. Femoral hernia = medial to vein" },
-    { "front": "Coronary arteries: RCA and LCA territories", "back": "RCA: SA node, AV node (in most), RV, posterior LV. LCA → LAD: anterior septum, anterior LV, apex. LCA → LCx: lateral LV, posterior LV (in left-dominant circulation)" },
-    { "front": "Aortic arch branches (order)", "back": "Brachiocephalic trunk (→ right subclavian + right common carotid), Left common carotid, Left subclavian. 'Big Loud Strong' or 'B-L-S'" },
-    { "front": "Circle of Willis: components", "back": "Two internal carotid arteries → ACAs (connected by AComm A) + MCAs; basilar artery → two PCAs (connected to ICAs by PComm As). Anterior circulation (70%) vs posterior (30%)" },
-    { "front": "Portal hypertension: portosystemic anastomoses", "back": "Esophageal varices (left gastric → esophageal → azygous), hemorrhoids (superior rectal → inferior rectal), caput medusae (umbilical veins → abdominal wall), splenorenal" },
-    { "front": "Foregut derivatives: blood supply", "back": "Celiac artery. Structures: lower esophagus, stomach, proximal duodenum (to major papilla), liver, gallbladder, pancreas, spleen" },
-    { "front": "Midgut derivatives: blood supply", "back": "SMA (superior mesenteric artery). Structures: small intestine (distal duodenum, jejunum, ileum), cecum, appendix, ascending colon, proximal 2/3 transverse colon" },
-    { "front": "Hindgut derivatives: blood supply", "back": "IMA (inferior mesenteric artery). Structures: distal 1/3 transverse colon, descending colon, sigmoid, rectum, upper anal canal" },
-    { "front": "Cardiac embryology: ventricular septal defect (VSD) — embryologic origin", "back": "Most VSDs are in the membranous septum (neural crest cells + endocardial cushion contribution). Muscular VSDs in the trabecula carneae" },
-    { "front": "Neural tube defects: causes and prevention", "back": "Folate deficiency. Anencephaly (failure of anterior neuropore), spina bifida (failure of posterior neuropore). AFP elevated in maternal serum and amniotic fluid (also elevated in gastroschisis). Folic acid supplementation 1 month before conception + first trimester" },
-    { "front": "TORCH infections: Toxoplasma, Other, Rubella, CMV, HSV", "back": "T: chorioretinitis, hydrocephalus, intracranial calcifications. R: sensorineural deafness, PDA, cataracts. C: periventricular calcifications, sensorineural deafness. H: vesicular skin lesions, encephalitis. O: syphilis — bone changes, snuffles, CN VIII deafness" },
-    { "front": "Frank-Starling curve: shift left vs right", "back": "Left shift (↑ contractility): positive inotropes, sympathetic stimulation. Right shift (↓ contractility): heart failure, negative inotropes (β-blockers, CCBs)" },
-    { "front": "Pressure-volume loop: changes in preload vs afterload", "back": "↑ Preload: loop shifts right (↑ EDV). ↑ Afterload: loop shifts left (↑ systolic pressure, ↓ stroke volume). ↑ Contractility: ↑ stroke volume without change in EDV" },
-    { "front": "What is the difference between dead space and shunt?", "back": "Dead space: ventilated but not perfused (V/Q → infinity). Shunt: perfused but not ventilated (V/Q → 0). Shunt does NOT correct with supplemental O2" },
-    { "front": "Glomerular filtration: forces (Starling forces in glomerulus)", "back": "GFR depends on: Kf × (Pgc − Pbs − πgc + πbs). Pgc = glomerular capillary hydrostatic pressure, Pbs = Bowman's space, πgc = oncotic pressure. GFR ↑ with ↑ Pgc (dilation of afferent) or ↑ Kf" },
-    { "front": "Effect of ACE inhibitor on GFR in renal artery stenosis", "back": "ACE inhibitor dilates efferent arteriole → ↓ glomerular hydrostatic pressure → ↓ GFR → AKI in patients with bilateral RAS or solitary kidney with RAS" },
-    { "front": "Testicular torsion: age group and management", "back": "Adolescents (peak 13–14 years). 'Bell clapper' deformity. 'Sunrise' or horizontal lie. Sudden onset scrotal pain, absent cremasteric reflex. Management: IMMEDIATE surgical detorsion (< 6 hours for salvage)" },
-    { "front": "Cryptorchidism: complications", "back": "Infertility (bilateral), increased risk testicular cancer (seminoma) even in contralateral descended testis. Treatment: orchiopexy before age 2" },
-    { "front": "Surface anatomy: where is the femoral vein for central access?", "back": "Medial to femoral artery in femoral triangle (remember NAVEL). Approach below inguinal ligament" },
-    { "front": "Thoracic duct: origin and termination", "back": "Arises from cisterna chyli (L1–L2) → enters thorax → ascends to drain into junction of left subclavian and left internal jugular veins. Carries chyle from abdomen/pelvis/lower extremities/left thorax/left head and neck" },
-    { "front": "Structures injured in mastectomy: nerves to avoid", "back": "Long thoracic nerve (serratus anterior — winged scapula if injured), thoracodorsal nerve (latissimus dorsi), intercostobrachial nerve (medial arm sensation)" },
-    { "front": "Cardiac action potential phases (ventricular myocyte)", "back": "Phase 0: rapid depolarization (voltage-gated Na+ channels). Phase 1: partial repolarization (K+ channels). Phase 2: plateau (Ca2+ influx = K+ efflux). Phase 3: rapid repolarization (K+ channels). Phase 4: resting (-90 mV)" },
-    { "front": "Renal blood flow: arteries in order from aorta to glomerulus", "back": "Renal artery → interlobar → arcuate → interlobular → afferent arteriole → glomerular capillaries → efferent arteriole → peritubular capillaries (or vasa recta in medulla)" },
-    { "front": "Layers of the abdominal wall (lateral to medial, outside to inside)", "back": "Skin → subcutaneous fat → Scarpa's fascia → external oblique → internal oblique → transversus abdominis → transversalis fascia → preperitoneal fat → parietal peritoneum" },
-    { "front": "Diaphragm openings and their contents", "back": "T8: IVC + right phrenic nerve. T10: esophagus + vagal trunks + left gastric vessels. T12: aorta + thoracic duct + azygous vein. Mnemonic: 'I 8 (ate) 10 Eggs At 12'" },
-    { "front": "Knee ligament injuries: mechanism", "back": "ACL: valgus + external rotation (dashboard injury). PCL: posterior force on flexed knee. MCL: valgus force. LCL: varus force. Unhappy triad: ACL + MCL + medial meniscus" },
-    { "front": "Compartment syndrome: nerve and vessel at risk in anterior leg compartment", "back": "Deep peroneal nerve (foot drop) + anterior tibial artery. Hallmark: pain out of proportion, pain with passive stretch. Emergent fasciotomy" }
+    {
+      "front": "Brachial plexus: roots, trunks, divisions, cords, branches (mnemonic)",
+      "back": "Real Texans Drink Cold Beer — Roots (C5-T1), Trunks (upper/middle/lower), Divisions, Cords (lateral/posterior/medial), Branches (musculocutaneous, axillary, radial, median, ulnar)"
+    },
+    {
+      "front": "Erb's palsy: root and position",
+      "back": "Upper brachial plexus injury (C5–C6) — shoulder dystocia or downward traction. 'Waiter's tip' position: arm adducted, internally rotated, forearm pronated, wrist flexed"
+    },
+    {
+      "front": "Klumpke palsy: root and position",
+      "back": "Lower brachial plexus injury (C8–T1) — upward traction (breech delivery, grabbing to stop fall). Intrinsic hand muscle weakness, claw hand, Horner syndrome (T1 sympathetics)"
+    },
+    {
+      "front": "Median nerve injury at wrist: findings",
+      "back": "Carpal tunnel: lateral 3½ digits paresthesias/weakness, thenar wasting. 'Ape hand' (unable to oppose thumb). Cannot make OK sign"
+    },
+    {
+      "front": "Ulnar nerve injury at medial epicondyle: findings",
+      "back": "'Claw hand' (hyperextension of 4th/5th MCPs, flexion of 4th/5th IPJs due to loss of intrinsics). Loss of medial 1½ digits sensation. Wasting of hypothenar eminence and interossei"
+    },
+    {
+      "front": "Radial nerve injury: findings by level",
+      "back": "Saturday night palsy (spiral groove): wrist drop + loss of finger extension + sensory loss dorsal hand. Posterior interosseous nerve (deep branch): finger drop only, no sensory loss, wrist extension preserved (ECRB intact)"
+    },
+    {
+      "front": "Femoral nerve injury: findings",
+      "back": "L2–L4. Loss of knee extension (quadriceps), loss of hip flexion, loss of patellar reflex. Sensory loss: anterior thigh and medial leg"
+    },
+    {
+      "front": "Sciatic nerve injury: findings",
+      "back": "L4–S3. Weak knee flexion (hamstrings). All foot/ankle movements lost. Loss of ankle jerk. Foot drop if common peroneal component predominant"
+    },
+    {
+      "front": "Common peroneal (fibular) nerve injury: findings",
+      "back": "Foot drop (loss of dorsiflexion and eversion), sensory loss lateral leg and dorsum of foot. Injured at fibular head (fracture or pressure)"
+    },
+    {
+      "front": "Obturator nerve injury: findings",
+      "back": "L2–L4. Loss of hip adduction and rotation. Sensory loss medial thigh. Injured in pelvic surgery/malignancy"
+    },
+    {
+      "front": "Appendix: surface anatomy location",
+      "back": "McBurney's point = 1/3 of the way from ASIS to umbilicus. Rovsing's sign: palpation of LLQ causes pain in RLQ. Psoas sign, obturator sign in appendicitis"
+    },
+    {
+      "front": "Inguinal canal boundaries and contents",
+      "back": "Floor: inguinal ligament. Roof: transversalis fascia + internal oblique. Anterior: external oblique. Posterior: transversalis fascia. Contents: spermatic cord (male) / round ligament of uterus (female)"
+    },
+    {
+      "front": "Indirect vs direct inguinal hernia",
+      "back": "Indirect: through internal inguinal ring → lateral to inferior epigastric vessels. Congenital (patent processus vaginalis). Direct: through Hesselbach's triangle (weakness in abdominal wall) → medial to inferior epigastrics"
+    },
+    {
+      "front": "Hesselbach's triangle boundaries",
+      "back": "Inferior epigastric artery (lateral), inguinal ligament (inferior), rectus abdominis (medial)"
+    },
+    {
+      "front": "Femoral triangle: borders and contents",
+      "back": "Superior: inguinal ligament. Medial: adductor longus. Lateral: sartorius. Contents (lateral to medial): NAVEL — Nerve, Artery, Vein, Empty space, Lymphatics. Femoral hernia = medial to vein"
+    },
+    {
+      "front": "Coronary arteries: RCA and LCA territories",
+      "back": "RCA: SA node, AV node (in most), RV, posterior LV. LCA → LAD: anterior septum, anterior LV, apex. LCA → LCx: lateral LV, posterior LV (in left-dominant circulation)"
+    },
+    {
+      "front": "Aortic arch branches (order)",
+      "back": "Brachiocephalic trunk (→ right subclavian + right common carotid), Left common carotid, Left subclavian. 'Big Loud Strong' or 'B-L-S'"
+    },
+    {
+      "front": "Circle of Willis: components",
+      "back": "Two internal carotid arteries → ACAs (connected by AComm A) + MCAs; basilar artery → two PCAs (connected to ICAs by PComm As). Anterior circulation (70%) vs posterior (30%)"
+    },
+    {
+      "front": "Portal hypertension: portosystemic anastomoses",
+      "back": "Esophageal varices (left gastric → esophageal → azygous), hemorrhoids (superior rectal → inferior rectal), caput medusae (umbilical veins → abdominal wall), splenorenal"
+    },
+    {
+      "front": "Foregut derivatives: blood supply",
+      "back": "Celiac artery. Structures: lower esophagus, stomach, proximal duodenum (to major papilla), liver, gallbladder, pancreas, spleen"
+    },
+    {
+      "front": "Midgut derivatives: blood supply",
+      "back": "SMA (superior mesenteric artery). Structures: small intestine (distal duodenum, jejunum, ileum), cecum, appendix, ascending colon, proximal 2/3 transverse colon"
+    },
+    {
+      "front": "Hindgut derivatives: blood supply",
+      "back": "IMA (inferior mesenteric artery). Structures: distal 1/3 transverse colon, descending colon, sigmoid, rectum, upper anal canal"
+    },
+    {
+      "front": "Cardiac embryology: ventricular septal defect (VSD) — embryologic origin",
+      "back": "Most VSDs are in the membranous septum (neural crest cells + endocardial cushion contribution). Muscular VSDs in the trabecula carneae"
+    },
+    {
+      "front": "Neural tube defects: causes and prevention",
+      "back": "Folate deficiency. Anencephaly (failure of anterior neuropore), spina bifida (failure of posterior neuropore). AFP elevated in maternal serum and amniotic fluid (also elevated in gastroschisis). Folic acid supplementation 1 month before conception + first trimester"
+    },
+    {
+      "front": "TORCH infections: Toxoplasma, Other, Rubella, CMV, HSV",
+      "back": "T: chorioretinitis, hydrocephalus, intracranial calcifications. R: sensorineural deafness, PDA, cataracts. C: periventricular calcifications, sensorineural deafness. H: vesicular skin lesions, encephalitis. O: syphilis — bone changes, snuffles, CN VIII deafness"
+    },
+    {
+      "front": "Frank-Starling curve: shift left vs right",
+      "back": "Left shift (↑ contractility): positive inotropes, sympathetic stimulation. Right shift (↓ contractility): heart failure, negative inotropes (β-blockers, CCBs)"
+    },
+    {
+      "front": "Pressure-volume loop: changes in preload vs afterload",
+      "back": "↑ Preload: loop shifts right (↑ EDV). ↑ Afterload: loop shifts left (↑ systolic pressure, ↓ stroke volume). ↑ Contractility: ↑ stroke volume without change in EDV"
+    },
+    {
+      "front": "What is the difference between dead space and shunt?",
+      "back": "Dead space: ventilated but not perfused (V/Q → infinity). Shunt: perfused but not ventilated (V/Q → 0). Shunt does NOT correct with supplemental O2"
+    },
+    {
+      "front": "Glomerular filtration: forces (Starling forces in glomerulus)",
+      "back": "GFR depends on: Kf × (Pgc − Pbs − πgc + πbs). Pgc = glomerular capillary hydrostatic pressure, Pbs = Bowman's space, πgc = oncotic pressure. GFR ↑ with ↑ Pgc (dilation of afferent) or ↑ Kf"
+    },
+    {
+      "front": "Effect of ACE inhibitor on GFR in renal artery stenosis",
+      "back": "ACE inhibitor dilates efferent arteriole → ↓ glomerular hydrostatic pressure → ↓ GFR → AKI in patients with bilateral RAS or solitary kidney with RAS"
+    },
+    {
+      "front": "Testicular torsion: age group and management",
+      "back": "Adolescents (peak 13–14 years). 'Bell clapper' deformity. 'Sunrise' or horizontal lie. Sudden onset scrotal pain, absent cremasteric reflex. Management: IMMEDIATE surgical detorsion (< 6 hours for salvage)"
+    },
+    {
+      "front": "Cryptorchidism: complications",
+      "back": "Infertility (bilateral), increased risk testicular cancer (seminoma) even in contralateral descended testis. Treatment: orchiopexy before age 2"
+    },
+    {
+      "front": "Surface anatomy: where is the femoral vein for central access?",
+      "back": "Medial to femoral artery in femoral triangle (remember NAVEL). Approach below inguinal ligament"
+    },
+    {
+      "front": "Thoracic duct: origin and termination",
+      "back": "Arises from cisterna chyli (L1–L2) → enters thorax → ascends to drain into junction of left subclavian and left internal jugular veins. Carries chyle from abdomen/pelvis/lower extremities/left thorax/left head and neck"
+    },
+    {
+      "front": "Structures injured in mastectomy: nerves to avoid",
+      "back": "Long thoracic nerve (serratus anterior — winged scapula if injured), thoracodorsal nerve (latissimus dorsi), intercostobrachial nerve (medial arm sensation)"
+    },
+    {
+      "front": "Cardiac action potential phases (ventricular myocyte)",
+      "back": "Phase 0: rapid depolarization (voltage-gated Na+ channels). Phase 1: partial repolarization (K+ channels). Phase 2: plateau (Ca2+ influx = K+ efflux). Phase 3: rapid repolarization (K+ channels). Phase 4: resting (-90 mV)"
+    },
+    {
+      "front": "Renal blood flow: arteries in order from aorta to glomerulus",
+      "back": "Renal artery → interlobar → arcuate → interlobular → afferent arteriole → glomerular capillaries → efferent arteriole → peritubular capillaries (or vasa recta in medulla)"
+    },
+    {
+      "front": "Layers of the abdominal wall (lateral to medial, outside to inside)",
+      "back": "Skin → subcutaneous fat → Scarpa's fascia → external oblique → internal oblique → transversus abdominis → transversalis fascia → preperitoneal fat → parietal peritoneum"
+    },
+    {
+      "front": "Diaphragm openings and their contents",
+      "back": "T8: IVC + right phrenic nerve. T10: esophagus + vagal trunks + left gastric vessels. T12: aorta + thoracic duct + azygous vein. Mnemonic: 'I 8 (ate) 10 Eggs At 12'"
+    },
+    {
+      "front": "Knee ligament injuries: mechanism",
+      "back": "ACL: valgus + external rotation (dashboard injury). PCL: posterior force on flexed knee. MCL: valgus force. LCL: varus force. Unhappy triad: ACL + MCL + medial meniscus"
+    },
+    {
+      "front": "Compartment syndrome: nerve and vessel at risk in anterior leg compartment",
+      "back": "Deep peroneal nerve (foot drop) + anterior tibial artery. Hallmark: pain out of proportion, pain with passive stretch. Emergent fasciotomy"
+    },
+    {
+      "front": "Thoracic duct: course and drainage",
+      "back": "Originates at cisterna chyli (L1–L2). Travels through aortic hiatus (T12), ascends right of aorta, crosses midline at T5, empties into left subclavian–internal jugular junction. Drains: lower limbs, abdomen, left thorax, left head/neck, left arm. Right lymphatic duct drains right upper quadrant."
+    },
+    {
+      "front": "Recurrent laryngeal nerve: course and injury consequences",
+      "back": "Right RLN: loops under subclavian artery. Left RLN: loops under aortic arch at ligamentum arteriosum. Injury (thyroidectomy, mediastinal mass): hoarseness, ipsilateral vocal cord paralysis. Both injured: respiratory distress. Superior laryngeal nerve (external branch): cricothyroid muscle → pitch changes."
+    },
+    {
+      "front": "Femoral triangle: boundaries and contents (NAVEL)",
+      "back": "Borders: inguinal ligament (superior), sartorius (lateral), adductor longus (medial), iliopsoas + pectineus (floor). Contents lateral→medial: Nerve (femoral), Artery (femoral), Vein (femoral), Empty space, Lymphatics. Femoral hernias enter medial to vein → femoral canal."
+    },
+    {
+      "front": "Brachial plexus: roots, trunks, divisions, cords, branches (5 Rs Too Dirty For me)",
+      "back": "Roots C5–T1 → 3 Trunks (upper C5-6, middle C7, lower C8-T1) → anterior/posterior Divisions → 3 Cords (lateral, posterior, medial) → Branches. Long thoracic nerve (C5-7): serratus anterior. Axillary (C5-6): deltoid. Musculocutaneous (C5-7): biceps."
+    },
+    {
+      "front": "Erb's palsy vs Klumpke's palsy",
+      "back": "Erb's (C5-6): waiter's tip position — arm adducted/internally rotated, extended elbow, pronated forearm. Caused by shoulder dystocia/lateral neck traction. Klumpke's (C8-T1): claw hand; interosseous + lumbrical weakness. Caused by forceful arm abduction. Horner syndrome if T1 rami communicantes involved."
+    },
+    {
+      "front": "Parasympathetic ganglia of the head: locations and functions",
+      "back": "Ciliary ganglion (CN III): pupil constriction + lens accommodation. Pterygopalatine (CN VII): lacrimal + nasal glands. Submandibular (CN VII): submandibular + sublingual glands. Otic (CN IX): parotid gland. Sympathetic supply: superior cervical ganglion via carotid plexus."
+    },
+    {
+      "front": "Carpal tunnel syndrome: anatomy of compression",
+      "back": "Carpal tunnel contents: median nerve + 9 flexor tendons (FDS×4, FDP×4, FPL). Roof = flexor retinaculum. Median nerve compression → paresthesias of thumb/index/middle/radial ring fingers + thenar wasting. Palmar cutaneous branch of median (arises proximal to tunnel) is SPARED → palm sensation intact."
+    },
+    {
+      "front": "Rotator cuff muscles and their actions (SITS)",
+      "back": "Supraspinatus: abduction initiation (0–15°; tested with empty can test). Infraspinatus: external rotation. Teres minor: external rotation. Subscapularis: internal rotation (lift-off test). Most commonly torn: supraspinatus. Nerve: suprascapular (supra + infra), lower subscapular (sub + teres minor)."
+    },
+    {
+      "front": "Circle of Willis: named components and common aneurysm sites",
+      "back": "Anterior: 2× ACA + anterior communicating (AComm). Middle: 2× MCA. Posterior: 2× PCA + 2× posterior communicating (PComm) + basilar + 2× vertebral. Aneurysm sites: AComm (most common, frontal lobe deficits), PComm (CN III palsy — down-and-out pupil), MCA bifurcation (contralateral face/arm weakness)."
+    }
   ]
 }

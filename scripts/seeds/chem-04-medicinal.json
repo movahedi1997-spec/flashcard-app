@@ -5,46 +5,205 @@
   "color": "indigo",
   "subject": "chemistry",
   "cards": [
-    { "front": "Lipinski's Rule of Five: definition and exceptions", "back": "Predicts oral drug-likeness: MW ≤ 500 Da, H-bond donors ≤ 5, H-bond acceptors ≤ 10, cLogP ≤ 5. Violations → poor oral bioavailability. Exceptions: substrates for biological transporters (P-gp, OATPs), natural product-derived drugs, antibiotics. Rule does not apply to inhaled or injectable drugs" },
-    { "front": "ADMET: definition of each parameter", "back": "A: Absorption (getting into systemic circulation — bioavailability). D: Distribution (Vd, protein binding, BBB penetration). M: Metabolism (CYP-mediated, phase I/II — first-pass effect). E: Excretion (renal clearance, biliary, half-life). T: Toxicity (off-target effects, mutagenicity, hERG channel block)" },
-    { "front": "cLogP (partition coefficient): significance in drug design", "back": "cLogP = log([drug]octanol / [drug]water). Higher logP = more lipophilic. LogP 1–3: optimal oral absorption range. Too high (> 5): poor aqueous solubility, high protein binding, toxicity. Too low (< 0): poor membrane permeability. LogP affects: absorption, BBB penetration, protein binding, metabolism rate" },
-    { "front": "Structure-activity relationship (SAR): definition and application", "back": "SAR: systematic study of how changes in molecular structure affect biological activity. Vary: substituents (electron donors/withdrawors, size, shape), stereochemistry, ring systems, linker length. SAR guides lead optimization. Bioisosterism: replace one group with another of similar size/polarity/electronics but different chemistry (e.g., -F for -OH)" },
-    { "front": "Bioisosteres: examples and rationale", "back": "Classical: F for H (similar size, blocks oxidation, ↑ metabolic stability), NH for O (H-bond donor/acceptor), Cl for Me (similar size, lipophilic). Non-classical: COOH → tetrazole (same pKa ~4.5, ↑ bioavailability, metabolically stable), OH → NH2 (H-bond donor). Used to: ↑ potency, fix metabolism, ↑ selectivity" },
-    { "front": "Prodrug concept: definition and examples", "back": "Prodrug: inactive parent compound converted to active drug by enzymatic/chemical transformation in body. Rationale: ↑ solubility (fosfomycin), ↑ oral bioavailability (valacyclovir → acyclovir, ester prodrug cleaved by esterase), ↑ CNS penetration, bypass first-pass, site-specific activation. ~10% of marketed drugs are prodrugs" },
-    { "front": "Ester prodrug design: mechanism of activation", "back": "Esterification of carboxylic acid or alcohol → ester prodrug. Esterases (ubiquitous in plasma, liver, gut) hydrolyze ester bond → releases active drug + alcohol. Examples: aspirin (acetylsalicylic acid) → salicylate + acetic acid. Enalapril → enalaprilat (ACE inhibitor). ACE esters improve oral absorption of the acid forms" },
-    { "front": "First-pass effect: what it is and how prodrugs help", "back": "Oral drug absorbed from gut → portal circulation → liver → metabolism before reaching systemic circulation → ↓ bioavailability. Drugs with high first-pass effect: lidocaine, nitroglycerin, morphine, propranolol. Solutions: IV/sublingual/transdermal routes, or prodrug that resists first-pass metabolism and converts after reaching systemic circulation" },
-    { "front": "CYP450 enzymes in drug metabolism: key isoforms and substrates", "back": "CYP3A4: ~50% of drugs (metabolizes benzodiazepines, statins, macrolides, HIV drugs). CYP2D6: antidepressants, antipsychotics, codeine (activation → morphine). CYP2C9: warfarin, NSAIDs, phenytoin. CYP2C19: PPIs, clopidogrel (activation), SSRIs. CYP2E1: ethanol, acetaminophen (NAPQI formation). CYP1A2: theophylline, caffeine, clozapine" },
-    { "front": "Cytochrome P450: mechanism of oxidation", "back": "P450 catalytic cycle: Fe(III) + substrate → O2 binds Fe(II) → electron transfer → Fe(III)-OOH intermediate → [Fe=O]3+ (compound I) → oxygen insertion into C-H bond. NADPH provides electrons. Products: hydroxylated metabolite + H2O. Types: aliphatic hydroxylation, aromatic hydroxylation, N-/O-dealkylation, epoxidation, sulfoxidation" },
-    { "front": "Metabolic stability: approaches to improve it", "back": "Metabolically labile positions (soft spots): benzylic C-H, tertiary amines, aromatic methoxy groups. Strategies: replace H with F (blocks oxidation), reduce lipophilicity (↓ CYP interaction), add bulky group near labile position (steric hindrance), use deuterium labeling (kinetic isotope effect — KIE: C-D bond ~7× slower to break than C-H)" },
-    { "front": "Blood-brain barrier (BBB) penetration: structural requirements", "back": "Factors favoring BBB penetration: low MW (< 450 Da), low H-bond donor count (< 3), moderate lipophilicity (logP ~2), not P-gp substrate. BBB has active transporters: P-gp efflux pump actively extrudes many CNS drugs. Strategies: ↓ PSA (polar surface area < 60–70 Å²), esterify polar groups temporarily, P-gp inhibitors" },
-    { "front": "Protein binding: high protein-bound drugs — implications", "back": "Plasma protein binding (PPB): albumin (acidic drugs), AAG (α1-acid glycoprotein, basic drugs). Highly bound (> 95%): warfarin, naproxen, diazepam. Only free (unbound) drug is pharmacologically active. High PPB: ↑ Vd, longer t½, potential displacement interactions. Critically important for narrow TI drugs" },
-    { "front": "Drug receptor interactions: types of bonds (from weakest to strongest)", "back": "Van der Waals: ~1 kcal/mol (all molecules). Hydrophobic interactions: ~1–3 kcal/mol. Hydrogen bonds: ~3–5 kcal/mol. Electrostatic/ionic: ~3–7 kcal/mol. Covalent bonds: ~50–100 kcal/mol (irreversible). Most drug-receptor: multiple non-covalent interactions (additive) → selectivity and reversibility. Covalent drugs: aspirin (COX), omeprazole (H/K-ATPase)" },
-    { "front": "Lock-and-key vs induced-fit model of enzyme/receptor binding", "back": "Lock-and-key: rigid complementary fit between drug and receptor. Induced fit: receptor undergoes conformational change upon drug binding (more accurate). Conformational selection: receptor exists in multiple conformations; drug selects/stabilizes preferred form. Allosteric modulation: binding site distinct from active site changes receptor conformation" },
-    { "front": "Quantitative SAR (QSAR): Hansch analysis", "back": "QSAR correlates physicochemical parameters with biological activity using regression equations. Hansch-Fujita: biological activity = function of logP, σ (Hammett substituent constant), Es (steric constant). Parabolic relationship for logP and activity: optimal logP for absorption. QSAR models used to predict activity of untested compounds" },
-    { "front": "Hammett equation: sigma (σ) constants", "back": "σ = log(Ka,substituted/Ka,unsubstituted) for benzoic acid derivatives. σ reflects electronic effect of substituents. EWG: positive σ (stabilize carboxylate by induction). EDG: negative σ. σp (para) vs σm (meta). log(kX/kH) = ρσ. ρ > 0: EWG increases rate. ρ < 0: EDG increases rate. Used in SAR to predict electronic effects" },
-    { "front": "Hard vs soft drug concept in drug design", "back": "Hard drug: stable, no metabolism, excreted unchanged — predictable but potential accumulation/toxicity (e.g., heavy metals). Soft drug: designed to be predictably metabolized → inactive, non-toxic metabolite after desired action. Opposite of prodrug (soft drug is active first, deactivated after). Aims to avoid reactive metabolites" },
-    { "front": "Reactive metabolite formation: mechanism and consequences", "back": "Some drugs form reactive electrophilic metabolites via CYP oxidation: quinones (from phenol/catechol), arene oxides (from aromatic rings), acyl glucuronides, Michael acceptors. Reactive metabolites → covalently bind cellular proteins/DNA → idiosyncratic toxicity (hepatotoxicity, agranulocytosis). Detected by glutathione trapping. Examples: NAPQI (acetaminophen), carbamazepine epoxide" },
-    { "front": "Michael acceptors in drug design: role and risks", "back": "Michael acceptors: electrophilic α,β-unsaturated carbonyl compounds that react with nucleophiles (Cys, Lys residues in proteins). Some drugs deliberately designed as covalent inhibitors: ibrutinib (BTK Cys481), afatinib (EGFR Cys), acrylamide warhead. Risk: off-target covalent modification → toxicity. Require careful selectivity profiling" },
-    { "front": "Chiral drugs: eutomer vs distomer", "back": "Eutomer: more active enantiomer. Distomer: less active or inactive enantiomer. Chiral switch: from racemate to pure eutomer (example: S-omeprazole = esomeprazole, S-cetirizine = levocetirizine). Benefits: ↑ efficacy, ↓ side effects, ↓ dose. In vivo chiral inversion: some compounds (ibuprofen R→S) invert in body" },
-    { "front": "Fragment-based drug discovery (FBDD): concept", "back": "Screen low MW fragments (< 250 Da) that bind weakly to target. Fragment hits: LE (ligand efficiency, kcal/mol per heavy atom) > 0.3. Grow or link fragments → drug-like lead. Advantages: efficient sampling of chemical space, higher hit rate for difficult targets, better LE than HTS hits. Examples: vemurafenib (BRAF inhibitor) from FBDD" },
-    { "front": "Target-based vs phenotypic drug discovery: comparison", "back": "Target-based: identify molecular target (receptor, enzyme, gene) → design/screen for binders → optimize for PK/PD. Advantage: mechanistic clarity. Phenotypic: screen compounds in cell/animal model → look for desired effect → identify mechanism later. Advantage: finds drugs for complex diseases (CNS). ~50% of new mechanisms found via phenotypic discovery" },
-    { "front": "Pharmacophore: definition and use", "back": "Minimum 3D arrangement of features required for activity: H-bond donors/acceptors, hydrophobic centers, positive/negative ionizable groups, aromatic rings. Pharmacophore model used for: virtual screening (SBVS), scaffold hopping (finding new chemical series), designing new ligands. Does not describe the full molecule — just essential interaction pattern" },
-    { "front": "Scaffold hopping: concept and benefit", "back": "Replace core scaffold of a drug with a different ring/framework while maintaining pharmacophore features → new IP, overcome CYP metabolism, change physicochemical properties, escape patent. Example: cephalosporins are scaffold hops from penicillins (different β-lactam scaffold). Bioisostere swaps can also achieve scaffold hopping" },
-    { "front": "pKa and ionization state: impact on absorption", "back": "Henderson-Hasselbalch: for acids, pH < pKa → neutral form predominant (absorbed). For bases, pH > pKa → neutral form. Stomach (pH 1.2): weak acids (aspirin pKa 3.5) mostly neutral → absorbed. Small intestine (pH 6.5–7.5): weak bases absorbed here. Ion trapping: drug distributes to compartment where it is ionized (e.g., weak base trapped in acidic lysosome)" },
-    { "front": "Drug solubility enhancement strategies", "back": "Salt formation: convert acid to Na/K salt; base to HCl/citrate salt. Polymorphs: amorphous form more soluble than crystalline. Co-crystals: non-covalent complex with coformer. Cyclodextrins: form inclusion complex. Nano-formulations: particle size reduction ↑ surface area → ↑ dissolution. Solid dispersions in PEG/PVP: amorphous solid solution" },
-    { "front": "Deuterium labeling in drug design: purpose", "back": "Replace C-H with C-D at metabolically labile position. C-D bond ~7× stronger than C-H (primary kinetic isotope effect). Result: ↓ metabolic rate at labeled site → ↑ half-life → longer duration of action or ↓ dose frequency. Example: donepezil derivative deutetrabenazine (Austedo) approved 2017 — reduced CYP2D6 metabolism" },
-    { "front": "ADMET in silico prediction tools", "back": "SwissADME, pkCSM, ADMETlab: predict logP, solubility, BBB penetration, hERG inhibition, CYP substrate/inhibitor, toxicity from SMILES structure. In silico screening of virtual libraries before synthesis. Reduces costly late-stage failures. Still limited for novel chemical space — experimental confirmation needed for ADMET optimization" },
-    { "front": "hERG channel inhibition: cardiac safety concern", "back": "hERG (human ether-a-go-go-related gene): cardiac K+ channel responsible for phase 3 repolarization. Block → ↑ QT interval → risk of torsades de pointes (potentially fatal arrhythmia). Many drug withdrawals (terfenadine, cisapride). hERG binding features: basic nitrogen, aromatic rings, logP ~2–4 — many drug-like features unfortunately match. Screened early in development" },
-    { "front": "Selectivity vs specificity in drug design", "back": "Selectivity: preferentially targeting one receptor/enzyme over others (e.g., COX-2 selective vs non-selective NSAID). Specificity: acting only on intended target. Challenges: similar active site structure across enzyme families (kinases: 518 in human genome). Strategies: exploit allosteric sites, target unique structural features, covalent selectivity (only target with accessible Cys)" },
-    { "front": "Natural product drugs: significance in medicinal chemistry", "back": "~50% of approved drugs are natural products or derivatives. Examples: penicillin (fungal), taxol (yew tree), statins (Aspergillus), morphine (opium poppy), atropine (Atropa belladonna), digitalis (foxglove), artemisinin (wormwood). Natural products: complex chiral scaffolds, validated binding modes, high structural diversity. Semisynthesis: modify natural scaffold for improved properties" },
-    { "front": "Drug-likeness beyond Lipinski: other key filters", "back": "Veber rules: ≤ 10 rotatable bonds, PSA ≤ 140 Å² → good oral bioavailability. PAINS (pan-assay interference compounds): reactive or promiscuous scaffolds → artifacts in HTS (catechols, quinones, rhodanines). REOS filter: remove reactive groups. CNS drugs: LogP 1–3, PSA < 60–90 Å², MW < 450, ≤ 3 H-bond donors" },
-    { "front": "Allosteric modulators: positive (PAM) vs negative (NAM)", "back": "Allosteric modulators bind site distinct from orthosteric (endogenous ligand) site. PAM (positive allosteric modulator): ↑ agonist affinity or efficacy (e.g., benzodiazepines enhance GABA at GABA-A; cinacalcet at CaSR). NAM: ↓ response. Advantages: maintained physiological response patterns, saturable modulation, reduced tolerance" },
-    { "front": "Therapeutic index (TI) and drug safety in medicinal chemistry", "back": "TI = TD50/ED50. Narrow TI drugs: small margin between therapeutic and toxic dose. In medicinal chemistry: widen TI by improving selectivity (↑ target potency, ↓ off-target). Metabolic activation to toxic metabolites narrows TI. Eliminate reactive metabolite formation → widen safety window. Pre-clinical safety: AMES test (mutagenicity), hERG, CYP inhibition, PPB" },
-    { "front": "Combinatorial chemistry and high-throughput screening (HTS)", "back": "Combinatorial chemistry: synthesize large libraries of compounds with systematic variation. Split-and-pool synthesis, parallel synthesis. HTS: test 104–106 compounds/day against target using automated assay (FRET, fluorescence polarization, TR-FRET, SPR). Hit rate typically 0.01–0.1%. Hits → confirmation → SAR → lead → optimization" },
-    { "front": "Peptidomimetics: rationale and types", "back": "Peptide drugs have poor ADMET: proteolytic instability, poor oral bioavailability, rapid clearance. Peptidomimetics: compounds that mimic peptide conformation/function. Types: α→β peptides (methylene added to α-carbon → resistant to proteases), N-methylation, cyclization (constrains conformation), peptoid (N-alkyl glycine), β-turn mimetics" },
-    { "front": "Dose-response relationship: potency vs efficacy", "back": "Potency: EC50 (concentration for 50% maximal effect). Lower EC50 = more potent. Efficacy: maximum effect achievable (Emax). A partial agonist may be more potent but have lower efficacy than a full agonist. Clinically, efficacy often more important than potency (a highly potent drug with low ceiling effect may not be effective). Isobologram: analyze combination drugs" },
-    { "front": "Lead optimization: process and key parameters improved", "back": "Take hit compound → improve: potency (SAR), selectivity, metabolic stability (soft spots), solubility, permeability, hERG profile, toxicity profile, synthetic accessibility. Balance all ADMET properties simultaneously — improving one often worsens another (lipophilicity ↑ potency but ↑ toxicity). Multiparameter optimization (MPO scoring) guides decisions" },
-    { "front": "Transition state analog inhibitors: concept and examples", "back": "Enzymes bind transition state much more tightly than substrate (TS complementarity). Design inhibitors that mimic the transition state → very high affinity. Examples: phosphonate/phosphonamidate analogs (mimic tetrahedral transition state of peptide hydrolysis → HIV protease inhibitors: indinavir, ritonavir). Statins: mimic HMG-CoA + NADPH transition state at HMG-CoA reductase" },
-    { "front": "PROTAC (Proteolysis Targeting Chimera): concept", "back": "Bifunctional molecule: one end binds target protein (ligand), other end binds E3 ubiquitin ligase (e.g., VHL, CRBN). → Brings target protein and E3 ligase together → target ubiquitinated → proteasomal degradation. Advantages: catalytic mechanism (one PROTAC degrades multiple targets), targets undruggable proteins (e.g., transcription factors, scaffold proteins)" }
+    {
+      "front": "Lipinski's Rule of Five: definition and exceptions",
+      "back": "Predicts oral drug-likeness: MW ≤ 500 Da, H-bond donors ≤ 5, H-bond acceptors ≤ 10, cLogP ≤ 5. Violations → poor oral bioavailability. Exceptions: substrates for biological transporters (P-gp, OATPs), natural product-derived drugs, antibiotics. Rule does not apply to inhaled or injectable drugs"
+    },
+    {
+      "front": "ADMET: definition of each parameter",
+      "back": "A: Absorption (getting into systemic circulation — bioavailability). D: Distribution (Vd, protein binding, BBB penetration). M: Metabolism (CYP-mediated, phase I/II — first-pass effect). E: Excretion (renal clearance, biliary, half-life). T: Toxicity (off-target effects, mutagenicity, hERG channel block)"
+    },
+    {
+      "front": "cLogP (partition coefficient): significance in drug design",
+      "back": "cLogP = log([drug]octanol / [drug]water). Higher logP = more lipophilic. LogP 1–3: optimal oral absorption range. Too high (> 5): poor aqueous solubility, high protein binding, toxicity. Too low (< 0): poor membrane permeability. LogP affects: absorption, BBB penetration, protein binding, metabolism rate"
+    },
+    {
+      "front": "Structure-activity relationship (SAR): definition and application",
+      "back": "SAR: systematic study of how changes in molecular structure affect biological activity. Vary: substituents (electron donors/withdrawors, size, shape), stereochemistry, ring systems, linker length. SAR guides lead optimization. Bioisosterism: replace one group with another of similar size/polarity/electronics but different chemistry (e.g., -F for -OH)"
+    },
+    {
+      "front": "Bioisosteres: examples and rationale",
+      "back": "Classical: F for H (similar size, blocks oxidation, ↑ metabolic stability), NH for O (H-bond donor/acceptor), Cl for Me (similar size, lipophilic). Non-classical: COOH → tetrazole (same pKa ~4.5, ↑ bioavailability, metabolically stable), OH → NH2 (H-bond donor). Used to: ↑ potency, fix metabolism, ↑ selectivity"
+    },
+    {
+      "front": "Prodrug concept: definition and examples",
+      "back": "Prodrug: inactive parent compound converted to active drug by enzymatic/chemical transformation in body. Rationale: ↑ solubility (fosfomycin), ↑ oral bioavailability (valacyclovir → acyclovir, ester prodrug cleaved by esterase), ↑ CNS penetration, bypass first-pass, site-specific activation. ~10% of marketed drugs are prodrugs"
+    },
+    {
+      "front": "Ester prodrug design: mechanism of activation",
+      "back": "Esterification of carboxylic acid or alcohol → ester prodrug. Esterases (ubiquitous in plasma, liver, gut) hydrolyze ester bond → releases active drug + alcohol. Examples: aspirin (acetylsalicylic acid) → salicylate + acetic acid. Enalapril → enalaprilat (ACE inhibitor). ACE esters improve oral absorption of the acid forms"
+    },
+    {
+      "front": "First-pass effect: what it is and how prodrugs help",
+      "back": "Oral drug absorbed from gut → portal circulation → liver → metabolism before reaching systemic circulation → ↓ bioavailability. Drugs with high first-pass effect: lidocaine, nitroglycerin, morphine, propranolol. Solutions: IV/sublingual/transdermal routes, or prodrug that resists first-pass metabolism and converts after reaching systemic circulation"
+    },
+    {
+      "front": "CYP450 enzymes in drug metabolism: key isoforms and substrates",
+      "back": "CYP3A4: ~50% of drugs (metabolizes benzodiazepines, statins, macrolides, HIV drugs). CYP2D6: antidepressants, antipsychotics, codeine (activation → morphine). CYP2C9: warfarin, NSAIDs, phenytoin. CYP2C19: PPIs, clopidogrel (activation), SSRIs. CYP2E1: ethanol, acetaminophen (NAPQI formation). CYP1A2: theophylline, caffeine, clozapine"
+    },
+    {
+      "front": "Cytochrome P450: mechanism of oxidation",
+      "back": "P450 catalytic cycle: Fe(III) + substrate → O2 binds Fe(II) → electron transfer → Fe(III)-OOH intermediate → [Fe=O]3+ (compound I) → oxygen insertion into C-H bond. NADPH provides electrons. Products: hydroxylated metabolite + H2O. Types: aliphatic hydroxylation, aromatic hydroxylation, N-/O-dealkylation, epoxidation, sulfoxidation"
+    },
+    {
+      "front": "Metabolic stability: approaches to improve it",
+      "back": "Metabolically labile positions (soft spots): benzylic C-H, tertiary amines, aromatic methoxy groups. Strategies: replace H with F (blocks oxidation), reduce lipophilicity (↓ CYP interaction), add bulky group near labile position (steric hindrance), use deuterium labeling (kinetic isotope effect — KIE: C-D bond ~7× slower to break than C-H)"
+    },
+    {
+      "front": "Blood-brain barrier (BBB) penetration: structural requirements",
+      "back": "Factors favoring BBB penetration: low MW (< 450 Da), low H-bond donor count (< 3), moderate lipophilicity (logP ~2), not P-gp substrate. BBB has active transporters: P-gp efflux pump actively extrudes many CNS drugs. Strategies: ↓ PSA (polar surface area < 60–70 Å²), esterify polar groups temporarily, P-gp inhibitors"
+    },
+    {
+      "front": "Protein binding: high protein-bound drugs — implications",
+      "back": "Plasma protein binding (PPB): albumin (acidic drugs), AAG (α1-acid glycoprotein, basic drugs). Highly bound (> 95%): warfarin, naproxen, diazepam. Only free (unbound) drug is pharmacologically active. High PPB: ↑ Vd, longer t½, potential displacement interactions. Critically important for narrow TI drugs"
+    },
+    {
+      "front": "Drug receptor interactions: types of bonds (from weakest to strongest)",
+      "back": "Van der Waals: ~1 kcal/mol (all molecules). Hydrophobic interactions: ~1–3 kcal/mol. Hydrogen bonds: ~3–5 kcal/mol. Electrostatic/ionic: ~3–7 kcal/mol. Covalent bonds: ~50–100 kcal/mol (irreversible). Most drug-receptor: multiple non-covalent interactions (additive) → selectivity and reversibility. Covalent drugs: aspirin (COX), omeprazole (H/K-ATPase)"
+    },
+    {
+      "front": "Lock-and-key vs induced-fit model of enzyme/receptor binding",
+      "back": "Lock-and-key: rigid complementary fit between drug and receptor. Induced fit: receptor undergoes conformational change upon drug binding (more accurate). Conformational selection: receptor exists in multiple conformations; drug selects/stabilizes preferred form. Allosteric modulation: binding site distinct from active site changes receptor conformation"
+    },
+    {
+      "front": "Quantitative SAR (QSAR): Hansch analysis",
+      "back": "QSAR correlates physicochemical parameters with biological activity using regression equations. Hansch-Fujita: biological activity = function of logP, σ (Hammett substituent constant), Es (steric constant). Parabolic relationship for logP and activity: optimal logP for absorption. QSAR models used to predict activity of untested compounds"
+    },
+    {
+      "front": "Hammett equation: sigma (σ) constants",
+      "back": "σ = log(Ka,substituted/Ka,unsubstituted) for benzoic acid derivatives. σ reflects electronic effect of substituents. EWG: positive σ (stabilize carboxylate by induction). EDG: negative σ. σp (para) vs σm (meta). log(kX/kH) = ρσ. ρ > 0: EWG increases rate. ρ < 0: EDG increases rate. Used in SAR to predict electronic effects"
+    },
+    {
+      "front": "Hard vs soft drug concept in drug design",
+      "back": "Hard drug: stable, no metabolism, excreted unchanged — predictable but potential accumulation/toxicity (e.g., heavy metals). Soft drug: designed to be predictably metabolized → inactive, non-toxic metabolite after desired action. Opposite of prodrug (soft drug is active first, deactivated after). Aims to avoid reactive metabolites"
+    },
+    {
+      "front": "Reactive metabolite formation: mechanism and consequences",
+      "back": "Some drugs form reactive electrophilic metabolites via CYP oxidation: quinones (from phenol/catechol), arene oxides (from aromatic rings), acyl glucuronides, Michael acceptors. Reactive metabolites → covalently bind cellular proteins/DNA → idiosyncratic toxicity (hepatotoxicity, agranulocytosis). Detected by glutathione trapping. Examples: NAPQI (acetaminophen), carbamazepine epoxide"
+    },
+    {
+      "front": "Michael acceptors in drug design: role and risks",
+      "back": "Michael acceptors: electrophilic α,β-unsaturated carbonyl compounds that react with nucleophiles (Cys, Lys residues in proteins). Some drugs deliberately designed as covalent inhibitors: ibrutinib (BTK Cys481), afatinib (EGFR Cys), acrylamide warhead. Risk: off-target covalent modification → toxicity. Require careful selectivity profiling"
+    },
+    {
+      "front": "Chiral drugs: eutomer vs distomer",
+      "back": "Eutomer: more active enantiomer. Distomer: less active or inactive enantiomer. Chiral switch: from racemate to pure eutomer (example: S-omeprazole = esomeprazole, S-cetirizine = levocetirizine). Benefits: ↑ efficacy, ↓ side effects, ↓ dose. In vivo chiral inversion: some compounds (ibuprofen R→S) invert in body"
+    },
+    {
+      "front": "Fragment-based drug discovery (FBDD): concept",
+      "back": "Screen low MW fragments (< 250 Da) that bind weakly to target. Fragment hits: LE (ligand efficiency, kcal/mol per heavy atom) > 0.3. Grow or link fragments → drug-like lead. Advantages: efficient sampling of chemical space, higher hit rate for difficult targets, better LE than HTS hits. Examples: vemurafenib (BRAF inhibitor) from FBDD"
+    },
+    {
+      "front": "Target-based vs phenotypic drug discovery: comparison",
+      "back": "Target-based: identify molecular target (receptor, enzyme, gene) → design/screen for binders → optimize for PK/PD. Advantage: mechanistic clarity. Phenotypic: screen compounds in cell/animal model → look for desired effect → identify mechanism later. Advantage: finds drugs for complex diseases (CNS). ~50% of new mechanisms found via phenotypic discovery"
+    },
+    {
+      "front": "Pharmacophore: definition and use",
+      "back": "Minimum 3D arrangement of features required for activity: H-bond donors/acceptors, hydrophobic centers, positive/negative ionizable groups, aromatic rings. Pharmacophore model used for: virtual screening (SBVS), scaffold hopping (finding new chemical series), designing new ligands. Does not describe the full molecule — just essential interaction pattern"
+    },
+    {
+      "front": "Scaffold hopping: concept and benefit",
+      "back": "Replace core scaffold of a drug with a different ring/framework while maintaining pharmacophore features → new IP, overcome CYP metabolism, change physicochemical properties, escape patent. Example: cephalosporins are scaffold hops from penicillins (different β-lactam scaffold). Bioisostere swaps can also achieve scaffold hopping"
+    },
+    {
+      "front": "pKa and ionization state: impact on absorption",
+      "back": "Henderson-Hasselbalch: for acids, pH < pKa → neutral form predominant (absorbed). For bases, pH > pKa → neutral form. Stomach (pH 1.2): weak acids (aspirin pKa 3.5) mostly neutral → absorbed. Small intestine (pH 6.5–7.5): weak bases absorbed here. Ion trapping: drug distributes to compartment where it is ionized (e.g., weak base trapped in acidic lysosome)"
+    },
+    {
+      "front": "Drug solubility enhancement strategies",
+      "back": "Salt formation: convert acid to Na/K salt; base to HCl/citrate salt. Polymorphs: amorphous form more soluble than crystalline. Co-crystals: non-covalent complex with coformer. Cyclodextrins: form inclusion complex. Nano-formulations: particle size reduction ↑ surface area → ↑ dissolution. Solid dispersions in PEG/PVP: amorphous solid solution"
+    },
+    {
+      "front": "Deuterium labeling in drug design: purpose",
+      "back": "Replace C-H with C-D at metabolically labile position. C-D bond ~7× stronger than C-H (primary kinetic isotope effect). Result: ↓ metabolic rate at labeled site → ↑ half-life → longer duration of action or ↓ dose frequency. Example: donepezil derivative deutetrabenazine (Austedo) approved 2017 — reduced CYP2D6 metabolism"
+    },
+    {
+      "front": "ADMET in silico prediction tools",
+      "back": "SwissADME, pkCSM, ADMETlab: predict logP, solubility, BBB penetration, hERG inhibition, CYP substrate/inhibitor, toxicity from SMILES structure. In silico screening of virtual libraries before synthesis. Reduces costly late-stage failures. Still limited for novel chemical space — experimental confirmation needed for ADMET optimization"
+    },
+    {
+      "front": "hERG channel inhibition: cardiac safety concern",
+      "back": "hERG (human ether-a-go-go-related gene): cardiac K+ channel responsible for phase 3 repolarization. Block → ↑ QT interval → risk of torsades de pointes (potentially fatal arrhythmia). Many drug withdrawals (terfenadine, cisapride). hERG binding features: basic nitrogen, aromatic rings, logP ~2–4 — many drug-like features unfortunately match. Screened early in development"
+    },
+    {
+      "front": "Selectivity vs specificity in drug design",
+      "back": "Selectivity: preferentially targeting one receptor/enzyme over others (e.g., COX-2 selective vs non-selective NSAID). Specificity: acting only on intended target. Challenges: similar active site structure across enzyme families (kinases: 518 in human genome). Strategies: exploit allosteric sites, target unique structural features, covalent selectivity (only target with accessible Cys)"
+    },
+    {
+      "front": "Natural product drugs: significance in medicinal chemistry",
+      "back": "~50% of approved drugs are natural products or derivatives. Examples: penicillin (fungal), taxol (yew tree), statins (Aspergillus), morphine (opium poppy), atropine (Atropa belladonna), digitalis (foxglove), artemisinin (wormwood). Natural products: complex chiral scaffolds, validated binding modes, high structural diversity. Semisynthesis: modify natural scaffold for improved properties"
+    },
+    {
+      "front": "Drug-likeness beyond Lipinski: other key filters",
+      "back": "Veber rules: ≤ 10 rotatable bonds, PSA ≤ 140 Å² → good oral bioavailability. PAINS (pan-assay interference compounds): reactive or promiscuous scaffolds → artifacts in HTS (catechols, quinones, rhodanines). REOS filter: remove reactive groups. CNS drugs: LogP 1–3, PSA < 60–90 Å², MW < 450, ≤ 3 H-bond donors"
+    },
+    {
+      "front": "Allosteric modulators: positive (PAM) vs negative (NAM)",
+      "back": "Allosteric modulators bind site distinct from orthosteric (endogenous ligand) site. PAM (positive allosteric modulator): ↑ agonist affinity or efficacy (e.g., benzodiazepines enhance GABA at GABA-A; cinacalcet at CaSR). NAM: ↓ response. Advantages: maintained physiological response patterns, saturable modulation, reduced tolerance"
+    },
+    {
+      "front": "Therapeutic index (TI) and drug safety in medicinal chemistry",
+      "back": "TI = TD50/ED50. Narrow TI drugs: small margin between therapeutic and toxic dose. In medicinal chemistry: widen TI by improving selectivity (↑ target potency, ↓ off-target). Metabolic activation to toxic metabolites narrows TI. Eliminate reactive metabolite formation → widen safety window. Pre-clinical safety: AMES test (mutagenicity), hERG, CYP inhibition, PPB"
+    },
+    {
+      "front": "Combinatorial chemistry and high-throughput screening (HTS)",
+      "back": "Combinatorial chemistry: synthesize large libraries of compounds with systematic variation. Split-and-pool synthesis, parallel synthesis. HTS: test 104–106 compounds/day against target using automated assay (FRET, fluorescence polarization, TR-FRET, SPR). Hit rate typically 0.01–0.1%. Hits → confirmation → SAR → lead → optimization"
+    },
+    {
+      "front": "Peptidomimetics: rationale and types",
+      "back": "Peptide drugs have poor ADMET: proteolytic instability, poor oral bioavailability, rapid clearance. Peptidomimetics: compounds that mimic peptide conformation/function. Types: α→β peptides (methylene added to α-carbon → resistant to proteases), N-methylation, cyclization (constrains conformation), peptoid (N-alkyl glycine), β-turn mimetics"
+    },
+    {
+      "front": "Dose-response relationship: potency vs efficacy",
+      "back": "Potency: EC50 (concentration for 50% maximal effect). Lower EC50 = more potent. Efficacy: maximum effect achievable (Emax). A partial agonist may be more potent but have lower efficacy than a full agonist. Clinically, efficacy often more important than potency (a highly potent drug with low ceiling effect may not be effective). Isobologram: analyze combination drugs"
+    },
+    {
+      "front": "Lead optimization: process and key parameters improved",
+      "back": "Take hit compound → improve: potency (SAR), selectivity, metabolic stability (soft spots), solubility, permeability, hERG profile, toxicity profile, synthetic accessibility. Balance all ADMET properties simultaneously — improving one often worsens another (lipophilicity ↑ potency but ↑ toxicity). Multiparameter optimization (MPO scoring) guides decisions"
+    },
+    {
+      "front": "Transition state analog inhibitors: concept and examples",
+      "back": "Enzymes bind transition state much more tightly than substrate (TS complementarity). Design inhibitors that mimic the transition state → very high affinity. Examples: phosphonate/phosphonamidate analogs (mimic tetrahedral transition state of peptide hydrolysis → HIV protease inhibitors: indinavir, ritonavir). Statins: mimic HMG-CoA + NADPH transition state at HMG-CoA reductase"
+    },
+    {
+      "front": "PROTAC (Proteolysis Targeting Chimera): concept",
+      "back": "Bifunctional molecule: one end binds target protein (ligand), other end binds E3 ubiquitin ligase (e.g., VHL, CRBN). → Brings target protein and E3 ligase together → target ubiquitinated → proteasomal degradation. Advantages: catalytic mechanism (one PROTAC degrades multiple targets), targets undruggable proteins (e.g., transcription factors, scaffold proteins)"
+    },
+    {
+      "front": "Bioisosteres: definition and common replacements",
+      "back": "Bioisostere = group with similar size/electronics/lipophilicity to original but altered properties. Common: F for H (block metabolism), CF3 for CH3, tetrazole for COOH (acid bioisostere, more lipophilic), pyridine for benzene (↓ logP, ↓ CYP inhibition)."
+    },
+    {
+      "front": "Covalent (irreversible) inhibitors: mechanism and clinical examples",
+      "back": "Form covalent bond with target residue (often active-site Cys, Ser, or Lys). Examples: aspirin (acetylates COX-1 Ser530), omeprazole (binds H+/K+-ATPase Cys813), ibrutinib (Cys481 of BTK), osimertinib (Cys797 of EGFR T790M). Advantage: prolonged effect; risk: off-target toxicity."
+    },
+    {
+      "front": "ADMET: bioavailability definition and factors affecting oral absorption (MEAL)",
+      "back": "Oral bioavailability (F) = fraction of dose reaching systemic circulation. Factors: Membrane permeability (lipophilicity), Efflux transporters (P-gp), Aqueous solubility, Liver first-pass metabolism. Lipinski Ro5 predicts absorption; P-gp substrate status limits CNS entry."
+    },
+    {
+      "front": "Metabolic soft spots: concept and strategies to block oxidative metabolism",
+      "back": "Soft spot = site most susceptible to CYP oxidation (electron-rich aromatics, benzylic CH, N-dealkylation sites). Strategies to block: deuterium substitution (kH/kD isotope effect ~7), fluorine substitution adjacent to oxidation site, ring fluorination, scaffold modification to remove metabolically labile groups."
+    },
+    {
+      "front": "Molecular recognition: hydrogen bond donors and acceptors in drug-receptor binding",
+      "back": "H-bond donor: N–H, O–H. H-bond acceptor: N, O, F lone pairs. Drug design: match complementary H-bond pattern to binding site. Each H-bond contributes ~1–3 kcal/mol. Entropic cost: immobilising rotatable bonds costs ~0.5 kcal/mol each. Ro5: ≤5 HBD, ≤10 HBA."
+    },
+    {
+      "front": "Drug repurposing (repositioning): definition and examples",
+      "back": "Finding new therapeutic uses for existing drugs. Examples: sildenafil (hypertension → erectile dysfunction), thalidomide (sedative → multiple myeloma/leprosy), metformin (diabetes → potential AMPK-mediated anticancer). Advantage: known safety profile, faster development; risk: off-patent competition."
+    },
+    {
+      "front": "Plasma protein binding: clinical significance",
+      "back": "Drugs bind albumin (acidic drugs) or α1-acid glycoprotein (basic drugs). Only unbound (free) fraction is pharmacologically active. High protein binding (>99%): drug-drug interactions if displaced. Key: protein binding affects Vd (highly bound → low Vd); total drug concentration ≠ active drug concentration."
+    },
+    {
+      "front": "Fragment-based drug discovery (FBDD): concept",
+      "back": "Screen small fragment libraries (MW <300, Ro3) against target using NMR/X-ray/SPR. Fragments bind weakly (mM Kd) but efficiently (high ligand efficiency). Grow or merge fragments into lead compounds. Examples: venetoclax (BCL-2 inhibitor) developed via FBDD."
+    },
+    {
+      "front": "Toxicophores: structural alerts in medicinal chemistry",
+      "back": "Structural motifs associated with toxicity or reactive metabolite formation. Examples: aromatic amine (oxidised to electrophilic nitrenium ion), nitro group (reduction → hydroxylamine), Michael acceptor (covalent protein binding), epoxide (reactive electrophile). Identified by structural alerts + GSH trapping assays."
+    }
   ]
 }

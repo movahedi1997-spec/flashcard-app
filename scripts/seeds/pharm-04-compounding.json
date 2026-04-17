@@ -5,52 +5,205 @@
   "color": "sky",
   "subject": "pharmacy",
   "cards": [
-    { "front": "USP <795> vs <797> vs <800>: scope of each chapter", "back": "USP <795>: Non-sterile compounding (ointments, capsules, oral solutions). USP <797>: Sterile compounding (injections, eye drops, IV admixtures). USP <800>: Hazardous drug handling (applies to both sterile and non-sterile). USP <825>: Radiopharmaceuticals" },
-    { "front": "Beyond-use date (BUD) vs expiration date: distinction", "back": "Expiration date: manufacturer-assigned date based on stability testing of original unopened product. BUD: date assigned by pharmacist/compounder after compounding or opening — based on USP guidelines and stability data. BUD ≤ expiration date" },
-    { "front": "USP <797> BUD for Category 1 sterile preparations (no sterility testing)", "back": "Category 1 CSPs (compounded sterile preparations): BUD ≤ 12 hours at controlled room temperature (CRT) OR ≤ 24 hours at refrigerated (36–46°F/2–8°C). Applies to high-risk preparations made without full ISO 5 primary engineering controls" },
-    { "front": "USP <797> BUD for Category 2 sterile preparations", "back": "Category 2 CSPs with sterility and endotoxin testing: CRT: up to 45 days. Refrigerated: up to 90 days. Frozen: up to 1 year. Without full testing but using ISO 5 PEC: shorter limits apply. Category 2 requires ISO 7 buffer room + ISO 5 PEC minimum" },
-    { "front": "ISO cleanroom classifications: particle count standards", "back": "ISO 5: ≤ 3,520 particles/m³ (≥0.5 μm) — primary engineering control (laminar flow hood, RABS, isolator). ISO 7: ≤ 352,000 particles/m³ — buffer room. ISO 8: ≤ 3,520,000 particles/m³ — ante room. 'Cleaner' = lower ISO number" },
-    { "front": "Primary engineering controls (PECs): types and uses", "back": "LAFW (laminar airflow workbench): positive pressure, for non-hazardous sterile compounding. BSC (biological safety cabinet): negative pressure, for hazardous drugs (USP 800). CACI (compounding aseptic containment isolator): for hazardous sterile. RABS: restricted-access barrier system" },
-    { "front": "Garbing order for sterile compounding (outside to inside)", "back": "Outside ante room: shoe covers, hair cover, face mask. Ante room: hand washing, gown. Buffer room: sterile gloves (after hand hygiene). The 'outside-in' order prevents contaminating clean areas. Gloves = last item applied in cleanroom" },
-    { "front": "USP <800>: scope and who must comply", "back": "Applies to ALL healthcare settings that receive, store, compound, or administer hazardous drugs (HDs). Includes hospitals, outpatient pharmacies, clinics, physician offices. HDs list based on NIOSH table. Applies to non-sterile and sterile HD compounding" },
-    { "front": "NIOSH hazardous drug categories (USP <800>)", "back": "Group 1: antineoplastic agents (highest hazard). Group 2: non-antineoplastic HDs (reproductive risks, organ toxicity). Group 3: drugs that meet HD criteria for reproductive hazard only. Examples: methotrexate, cyclophosphamide, warfarin (Group 3), some hormones (estrogens, finasteride)" },
-    { "front": "Closed system drug-transfer devices (CSTDs): requirement", "back": "Required for preparing and administering antineoplastic agents per USP <800>. CSTDs prevent escape of HD vapor and liquid (examples: PhaSeal, Equashield, ChemoClave). Must be used when HDs are dissolved or volatilize at room temperature" },
-    { "front": "Master formulation record vs compounding record: distinction", "back": "Master formulation record (MFR): the 'recipe' — contains formulation, ingredients, equipment, BUD, reference sources. Compounding record (CR): the 'batch record' — documents each specific batch made (lot numbers, quantities used, pharmacist verification, final checks)" },
-    { "front": "Non-sterile compounding BUD (USP <795>): aqueous preparations", "back": "Non-aqueous (oils, ointments): up to 6 months or 70% of remaining API shelf life. Aqueous liquids (oral solutions, suspensions): ≤ 14 days refrigerated (no preservative) — 35 days maximum with established stability. Solid preparations (capsules): ≤ 6 months. Topical aqueous: ≤ 30 days" },
-    { "front": "Sterility testing: why 14-day incubation period", "back": "USP sterility test requires 14 days incubation at 20–25°C (aerobic) and 30–35°C (anaerobic). Time needed for slow-growing microorganisms to produce visible turbidity. Rapid testing alternatives now available but require USP validation" },
-    { "front": "Endotoxin (pyrogen) testing: LAL test", "back": "Limulus amebocyte lysate (LAL) test detects bacterial endotoxins (gram-negative). Maximum endotoxin limit (MEL): 5 EU/kg/hr for parenteral drugs (general). CNS route: 0.2 EU/kg/hr. Water for injection must pass LAL test. Rabbit pyrogen test used when LAL is not applicable" },
-    { "front": "Hand hygiene for sterile compounding: soap vs ABHR", "back": "Wash hands ≥ 30 seconds with soap and water first (removes gross contamination). Then apply alcohol-based hand rub (ABHR) — more effective against broad spectrum of organisms. In ISO buffer room: sterile gloves are required AND hand hygiene must be performed" },
-    { "front": "Ointment bases: 4 types and examples", "back": "Oleaginous (hydrocarbon): Petrolatum — occlusive, anhydrous, won't absorb water. Absorption: Aquaphor — anhydrous but can absorb water. W/O emulsion: cold cream — holds water-soluble drugs. O/W emulsion: Hydrophilic ointment — water-washable, non-greasy (preferred for cosmetics)" },
-    { "front": "Suppository bases: 3 types", "back": "Fatty/cocoa butter (oleaginous): melts at body temp (34–36°C), avoid overheating. PEG (polyethylene glycol): dissolves in rectal fluid, no melting needed, keep moisture-free. Glycerinated gelatin: less common, primarily vaginal use. Calculate dose displacement value when making suppositories" },
-    { "front": "Trituration vs levigation: definitions", "back": "Trituration: dry grinding of solids to reduce particle size and mix evenly (mortar and pestle). Levigation: adding a small amount of levigating agent (same base or compatible oil) to wet-grind an insoluble powder before incorporating into ointment → prevents gritty texture" },
-    { "front": "Geometric dilution: technique", "back": "When mixing drugs of unequal quantities: add equal volume of diluent/base to small drug, mix thoroughly; then add another equal volume and mix again, repeat until all is incorporated. Prevents uneven distribution of potent low-dose drugs. Required for capsule filling with low-dose actives" },
-    { "front": "Punch method for capsule filling", "back": "Used for hand-filling hard gelatin capsules: spread powder blend on smooth surface, use capsule body to repeatedly punch/scoop powder until filled. Pack consistently for uniform weight. Quality check: weigh 10 capsules, calculate mean weight and individual deviations" },
-    { "front": "Lozenges (troches): base and drug considerations", "back": "Polyethylene glycol (PEG) base most common (hard candy texture). Chocolate base available. Drugs must be heat-stable (molds require melting). Used for: hormones (BHRT), antibiotics (clindamycin), antifungals (nystatin), hormone therapy, buprenorphine. BUD: 30–35 days" },
-    { "front": "Transdermal/topical compounding: base selection principle", "back": "Lipophilic drugs: penetrate skin better; use petrolatum or lipophilic base. Hydrophilic drugs: require penetration enhancers (DMSO, propylene glycol) or specialized bases (PLO — pluronic lecithin organogel). Transdermal absorption highly variable; not well-studied for many compounded drugs" },
-    { "front": "USP <1> water-for-injection (WFI): requirements", "back": "WFI is purified water that meets USP specifications: free of pyrogens (endotoxin < 0.25 EU/mL), low microbial burden, produced by distillation or reverse osmosis. Required for parenteral products. Sterile WFI (in sealed vials) used for injection and reconstitution" },
-    { "front": "Autoclave: moist heat sterilization parameters", "back": "Standard cycle: 121°C, 15 psi, 15–30 minutes. Validates by biological indicators (Geobacillus stearothermophilus spores — most resistant to moist heat). Used for: glassware, media, heat-stable solutions. NOT for heat-labile drugs (proteins, some APIs)" },
-    { "front": "Dry heat sterilization: temperature and use", "back": "160–170°C for 2+ hours. Kills both organisms and endotoxins (depyrogenation: 250°C for 30 min). Used for: glassware, oils, waxes, anhydrous powders. Does NOT penetrate moisture. Validated with Bacillus atrophaeus spores" },
-    { "front": "Filtration sterilization: pore size and use", "back": "0.22 μm (or 0.2 μm) filter: sterilizing grade — removes bacteria and fungi but NOT viruses or prions. Used for heat-labile solutions (some biologics, certain APIs). 0.45 μm: prefiltration, clarifying. Integrity testing (bubble point) required to verify filter before and after use" },
-    { "front": "Environmental monitoring (EM) program: USP <797> components", "back": "Viable air sampling (impaction): active sampling with agar plates. Surface sampling: contact plates and swabs. Non-viable particle counting. Personnel glove fingertip sampling. Frequency depends on ISO classification and risk level. Failure triggers investigation and corrective action" },
-    { "front": "HEPA filtration: efficiency and use", "back": "HEPA (high-efficiency particulate air): filters ≥ 99.97% of particles ≥ 0.3 μm. Used in laminar airflow workbenches, BSCs, isolators. Must be certified annually (IEST standards). Directional airflow: horizontal LAFW blows toward operator; vertical LAFW blows downward" },
-    { "front": "Compounding regulatory framework: FDA 503A vs 503B", "back": "503A: traditional pharmacy compounding for individual patients with valid prescription. State Board of Pharmacy regulated. 503B: outsourcing facilities — can compound without patient-specific Rx, must follow cGMP, FDA regulated. Must register with FDA, pay fees, subject to inspection" },
-    { "front": "Flavoring agents for pediatric and veterinary compounding", "back": "Key principles: consider drug properties (e.g., sweet base for bitter drugs). Common pediatric flavors: grape, bubblegum, strawberry. Common veterinary: chicken, bacon, fish, beef. Sweeteners: sucrose (cariogenic), sorbitol, stevia, saccharin. Avoid sorbitol in large quantities (osmotic diarrhea)" },
-    { "front": "Reconstitution: calculating final concentration", "back": "Example: Amoxicillin 250 mg/5 mL: vial contains 2,500 mg powder. Add 100 mL water → final volume = 100 mL (powder volume negligible, or add to 85 mL for 100 mL final). C = 2,500/100 = 25 mg/mL = 250 mg/10 mL. Shake well, label with BUD (usually 7–14 days refrigerated)" },
-    { "front": "Parenteral route compatibility issues: Y-site and piggyback", "back": "Y-site compatibility: two drugs run simultaneously through same IV line at Y-junction — must be physically and chemically compatible. Check compatibility reference (Trissel's, King Guide). Incompatible signs: precipitate, color change, turbidity. Critical: phenytoin (precipitates in glucose)" },
-    { "front": "pH and drug stability in solution", "back": "Most drugs have optimal pH range for stability. Acidic drugs (penicillins): stable at low pH, degrade in alkaline. Basic drugs: stable at higher pH. IV bags of phenytoin: must be diluted in NS (not D5W) — lower pH of NS better for stability; glucose causes precipitation" },
-    { "front": "Bioavailability enhancement in compounding: particle size reduction", "back": "Micronization: reduces API particle size to 1–10 μm → ↑ surface area → ↑ dissolution rate → ↑ bioavailability. Used for poorly water-soluble drugs (progesterone, griseofulvin). Nano-formulation and amorphous solid dispersions are further enhancements" },
-    { "front": "USP <795> documentation requirements", "back": "Each compound requires: master formulation record (MFR) and compounding record (CR). MFR: formulation, equipment, reference, BUD rationale. CR: name, date, lot numbers, quantities weighed, compounder and pharmacist initials, quality checks. Retained per state regulations (usually 2–5 years)" },
-    { "front": "Overage/overages in compounding: definition and limit", "back": "Overages: excess API added to a compounded preparation to account for losses during manufacturing or to ensure labeled amount throughout BUD. Must be justified and documented. Typically ≤ 10% of nominal dose. Excessive overage without justification is considered adulteration" },
-    { "front": "Solubility enhancement techniques in non-sterile compounding", "back": "Cosolvents: add ethanol, propylene glycol, glycerin, PEG. Surfactants: polysorbate 80, Cremophor EL. Complexation: cyclodextrins (HP-β-CD). pH adjustment: use acid/base to increase ionization (ionic form more water-soluble). Salt formation: adjust API to salt form" },
-    { "front": "Veterinary compounding: key regulatory considerations", "back": "Allowed when no FDA-approved veterinary product exists or is not available. Must have valid veterinarian-client-patient relationship (VCPR). Cannot copy commercial products. Flavoring to improve palatability is acceptable. FDCA extraterritoriality provisions apply across state lines" },
-    { "front": "Ophthalmic compounding: tonicity and pH requirements", "back": "Ophthalmic preparations must be: isotonic (approximately 0.9% NaCl equivalent, 280–300 mOsm/L), sterile, free of particles, appropriate pH (6.5–7.4 preferred). Buffered with phosphate or borate buffers. BUD per USP <797>: Category 1 or Category 2 depending on processing" },
-    { "front": "Controlled substance compounding: legal requirements", "back": "Must have DEA registration if compounding Schedule II–V substances. Compounded preparations must be derived from FDA-approved bulk APIs (scheduled or otherwise). Cannot compound CIII-V for office use in large quantities without patient-specific Rx. State-specific rules vary" },
-    { "front": "Gowning requalification: why annual is insufficient for sterile compounding", "back": "USP <797> (2023 revision): gloved fingertip sampling required initially (before personnel begin compounding independently) and media fill testing. Media fill tests: at least annually for Category 2 operations; after significant changes. Surface and air monitoring ongoing. Ongoing education required" },
-    { "front": "PCAB (Pharmacy Compounding Accreditation Board): significance", "back": "Voluntary accreditation program for compounding pharmacies demonstrating compliance with USP <795>, <797>, <800>. Requires rigorous on-site inspection. Not mandatory but signals quality to prescribers and payers. 503B outsourcing facilities may seek ISO certification instead" },
-    { "front": "Incompatibility types in compounding: physical vs chemical vs therapeutic", "back": "Physical: precipitation, phase separation (mixing oil/water without emulsifier), color change. Chemical: hydrolysis (aspirin in water), oxidation (vitamin C), photodegradation (nifedipine, nitroprusside). Therapeutic: antagonism or additive toxicity from combined ingredients" },
-    { "front": "Light-sensitive drugs: storage and packaging", "back": "Protect from light: nitroprusside, nifedipine, amphotericin B, riboflavin, vitamin A, metronidazole IV. Use amber vials, UV-protective bags, foil overwraps. Store in light-protected areas. Label 'Protect from light.' USP light transmission specifications for amber glass" },
-    { "front": "Laminar flow hood certification schedule", "back": "Laminar airflow workbenches (LAFW) and biological safety cabinets (BSC) must be certified by a certified technician (CETA or equivalent): at initial installation, after any relocation, after repairs/filter changes, and every 6 months ongoing. Velocity and filter integrity tested" },
-    { "front": "Suppository displacement value calculation", "back": "Displacement value (DV) = mass of drug displacing 1 g of cocoa butter. If DV = 0.5, then 2 g drug displaces 1 g of base. Adjusted base weight = total suppository weight − (drug weight / DV). Critical for accurate dosing in fatty base suppositories" },
-    { "front": "Preservatives in ophthalmic preparations: example and concern", "back": "Benzalkonium chloride (BAK): most common ophthalmic preservative — antimicrobial. Concern: epithelial toxicity with chronic use (contact lens incompatibility, dry eye). Preservative-free unit dose vials preferred for glaucoma patients, contact lens wearers, severe dry eye" }
+    {
+      "front": "USP <795> vs <797> vs <800>: scope of each chapter",
+      "back": "USP <795>: Non-sterile compounding (ointments, capsules, oral solutions). USP <797>: Sterile compounding (injections, eye drops, IV admixtures). USP <800>: Hazardous drug handling (applies to both sterile and non-sterile). USP <825>: Radiopharmaceuticals"
+    },
+    {
+      "front": "Beyond-use date (BUD) vs expiration date: distinction",
+      "back": "Expiration date: manufacturer-assigned date based on stability testing of original unopened product. BUD: date assigned by pharmacist/compounder after compounding or opening — based on USP guidelines and stability data. BUD ≤ expiration date"
+    },
+    {
+      "front": "USP <797> BUD for Category 1 sterile preparations (no sterility testing)",
+      "back": "Category 1 CSPs (compounded sterile preparations): BUD ≤ 12 hours at controlled room temperature (CRT) OR ≤ 24 hours at refrigerated (36–46°F/2–8°C). Applies to high-risk preparations made without full ISO 5 primary engineering controls"
+    },
+    {
+      "front": "USP <797> BUD for Category 2 sterile preparations",
+      "back": "Category 2 CSPs with sterility and endotoxin testing: CRT: up to 45 days. Refrigerated: up to 90 days. Frozen: up to 1 year. Without full testing but using ISO 5 PEC: shorter limits apply. Category 2 requires ISO 7 buffer room + ISO 5 PEC minimum"
+    },
+    {
+      "front": "ISO cleanroom classifications: particle count standards",
+      "back": "ISO 5: ≤ 3,520 particles/m³ (≥0.5 μm) — primary engineering control (laminar flow hood, RABS, isolator). ISO 7: ≤ 352,000 particles/m³ — buffer room. ISO 8: ≤ 3,520,000 particles/m³ — ante room. 'Cleaner' = lower ISO number"
+    },
+    {
+      "front": "Primary engineering controls (PECs): types and uses",
+      "back": "LAFW (laminar airflow workbench): positive pressure, for non-hazardous sterile compounding. BSC (biological safety cabinet): negative pressure, for hazardous drugs (USP 800). CACI (compounding aseptic containment isolator): for hazardous sterile. RABS: restricted-access barrier system"
+    },
+    {
+      "front": "Garbing order for sterile compounding (outside to inside)",
+      "back": "Outside ante room: shoe covers, hair cover, face mask. Ante room: hand washing, gown. Buffer room: sterile gloves (after hand hygiene). The 'outside-in' order prevents contaminating clean areas. Gloves = last item applied in cleanroom"
+    },
+    {
+      "front": "USP <800>: scope and who must comply",
+      "back": "Applies to ALL healthcare settings that receive, store, compound, or administer hazardous drugs (HDs). Includes hospitals, outpatient pharmacies, clinics, physician offices. HDs list based on NIOSH table. Applies to non-sterile and sterile HD compounding"
+    },
+    {
+      "front": "NIOSH hazardous drug categories (USP <800>)",
+      "back": "Group 1: antineoplastic agents (highest hazard). Group 2: non-antineoplastic HDs (reproductive risks, organ toxicity). Group 3: drugs that meet HD criteria for reproductive hazard only. Examples: methotrexate, cyclophosphamide, warfarin (Group 3), some hormones (estrogens, finasteride)"
+    },
+    {
+      "front": "Closed system drug-transfer devices (CSTDs): requirement",
+      "back": "Required for preparing and administering antineoplastic agents per USP <800>. CSTDs prevent escape of HD vapor and liquid (examples: PhaSeal, Equashield, ChemoClave). Must be used when HDs are dissolved or volatilize at room temperature"
+    },
+    {
+      "front": "Master formulation record vs compounding record: distinction",
+      "back": "Master formulation record (MFR): the 'recipe' — contains formulation, ingredients, equipment, BUD, reference sources. Compounding record (CR): the 'batch record' — documents each specific batch made (lot numbers, quantities used, pharmacist verification, final checks)"
+    },
+    {
+      "front": "Non-sterile compounding BUD (USP <795>): aqueous preparations",
+      "back": "Non-aqueous (oils, ointments): up to 6 months or 70% of remaining API shelf life. Aqueous liquids (oral solutions, suspensions): ≤ 14 days refrigerated (no preservative) — 35 days maximum with established stability. Solid preparations (capsules): ≤ 6 months. Topical aqueous: ≤ 30 days"
+    },
+    {
+      "front": "Sterility testing: why 14-day incubation period",
+      "back": "USP sterility test requires 14 days incubation at 20–25°C (aerobic) and 30–35°C (anaerobic). Time needed for slow-growing microorganisms to produce visible turbidity. Rapid testing alternatives now available but require USP validation"
+    },
+    {
+      "front": "Endotoxin (pyrogen) testing: LAL test",
+      "back": "Limulus amebocyte lysate (LAL) test detects bacterial endotoxins (gram-negative). Maximum endotoxin limit (MEL): 5 EU/kg/hr for parenteral drugs (general). CNS route: 0.2 EU/kg/hr. Water for injection must pass LAL test. Rabbit pyrogen test used when LAL is not applicable"
+    },
+    {
+      "front": "Hand hygiene for sterile compounding: soap vs ABHR",
+      "back": "Wash hands ≥ 30 seconds with soap and water first (removes gross contamination). Then apply alcohol-based hand rub (ABHR) — more effective against broad spectrum of organisms. In ISO buffer room: sterile gloves are required AND hand hygiene must be performed"
+    },
+    {
+      "front": "Ointment bases: 4 types and examples",
+      "back": "Oleaginous (hydrocarbon): Petrolatum — occlusive, anhydrous, won't absorb water. Absorption: Aquaphor — anhydrous but can absorb water. W/O emulsion: cold cream — holds water-soluble drugs. O/W emulsion: Hydrophilic ointment — water-washable, non-greasy (preferred for cosmetics)"
+    },
+    {
+      "front": "Suppository bases: 3 types",
+      "back": "Fatty/cocoa butter (oleaginous): melts at body temp (34–36°C), avoid overheating. PEG (polyethylene glycol): dissolves in rectal fluid, no melting needed, keep moisture-free. Glycerinated gelatin: less common, primarily vaginal use. Calculate dose displacement value when making suppositories"
+    },
+    {
+      "front": "Trituration vs levigation: definitions",
+      "back": "Trituration: dry grinding of solids to reduce particle size and mix evenly (mortar and pestle). Levigation: adding a small amount of levigating agent (same base or compatible oil) to wet-grind an insoluble powder before incorporating into ointment → prevents gritty texture"
+    },
+    {
+      "front": "Geometric dilution: technique",
+      "back": "When mixing drugs of unequal quantities: add equal volume of diluent/base to small drug, mix thoroughly; then add another equal volume and mix again, repeat until all is incorporated. Prevents uneven distribution of potent low-dose drugs. Required for capsule filling with low-dose actives"
+    },
+    {
+      "front": "Punch method for capsule filling",
+      "back": "Used for hand-filling hard gelatin capsules: spread powder blend on smooth surface, use capsule body to repeatedly punch/scoop powder until filled. Pack consistently for uniform weight. Quality check: weigh 10 capsules, calculate mean weight and individual deviations"
+    },
+    {
+      "front": "Lozenges (troches): base and drug considerations",
+      "back": "Polyethylene glycol (PEG) base most common (hard candy texture). Chocolate base available. Drugs must be heat-stable (molds require melting). Used for: hormones (BHRT), antibiotics (clindamycin), antifungals (nystatin), hormone therapy, buprenorphine. BUD: 30–35 days"
+    },
+    {
+      "front": "Transdermal/topical compounding: base selection principle",
+      "back": "Lipophilic drugs: penetrate skin better; use petrolatum or lipophilic base. Hydrophilic drugs: require penetration enhancers (DMSO, propylene glycol) or specialized bases (PLO — pluronic lecithin organogel). Transdermal absorption highly variable; not well-studied for many compounded drugs"
+    },
+    {
+      "front": "USP <1> water-for-injection (WFI): requirements",
+      "back": "WFI is purified water that meets USP specifications: free of pyrogens (endotoxin < 0.25 EU/mL), low microbial burden, produced by distillation or reverse osmosis. Required for parenteral products. Sterile WFI (in sealed vials) used for injection and reconstitution"
+    },
+    {
+      "front": "Autoclave: moist heat sterilization parameters",
+      "back": "Standard cycle: 121°C, 15 psi, 15–30 minutes. Validates by biological indicators (Geobacillus stearothermophilus spores — most resistant to moist heat). Used for: glassware, media, heat-stable solutions. NOT for heat-labile drugs (proteins, some APIs)"
+    },
+    {
+      "front": "Dry heat sterilization: temperature and use",
+      "back": "160–170°C for 2+ hours. Kills both organisms and endotoxins (depyrogenation: 250°C for 30 min). Used for: glassware, oils, waxes, anhydrous powders. Does NOT penetrate moisture. Validated with Bacillus atrophaeus spores"
+    },
+    {
+      "front": "Filtration sterilization: pore size and use",
+      "back": "0.22 μm (or 0.2 μm) filter: sterilizing grade — removes bacteria and fungi but NOT viruses or prions. Used for heat-labile solutions (some biologics, certain APIs). 0.45 μm: prefiltration, clarifying. Integrity testing (bubble point) required to verify filter before and after use"
+    },
+    {
+      "front": "Environmental monitoring (EM) program: USP <797> components",
+      "back": "Viable air sampling (impaction): active sampling with agar plates. Surface sampling: contact plates and swabs. Non-viable particle counting. Personnel glove fingertip sampling. Frequency depends on ISO classification and risk level. Failure triggers investigation and corrective action"
+    },
+    {
+      "front": "HEPA filtration: efficiency and use",
+      "back": "HEPA (high-efficiency particulate air): filters ≥ 99.97% of particles ≥ 0.3 μm. Used in laminar airflow workbenches, BSCs, isolators. Must be certified annually (IEST standards). Directional airflow: horizontal LAFW blows toward operator; vertical LAFW blows downward"
+    },
+    {
+      "front": "Compounding regulatory framework: FDA 503A vs 503B",
+      "back": "503A: traditional pharmacy compounding for individual patients with valid prescription. State Board of Pharmacy regulated. 503B: outsourcing facilities — can compound without patient-specific Rx, must follow cGMP, FDA regulated. Must register with FDA, pay fees, subject to inspection"
+    },
+    {
+      "front": "Flavoring agents for pediatric and veterinary compounding",
+      "back": "Key principles: consider drug properties (e.g., sweet base for bitter drugs). Common pediatric flavors: grape, bubblegum, strawberry. Common veterinary: chicken, bacon, fish, beef. Sweeteners: sucrose (cariogenic), sorbitol, stevia, saccharin. Avoid sorbitol in large quantities (osmotic diarrhea)"
+    },
+    {
+      "front": "Reconstitution: calculating final concentration",
+      "back": "Example: Amoxicillin 250 mg/5 mL: vial contains 2,500 mg powder. Add 100 mL water → final volume = 100 mL (powder volume negligible, or add to 85 mL for 100 mL final). C = 2,500/100 = 25 mg/mL = 250 mg/10 mL. Shake well, label with BUD (usually 7–14 days refrigerated)"
+    },
+    {
+      "front": "Parenteral route compatibility issues: Y-site and piggyback",
+      "back": "Y-site compatibility: two drugs run simultaneously through same IV line at Y-junction — must be physically and chemically compatible. Check compatibility reference (Trissel's, King Guide). Incompatible signs: precipitate, color change, turbidity. Critical: phenytoin (precipitates in glucose)"
+    },
+    {
+      "front": "pH and drug stability in solution",
+      "back": "Most drugs have optimal pH range for stability. Acidic drugs (penicillins): stable at low pH, degrade in alkaline. Basic drugs: stable at higher pH. IV bags of phenytoin: must be diluted in NS (not D5W) — lower pH of NS better for stability; glucose causes precipitation"
+    },
+    {
+      "front": "Bioavailability enhancement in compounding: particle size reduction",
+      "back": "Micronization: reduces API particle size to 1–10 μm → ↑ surface area → ↑ dissolution rate → ↑ bioavailability. Used for poorly water-soluble drugs (progesterone, griseofulvin). Nano-formulation and amorphous solid dispersions are further enhancements"
+    },
+    {
+      "front": "USP <795> documentation requirements",
+      "back": "Each compound requires: master formulation record (MFR) and compounding record (CR). MFR: formulation, equipment, reference, BUD rationale. CR: name, date, lot numbers, quantities weighed, compounder and pharmacist initials, quality checks. Retained per state regulations (usually 2–5 years)"
+    },
+    {
+      "front": "Overage/overages in compounding: definition and limit",
+      "back": "Overages: excess API added to a compounded preparation to account for losses during manufacturing or to ensure labeled amount throughout BUD. Must be justified and documented. Typically ≤ 10% of nominal dose. Excessive overage without justification is considered adulteration"
+    },
+    {
+      "front": "Solubility enhancement techniques in non-sterile compounding",
+      "back": "Cosolvents: add ethanol, propylene glycol, glycerin, PEG. Surfactants: polysorbate 80, Cremophor EL. Complexation: cyclodextrins (HP-β-CD). pH adjustment: use acid/base to increase ionization (ionic form more water-soluble). Salt formation: adjust API to salt form"
+    },
+    {
+      "front": "Veterinary compounding: key regulatory considerations",
+      "back": "Allowed when no FDA-approved veterinary product exists or is not available. Must have valid veterinarian-client-patient relationship (VCPR). Cannot copy commercial products. Flavoring to improve palatability is acceptable. FDCA extraterritoriality provisions apply across state lines"
+    },
+    {
+      "front": "Ophthalmic compounding: tonicity and pH requirements",
+      "back": "Ophthalmic preparations must be: isotonic (approximately 0.9% NaCl equivalent, 280–300 mOsm/L), sterile, free of particles, appropriate pH (6.5–7.4 preferred). Buffered with phosphate or borate buffers. BUD per USP <797>: Category 1 or Category 2 depending on processing"
+    },
+    {
+      "front": "Controlled substance compounding: legal requirements",
+      "back": "Must have DEA registration if compounding Schedule II–V substances. Compounded preparations must be derived from FDA-approved bulk APIs (scheduled or otherwise). Cannot compound CIII-V for office use in large quantities without patient-specific Rx. State-specific rules vary"
+    },
+    {
+      "front": "Gowning requalification: why annual is insufficient for sterile compounding",
+      "back": "USP <797> (2023 revision): gloved fingertip sampling required initially (before personnel begin compounding independently) and media fill testing. Media fill tests: at least annually for Category 2 operations; after significant changes. Surface and air monitoring ongoing. Ongoing education required"
+    },
+    {
+      "front": "PCAB (Pharmacy Compounding Accreditation Board): significance",
+      "back": "Voluntary accreditation program for compounding pharmacies demonstrating compliance with USP <795>, <797>, <800>. Requires rigorous on-site inspection. Not mandatory but signals quality to prescribers and payers. 503B outsourcing facilities may seek ISO certification instead"
+    },
+    {
+      "front": "Incompatibility types in compounding: physical vs chemical vs therapeutic",
+      "back": "Physical: precipitation, phase separation (mixing oil/water without emulsifier), color change. Chemical: hydrolysis (aspirin in water), oxidation (vitamin C), photodegradation (nifedipine, nitroprusside). Therapeutic: antagonism or additive toxicity from combined ingredients"
+    },
+    {
+      "front": "Light-sensitive drugs: storage and packaging",
+      "back": "Protect from light: nitroprusside, nifedipine, amphotericin B, riboflavin, vitamin A, metronidazole IV. Use amber vials, UV-protective bags, foil overwraps. Store in light-protected areas. Label 'Protect from light.' USP light transmission specifications for amber glass"
+    },
+    {
+      "front": "Laminar flow hood certification schedule",
+      "back": "Laminar airflow workbenches (LAFW) and biological safety cabinets (BSC) must be certified by a certified technician (CETA or equivalent): at initial installation, after any relocation, after repairs/filter changes, and every 6 months ongoing. Velocity and filter integrity tested"
+    },
+    {
+      "front": "Suppository displacement value calculation",
+      "back": "Displacement value (DV) = mass of drug displacing 1 g of cocoa butter. If DV = 0.5, then 2 g drug displaces 1 g of base. Adjusted base weight = total suppository weight − (drug weight / DV). Critical for accurate dosing in fatty base suppositories"
+    },
+    {
+      "front": "Preservatives in ophthalmic preparations: example and concern",
+      "back": "Benzalkonium chloride (BAK): most common ophthalmic preservative — antimicrobial. Concern: epithelial toxicity with chronic use (contact lens incompatibility, dry eye). Preservative-free unit dose vials preferred for glaucoma patients, contact lens wearers, severe dry eye"
+    },
+    {
+      "front": "USP <797> categories: beyond-use dating for sterile preparations",
+      "back": "Category 1 (no sterility testing): BUD ≤12h at room temp, ≤24h refrigerated. Category 2: BUD based on sterility testing — up to 45 days. Facilities: ISO 5 (PEC), ISO 7 (buffer room), ISO 8 (ante room). Garbing: gowning, gloves, goggles, sterile technique. High-risk conditions: non-sterile starting ingredients must pass sterilization validation."
+    },
+    {
+      "front": "USP <800>: hazardous drug handling requirements",
+      "back": "Hazardous drugs (HD): NIOSH list. Requirements: separate negative-pressure room for HD compounding, C-PEC (Containment-PEC) — biological safety cabinet (BSC) or CACI. PPE: double gloves, gown, eye protection, N95 minimum. Closed-system drug transfer devices (CSTD): mandatory for antineoplastic drugs. Training: annual competency assessment. Disposal: pharmaceutical waste segregation."
+    },
+    {
+      "front": "Emulsion stability: types and mechanisms of degradation",
+      "back": "O/W emulsion: oil droplets in water (e.g., IV lipid emulsions). W/O emulsion: water droplets in oil (e.g., topical creams). Degradation: creaming (density difference → reversible layering), flocculation (aggregation → reversible), coalescence (droplet merging → irreversible), Ostwald ripening (small droplets dissolve into large → irreversible). Prevention: homogenization, stabilizers (lecithin, polysorbate 80), zeta potential >±30 mV."
+    }
   ]
 }

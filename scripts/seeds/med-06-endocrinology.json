@@ -5,53 +5,205 @@
   "color": "emerald",
   "subject": "medicine",
   "cards": [
-    { "front": "Diagnostic criteria for diabetes mellitus", "back": "Fasting glucose ≥ 126 mg/dL, OR 2-hr glucose ≥ 200 on OGTT, OR HbA1c ≥ 6.5%, OR random glucose ≥ 200 + symptoms — confirmed on 2 separate occasions (or one if symptoms)" },
-    { "front": "Metformin: mechanism and contraindications", "back": "Decreases hepatic glucose production (↓ gluconeogenesis), improves insulin sensitivity. Contraindicated: eGFR < 30, contrast dye procedures (hold 48h), liver failure, alcoholism. Risk: lactic acidosis" },
-    { "front": "SGLT2 inhibitors: mechanism and cardiovascular benefit", "back": "Block Na+/glucose cotransporter in PCT → glycosuria. Benefits: HbA1c ↓, weight loss, BP ↓, reduced HF hospitalization, reduced renal progression (empagliflozin, canagliflozin, dapagliflozin)" },
-    { "front": "GLP-1 receptor agonists: mechanism and benefit", "back": "Incretin mimetics — stimulate insulin, inhibit glucagon, slow gastric emptying, suppress appetite. Weight loss + CV benefit (liraglutide, semaglutide). Side effect: nausea, pancreatitis risk" },
-    { "front": "Insulin types: fastest-acting and longest-acting", "back": "Fastest: Lispro/Aspart/Glulisine (onset 15 min). Longest: Glargine/Degludec (peakless, 24+ hours). NPH: intermediate" },
-    { "front": "DKA vs HHS: key differences", "back": "DKA: glucose 250–500, pH < 7.3, bicarbonate < 18, ketones positive (type 1 DM). HHS: glucose > 600, pH > 7.3, minimal ketones, severe dehydration (type 2 DM)" },
-    { "front": "DKA treatment steps", "back": "1. IV saline (normal saline 1L/hr). 2. Insulin drip (after K+ > 3.3). 3. Potassium replacement. 4. Bicarbonate only if pH < 6.9" },
-    { "front": "Hypoglycemia: Whipple's triad", "back": "Symptoms of hypoglycemia + documented low glucose + relief with glucose administration" },
-    { "front": "Hypothyroidism: primary vs secondary diagnosis", "back": "Primary: ↑ TSH, ↓ free T4. Secondary (pituitary): ↓ TSH, ↓ free T4. Tertiary (hypothalamus): ↓ TRH → ↓ TSH → ↓ T4" },
-    { "front": "Hashimoto's thyroiditis: antibodies and histology", "back": "Anti-TPO (anti-thyroid peroxidase) and anti-thyroglobulin antibodies. Histology: lymphocytic infiltration + Hürthle cell change" },
-    { "front": "Hypothyroid myxedema coma: treatment", "back": "IV levothyroxine (T4) + IV hydrocortisone (adrenal insufficiency may coexist) + supportive care (ventilation, warming)" },
-    { "front": "Graves' disease: antibodies and findings", "back": "TSH receptor stimulating antibodies (TRAb/TSI). Diffuse goiter, exophthalmos (proptosis), pretibial myxedema, thyroid bruit" },
-    { "front": "Thyroid storm: precipitants and treatment", "back": "Precipitants: surgery, infection, trauma. Treatment: PTU (blocks synthesis + peripheral conversion) + iodine (Lugol's, wait 1h after PTU) + β-blocker (propranolol) + steroids + supportive" },
-    { "front": "Papillary thyroid cancer: features", "back": "Most common thyroid cancer (80%). Psammoma bodies, Orphan Annie eye nuclei. Spreads via lymphatics. Best prognosis" },
-    { "front": "Medullary thyroid cancer: marker and associations", "back": "From parafollicular C cells → ↑ calcitonin. Associated with MEN-2A and MEN-2B (RET proto-oncogene)" },
-    { "front": "MEN-1: components (3 Ps)", "back": "Parathyroid hyperplasia (hypercalcemia), Pituitary adenoma (most commonly prolactinoma), Pancreatic tumors (gastrinoma, insulinoma, VIPoma)" },
-    { "front": "MEN-2A: components", "back": "Medullary thyroid cancer + Pheochromocytoma + Parathyroid hyperplasia (RET mutation)" },
-    { "front": "MEN-2B: components", "back": "Medullary thyroid cancer + Pheochromocytoma + Mucosal neuromas + Marfanoid habitus (NO parathyroid)" },
-    { "front": "Pheochromocytoma: rule of 10s", "back": "10% bilateral, 10% extra-adrenal, 10% malignant, 10% in children, 10% familial. Classic: episodic headache, hypertension, diaphoresis (5 Hs: Hypertension, Headache, Hyperhidrosis, Hyperglycemia, Heart palpitations)" },
-    { "front": "Pheochromocytoma: diagnostic test and presurgical management", "back": "24-hour urinary catecholamines/metanephrines or plasma free metanephrines. Pre-op: alpha-blocker FIRST (phenoxybenzamine), then beta-blocker (never beta first — hypertensive crisis)" },
-    { "front": "Cushing's syndrome vs Cushing's disease", "back": "Syndrome: any cause of excess cortisol. Disease: specifically pituitary ACTH-secreting adenoma" },
-    { "front": "Cushing's syndrome: diagnostic approach", "back": "1. 24-hr urinary free cortisol OR 1 mg overnight dexamethasone suppression test (screening). 2. Low-dose DST (confirms). 3. ACTH level. 4. High-dose DST or CRH stim (localization)" },
-    { "front": "Primary hyperaldosteronism (Conn's syndrome): features", "back": "Hypertension + hypokalemia + metabolic alkalosis + ↑ aldosterone + ↓ renin. Cause: adrenal adenoma (60%) or bilateral hyperplasia (40%). Diagnosis: aldosterone-to-renin ratio" },
-    { "front": "Addison's disease: features and treatment", "back": "Primary adrenal insufficiency: ↑ ACTH, ↓ cortisol, ↓ aldosterone. Hyperpigmentation (MSH cross-reactivity), hyponatremia, hyperkalemia, hypotension. Treatment: hydrocortisone + fludrocortisone" },
-    { "front": "Adrenal crisis: treatment", "back": "IV hydrocortisone 100 mg stat (acts as both glucocorticoid and mineralocorticoid at high doses) + IV saline + glucose" },
-    { "front": "Hypercalcemia: most common outpatient vs inpatient cause", "back": "Outpatient: primary hyperparathyroidism. Inpatient: malignancy (osteolytic or PTHrP-mediated)" },
-    { "front": "Primary hyperparathyroidism: labs", "back": "↑ Ca2+, ↓ phosphate, ↑ PTH (inappropriately normal or elevated). Most common cause: solitary parathyroid adenoma" },
-    { "front": "Pseudohypoparathyroidism: features", "back": "PTH resistance (not deficiency). ↓ Ca, ↑ phosphate, ↑ PTH, short stature, short 4th/5th metacarpals, mental disability (Albright hereditary osteodystrophy)" },
-    { "front": "Hypocalcemia: ECG finding", "back": "Prolonged QTc interval. Tetany (Chvostek sign = facial muscle twitch with tapping CN VII; Trousseau sign = carpopedal spasm with BP cuff inflation)" },
-    { "front": "Prolactinoma: features and treatment", "back": "Most common pituitary tumor. Galactorrhea + amenorrhea (women), ED + decreased libido (men). Treatment: dopamine agonist (cabergoline or bromocriptine)" },
-    { "front": "Growth hormone excess (acromegaly): features and test", "back": "Adults: coarse facial features, large hands/feet, macroglossia, carpal tunnel, DM, bitemporal hemianopia. Diagnosis: IGF-1 level + glucose suppression test (GH not suppressed)" },
-    { "front": "Central diabetes insipidus: cause and treatment", "back": "ADH (vasopressin) deficiency from posterior pituitary damage (surgery, trauma, tumor). Treatment: desmopressin (DDAVP)" },
-    { "front": "SIADH vs diabetes insipidus: Na+ and urine osmolality", "back": "SIADH: hyponatremia, concentrated urine (> 300 mOsm/kg). DI: hypernatremia, dilute urine (< 300 mOsm/kg)" },
-    { "front": "Autoimmune polyglandular syndrome type 1 (APS-1)", "back": "Hypoparathyroidism + Addison's disease + mucocutaneous candidiasis. Autosomal recessive, AIRE gene mutation" },
-    { "front": "Autoimmune polyglandular syndrome type 2 (Schmidt syndrome)", "back": "Addison's disease + Hashimoto's/Graves + type 1 DM (most common APS)" },
-    { "front": "Carcinoid tumor: diagnostic marker", "back": "24-hour urine 5-HIAA (5-hydroxyindoleacetic acid, serotonin metabolite)" },
-    { "front": "VIPoma (Verner-Morrison syndrome): features", "back": "Watery Diarrhea, Hypokalemia, Achlorhydria (WDHA syndrome). Elevated VIP levels" },
-    { "front": "Glucagonoma: features", "back": "Necrolytic migratory erythema (skin rash), diabetes, anemia, weight loss. Elevated glucagon" },
-    { "front": "Insulinoma: diagnosis", "back": "72-hour fast → symptomatic hypoglycemia with inappropriately elevated insulin and C-peptide (rules out exogenous insulin). Treat with surgical resection" },
-    { "front": "Hyperparathyroidism: bone findings", "back": "Osteitis fibrosa cystica — subperiosteal bone resorption of radial side of 2nd/3rd middle phalanges, brown tumors, 'salt and pepper' skull" },
-    { "front": "Type 2 DM: cardiovascular risk reduction drugs of choice", "back": "For HF or CKD: SGLT2 inhibitor (empagliflozin/dapagliflozin). For established CVD: GLP-1 agonist (liraglutide/semaglutide)" },
-    { "front": "Maturity-onset diabetes of the young (MODY): features", "back": "Non-autoimmune diabetes in young, lean patients with family history (autosomal dominant). No insulin dependence. HNF/GCK gene mutations" },
-    { "front": "Gynecomastia: causes", "back": "Spironolactone, cimetidine, finasteride, ketoconazole, marijuana, heroin; Klinefelter syndrome; cirrhosis; hyperthyroidism; testicular tumors (↑ estrogen); idiopathic (puberty)" },
-    { "front": "Vitamin D deficiency: bone manifestations", "back": "Children: rickets (soft bones, bowing of legs, rachitic rosary). Adults: osteomalacia (bone pain, muscle weakness, ↑ alkaline phosphatase, ↓ Ca/PO4)" },
-    { "front": "Osteoporosis: screening and treatment", "back": "DEXA scan screening: women ≥ 65, men ≥ 70 (or earlier if risk factors). T-score ≤ −2.5 = osteoporosis. Treatment: bisphosphonates (alendronate) first-line" },
-    { "front": "Paget's disease of bone: findings and treatment", "back": "↑ bone turnover → enlarged, deformed bones. ↑ alkaline phosphatase (normal Ca, PO4, PTH). Skull ('cotton wool' appearance), hearing loss, hat size increase. Treatment: bisphosphonates" },
-    { "front": "What hormones use cAMP as second messenger?", "back": "FSH, LH, ACTH, TSH, CRH, ADH (V2), PTH, glucagon, hCG, calcitonin (FLAT ChAMP)" },
-    { "front": "What hormones use IP3/DAG (Ca2+) as second messenger?", "back": "GnRH, TRH, Oxytocin, ADH (V1), Angiotensin II, Gastrin, Histamine H1, Acetylcholine (Gq-coupled): HAVe (1 cup) of GOAT Milk" }
+    {
+      "front": "Diagnostic criteria for diabetes mellitus",
+      "back": "Fasting glucose ≥ 126 mg/dL, OR 2-hr glucose ≥ 200 on OGTT, OR HbA1c ≥ 6.5%, OR random glucose ≥ 200 + symptoms — confirmed on 2 separate occasions (or one if symptoms)"
+    },
+    {
+      "front": "Metformin: mechanism and contraindications",
+      "back": "Decreases hepatic glucose production (↓ gluconeogenesis), improves insulin sensitivity. Contraindicated: eGFR < 30, contrast dye procedures (hold 48h), liver failure, alcoholism. Risk: lactic acidosis"
+    },
+    {
+      "front": "SGLT2 inhibitors: mechanism and cardiovascular benefit",
+      "back": "Block Na+/glucose cotransporter in PCT → glycosuria. Benefits: HbA1c ↓, weight loss, BP ↓, reduced HF hospitalization, reduced renal progression (empagliflozin, canagliflozin, dapagliflozin)"
+    },
+    {
+      "front": "GLP-1 receptor agonists: mechanism and benefit",
+      "back": "Incretin mimetics — stimulate insulin, inhibit glucagon, slow gastric emptying, suppress appetite. Weight loss + CV benefit (liraglutide, semaglutide). Side effect: nausea, pancreatitis risk"
+    },
+    {
+      "front": "Insulin types: fastest-acting and longest-acting",
+      "back": "Fastest: Lispro/Aspart/Glulisine (onset 15 min). Longest: Glargine/Degludec (peakless, 24+ hours). NPH: intermediate"
+    },
+    {
+      "front": "DKA vs HHS: key differences",
+      "back": "DKA: glucose 250–500, pH < 7.3, bicarbonate < 18, ketones positive (type 1 DM). HHS: glucose > 600, pH > 7.3, minimal ketones, severe dehydration (type 2 DM)"
+    },
+    {
+      "front": "DKA treatment steps",
+      "back": "1. IV saline (normal saline 1L/hr). 2. Insulin drip (after K+ > 3.3). 3. Potassium replacement. 4. Bicarbonate only if pH < 6.9"
+    },
+    {
+      "front": "Hypoglycemia: Whipple's triad",
+      "back": "Symptoms of hypoglycemia + documented low glucose + relief with glucose administration"
+    },
+    {
+      "front": "Hypothyroidism: primary vs secondary diagnosis",
+      "back": "Primary: ↑ TSH, ↓ free T4. Secondary (pituitary): ↓ TSH, ↓ free T4. Tertiary (hypothalamus): ↓ TRH → ↓ TSH → ↓ T4"
+    },
+    {
+      "front": "Hashimoto's thyroiditis: antibodies and histology",
+      "back": "Anti-TPO (anti-thyroid peroxidase) and anti-thyroglobulin antibodies. Histology: lymphocytic infiltration + Hürthle cell change"
+    },
+    {
+      "front": "Hypothyroid myxedema coma: treatment",
+      "back": "IV levothyroxine (T4) + IV hydrocortisone (adrenal insufficiency may coexist) + supportive care (ventilation, warming)"
+    },
+    {
+      "front": "Graves' disease: antibodies and findings",
+      "back": "TSH receptor stimulating antibodies (TRAb/TSI). Diffuse goiter, exophthalmos (proptosis), pretibial myxedema, thyroid bruit"
+    },
+    {
+      "front": "Thyroid storm: precipitants and treatment",
+      "back": "Precipitants: surgery, infection, trauma. Treatment: PTU (blocks synthesis + peripheral conversion) + iodine (Lugol's, wait 1h after PTU) + β-blocker (propranolol) + steroids + supportive"
+    },
+    {
+      "front": "Papillary thyroid cancer: features",
+      "back": "Most common thyroid cancer (80%). Psammoma bodies, Orphan Annie eye nuclei. Spreads via lymphatics. Best prognosis"
+    },
+    {
+      "front": "Medullary thyroid cancer: marker and associations",
+      "back": "From parafollicular C cells → ↑ calcitonin. Associated with MEN-2A and MEN-2B (RET proto-oncogene)"
+    },
+    {
+      "front": "MEN-1: components (3 Ps)",
+      "back": "Parathyroid hyperplasia (hypercalcemia), Pituitary adenoma (most commonly prolactinoma), Pancreatic tumors (gastrinoma, insulinoma, VIPoma)"
+    },
+    {
+      "front": "MEN-2A: components",
+      "back": "Medullary thyroid cancer + Pheochromocytoma + Parathyroid hyperplasia (RET mutation)"
+    },
+    {
+      "front": "MEN-2B: components",
+      "back": "Medullary thyroid cancer + Pheochromocytoma + Mucosal neuromas + Marfanoid habitus (NO parathyroid)"
+    },
+    {
+      "front": "Pheochromocytoma: rule of 10s",
+      "back": "10% bilateral, 10% extra-adrenal, 10% malignant, 10% in children, 10% familial. Classic: episodic headache, hypertension, diaphoresis (5 Hs: Hypertension, Headache, Hyperhidrosis, Hyperglycemia, Heart palpitations)"
+    },
+    {
+      "front": "Pheochromocytoma: diagnostic test and presurgical management",
+      "back": "24-hour urinary catecholamines/metanephrines or plasma free metanephrines. Pre-op: alpha-blocker FIRST (phenoxybenzamine), then beta-blocker (never beta first — hypertensive crisis)"
+    },
+    {
+      "front": "Cushing's syndrome vs Cushing's disease",
+      "back": "Syndrome: any cause of excess cortisol. Disease: specifically pituitary ACTH-secreting adenoma"
+    },
+    {
+      "front": "Cushing's syndrome: diagnostic approach",
+      "back": "1. 24-hr urinary free cortisol OR 1 mg overnight dexamethasone suppression test (screening). 2. Low-dose DST (confirms). 3. ACTH level. 4. High-dose DST or CRH stim (localization)"
+    },
+    {
+      "front": "Primary hyperaldosteronism (Conn's syndrome): features",
+      "back": "Hypertension + hypokalemia + metabolic alkalosis + ↑ aldosterone + ↓ renin. Cause: adrenal adenoma (60%) or bilateral hyperplasia (40%). Diagnosis: aldosterone-to-renin ratio"
+    },
+    {
+      "front": "Addison's disease: features and treatment",
+      "back": "Primary adrenal insufficiency: ↑ ACTH, ↓ cortisol, ↓ aldosterone. Hyperpigmentation (MSH cross-reactivity), hyponatremia, hyperkalemia, hypotension. Treatment: hydrocortisone + fludrocortisone"
+    },
+    {
+      "front": "Adrenal crisis: treatment",
+      "back": "IV hydrocortisone 100 mg stat (acts as both glucocorticoid and mineralocorticoid at high doses) + IV saline + glucose"
+    },
+    {
+      "front": "Hypercalcemia: most common outpatient vs inpatient cause",
+      "back": "Outpatient: primary hyperparathyroidism. Inpatient: malignancy (osteolytic or PTHrP-mediated)"
+    },
+    {
+      "front": "Primary hyperparathyroidism: labs",
+      "back": "↑ Ca2+, ↓ phosphate, ↑ PTH (inappropriately normal or elevated). Most common cause: solitary parathyroid adenoma"
+    },
+    {
+      "front": "Pseudohypoparathyroidism: features",
+      "back": "PTH resistance (not deficiency). ↓ Ca, ↑ phosphate, ↑ PTH, short stature, short 4th/5th metacarpals, mental disability (Albright hereditary osteodystrophy)"
+    },
+    {
+      "front": "Hypocalcemia: ECG finding",
+      "back": "Prolonged QTc interval. Tetany (Chvostek sign = facial muscle twitch with tapping CN VII; Trousseau sign = carpopedal spasm with BP cuff inflation)"
+    },
+    {
+      "front": "Prolactinoma: features and treatment",
+      "back": "Most common pituitary tumor. Galactorrhea + amenorrhea (women), ED + decreased libido (men). Treatment: dopamine agonist (cabergoline or bromocriptine)"
+    },
+    {
+      "front": "Growth hormone excess (acromegaly): features and test",
+      "back": "Adults: coarse facial features, large hands/feet, macroglossia, carpal tunnel, DM, bitemporal hemianopia. Diagnosis: IGF-1 level + glucose suppression test (GH not suppressed)"
+    },
+    {
+      "front": "Central diabetes insipidus: cause and treatment",
+      "back": "ADH (vasopressin) deficiency from posterior pituitary damage (surgery, trauma, tumor). Treatment: desmopressin (DDAVP)"
+    },
+    {
+      "front": "SIADH vs diabetes insipidus: Na+ and urine osmolality",
+      "back": "SIADH: hyponatremia, concentrated urine (> 300 mOsm/kg). DI: hypernatremia, dilute urine (< 300 mOsm/kg)"
+    },
+    {
+      "front": "Autoimmune polyglandular syndrome type 1 (APS-1)",
+      "back": "Hypoparathyroidism + Addison's disease + mucocutaneous candidiasis. Autosomal recessive, AIRE gene mutation"
+    },
+    {
+      "front": "Autoimmune polyglandular syndrome type 2 (Schmidt syndrome)",
+      "back": "Addison's disease + Hashimoto's/Graves + type 1 DM (most common APS)"
+    },
+    {
+      "front": "Carcinoid tumor: diagnostic marker",
+      "back": "24-hour urine 5-HIAA (5-hydroxyindoleacetic acid, serotonin metabolite)"
+    },
+    {
+      "front": "VIPoma (Verner-Morrison syndrome): features",
+      "back": "Watery Diarrhea, Hypokalemia, Achlorhydria (WDHA syndrome). Elevated VIP levels"
+    },
+    {
+      "front": "Glucagonoma: features",
+      "back": "Necrolytic migratory erythema (skin rash), diabetes, anemia, weight loss. Elevated glucagon"
+    },
+    {
+      "front": "Insulinoma: diagnosis",
+      "back": "72-hour fast → symptomatic hypoglycemia with inappropriately elevated insulin and C-peptide (rules out exogenous insulin). Treat with surgical resection"
+    },
+    {
+      "front": "Hyperparathyroidism: bone findings",
+      "back": "Osteitis fibrosa cystica — subperiosteal bone resorption of radial side of 2nd/3rd middle phalanges, brown tumors, 'salt and pepper' skull"
+    },
+    {
+      "front": "Type 2 DM: cardiovascular risk reduction drugs of choice",
+      "back": "For HF or CKD: SGLT2 inhibitor (empagliflozin/dapagliflozin). For established CVD: GLP-1 agonist (liraglutide/semaglutide)"
+    },
+    {
+      "front": "Maturity-onset diabetes of the young (MODY): features",
+      "back": "Non-autoimmune diabetes in young, lean patients with family history (autosomal dominant). No insulin dependence. HNF/GCK gene mutations"
+    },
+    {
+      "front": "Gynecomastia: causes",
+      "back": "Spironolactone, cimetidine, finasteride, ketoconazole, marijuana, heroin; Klinefelter syndrome; cirrhosis; hyperthyroidism; testicular tumors (↑ estrogen); idiopathic (puberty)"
+    },
+    {
+      "front": "Vitamin D deficiency: bone manifestations",
+      "back": "Children: rickets (soft bones, bowing of legs, rachitic rosary). Adults: osteomalacia (bone pain, muscle weakness, ↑ alkaline phosphatase, ↓ Ca/PO4)"
+    },
+    {
+      "front": "Osteoporosis: screening and treatment",
+      "back": "DEXA scan screening: women ≥ 65, men ≥ 70 (or earlier if risk factors). T-score ≤ −2.5 = osteoporosis. Treatment: bisphosphonates (alendronate) first-line"
+    },
+    {
+      "front": "Paget's disease of bone: findings and treatment",
+      "back": "↑ bone turnover → enlarged, deformed bones. ↑ alkaline phosphatase (normal Ca, PO4, PTH). Skull ('cotton wool' appearance), hearing loss, hat size increase. Treatment: bisphosphonates"
+    },
+    {
+      "front": "What hormones use cAMP as second messenger?",
+      "back": "FSH, LH, ACTH, TSH, CRH, ADH (V2), PTH, glucagon, hCG, calcitonin (FLAT ChAMP)"
+    },
+    {
+      "front": "What hormones use IP3/DAG (Ca2+) as second messenger?",
+      "back": "GnRH, TRH, Oxytocin, ADH (V1), Angiotensin II, Gastrin, Histamine H1, Acetylcholine (Gq-coupled): HAVe (1 cup) of GOAT Milk"
+    },
+    {
+      "front": "Adrenal insufficiency: primary (Addison's) vs secondary",
+      "back": "Primary (Addison's): cortex destruction (autoimmune, TB, waterhouse-friderichsen) → ↓cortisol + ↓aldosterone. Findings: hyperpigmentation (↑ACTH/MSH), hyperkalemia, hyponatremia, hypotension. Cosyntropin stimulation test: no cortisol rise. Secondary: ↓ACTH (pituitary/hypothalamic cause, chronic steroid use) → ↓cortisol only (aldosterone preserved). No hyperpigmentation. Treatment: hydrocortisone; primary: add fludrocortisone."
+    },
+    {
+      "front": "MEN syndromes: type 1 vs 2A vs 2B (3 P's, 2 P's, 2 M's)",
+      "back": "MEN1 (Wermer): 3 P's — Pituitary (prolactinoma), Parathyroid (hyperplasia), Pancreas (gastrinoma/insulinoma). MEN2A (Sipple): 2 P's — medullary thyroid carcinoma (MTC), Pheochromocytoma, Parathyroid. MEN2B: 2 M's + Marfanoid — MTC, Pheochromocytoma, Marfanoid, mucosal neuromas. All: RET proto-oncogene mutation (2A/2B). MEN1: menin gene. Screen family with genetic testing."
+    }
   ]
 }

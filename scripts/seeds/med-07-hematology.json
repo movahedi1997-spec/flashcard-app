@@ -5,51 +5,205 @@
   "color": "rose",
   "subject": "medicine",
   "cards": [
-    { "front": "Iron deficiency anemia: lab findings", "back": "↓ MCV (microcytic), ↓ serum iron, ↑ TIBC, ↓ ferritin (best indicator of stores), ↓ transferrin saturation" },
-    { "front": "Anemia of chronic disease: lab findings", "back": "Microcytic or normocytic. ↓ serum iron, ↓ TIBC (opposite of iron deficiency), ↑ ferritin (acute phase reactant), ↓ transferrin saturation" },
-    { "front": "Vitamin B12 deficiency: neurological complication", "back": "Subacute combined degeneration — demyelination of dorsal columns (vibration/proprioception loss) + lateral corticospinal tracts (UMN signs)" },
-    { "front": "Vitamin B12 vs folate deficiency: key distinction", "back": "Both cause megaloblastic anemia (hypersegmented neutrophils, macrocytic). B12 deficiency also causes neurological symptoms (folate does NOT). B12: ↑ MMA and homocysteine. Folate: ↑ homocysteine only" },
-    { "front": "Hereditary spherocytosis: defect and test", "back": "Defect in spectrin/ankyrin → spherocytes → extravascular hemolysis. Osmotic fragility test positive. Treatment: splenectomy" },
-    { "front": "G6PD deficiency: triggers and blood smear", "back": "X-linked recessive. Triggers: oxidative stress (infection, fava beans, primaquine, dapsone). Blood smear: Heinz bodies (denatured Hb), bite cells" },
-    { "front": "Sickle cell disease: mutation and crisis types", "back": "HbS = β-globin Glu→Val (E6V). Vasoocclusive (pain) crisis, splenic sequestration, aplastic crisis (parvovirus B19), acute chest syndrome" },
-    { "front": "Sickle cell disease: long-term complications", "back": "Autosplenectomy (↑ encapsulated organism infections), avascular necrosis (femoral head), osteomyelitis (Salmonella), renal papillary necrosis, stroke, retinopathy" },
-    { "front": "Alpha thalassemia: 4-gene deletion outcomes", "back": "1 gene: silent carrier. 2 genes: trait (mild microcytic anemia). 3 genes: HbH disease (tetramers of β-chains). 4 genes: hydrops fetalis (tetramers of γ-chains) — fatal in utero" },
-    { "front": "Beta thalassemia major: treatment", "back": "Chronic transfusions (causes iron overload → chelation with deferoxamine or deferasirox). Bone marrow transplant is curative" },
-    { "front": "Hemolytic anemia: direct Coombs vs indirect Coombs", "back": "Direct (DAT): detects antibodies bound to RBCs (autoimmune hemolysis). Indirect: detects free antibodies in serum (blood bank crossmatching)" },
-    { "front": "Warm vs cold autoimmune hemolytic anemia", "back": "Warm (IgG, 37°C): SLE, CLL, methyldopa, penicillin. Cold (IgM, <37°C): Mycoplasma, EBV, CLL. Cold agglutinin disease: Raynaud-like, acrocyanosis" },
-    { "front": "DIC: lab findings", "back": "↑ PT, ↑ PTT, ↓ platelets, ↓ fibrinogen, ↑ D-dimer, ↑ fibrin split products. Schistocytes on smear. Causes: sepsis, trauma, obstetric complications, malignancy" },
-    { "front": "Heparin mechanism and reversal", "back": "Activates antithrombin III → inhibits factors IIa and Xa (unfractionated heparin). Reversal: protamine sulfate" },
-    { "front": "Warfarin mechanism and reversal", "back": "Inhibits vitamin K-dependent clotting factor synthesis (II, VII, IX, X + protein C, S). Reversal: vitamin K (FFP for immediate reversal)" },
-    { "front": "Heparin-induced thrombocytopenia (HIT): mechanism", "back": "IgG antibodies against heparin-PF4 complex → platelet activation → thrombosis (HITT). Onset: 5–10 days after heparin. Stop all heparin; use direct thrombin inhibitors (argatroban, bivalirudin)" },
-    { "front": "Von Willebrand disease: type 1 treatment", "back": "DDAVP (desmopressin) — releases vWF from endothelial Weibel-Palade bodies. Type 3 and platelet-type vWD: vWF concentrate" },
-    { "front": "Hemophilia A vs B: deficient factors and treatment", "back": "Hemophilia A: factor VIII deficiency. Hemophilia B: factor IX deficiency. X-linked recessive. Hemarthroses are classic. Treatment: recombinant factor VIII or IX" },
-    { "front": "Coagulation cascade: intrinsic vs extrinsic pathway tests", "back": "Intrinsic (factors VIII, IX, XI, XII): measured by PTT. Extrinsic (factor VII): measured by PT/INR. Common pathway (X, V, II, I): both tests elevated" },
-    { "front": "Vitamin K dependent clotting factors", "back": "Factors II, VII, IX, X + Protein C and Protein S (all need vitamin K for γ-carboxylation)" },
-    { "front": "Chronic myelogenous leukemia (CML): mutation and treatment", "back": "Philadelphia chromosome t(9;22) → BCR-ABL fusion → constitutive tyrosine kinase. Treatment: imatinib (Gleevec, TKI). Blast crisis → accelerated phase management" },
-    { "front": "Acute myelogenous leukemia (AML): subtype associated with DIC", "back": "AML-M3 (APL — acute promyelocytic leukemia): t(15;17) → PML-RARα fusion. Treatment: ATRA (all-trans retinoic acid) + arsenic trioxide" },
-    { "front": "ALL: most common leukemia in children", "back": "Acute lymphoblastic leukemia. TdT positive (terminal deoxynucleotidyl transferase). Burkitt-type ALL: t(8;14), c-myc. CNS prophylaxis required" },
-    { "front": "CLL: features and cell marker", "back": "Most common leukemia in adults (> 60 yr). CD5+ B cells. Smudge cells on smear. Autoimmune hemolytic anemia. Richter transformation (→ diffuse large B-cell lymphoma)" },
-    { "front": "Hairy cell leukemia: features and treatment", "back": "Rare B-cell malignancy. TRAP (tartrate-resistant acid phosphatase) positive. Pancytopenia, massive splenomegaly. Treatment: cladribine (2-CdA)" },
-    { "front": "Hodgkin lymphoma: Reed-Sternberg cell marker", "back": "Classic RS cell: CD15+, CD30+. Bimodal age distribution (20s and 60s). Better prognosis than NHL" },
-    { "front": "Hodgkin lymphoma: most common subtype", "back": "Nodular sclerosis (most common in young adults). Classic Reed-Sternberg cells in lacunar variants" },
-    { "front": "Non-Hodgkin lymphoma: most common subtype in adults", "back": "Diffuse large B-cell lymphoma (DLBCL). Aggressive but potentially curable with R-CHOP (rituximab + cyclophosphamide + doxorubicin + vincristine + prednisone)" },
-    { "front": "Burkitt lymphoma: translocation and associations", "back": "t(8;14) → c-myc overexpression. EBV associated (African form). 'Starry sky' appearance (macrophages eating apoptotic cells). Highly aggressive" },
-    { "front": "Multiple myeloma: diagnostic criteria (CRAB)", "back": "Calcium ↑, Renal failure, Anemia, Bone lesions (punched-out lytic lesions). Also: M-protein on SPEP, Bence-Jones proteins in urine, bone marrow > 10% plasma cells" },
-    { "front": "Multiple myeloma: most common cause of death", "back": "Infections (due to immunosuppression and hypogammaglobulinemia). Renal failure is second" },
-    { "front": "Polycythemia vera: mutation and features", "back": "JAK2 V617F mutation (>95%). ↑ RBC mass + ↑ WBC + ↑ platelets. Aquagenic pruritus (after hot shower), splenomegaly, Budd-Chiari syndrome. Treatment: phlebotomy + hydroxyurea" },
-    { "front": "Essential thrombocythemia: features", "back": "Platelets > 450k, JAK2/CALR/MPL mutations. Can paradoxically cause thrombosis AND bleeding. Treatment: aspirin; hydroxyurea if high risk" },
-    { "front": "Idiopathic thrombocytopenic purpura (ITP): mechanism and treatment", "back": "IgG antibodies against platelet glycoproteins (GPIIb/IIIa, GPIb). Treatment: prednisone (first-line), IVIG, splenectomy, romiplostim/eltrombopag (TPO agonists)" },
-    { "front": "Thrombotic thrombocytopenic purpura (TTP) vs HUS", "back": "TTP: ADAMTS13 deficiency, more neurological symptoms, predominantly adults. HUS: primarily pediatric, E. coli O157:H7, more renal involvement" },
-    { "front": "Platelet function: primary vs secondary hemostasis", "back": "Primary hemostasis: platelet plug (vWF bridges platelets to damaged endothelium via GPIb; ADP activates via P2Y12 receptor). Secondary: coagulation cascade (fibrin clot formation)" },
-    { "front": "ADP P2Y12 receptor inhibitors (mechanism and drug examples)", "back": "Clopidogrel, prasugrel, ticagrelor — block ADP-mediated platelet activation. Clopidogrel/prasugrel: irreversible. Ticagrelor: reversible" },
-    { "front": "Aplastic anemia: cause and treatment", "back": "Destruction of pluripotent stem cells → pancytopenia. Causes: autoimmune (most common), drugs (chloramphenicol, benzene), viruses. Treatment: immunosuppression (ATG + cyclosporine) or allogenic BMT" },
-    { "front": "Fanconi anemia: features", "back": "Autosomal recessive DNA repair defect. Short stature, thumb/radial abnormalities, café au lait spots, pancytopenia, high cancer risk (AML, SCC)" },
-    { "front": "Myelodysplastic syndrome (MDS): features", "back": "Dysplastic bone marrow with cytopenias. Ring sideroblasts (iron in mitochondria around nucleus), hypersegmented neutrophils, macro-ovalocytes. Risk of transformation to AML" },
-    { "front": "Cyclophosphamide: classic toxicity", "back": "Hemorrhagic cystitis (acrolein metabolite). Prevent with mesna (uroprotectant) and aggressive hydration. Also causes SIADH, myelosuppression, bladder cancer (long-term)" },
-    { "front": "Anthracyclines (doxorubicin) toxicity", "back": "Dilated cardiomyopathy (dose-dependent), myelosuppression, alopecia. Monitor with echocardiogram. Cardioprotection with dexrazoxane" },
-    { "front": "Bleomycin toxicity", "back": "Pulmonary fibrosis (dose-limiting toxicity). Skin changes (Raynaud, hyperpigmentation). Minimal myelosuppression" },
-    { "front": "Vincristine (vinca alkaloid) toxicity", "back": "Peripheral neuropathy (foot drop), SIADH. Minimal myelosuppression (contrast with vinblastine — predominantly myelosuppressive)" },
-    { "front": "Cisplatin toxicity", "back": "Nephrotoxicity (aggressive hydration + amifostine for prevention), ototoxicity (high-frequency sensorineural hearing loss), peripheral neuropathy, severe nausea/vomiting" },
-    { "front": "Tumor lysis syndrome: electrolyte changes", "back": "↑ potassium, ↑ phosphate, ↑ uric acid, ↓ calcium, ↑ creatinine. Prevention: allopurinol (or rasburicase), aggressive IV hydration, monitor electrolytes" }
+    {
+      "front": "Iron deficiency anemia: lab findings",
+      "back": "↓ MCV (microcytic), ↓ serum iron, ↑ TIBC, ↓ ferritin (best indicator of stores), ↓ transferrin saturation"
+    },
+    {
+      "front": "Anemia of chronic disease: lab findings",
+      "back": "Microcytic or normocytic. ↓ serum iron, ↓ TIBC (opposite of iron deficiency), ↑ ferritin (acute phase reactant), ↓ transferrin saturation"
+    },
+    {
+      "front": "Vitamin B12 deficiency: neurological complication",
+      "back": "Subacute combined degeneration — demyelination of dorsal columns (vibration/proprioception loss) + lateral corticospinal tracts (UMN signs)"
+    },
+    {
+      "front": "Vitamin B12 vs folate deficiency: key distinction",
+      "back": "Both cause megaloblastic anemia (hypersegmented neutrophils, macrocytic). B12 deficiency also causes neurological symptoms (folate does NOT). B12: ↑ MMA and homocysteine. Folate: ↑ homocysteine only"
+    },
+    {
+      "front": "Hereditary spherocytosis: defect and test",
+      "back": "Defect in spectrin/ankyrin → spherocytes → extravascular hemolysis. Osmotic fragility test positive. Treatment: splenectomy"
+    },
+    {
+      "front": "G6PD deficiency: triggers and blood smear",
+      "back": "X-linked recessive. Triggers: oxidative stress (infection, fava beans, primaquine, dapsone). Blood smear: Heinz bodies (denatured Hb), bite cells"
+    },
+    {
+      "front": "Sickle cell disease: mutation and crisis types",
+      "back": "HbS = β-globin Glu→Val (E6V). Vasoocclusive (pain) crisis, splenic sequestration, aplastic crisis (parvovirus B19), acute chest syndrome"
+    },
+    {
+      "front": "Sickle cell disease: long-term complications",
+      "back": "Autosplenectomy (↑ encapsulated organism infections), avascular necrosis (femoral head), osteomyelitis (Salmonella), renal papillary necrosis, stroke, retinopathy"
+    },
+    {
+      "front": "Alpha thalassemia: 4-gene deletion outcomes",
+      "back": "1 gene: silent carrier. 2 genes: trait (mild microcytic anemia). 3 genes: HbH disease (tetramers of β-chains). 4 genes: hydrops fetalis (tetramers of γ-chains) — fatal in utero"
+    },
+    {
+      "front": "Beta thalassemia major: treatment",
+      "back": "Chronic transfusions (causes iron overload → chelation with deferoxamine or deferasirox). Bone marrow transplant is curative"
+    },
+    {
+      "front": "Hemolytic anemia: direct Coombs vs indirect Coombs",
+      "back": "Direct (DAT): detects antibodies bound to RBCs (autoimmune hemolysis). Indirect: detects free antibodies in serum (blood bank crossmatching)"
+    },
+    {
+      "front": "Warm vs cold autoimmune hemolytic anemia",
+      "back": "Warm (IgG, 37°C): SLE, CLL, methyldopa, penicillin. Cold (IgM, <37°C): Mycoplasma, EBV, CLL. Cold agglutinin disease: Raynaud-like, acrocyanosis"
+    },
+    {
+      "front": "DIC: lab findings",
+      "back": "↑ PT, ↑ PTT, ↓ platelets, ↓ fibrinogen, ↑ D-dimer, ↑ fibrin split products. Schistocytes on smear. Causes: sepsis, trauma, obstetric complications, malignancy"
+    },
+    {
+      "front": "Heparin mechanism and reversal",
+      "back": "Activates antithrombin III → inhibits factors IIa and Xa (unfractionated heparin). Reversal: protamine sulfate"
+    },
+    {
+      "front": "Warfarin mechanism and reversal",
+      "back": "Inhibits vitamin K-dependent clotting factor synthesis (II, VII, IX, X + protein C, S). Reversal: vitamin K (FFP for immediate reversal)"
+    },
+    {
+      "front": "Heparin-induced thrombocytopenia (HIT): mechanism",
+      "back": "IgG antibodies against heparin-PF4 complex → platelet activation → thrombosis (HITT). Onset: 5–10 days after heparin. Stop all heparin; use direct thrombin inhibitors (argatroban, bivalirudin)"
+    },
+    {
+      "front": "Von Willebrand disease: type 1 treatment",
+      "back": "DDAVP (desmopressin) — releases vWF from endothelial Weibel-Palade bodies. Type 3 and platelet-type vWD: vWF concentrate"
+    },
+    {
+      "front": "Hemophilia A vs B: deficient factors and treatment",
+      "back": "Hemophilia A: factor VIII deficiency. Hemophilia B: factor IX deficiency. X-linked recessive. Hemarthroses are classic. Treatment: recombinant factor VIII or IX"
+    },
+    {
+      "front": "Coagulation cascade: intrinsic vs extrinsic pathway tests",
+      "back": "Intrinsic (factors VIII, IX, XI, XII): measured by PTT. Extrinsic (factor VII): measured by PT/INR. Common pathway (X, V, II, I): both tests elevated"
+    },
+    {
+      "front": "Vitamin K dependent clotting factors",
+      "back": "Factors II, VII, IX, X + Protein C and Protein S (all need vitamin K for γ-carboxylation)"
+    },
+    {
+      "front": "Chronic myelogenous leukemia (CML): mutation and treatment",
+      "back": "Philadelphia chromosome t(9;22) → BCR-ABL fusion → constitutive tyrosine kinase. Treatment: imatinib (Gleevec, TKI). Blast crisis → accelerated phase management"
+    },
+    {
+      "front": "Acute myelogenous leukemia (AML): subtype associated with DIC",
+      "back": "AML-M3 (APL — acute promyelocytic leukemia): t(15;17) → PML-RARα fusion. Treatment: ATRA (all-trans retinoic acid) + arsenic trioxide"
+    },
+    {
+      "front": "ALL: most common leukemia in children",
+      "back": "Acute lymphoblastic leukemia. TdT positive (terminal deoxynucleotidyl transferase). Burkitt-type ALL: t(8;14), c-myc. CNS prophylaxis required"
+    },
+    {
+      "front": "CLL: features and cell marker",
+      "back": "Most common leukemia in adults (> 60 yr). CD5+ B cells. Smudge cells on smear. Autoimmune hemolytic anemia. Richter transformation (→ diffuse large B-cell lymphoma)"
+    },
+    {
+      "front": "Hairy cell leukemia: features and treatment",
+      "back": "Rare B-cell malignancy. TRAP (tartrate-resistant acid phosphatase) positive. Pancytopenia, massive splenomegaly. Treatment: cladribine (2-CdA)"
+    },
+    {
+      "front": "Hodgkin lymphoma: Reed-Sternberg cell marker",
+      "back": "Classic RS cell: CD15+, CD30+. Bimodal age distribution (20s and 60s). Better prognosis than NHL"
+    },
+    {
+      "front": "Hodgkin lymphoma: most common subtype",
+      "back": "Nodular sclerosis (most common in young adults). Classic Reed-Sternberg cells in lacunar variants"
+    },
+    {
+      "front": "Non-Hodgkin lymphoma: most common subtype in adults",
+      "back": "Diffuse large B-cell lymphoma (DLBCL). Aggressive but potentially curable with R-CHOP (rituximab + cyclophosphamide + doxorubicin + vincristine + prednisone)"
+    },
+    {
+      "front": "Burkitt lymphoma: translocation and associations",
+      "back": "t(8;14) → c-myc overexpression. EBV associated (African form). 'Starry sky' appearance (macrophages eating apoptotic cells). Highly aggressive"
+    },
+    {
+      "front": "Multiple myeloma: diagnostic criteria (CRAB)",
+      "back": "Calcium ↑, Renal failure, Anemia, Bone lesions (punched-out lytic lesions). Also: M-protein on SPEP, Bence-Jones proteins in urine, bone marrow > 10% plasma cells"
+    },
+    {
+      "front": "Multiple myeloma: most common cause of death",
+      "back": "Infections (due to immunosuppression and hypogammaglobulinemia). Renal failure is second"
+    },
+    {
+      "front": "Polycythemia vera: mutation and features",
+      "back": "JAK2 V617F mutation (>95%). ↑ RBC mass + ↑ WBC + ↑ platelets. Aquagenic pruritus (after hot shower), splenomegaly, Budd-Chiari syndrome. Treatment: phlebotomy + hydroxyurea"
+    },
+    {
+      "front": "Essential thrombocythemia: features",
+      "back": "Platelets > 450k, JAK2/CALR/MPL mutations. Can paradoxically cause thrombosis AND bleeding. Treatment: aspirin; hydroxyurea if high risk"
+    },
+    {
+      "front": "Idiopathic thrombocytopenic purpura (ITP): mechanism and treatment",
+      "back": "IgG antibodies against platelet glycoproteins (GPIIb/IIIa, GPIb). Treatment: prednisone (first-line), IVIG, splenectomy, romiplostim/eltrombopag (TPO agonists)"
+    },
+    {
+      "front": "Thrombotic thrombocytopenic purpura (TTP) vs HUS",
+      "back": "TTP: ADAMTS13 deficiency, more neurological symptoms, predominantly adults. HUS: primarily pediatric, E. coli O157:H7, more renal involvement"
+    },
+    {
+      "front": "Platelet function: primary vs secondary hemostasis",
+      "back": "Primary hemostasis: platelet plug (vWF bridges platelets to damaged endothelium via GPIb; ADP activates via P2Y12 receptor). Secondary: coagulation cascade (fibrin clot formation)"
+    },
+    {
+      "front": "ADP P2Y12 receptor inhibitors (mechanism and drug examples)",
+      "back": "Clopidogrel, prasugrel, ticagrelor — block ADP-mediated platelet activation. Clopidogrel/prasugrel: irreversible. Ticagrelor: reversible"
+    },
+    {
+      "front": "Aplastic anemia: cause and treatment",
+      "back": "Destruction of pluripotent stem cells → pancytopenia. Causes: autoimmune (most common), drugs (chloramphenicol, benzene), viruses. Treatment: immunosuppression (ATG + cyclosporine) or allogenic BMT"
+    },
+    {
+      "front": "Fanconi anemia: features",
+      "back": "Autosomal recessive DNA repair defect. Short stature, thumb/radial abnormalities, café au lait spots, pancytopenia, high cancer risk (AML, SCC)"
+    },
+    {
+      "front": "Myelodysplastic syndrome (MDS): features",
+      "back": "Dysplastic bone marrow with cytopenias. Ring sideroblasts (iron in mitochondria around nucleus), hypersegmented neutrophils, macro-ovalocytes. Risk of transformation to AML"
+    },
+    {
+      "front": "Cyclophosphamide: classic toxicity",
+      "back": "Hemorrhagic cystitis (acrolein metabolite). Prevent with mesna (uroprotectant) and aggressive hydration. Also causes SIADH, myelosuppression, bladder cancer (long-term)"
+    },
+    {
+      "front": "Anthracyclines (doxorubicin) toxicity",
+      "back": "Dilated cardiomyopathy (dose-dependent), myelosuppression, alopecia. Monitor with echocardiogram. Cardioprotection with dexrazoxane"
+    },
+    {
+      "front": "Bleomycin toxicity",
+      "back": "Pulmonary fibrosis (dose-limiting toxicity). Skin changes (Raynaud, hyperpigmentation). Minimal myelosuppression"
+    },
+    {
+      "front": "Vincristine (vinca alkaloid) toxicity",
+      "back": "Peripheral neuropathy (foot drop), SIADH. Minimal myelosuppression (contrast with vinblastine — predominantly myelosuppressive)"
+    },
+    {
+      "front": "Cisplatin toxicity",
+      "back": "Nephrotoxicity (aggressive hydration + amifostine for prevention), ototoxicity (high-frequency sensorineural hearing loss), peripheral neuropathy, severe nausea/vomiting"
+    },
+    {
+      "front": "Tumor lysis syndrome: electrolyte changes",
+      "back": "↑ potassium, ↑ phosphate, ↑ uric acid, ↓ calcium, ↑ creatinine. Prevention: allopurinol (or rasburicase), aggressive IV hydration, monitor electrolytes"
+    },
+    {
+      "front": "DIC (Disseminated Intravascular Coagulation): pathophysiology, labs, treatment",
+      "back": "Widespread thrombin activation → simultaneous clotting + bleeding. Labs: ↑PT, ↑aPTT, ↓fibrinogen, ↑D-dimer, ↓platelets, schistocytes. Causes: sepsis, trauma, obstetric emergencies (placental abruption), AML-M3 (ATRA reverses). Treatment: treat underlying cause; FFP for clotting factors; platelets if <50k; cryoprecipitate for fibrinogen <100."
+    },
+    {
+      "front": "Chronic myeloid leukemia (CML): molecular target and treatment",
+      "back": "BCR-ABL fusion gene (Philadelphia chromosome t(9;22)) → constitutively active tyrosine kinase. Presents in chronic phase with ↑WBC, basophilia, splenomegaly; blasts <10%. Treatment: imatinib (1st gen TKI), dasatinib/nilotinib (2nd gen). Resistance: T315I mutation → use ponatinib. Blast crisis: ≥20% blasts (AML or ALL phenotype). Monitor: PCR for BCR-ABL."
+    },
+    {
+      "front": "Sickle cell disease: complications and preventive therapies",
+      "back": "HbS: valine→glutamate substitution. Complications: vaso-occlusive pain crisis, acute chest syndrome (most common cause of death), stroke, splenic sequestration, aplastic crisis (parvovirus B19), priapism, avascular necrosis, infections (Strep pneumo, Salmonella osteomyelitis). Prevention: hydroxyurea (↑HbF), penicillin prophylaxis, pneumococcal vaccine. Exchange transfusion: stroke, ACS."
+    },
+    {
+      "front": "Transfusion reactions: acute hemolytic vs febrile non-hemolytic vs TRALI",
+      "back": "Acute hemolytic: ABO mismatch → intravascular hemolysis → fever, chills, hypotension, flank pain, hemoglobinuria. Most dangerous, can be fatal. Febrile non-hemolytic: recipient antibodies against donor WBC antigens → fever/chills without hemolysis; most common reaction. TRALI (transfusion-related acute lung injury): donor anti-HLA antibodies → noncardiogenic pulmonary edema within 6 hours; leading cause of transfusion death."
+    }
   ]
 }
