@@ -87,7 +87,7 @@ export async function POST(req: NextRequest) {
 
     // Constant-time compare even when user doesn't exist — prevents timing-based
     // enumeration of valid email addresses.
-    const dummyHash = '$2b$12$invalidhashfortimingattackprevention000000000000000';
+    const dummyHash = '$2b$10$invalidhashfortimingattackprevention000000000000000';
     const hashToCompare = user?.password_hash ?? dummyHash;
     const match = await bcrypt.compare(password, hashToCompare);
 
@@ -96,6 +96,14 @@ export async function POST(req: NextRequest) {
         { error: 'Invalid email or password.' },
         { status: 401 },
       );
+    }
+
+    // Upgrade hashes silently in the background (12→10 rounds). Fire-and-forget:
+    // does not block the response and fails silently — safe for persistent servers.
+    if (bcrypt.getRounds(user.password_hash) > 10) {
+      bcrypt.hash(password, 10)
+        .then((h) => query('UPDATE users SET password_hash=$1 WHERE id=$2', [h, user.id]))
+        .catch(() => {});
     }
 
     // ── Issue token pair ───────────────────────────────────────────────────────

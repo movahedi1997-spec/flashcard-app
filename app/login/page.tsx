@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff } from 'lucide-react';
@@ -12,6 +12,9 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [form, setForm] = useState({ email: '', password: '' });
+
+  // Pre-warm the dashboard bundle so navigation feels instant after login.
+  useEffect(() => { router.prefetch('/dashboard'); }, [router]);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();

@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import HowItWorks from '@/components/HowItWorks';
@@ -7,6 +8,9 @@ import CTABanner from '@/components/CTABanner';
 import Footer from '@/components/Footer';
 
 export default function HomePage() {
+  if (process.env.NEXT_PUBLIC_LOCAL_MODE === 'true') {
+    redirect('/login');
+  }
   return (
     <>
       <Navbar />

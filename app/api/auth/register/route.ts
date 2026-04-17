@@ -127,7 +127,7 @@ export async function POST(req: NextRequest) {
     }
 
     // ── Hash + insert ──────────────────────────────────────────────────────────
-    const passwordHash = await bcrypt.hash(password, 12);
+    const passwordHash = await bcrypt.hash(password, 10);
 
     const result = await query<{ id: string; name: string; email: string }>(
       `INSERT INTO users (name, email, password_hash, coppa_verified)

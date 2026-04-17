@@ -14,9 +14,26 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Compass } from 'lucide-react';
+import { cookies } from 'next/headers';
+import { jwtVerify } from 'jose';
 import { query } from '@/lib/db';
 import ExploreGrid from '@/components/ExploreGrid';
 import FlashLogoMark from '@/components/FlashLogoMark';
+
+const _secret = new TextEncoder().encode(
+  process.env.ACCESS_JWT_SECRET ?? 'dev-access-secret-change-in-production-32x',
+);
+
+async function getOptionalUser() {
+  const token = cookies().get('token')?.value;
+  if (!token) return null;
+  try {
+    const { payload } = await jwtVerify(token, _secret);
+    return { name: payload.name as string };
+  } catch {
+    return null;
+  }
+}
 
 export const metadata: Metadata = {
   title: 'Explore Flashcard Decks — FlashcardAI',
@@ -97,32 +114,51 @@ async function getCategories() {
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default async function ExplorePage() {
-  const categories = await getCategories();
+  const [categories, user] = await Promise.all([getCategories(), getOptionalUser()]);
 
   return (
     <div className="min-h-screen">
       {/* ── Top nav ──────────────────────────────────────────────────────────── */}
       <header className="sticky top-0 z-50 border-b border-gray-100/80 bg-white/80 backdrop-blur-xl">
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3.5">
-          <Link href="/" className="flex items-center gap-2.5 font-bold text-gray-900">
+          <Link href={user ? '/dashboard' : '/'} className="flex items-center gap-2.5 font-bold text-gray-900">
             <FlashLogoMark size={30} />
             <span className="text-lg tracking-tight">
               Flashcard<span className="text-violet-600">AI</span>
             </span>
           </Link>
           <div className="flex items-center gap-2">
-            <Link
-              href="/login"
-              className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100"
-            >
-              Log in
-            </Link>
-            <Link
-              href="/signup"
-              className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-indigo-200 transition hover:bg-indigo-700 active:scale-95"
-            >
-              Get Started Free
-            </Link>
+            {user ? (
+              <>
+                <Link
+                  href="/flashcards"
+                  className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100"
+                >
+                  My Decks
+                </Link>
+                <Link
+                  href="/dashboard"
+                  className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-indigo-200 transition hover:bg-indigo-700 active:scale-95"
+                >
+                  ← Dashboard
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100"
+                >
+                  Log in
+                </Link>
+                <Link
+                  href="/signup"
+                  className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-indigo-200 transition hover:bg-indigo-700 active:scale-95"
+                >
+                  Get Started Free
+                </Link>
+              </>
+            )}
           </div>
         </nav>
       </header>
