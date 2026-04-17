@@ -114,6 +114,36 @@ export async function PATCH(req: NextRequest, { params }: RouteContext) {
     return NextResponse.json({ error: 'Request body is required.' }, { status: 400 });
   }
 
+  // ── Per-field validation before touching the DB ───────────────────────────
+  const VALID_SUBJECTS = ['medicine', 'pharmacy', 'chemistry', 'other'] as const;
+  const VALID_COLORS   = ['indigo', 'emerald', 'amber', 'rose', 'sky']  as const;
+
+  if ('title' in body) {
+    const t = body.title;
+    if (!t || typeof t !== 'string' || t.trim().length === 0)
+      return NextResponse.json({ error: 'title cannot be empty.' }, { status: 400 });
+    if (t.trim().length > 200)
+      return NextResponse.json({ error: 'title must be 200 characters or fewer.' }, { status: 400 });
+  }
+  if ('description' in body) {
+    const d = body.description;
+    if (typeof d !== 'string')
+      return NextResponse.json({ error: 'description must be a string.' }, { status: 400 });
+    if (d.length > 500)
+      return NextResponse.json({ error: 'description must be 500 characters or fewer.' }, { status: 400 });
+  }
+  if ('is_public' in body && typeof body.is_public !== 'boolean')
+    return NextResponse.json({ error: 'is_public must be a boolean.' }, { status: 400 });
+  if ('subject' in body && body.subject !== null && !VALID_SUBJECTS.includes(body.subject as never))
+    return NextResponse.json({ error: `subject must be one of: ${VALID_SUBJECTS.join(', ')}.` }, { status: 400 });
+  if ('color' in body && !VALID_COLORS.includes(body.color as never))
+    return NextResponse.json({ error: `color must be one of: ${VALID_COLORS.join(', ')}.` }, { status: 400 });
+  if ('emoji' in body) {
+    const e = body.emoji;
+    if (typeof e !== 'string' || e.length === 0 || e.length > 10)
+      return NextResponse.json({ error: 'emoji must be a non-empty string of ≤10 characters.' }, { status: 400 });
+  }
+
   // Build dynamic SET clause from allowed fields only
   const ALLOWED = ['title', 'description', 'is_public', 'subject', 'color', 'emoji'] as const;
   const updates: string[] = [];
@@ -121,26 +151,16 @@ export async function PATCH(req: NextRequest, { params }: RouteContext) {
 
   for (const field of ALLOWED) {
     if (field in body) {
+      const val = field === 'title'
+        ? (body.title as string).trim()
+        : body[field];
       updates.push(`${field} = $${values.length + 1}`);
-      values.push(body[field]);
+      values.push(val);
     }
   }
 
   if (updates.length === 0) {
     return NextResponse.json({ error: 'No updatable fields provided.' }, { status: 400 });
-  }
-
-  // Verify title length if being updated
-  if ('title' in body) {
-    const title = body.title;
-    if (!title || typeof title !== 'string' || title.trim().length === 0) {
-      return NextResponse.json({ error: 'title cannot be empty.' }, { status: 400 });
-    }
-    if (title.trim().length > 200) {
-      return NextResponse.json({ error: 'title must be 200 characters or fewer.' }, { status: 400 });
-    }
-    // Replace the value with trimmed version
-    values[updates.findIndex(u => u.startsWith('title'))] = title.trim();
   }
 
   // Auto-generate a slug when the deck is being made public for the first time.
@@ -205,7 +225,18 @@ export async function PATCH(req: NextRequest, { params }: RouteContext) {
         updatedAt: row.updated_at,
       },
     });
-  } catch (err) {
+  } catch (err: unknown) {
+    // Unique constraint violation on slug (race condition between check and UPDATE)
+    if (
+      typeof err === 'object' && err !== null &&
+      'code' in err && (err as { code: string }).code === '23505' &&
+      'constraint' in err && String((err as { constraint: string }).constraint).includes('slug')
+    ) {
+      return NextResponse.json(
+        { error: 'Slug collision — please retry making the deck public.' },
+        { status: 409 },
+      );
+    }
     console.error('[PATCH /api/decks/[id]]', err);
     return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
   }

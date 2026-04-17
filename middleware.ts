@@ -7,7 +7,7 @@ const secret = new TextEncoder().encode(
 
 async function verifyToken(token: string) {
   try {
-    await jwtVerify(token, secret);
+    await jwtVerify(token, secret, { algorithms: ['HS256'] });
     return true;
   } catch {
     return false;

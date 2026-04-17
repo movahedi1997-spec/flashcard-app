@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAuthUser } from '@/lib/auth';
+import { getAuthUser, getClientIp } from '@/lib/auth';
+import { checkRateLimit } from '@/lib/rateLimit';
 import { query } from '@/lib/db';
 
 // Maps subject → preferred seed deck title to copy into the user's library
@@ -22,6 +23,15 @@ export async function POST(req: NextRequest) {
   const user = await getAuthUser(req);
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const ip = getClientIp(req);
+  const rl = checkRateLimit(`onboarding:${ip}`);
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } },
+    );
   }
 
   const body = await req.json().catch(() => ({}));
