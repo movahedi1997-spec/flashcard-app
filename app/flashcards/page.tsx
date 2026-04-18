@@ -127,6 +127,7 @@ export default function FlashcardsPage() {
           onUpdateCard={updateCard} onDeleteCard={deleteCard}
           onBack={goHome} onStudy={() => goToStudy(view.deckId)}
           onUpdateDeck={syncDeck}
+          onReloadCards={() => loadCards(view.deckId)}
           addCardOpen={addCardOpen} onAddCardOpenChange={setAddCardOpen}
         />
       );

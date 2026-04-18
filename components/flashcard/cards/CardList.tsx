@@ -12,7 +12,8 @@
  */
 
 import { useState, useMemo } from 'react';
-import { Plus, Search, SlidersHorizontal, CreditCard, Play, Loader2, AlertCircle, Share2 } from 'lucide-react';
+import { Plus, Search, SlidersHorizontal, CreditCard, Play, Loader2, AlertCircle, Share2, Sparkles } from 'lucide-react';
+import AIGenerateModal from './AIGenerateModal';
 import type { Deck, ApiCard } from '@/types/api';
 import type { CardUpdate } from '@/hooks/useCards';
 import CardItem from './CardItem';
@@ -52,6 +53,7 @@ interface Props {
   onUpdateDeck?: (updated: Deck) => void;
   addCardOpen?: boolean;
   onAddCardOpenChange?: (open: boolean) => void;
+  onReloadCards?: () => void;
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -69,6 +71,7 @@ export default function CardList({
   onUpdateDeck,
   addCardOpen: externalAddCardOpen,
   onAddCardOpenChange,
+  onReloadCards,
 }: Props) {
   const [internalCreateOpen, setInternalCreateOpen] = useState(false);
   const createOpen = externalAddCardOpen ?? internalCreateOpen;
@@ -81,6 +84,7 @@ export default function CardList({
   const [sort, setSort] = useState<SortOption>('newest');
   const [showSort, setShowSort] = useState(false);
   const [showShare, setShowShare] = useState(false);
+  const [showAI, setShowAI] = useState(false);
 
   // Local copy of deck so ShareDeckPanel changes reflect immediately
   const [localDeck, setLocalDeck] = useState<Deck>(deck);
@@ -130,14 +134,23 @@ export default function CardList({
         <p className="text-sm text-slate-500">
           {loading ? 'Loading…' : `${cards.length} ${cards.length === 1 ? 'card' : 'cards'}`}
         </p>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => setShowShare((p) => !p)}
-          aria-pressed={showShare}
-        >
-          <Share2 size={13} /> Share
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => setShowAI(true)}
+          >
+            <Sparkles size={13} /> Generate
+          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => setShowShare((p) => !p)}
+            aria-pressed={showShare}
+          >
+            <Share2 size={13} /> Share
+          </Button>
+        </div>
       </div>
 
       {/* ── Share panel ──────────────────────────────────────────────────────── */}
@@ -261,6 +274,18 @@ export default function CardList({
         initialCard={editCard ?? undefined}
         mode="edit"
       />
+
+      {/* ── AI Generate modal ────────────────────────────────────────────────── */}
+      {showAI && (
+        <AIGenerateModal
+          deckId={deck.id}
+          onClose={() => setShowAI(false)}
+          onGenerated={(n) => {
+            setShowAI(false);
+            onReloadCards?.();
+          }}
+        />
+      )}
     </div>
   );
 }
