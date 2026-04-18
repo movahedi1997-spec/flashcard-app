@@ -1,14 +1,11 @@
 module.exports = {
   apps: [{
     name: 'flashcard-app',
-    script: 'node_modules/.bin/next',
-    args: 'start',
+    script: 'start.sh',
     cwd: '/home/appuser/app',
-    interpreter: 'node',
     exec_mode: 'fork',
     instances: 1,
     kill_timeout: 10000,
-    wait_ready: false,
     autorestart: true,
     exp_backoff_restart_delay: 1000,
     env: {
