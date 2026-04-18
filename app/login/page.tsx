@@ -35,6 +35,11 @@ export default function LoginPage() {
         return;
       }
 
+      if (data.requires_verification || data.requires_otp) {
+        router.push('/verify-email');
+        return;
+      }
+
       // Full navigation ensures the new cookie is sent with the next request
       window.location.href = '/dashboard';
     } catch {

@@ -54,10 +54,8 @@ export default function SignupPage() {
         return;
       }
 
-      // Redirect to onboarding subject selector, or to `next` param if coming from a CTA
-      const params = new URLSearchParams(window.location.search);
-      const next = params.get('next');
-      router.push(next ? `/onboarding?next=${encodeURIComponent(next)}` : '/onboarding');
+      // Always verify email before onboarding
+      router.push('/verify-email');
     } catch {
       setError('Something went wrong. Make sure the server is running.');
     } finally {

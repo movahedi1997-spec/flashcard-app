@@ -1,108 +1,60 @@
 /**
  * POST /api/auth/register
- * Creates a new user account and opens a fully-hardened session.
  *
- * TASK-005 additions:
- *   • Rate limited — 5 attempts / min per IP (429 on breach)
- *   • COPPA gate  — `coppa_verified: true` required in body; blocks under-13 registration
- *   • Dual tokens — 15-min access token (cookie: `token`) +
- *                   30-day refresh token (cookie: `refresh_token`, path: /api/auth)
- *   • Refresh jti persisted to `refresh_tokens` table for rotation/revocation
- *
- * Body: { name, email, password, coppa_verified }
- * Response 201: { user: { id, name, email } }
- * Response 400: validation error | COPPA blocked
- * Response 409: email already exists
- * Response 429: rate limit exceeded
- * Response 500: internal error
+ * Creates a new user (email_verified=false) and sends a 6-digit OTP.
+ * Returns { requires_verification: true } — NO session cookies yet.
+ * Cookies are issued after the user verifies their email at POST /api/auth/verify-otp.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { query } from '@/lib/db';
 import {
-  signAccessToken,
-  signRefreshToken,
-  COOKIE_NAME,
-  COOKIE_OPTIONS,
-  REFRESH_COOKIE_NAME,
-  REFRESH_COOKIE_OPTIONS,
+  signOtpSession,
+  OTP_SESSION_COOKIE,
+  OTP_SESSION_COOKIE_OPTIONS,
   getClientIp,
 } from '@/lib/auth';
 import { checkRateLimit } from '@/lib/rateLimit';
+import { storeAndSendOtp } from '@/lib/otp';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
-  // ── Rate limit ─────────────────────────────────────────────────────────────
   const ip = getClientIp(req);
-  const rl = checkRateLimit(`register:${ip}`); // 5 attempts / 60 s per IP
-
+  const rl = checkRateLimit(`register:${ip}`);
   if (!rl.allowed) {
     return NextResponse.json(
       { error: 'Too many registration attempts. Please try again later.' },
-      {
-        status: 429,
-        headers: {
-          'Retry-After':           String(rl.retryAfter),
-          'X-RateLimit-Limit':     String(rl.limit),
-          'X-RateLimit-Remaining': '0',
-        },
-      },
+      { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } },
     );
   }
 
-  // ── Parse body ─────────────────────────────────────────────────────────────
   const body = await req.json().catch(() => null) as Record<string, unknown> | null;
   const { name, email, password, coppa_verified } = body ?? {};
 
-  // ── COPPA gate ─────────────────────────────────────────────────────────────
-  // The client must explicitly pass coppa_verified: true after the user confirms
-  // they are 13 years of age or older. This flag must never be set server-side
-  // without a genuine affirmative action from the user in the UI.
   if (coppa_verified !== true) {
     return NextResponse.json(
-      {
-        error: 'Age verification required.',
-        code:  'COPPA_NOT_VERIFIED',
-        detail: 'You must confirm you are 13 years of age or older to create an account.',
-      },
+      { error: 'Age verification required.', code: 'COPPA_NOT_VERIFIED' },
       { status: 400 },
     );
   }
 
-  // ── Field validation ───────────────────────────────────────────────────────
   if (!name || !email || !password) {
-    return NextResponse.json(
-      { error: 'name, email, and password are required.' },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: 'name, email, and password are required.' }, { status: 400 });
   }
   if (typeof name !== 'string' || name.trim().length < 2) {
-    return NextResponse.json(
-      { error: 'Name must be at least 2 characters.' },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: 'Name must be at least 2 characters.' }, { status: 400 });
   }
   if (typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return NextResponse.json(
-      { error: 'A valid email address is required.' },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: 'A valid email address is required.' }, { status: 400 });
   }
   if (typeof password !== 'string' || password.length < 8) {
-    return NextResponse.json(
-      { error: 'Password must be at least 8 characters.' },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: 'Password must be at least 8 characters.' }, { status: 400 });
   }
-  // Reject trivially weak passwords: all-same-character or no letter present.
   if (/^(.)\1+$/.test(password)) {
-    return NextResponse.json(
-      { error: 'Password is too weak. Avoid repeated characters.' },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: 'Password is too weak.' }, { status: 400 });
   }
   if (!/[a-zA-Z]/.test(password) || !/[0-9!@#$%^&*()\-_=+[\]{}|;:'",.<>?/\\`~]/.test(password)) {
     return NextResponse.json(
@@ -114,52 +66,29 @@ export async function POST(req: NextRequest) {
   const normalizedEmail = email.toLowerCase().trim();
 
   try {
-    // ── Duplicate check ────────────────────────────────────────────────────────
-    const existing = await query(
-      'SELECT id FROM users WHERE email = $1',
-      [normalizedEmail],
-    );
+    const existing = await query('SELECT id FROM users WHERE email = $1', [normalizedEmail]);
     if ((existing.rowCount ?? 0) > 0) {
-      return NextResponse.json(
-        { error: 'An account with that email already exists.' },
-        { status: 409 },
-      );
+      return NextResponse.json({ error: 'An account with that email already exists.' }, { status: 409 });
     }
 
-    // ── Hash + insert ──────────────────────────────────────────────────────────
     const passwordHash = await bcrypt.hash(password, 10);
 
     const result = await query<{ id: string; name: string; email: string }>(
-      `INSERT INTO users (name, email, password_hash, coppa_verified)
-       VALUES ($1, $2, $3, $4)
+      `INSERT INTO users (name, email, password_hash, coppa_verified, email_verified, two_fa_enabled)
+       VALUES ($1, $2, $3, true, false, true)
        RETURNING id, name, email`,
-      [name.trim(), normalizedEmail, passwordHash, true],
+      [name.trim(), normalizedEmail, passwordHash],
     );
-
     const user = result.rows[0];
 
-    // ── Issue token pair ───────────────────────────────────────────────────────
-    const [accessToken, refresh] = await Promise.all([
-      signAccessToken({ userId: user.id, email: user.email, name: user.name }),
-      signRefreshToken(user.id),
-    ]);
+    // Generate + send OTP
+    await storeAndSendOtp(user.id, 'email_verification', user.email, user.name);
 
-    // Persist refresh jti — enables revocation on logout / rotation
-    await query(
-      `INSERT INTO refresh_tokens (jti, user_id, expires_at)
-       VALUES ($1, $2, $3)`,
-      [refresh.jti, user.id, refresh.expiresAt],
-    );
+    // Issue a short-lived OTP session cookie so the verify page knows who's verifying
+    const otpSessionToken = await signOtpSession(user.id, 'email_verification');
 
-    // ── Build response ─────────────────────────────────────────────────────────
-    const response = NextResponse.json(
-      { user: { id: user.id, name: user.name, email: user.email } },
-      { status: 201 },
-    );
-
-    response.cookies.set(COOKIE_NAME, accessToken, COOKIE_OPTIONS);
-    response.cookies.set(REFRESH_COOKIE_NAME, refresh.token, REFRESH_COOKIE_OPTIONS);
-
+    const response = NextResponse.json({ requires_verification: true }, { status: 201 });
+    response.cookies.set(OTP_SESSION_COOKIE, otpSessionToken, OTP_SESSION_COOKIE_OPTIONS);
     return response;
   } catch (err) {
     console.error('[POST /api/auth/register]', err);

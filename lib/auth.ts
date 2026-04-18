@@ -186,6 +186,41 @@ export function getClientIp(req: NextRequest): string {
   return isValidIp(raw) ? raw : 'unknown';
 }
 
+// ─── OTP session (short-lived, bridges password-check → OTP-check) ───────────
+
+export const OTP_SESSION_COOKIE = 'otp_session';
+
+export const OTP_SESSION_COOKIE_OPTIONS = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'lax' as const,
+  maxAge: 15 * 60, // 15 minutes — just long enough to enter the code
+  path: '/',
+};
+
+export async function signOtpSession(userId: string, purpose: string): Promise<string> {
+  return new SignJWT({ userId, purpose, type: 'otp_session' })
+    .setProtectedHeader({ alg: 'HS256' })
+    .setIssuedAt()
+    .setExpirationTime('15m')
+    .sign(ACCESS_SECRET);
+}
+
+export async function verifyOtpSession(
+  token: string,
+): Promise<{ userId: string; purpose: string } | null> {
+  try {
+    const { payload } = await jwtVerify(token, ACCESS_SECRET);
+    if (payload['type'] !== 'otp_session') return null;
+    return {
+      userId:  payload['userId']  as string,
+      purpose: payload['purpose'] as string,
+    };
+  } catch {
+    return null;
+  }
+}
+
 /** Returns true for well-formed IPv4 or IPv6 addresses. */
 function isValidIp(value: string): boolean {
   // IPv4

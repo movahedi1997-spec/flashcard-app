@@ -1,7 +1,8 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { jwtVerify } from 'jose';
-import { User, ShieldAlert, Globe, LogOut } from 'lucide-react';
+import { User, ShieldAlert, Globe, LogOut, ShieldCheck } from 'lucide-react';
+import TwoFAToggle from './TwoFAToggle';
 import AppNav from '@/components/AppNav';
 import LogoutButton from '@/components/LogoutButton';
 import Link from 'next/link';
@@ -30,6 +31,7 @@ interface ProfileRow {
   username: string | null;
   bio: string | null;
   avatar_url: string | null;
+  two_fa_enabled: boolean;
 }
 
 export default async function SettingsPage() {
@@ -37,11 +39,11 @@ export default async function SettingsPage() {
 
   // Fetch extended profile fields (may not exist on older accounts)
   const profileResult = await query<ProfileRow>(
-    'SELECT username, bio, avatar_url FROM users WHERE id = $1',
+    'SELECT username, bio, avatar_url, COALESCE(two_fa_enabled, true) AS two_fa_enabled FROM users WHERE id = $1',
     [user!.userId],
-  ).catch(() => ({ rows: [{ username: null, bio: null, avatar_url: null }] }));
+  ).catch(() => ({ rows: [{ username: null, bio: null, avatar_url: null, two_fa_enabled: true }] }));
 
-  const profile = profileResult.rows[0] ?? { username: null, bio: null, avatar_url: null };
+  const profile = profileResult.rows[0] ?? { username: null, bio: null, avatar_url: null, two_fa_enabled: true };
 
   return (
     <div className="min-h-screen">
@@ -84,6 +86,17 @@ export default async function SettingsPage() {
             initialBio={profile.bio}
             initialAvatarUrl={profile.avatar_url}
           />
+        </section>
+
+        {/* Security */}
+        <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+          <div className="flex items-center gap-3 mb-5">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+              <ShieldCheck className="h-5 w-5" />
+            </div>
+            <h2 className="text-base font-semibold text-gray-900">Security</h2>
+          </div>
+          <TwoFAToggle initialEnabled={profile.two_fa_enabled} />
         </section>
 
         {/* Sign out */}
