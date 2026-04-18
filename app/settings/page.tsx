@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { jwtVerify } from 'jose';
 import { User, ShieldAlert, Globe } from 'lucide-react';
-import FlashLogoMark from '@/components/FlashLogoMark';
+import AppNav from '@/components/AppNav';
 import Link from 'next/link';
 import DeleteAccountButton from './DeleteAccountButton';
 import EditProfileForm from './EditProfileForm';
@@ -44,18 +44,7 @@ export default async function SettingsPage() {
 
   return (
     <div className="min-h-screen">
-      {/* Header */}
-      <header className="border-b border-gray-100 bg-white">
-        <div className="mx-auto flex max-w-2xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2.5 font-bold text-gray-900">
-            <FlashLogoMark size={26} />
-            <span>Flashcard<span className="text-violet-600">AI</span></span>
-          </Link>
-          <Link href="/dashboard" className="text-sm text-gray-500 hover:text-indigo-600 transition">
-            ← Dashboard
-          </Link>
-        </div>
-      </header>
+      <AppNav username={profile.username} activePage="settings" />
 
       <main className="mx-auto max-w-2xl px-6 py-12 space-y-8">
         <h1 className="text-2xl font-extrabold text-gray-900">Account Settings</h1>

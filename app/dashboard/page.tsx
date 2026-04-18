@@ -1,10 +1,9 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { jwtVerify } from 'jose';
-import { BookOpen, Zap, Trophy, Settings, LayoutGrid, Compass, User } from 'lucide-react';
+import { BookOpen, Zap, Trophy, LayoutGrid, Compass, User } from 'lucide-react';
 import Link from 'next/link';
-import HomeButton from './HomeButton';
-import LogoutButton from './LogoutButton';
+import AppNav from '@/components/AppNav';
 import StudyChart from '@/components/dashboard/StudyChart';
 import { query } from '@/lib/db';
 
@@ -93,46 +92,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* ── Top bar ────────────────────────────────────────────────────── */}
-      <header
-        className="border-b border-gray-100 bg-white sticky top-0 z-40"
-        style={{ paddingTop: 'env(safe-area-inset-top)' }}
-      >
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <HomeButton />
-
-          <nav className="flex items-center gap-1">
-            {/* Explore */}
-            <Link
-              href="/explore"
-              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition hover:bg-indigo-50 hover:text-indigo-600"
-            >
-              <Compass className="h-4 w-4" />
-              <span className="hidden sm:inline">Explore</span>
-            </Link>
-
-            {/* Profile */}
-            <Link
-              href={profileHref}
-              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition hover:bg-indigo-50 hover:text-indigo-600"
-            >
-              <User className="h-4 w-4" />
-              <span className="hidden sm:inline">Profile</span>
-            </Link>
-
-            {/* Settings */}
-            <Link
-              href="/settings"
-              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition hover:bg-indigo-50 hover:text-indigo-600"
-            >
-              <Settings className="h-4 w-4" />
-              <span className="hidden sm:inline">Settings</span>
-            </Link>
-
-            <LogoutButton />
-          </nav>
-        </div>
-      </header>
+      <AppNav username={data.username} />
 
       <main className="mx-auto max-w-6xl px-4 py-8 space-y-6">
         {/* ── Welcome ──────────────────────────────────────────────────── */}

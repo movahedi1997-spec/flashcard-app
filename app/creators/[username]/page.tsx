@@ -14,7 +14,7 @@ import { BadgeCheck, BookOpen, Copy } from 'lucide-react';
 import { cookies }        from 'next/headers';
 import { jwtVerify }      from 'jose';
 import { query }          from '@/lib/db';
-import FlashLogoMark      from '@/components/FlashLogoMark';
+import AppNav             from '@/components/AppNav';
 import ExploreDeckCard    from '@/components/ExploreDeckCard';
 import type { PublicDeck } from '@/types/api';
 
@@ -27,7 +27,9 @@ async function getOptionalUser() {
   if (!token) return null;
   try {
     const { payload } = await jwtVerify(token, _secret);
-    return { userId: payload.userId as string, name: payload.name as string };
+    const userId = payload.userId as string;
+    const res = await query<{ username: string | null }>('SELECT username FROM users WHERE id = $1', [userId]);
+    return { userId, name: payload.name as string, username: res.rows[0]?.username ?? null };
   } catch {
     return null;
   }
@@ -170,36 +172,20 @@ export default async function CreatorProfilePage({ params }: Props) {
   return (
     <div className="min-h-screen">
       {/* Nav */}
-      <header className="sticky top-0 z-50 border-b border-gray-100/80 bg-white/80 backdrop-blur-xl">
-        <nav className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3.5">
-          <Link href="/explore" className="rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100">
-            ← Explore
-          </Link>
-          <Link href={authUser ? '/dashboard' : '/'} className="flex items-center gap-2.5 font-bold text-gray-900">
-            <FlashLogoMark size={30} />
-            <span className="text-lg tracking-tight">
+      {authUser ? (
+        <AppNav username={authUser.username} activePage="profile" />
+      ) : (
+        <header className="sticky top-0 z-50 border-b border-gray-100/80 bg-white/80 backdrop-blur-xl">
+          <nav className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3.5">
+            <Link href="/" className="flex items-center gap-2.5 font-bold text-gray-900 text-lg tracking-tight">
               Flashcard<span className="text-violet-600">AI</span>
-            </span>
-          </Link>
-          <div className="flex items-center gap-2">
-            {authUser ? (
-              isOwnProfile ? (
-                <Link href="/settings" className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-indigo-200 transition hover:bg-indigo-700 active:scale-95">
-                  Edit Profile
-                </Link>
-              ) : (
-                <Link href="/dashboard" className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-indigo-200 transition hover:bg-indigo-700 active:scale-95">
-                  Dashboard
-                </Link>
-              )
-            ) : (
-              <Link href="/signup" className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-indigo-200 transition hover:bg-indigo-700 active:scale-95">
-                Get Started Free
-              </Link>
-            )}
-          </div>
-        </nav>
-      </header>
+            </Link>
+            <Link href="/signup" className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700">
+              Get Started Free
+            </Link>
+          </nav>
+        </header>
+      )}
 
       <main className="mx-auto max-w-5xl px-6 py-10">
         {/* Profile header */}
