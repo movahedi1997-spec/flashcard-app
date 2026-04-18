@@ -41,7 +41,7 @@ export default function LoginPage() {
       }
 
       // Full navigation ensures the new cookie is sent with the next request
-      window.location.href = '/dashboard';
+      window.location.href = '/flashcards';
     } catch {
       setError('Something went wrong. Make sure the server is running.');
     } finally {

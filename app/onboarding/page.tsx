@@ -79,7 +79,7 @@ function OnboardingContent() {
 
     // If user came from a CTA (e.g. copied a deck from Explore), send them back there
     const next = searchParams.get('next');
-    router.push(next && next.startsWith('/') ? next : '/dashboard');
+    router.push(next && next.startsWith('/') ? next : '/flashcards');
   }
 
   const selectedSubject = SUBJECTS.find((s) => s.id === selected);
