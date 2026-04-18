@@ -99,3 +99,29 @@ export async function generateFlashcards(
   // Tier 2 & 3 — Gemini (free tier first, then paid automatically)
   return await generateWithGemini(text, count);
 }
+
+// PDF path — always uses Gemini vision (handles text, diagrams, scanned pages)
+export async function generateFlashcardsFromPdf(
+  pdfBuffer: Buffer,
+  count = 20,
+): Promise<GenerateResult> {
+  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? '');
+  const model = genAI.getGenerativeModel({
+    model: 'gemini-1.5-flash',
+    generationConfig: { responseMimeType: 'application/json', temperature: 0.4 },
+  });
+
+  const result = await model.generateContent([
+    {
+      inlineData: {
+        mimeType: 'application/pdf',
+        data: pdfBuffer.toString('base64'),
+      },
+    },
+    `${SYSTEM_PROMPT}\n\nGenerate exactly ${count} flashcards from this PDF. Include content from diagrams, charts, and images you can see — not just the text.`,
+  ]);
+
+  const raw = result.response.text();
+  const cards = await parseCards(raw);
+  return { cards, provider: 'gemini', model: 'gemini-1.5-flash (vision)' };
+}

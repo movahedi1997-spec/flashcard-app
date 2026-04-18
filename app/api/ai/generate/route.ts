@@ -14,8 +14,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { jwtVerify } from 'jose';
 import { query } from '@/lib/db';
-import { generateFlashcards } from '@/lib/ai';
-import { extractTextFromPdf } from '@/lib/pdf';
+import { generateFlashcards, generateFlashcardsFromPdf } from '@/lib/ai';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -94,31 +93,25 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Deck not found.' }, { status: 404 });
   }
 
-  // ── Extract text ──────────────────────────────────────────────────────────
-  let text = rawText ?? '';
-  if (file) {
-    if (!file.type.includes('pdf') && !file.name.endsWith('.pdf')) {
-      return NextResponse.json({ error: 'Only PDF files are supported.' }, { status: 400 });
-    }
-    if (file.size > 10 * 1024 * 1024) {
-      return NextResponse.json({ error: 'File too large. Maximum size is 10 MB.' }, { status: 400 });
-    }
-    const buffer = Buffer.from(await file.arrayBuffer());
-    try {
-      text = await extractTextFromPdf(buffer);
-    } catch {
-      return NextResponse.json({ error: 'Could not read PDF. Make sure it contains text (not scanned images).' }, { status: 422 });
-    }
-  }
-
-  if (text.trim().length < 50) {
-    return NextResponse.json({ error: 'Not enough text to generate flashcards.' }, { status: 400 });
-  }
-
   // ── Generate ──────────────────────────────────────────────────────────────
   let result;
   try {
-    result = await generateFlashcards(text, count);
+    if (file) {
+      if (!file.type.includes('pdf') && !file.name.endsWith('.pdf')) {
+        return NextResponse.json({ error: 'Only PDF files are supported.' }, { status: 400 });
+      }
+      if (file.size > 20 * 1024 * 1024) {
+        return NextResponse.json({ error: 'File too large. Maximum size is 20 MB.' }, { status: 400 });
+      }
+      // Send PDF directly to Gemini vision — handles text, diagrams, scanned pages
+      const buffer = Buffer.from(await file.arrayBuffer());
+      result = await generateFlashcardsFromPdf(buffer, count);
+    } else {
+      if (!rawText || rawText.trim().length < 50) {
+        return NextResponse.json({ error: 'Not enough text to generate flashcards.' }, { status: 400 });
+      }
+      result = await generateFlashcards(rawText, count);
+    }
   } catch (err) {
     console.error('[POST /api/ai/generate]', err);
     return NextResponse.json({ error: 'AI generation failed. Please try again.' }, { status: 500 });
