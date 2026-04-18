@@ -20,7 +20,7 @@ import { extractTextFromPdf } from '@/lib/pdf';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-const FREE_MONTHLY_LIMIT = 50;
+const FREE_MONTHLY_LIMIT = 200;
 
 const secret = new TextEncoder().encode(
   process.env.ACCESS_JWT_SECRET ?? 'dev-access-secret-change-in-production-32x',
@@ -46,21 +46,24 @@ export async function POST(req: NextRequest) {
   );
   isPro = userRow.rows[0]?.is_pro ?? false;
 
-  // ── Quota check ───────────────────────────────────────────────────────────
+  // ── Quota check (monthly) ─────────────────────────────────────────────────
   const month = new Date().toISOString().slice(0, 7); // YYYY-MM
   const usageRow = await query<{ cards_generated: number }>(
     `SELECT cards_generated FROM ai_usage WHERE user_id = $1 AND month = $2`,
     [userId, month],
   );
   const used = usageRow.rows[0]?.cards_generated ?? 0;
+  const remaining = FREE_MONTHLY_LIMIT - used;
 
   if (!isPro && used >= FREE_MONTHLY_LIMIT) {
     return NextResponse.json(
       {
-        error: `Free limit reached. You've used ${used}/${FREE_MONTHLY_LIMIT} AI cards this month.`,
+        error: `Monthly limit reached. You've used all ${FREE_MONTHLY_LIMIT} free AI cards for this month.`,
         code: 'QUOTA_EXCEEDED',
         used,
         limit: FREE_MONTHLY_LIMIT,
+        remaining: 0,
+        resetsAt: 'next month',
       },
       { status: 402 },
     );
@@ -128,7 +131,7 @@ export async function POST(req: NextRequest) {
   // Cap at remaining quota for free users
   const cards = isPro
     ? result.cards
-    : result.cards.slice(0, FREE_MONTHLY_LIMIT - used);
+    : result.cards.slice(0, remaining);
 
   // ── Insert cards ──────────────────────────────────────────────────────────
   for (const card of cards) {
@@ -148,11 +151,13 @@ export async function POST(req: NextRequest) {
     [userId, month, cards.length],
   );
 
+  const newUsed = used + cards.length;
   return NextResponse.json({
     generated: cards.length,
     provider: result.provider,
     model: result.model,
-    used: used + cards.length,
+    used: newUsed,
     limit: isPro ? null : FREE_MONTHLY_LIMIT,
+    remaining: isPro ? null : FREE_MONTHLY_LIMIT - newUsed,
   });
 }
