@@ -96,8 +96,8 @@ export default function EditProfileForm({
           Username
           <span className="ml-1 normal-case font-normal text-gray-400">(used in your public profile URL)</span>
         </label>
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-400 flex-shrink-0">flashcard.app/creators/</span>
+        <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-2">
+          <span className="text-xs text-gray-400 sm:text-sm sm:flex-shrink-0">/creators/</span>
           <input
             type="text"
             value={username}
@@ -106,7 +106,7 @@ export default function EditProfileForm({
             maxLength={30}
             pattern="[a-zA-Z0-9_-]{3,30}"
             title="3–30 characters: letters, numbers, hyphens, underscores"
-            className="flex-1 rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+            className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-100"
           />
         </div>
         {profileUrl && (

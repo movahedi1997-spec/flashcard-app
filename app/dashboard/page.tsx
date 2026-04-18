@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { jwtVerify } from 'jose';
-import { BookOpen, Zap, Trophy, Settings, LayoutGrid } from 'lucide-react';
+import { BookOpen, Zap, Trophy, Settings, LayoutGrid, Compass, User } from 'lucide-react';
 import Link from 'next/link';
 import HomeButton from './HomeButton';
 import LogoutButton from './LogoutButton';
@@ -45,8 +45,8 @@ function calculateStreak(sortedDates: string[]): number {
   return streak;
 }
 
-async function getDashboardStats(userId: string) {
-  const [decksRes, cardsRes, todayRes, daysRes] = await Promise.all([
+async function getDashboardData(userId: string) {
+  const [decksRes, cardsRes, todayRes, daysRes, profileRes] = await Promise.all([
     query<{ count: string }>(
       'SELECT COUNT(*)::text AS count FROM decks WHERE user_id = $1',
       [userId],
@@ -71,6 +71,10 @@ async function getDashboardStats(userId: string) {
         LIMIT 365`,
       [userId],
     ),
+    query<{ username: string | null }>(
+      'SELECT username FROM users WHERE id = $1',
+      [userId],
+    ),
   ]);
 
   return {
@@ -78,80 +82,128 @@ async function getDashboardStats(userId: string) {
     totalCards: parseInt(cardsRes.rows[0]?.count ?? '0', 10),
     cardsToday: parseInt(todayRes.rows[0]?.count ?? '0', 10),
     streak: calculateStreak(daysRes.rows.map((r) => r.review_date)),
+    username: profileRes.rows[0]?.username ?? null,
   };
 }
 
 export default async function DashboardPage() {
   const user = await getUserFromCookie();
-  const dbStats = await getDashboardStats(user!.userId);
+  const data = await getDashboardData(user!.userId);
+  const profileHref = data.username ? `/creators/${data.username}` : '/settings';
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-50">
       {/* ── Top bar ────────────────────────────────────────────────────── */}
-      <header className="border-b border-gray-100 bg-white">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          {/* Logo → logs out and returns to marketing homepage */}
+      <header
+        className="border-b border-gray-100 bg-white sticky top-0 z-40"
+        style={{ paddingTop: 'env(safe-area-inset-top)' }}
+      >
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
           <HomeButton />
-          <div className="flex items-center gap-2">
+
+          <nav className="flex items-center gap-1">
+            {/* Explore */}
+            <Link
+              href="/explore"
+              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition hover:bg-indigo-50 hover:text-indigo-600"
+            >
+              <Compass className="h-4 w-4" />
+              <span className="hidden sm:inline">Explore</span>
+            </Link>
+
+            {/* Profile */}
+            <Link
+              href={profileHref}
+              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition hover:bg-indigo-50 hover:text-indigo-600"
+            >
+              <User className="h-4 w-4" />
+              <span className="hidden sm:inline">Profile</span>
+            </Link>
+
+            {/* Settings */}
             <Link
               href="/settings"
-              className="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-600 transition hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-600"
+              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition hover:bg-indigo-50 hover:text-indigo-600"
             >
               <Settings className="h-4 w-4" />
-              Settings
+              <span className="hidden sm:inline">Settings</span>
             </Link>
+
             <LogoutButton />
-          </div>
+          </nav>
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-6 py-12 space-y-8">
+      <main className="mx-auto max-w-6xl px-4 py-8 space-y-6">
         {/* ── Welcome ──────────────────────────────────────────────────── */}
         <div>
-          <h1 className="text-3xl font-extrabold text-gray-900">
+          <h1 className="text-2xl font-extrabold text-gray-900 sm:text-3xl">
             Welcome back, {user.name.split(' ')[0]}! 👋
           </h1>
-          <p className="mt-1 text-gray-500">
+          <p className="mt-1 text-gray-500 text-sm sm:text-base">
             Ready to sharpen your knowledge today?
           </p>
         </div>
 
-        {/* ── Quick Actions (CTA — shown first so they're immediately visible) ── */}
-        <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm">
-          <h2 className="mb-6 text-xl font-bold text-gray-900">Start Study</h2>
+        {/* ── Quick Actions ─────────────────────────────────────────────── */}
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           <Link
             href="/flashcards"
-            className="flex items-center gap-4 rounded-xl border border-indigo-100 bg-indigo-50 p-5 transition hover:bg-indigo-100"
+            className="flex items-center gap-3 rounded-xl border border-indigo-100 bg-white p-4 shadow-sm transition hover:border-indigo-300 hover:shadow-md"
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 text-white">
-              <BookOpen className="h-5 w-5" />
+            <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-indigo-600 text-white">
+              <BookOpen className="h-4 w-4" />
             </div>
-            <div>
-              <p className="font-semibold text-gray-900">My Decks</p>
-              <p className="text-sm text-gray-500">
-                Create and manage your flashcard decks
-              </p>
+            <div className="min-w-0">
+              <p className="font-semibold text-gray-900 text-sm">My Decks</p>
+              <p className="text-xs text-gray-500 hidden sm:block">Study &amp; manage</p>
+            </div>
+          </Link>
+
+          <Link
+            href="/explore"
+            className="flex items-center gap-3 rounded-xl border border-emerald-100 bg-white p-4 shadow-sm transition hover:border-emerald-300 hover:shadow-md"
+          >
+            <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-emerald-600 text-white">
+              <Compass className="h-4 w-4" />
+            </div>
+            <div className="min-w-0">
+              <p className="font-semibold text-gray-900 text-sm">Explore</p>
+              <p className="text-xs text-gray-500 hidden sm:block">Find public decks</p>
+            </div>
+          </Link>
+
+          <Link
+            href={profileHref}
+            className="flex items-center gap-3 rounded-xl border border-violet-100 bg-white p-4 shadow-sm transition hover:border-violet-300 hover:shadow-md col-span-2 sm:col-span-1"
+          >
+            <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-violet-600 text-white">
+              <User className="h-4 w-4" />
+            </div>
+            <div className="min-w-0">
+              <p className="font-semibold text-gray-900 text-sm">My Profile</p>
+              <p className="text-xs text-gray-500 hidden sm:block">Public creator page</p>
             </div>
           </Link>
         </div>
 
         {/* ── Stats ────────────────────────────────────────────────────── */}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
           {[
-            { icon: BookOpen,    label: 'Total Decks', value: String(dbStats.totalDecks), color: 'text-indigo-600 bg-indigo-50'   },
-            { icon: LayoutGrid,  label: 'Total Cards', value: String(dbStats.totalCards), color: 'text-violet-600 bg-violet-50'   },
-            { icon: Zap,         label: 'Cards Today', value: String(dbStats.cardsToday), color: 'text-amber-600 bg-amber-50'     },
-            { icon: Trophy,      label: 'Day Streak',  value: String(dbStats.streak),     color: 'text-emerald-600 bg-emerald-50' },
+            { icon: BookOpen,   label: 'Total Decks', value: String(data.totalDecks), color: 'text-indigo-600 bg-indigo-50'   },
+            { icon: LayoutGrid, label: 'Total Cards', value: String(data.totalCards), color: 'text-violet-600 bg-violet-50'   },
+            { icon: Zap,        label: 'Cards Today', value: String(data.cardsToday), color: 'text-amber-600 bg-amber-50'     },
+            { icon: Trophy,     label: 'Day Streak',  value: String(data.streak),     color: 'text-emerald-600 bg-emerald-50' },
           ].map(({ icon: Icon, label, value, color }) => (
             <div
               key={label}
-              className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm"
+              className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-6"
             >
-              <div className={`mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl ${color}`}>
-                <Icon className="h-5 w-5" />
+              <div className={`mb-2 inline-flex h-9 w-9 items-center justify-center rounded-xl ${color}`}>
+                <Icon className="h-4 w-4" />
               </div>
-              <p className="text-2xl font-bold text-gray-900">{value}</p>
-              <p className="mt-0.5 text-sm text-gray-500">{label}</p>
+              <p className="text-xl font-bold text-gray-900 sm:text-2xl">{value}</p>
+              <p className="mt-0.5 text-xs text-gray-500 sm:text-sm">{label}</p>
             </div>
           ))}
         </div>
@@ -159,7 +211,6 @@ export default async function DashboardPage() {
         {/* ── Study activity chart ──────────────────────────────────────── */}
         <StudyChart />
 
-        {/* ── Account info ─────────────────────────────────────────────── */}
         <p className="text-center text-xs text-gray-400">
           Logged in as {user.email}
         </p>

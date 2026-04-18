@@ -30,6 +30,8 @@ async function checkToken(token: string): Promise<TokenStatus> {
 // deployment. The original URL is preserved for the browser.
 
 function isAdminHost(req: NextRequest): boolean {
+  // Admin subdomain is production-only — disabled in local dev mode
+  if (process.env.NEXT_PUBLIC_LOCAL_MODE === 'true') return false;
   const host = req.headers.get('host') ?? '';
   return host.startsWith('admin.');
 }
