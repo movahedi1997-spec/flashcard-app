@@ -39,14 +39,16 @@ export async function middleware(request: NextRequest) {
 
   // ── Admin subdomain ───────────────────────────────────────────────────────
   if (isAdminHost(request)) {
-    // Rewrite /  → /admin
-    // Rewrite /login → /admin/login
-    // Rewrite everything else → /admin/<path>
-    // Pass /api/* through without rewriting (cookies still work)
     if (pathname.startsWith('/api/')) {
       return NextResponse.next();
     }
 
+    // Already an /admin/* path (e.g. after a server-side redirect) — serve directly
+    if (pathname.startsWith('/admin')) {
+      return NextResponse.next();
+    }
+
+    // Rewrite / → /admin, /login → /admin/login, etc.
     const adminPath = pathname === '/' ? '/admin' : `/admin${pathname}`;
     const url = request.nextUrl.clone();
     url.pathname = adminPath;
