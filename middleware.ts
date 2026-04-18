@@ -105,6 +105,6 @@ export const config = {
     '/login',
     '/signup',
     // Catch all paths so admin subdomain routing fires on every request
-    '/((?!_next/static|_next/image|favicon.ico|icons|.*\\.png$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|icons|uploads|.*\\.png$).*)',
   ],
 };
