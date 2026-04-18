@@ -65,7 +65,7 @@ async function generateWithGroq(text: string, count: number): Promise<GenerateRe
 async function generateWithGemini(text: string, count: number): Promise<GenerateResult> {
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? '');
   const model = genAI.getGenerativeModel({
-    model: 'gemini-1.5-flash',
+    model: 'gemini-2.0-flash',
     generationConfig: { responseMimeType: 'application/json', temperature: 0.4 },
   });
   const result = await model.generateContent(
@@ -73,7 +73,7 @@ async function generateWithGemini(text: string, count: number): Promise<Generate
   );
   const raw = result.response.text();
   const cards = await parseCards(raw);
-  return { cards, provider: 'gemini', model: 'gemini-1.5-flash' };
+  return { cards, provider: 'gemini', model: 'gemini-2.0-flash' };
 }
 
 function isRateLimitError(err: unknown): boolean {
@@ -107,7 +107,7 @@ export async function generateFlashcardsFromPdf(
 ): Promise<GenerateResult> {
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? '');
   const model = genAI.getGenerativeModel({
-    model: 'gemini-1.5-flash',
+    model: 'gemini-2.0-flash',
     generationConfig: { responseMimeType: 'application/json', temperature: 0.4 },
   });
 
@@ -123,5 +123,5 @@ export async function generateFlashcardsFromPdf(
 
   const raw = result.response.text();
   const cards = await parseCards(raw);
-  return { cards, provider: 'gemini', model: 'gemini-1.5-flash (vision)' };
+  return { cards, provider: 'gemini', model: 'gemini-2.0-flash (vision)' };
 }
