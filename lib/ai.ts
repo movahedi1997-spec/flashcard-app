@@ -71,7 +71,7 @@ async function generateWithOpenRouter(text: string, count: number): Promise<Gene
       'X-Title': 'FlashcardAI',
     },
     body: JSON.stringify({
-      model: 'google/gemini-2.0-flash',
+      model: 'google/gemini-2.0-flash-001',
       messages: [
         { role: 'system', content: SYSTEM_PROMPT },
         { role: 'user',   content: buildUserPrompt(text, count) },
@@ -129,7 +129,7 @@ export async function generateFlashcardsFromPdf(
       'X-Title': 'FlashcardAI',
     },
     body: JSON.stringify({
-      model: 'google/gemini-2.0-flash',
+      model: 'google/gemini-2.0-flash-001',
       messages: [
         {
           role: 'user',
