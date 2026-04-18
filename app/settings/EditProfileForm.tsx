@@ -7,8 +7,8 @@
  * bio, and avatar URL.
  */
 
-import { useState } from 'react';
-import { Check, Loader2, ExternalLink } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { Check, Loader2, ExternalLink, Upload } from 'lucide-react';
 import { fetchWithRefresh } from '@/lib/fetchWithRefresh';
 
 interface Props {
@@ -28,10 +28,32 @@ export default function EditProfileForm({
   const [username,  setUsername]  = useState(initialUsername   ?? '');
   const [bio,       setBio]       = useState(initialBio        ?? '');
   const [avatarUrl, setAvatarUrl] = useState(initialAvatarUrl  ?? '');
+  const [uploading, setUploading] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   const [saving,  setSaving]  = useState(false);
   const [saved,   setSaved]   = useState(false);
   const [error,   setError]   = useState('');
+
+  async function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 6 * 1024 * 1024) { setError('Image must be under 6 MB'); return; }
+    setUploading(true);
+    setError('');
+    try {
+      const fd = new FormData();
+      fd.append('avatar', file);
+      const res = await fetch('/api/account/avatar', { method: 'POST', body: fd, credentials: 'include' });
+      const data = await res.json() as { avatarUrl?: string; error?: string };
+      if (!res.ok) throw new Error(data.error ?? 'Upload failed');
+      setAvatarUrl(data.avatarUrl ?? '');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Upload failed');
+    } finally {
+      setUploading(false);
+    }
+  }
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
@@ -138,28 +160,48 @@ export default function EditProfileForm({
         />
       </div>
 
-      {/* Avatar URL */}
+      {/* Avatar */}
       <div>
         <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
-          Avatar URL
-          <span className="ml-1 normal-case font-normal text-gray-400">(paste a direct image link)</span>
+          Profile picture
+          <span className="ml-1 normal-case font-normal text-gray-400">(JPEG, PNG, WebP · max 6 MB)</span>
         </label>
-        <input
-          type="url"
-          value={avatarUrl}
-          onChange={(e) => setAvatarUrl(e.target.value)}
-          placeholder="https://…"
-          className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-100"
-        />
-        {avatarUrl && (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img
-            src={avatarUrl}
-            alt="Avatar preview"
-            className="mt-2 h-12 w-12 rounded-full object-cover border border-gray-100"
-            onError={(e) => (e.currentTarget.style.display = 'none')}
-          />
-        )}
+        <div className="flex items-center gap-4">
+          {avatarUrl ? (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={avatarUrl}
+              alt="Avatar preview"
+              className="h-16 w-16 rounded-full object-cover border-2 border-gray-100 shadow-sm flex-shrink-0"
+              onError={(e) => (e.currentTarget.style.display = 'none')}
+            />
+          ) : (
+            <div className="h-16 w-16 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white text-xl font-bold flex-shrink-0">
+              {name.charAt(0).toUpperCase() || '?'}
+            </div>
+          )}
+          <div>
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+              className="hidden"
+              onChange={handleAvatarUpload}
+            />
+            <button
+              type="button"
+              onClick={() => fileRef.current?.click()}
+              disabled={uploading}
+              className="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 transition hover:border-indigo-300 hover:bg-indigo-50 hover:text-indigo-600 disabled:opacity-60"
+            >
+              {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+              {uploading ? 'Uploading…' : 'Upload photo'}
+            </button>
+            {avatarUrl && (
+              <p className="mt-1 text-xs text-gray-400">Click to replace</p>
+            )}
+          </div>
+        </div>
       </div>
 
       <button

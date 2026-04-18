@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { jwtVerify } from 'jose';
-import { BookOpen, Zap, Trophy, LayoutGrid, Compass, User } from 'lucide-react';
+import { BookOpen, Zap, Trophy, LayoutGrid } from 'lucide-react';
 import Link from 'next/link';
 import AppNav from '@/components/AppNav';
 import StudyChart from '@/components/dashboard/StudyChart';
@@ -70,8 +70,8 @@ async function getDashboardData(userId: string) {
         LIMIT 365`,
       [userId],
     ),
-    query<{ username: string | null }>(
-      'SELECT username FROM users WHERE id = $1',
+    query<{ username: string | null; avatar_url: string | null }>(
+      'SELECT username, avatar_url FROM users WHERE id = $1',
       [userId],
     ),
   ]);
@@ -81,7 +81,8 @@ async function getDashboardData(userId: string) {
     totalCards: parseInt(cardsRes.rows[0]?.count ?? '0', 10),
     cardsToday: parseInt(todayRes.rows[0]?.count ?? '0', 10),
     streak: calculateStreak(daysRes.rows.map((r) => r.review_date)),
-    username: profileRes.rows[0]?.username ?? null,
+    username:  profileRes.rows[0]?.username  ?? null,
+    avatarUrl: profileRes.rows[0]?.avatar_url ?? null,
   };
 }
 
@@ -95,56 +96,35 @@ export default async function DashboardPage() {
       <AppNav username={data.username} />
 
       <main className="mx-auto max-w-6xl px-4 py-8 pb-24 sm:pb-8 space-y-6">
-        {/* ── Welcome ──────────────────────────────────────────────────── */}
-        <div>
-          <h1 className="text-2xl font-extrabold text-gray-900 sm:text-3xl">
-            Welcome back, {user.name.split(' ')[0]}! 👋
-          </h1>
-          <p className="mt-1 text-gray-500 text-sm sm:text-base">
-            Ready to sharpen your knowledge today?
-          </p>
-        </div>
-
-        {/* ── Quick Actions ─────────────────────────────────────────────── */}
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-          <Link
-            href="/flashcards"
-            className="flex items-center gap-3 rounded-xl border border-indigo-100 bg-white p-4 shadow-sm transition hover:border-indigo-300 hover:shadow-md"
-          >
-            <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-indigo-600 text-white">
-              <BookOpen className="h-4 w-4" />
-            </div>
-            <div className="min-w-0">
-              <p className="font-semibold text-gray-900 text-sm">My Decks</p>
-              <p className="text-xs text-gray-500 hidden sm:block">Study &amp; manage</p>
-            </div>
+        {/* ── Welcome + profile ────────────────────────────────────────── */}
+        <div className="flex items-center gap-4">
+          {/* Avatar */}
+          <Link href={profileHref} className="flex-shrink-0">
+            {data.avatarUrl ? (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                src={data.avatarUrl}
+                alt={user.name}
+                className="h-14 w-14 rounded-full object-cover border-2 border-white shadow-sm ring-2 ring-indigo-100"
+              />
+            ) : (
+              <div className="h-14 w-14 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white font-bold text-xl shadow-sm">
+                {user.name.charAt(0).toUpperCase()}
+              </div>
+            )}
           </Link>
 
-          <Link
-            href="/explore"
-            className="flex items-center gap-3 rounded-xl border border-emerald-100 bg-white p-4 shadow-sm transition hover:border-emerald-300 hover:shadow-md"
-          >
-            <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-emerald-600 text-white">
-              <Compass className="h-4 w-4" />
-            </div>
-            <div className="min-w-0">
-              <p className="font-semibold text-gray-900 text-sm">Explore</p>
-              <p className="text-xs text-gray-500 hidden sm:block">Find public decks</p>
-            </div>
-          </Link>
-
-          <Link
-            href={profileHref}
-            className="flex items-center gap-3 rounded-xl border border-violet-100 bg-white p-4 shadow-sm transition hover:border-violet-300 hover:shadow-md col-span-2 sm:col-span-1"
-          >
-            <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-violet-600 text-white">
-              <User className="h-4 w-4" />
-            </div>
-            <div className="min-w-0">
-              <p className="font-semibold text-gray-900 text-sm">My Profile</p>
-              <p className="text-xs text-gray-500 hidden sm:block">Public creator page</p>
-            </div>
-          </Link>
+          <div>
+            <h1 className="text-2xl font-extrabold text-gray-900 sm:text-3xl">
+              Welcome back, {user.name.split(' ')[0]}! 👋
+            </h1>
+            {data.username && (
+              <p className="text-sm text-indigo-500 font-medium">@{data.username}</p>
+            )}
+            <p className="text-gray-500 text-sm sm:text-base">
+              Ready to sharpen your knowledge today?
+            </p>
+          </div>
         </div>
 
         {/* ── Stats ────────────────────────────────────────────────────── */}

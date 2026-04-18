@@ -22,7 +22,7 @@ import {
   BookOpen, Copy, ArrowLeft, BadgeCheck, Eye, EyeOff,
 } from 'lucide-react';
 import { query } from '@/lib/db';
-import FlashLogoMark from '@/components/FlashLogoMark';
+import AppNav from '@/components/AppNav';
 import CopyDeckButton from './CopyDeckButton';
 
 export const revalidate = 3600; // ISR: re-render at most once per hour
@@ -111,13 +111,15 @@ async function getTotalCards(deckId: string) {
 
 // ── Auth helper (optional — graceful fallback) ────────────────────────────────
 
-async function tryGetUserId(): Promise<string | null> {
+async function tryGetUser(): Promise<{ userId: string; username: string | null } | null> {
   try {
     const cookieStore = cookies();
     const token = cookieStore.get('token')?.value;
     if (!token) return null;
     const { payload } = await jwtVerify(token, secret);
-    return (payload.userId as string) ?? null;
+    const userId = payload.userId as string;
+    const res = await query<{ username: string | null }>('SELECT username FROM users WHERE id = $1', [userId]);
+    return { userId, username: res.rows[0]?.username ?? null };
   } catch {
     return null;
   }
@@ -165,7 +167,8 @@ export default async function DeckLandingPage({ params }: Props) {
   const deck = await getDeckBySlug(params.slug);
   if (!deck) notFound();
 
-  const userId = await tryGetUserId();
+  const authUser  = await tryGetUser();
+  const userId    = authUser?.userId ?? null;
   const isOwner   = userId === deck.user_id;
   const showBack  = !!userId; // authenticated users see both faces
 
@@ -189,37 +192,23 @@ export default async function DeckLandingPage({ params }: Props) {
   return (
     <div className="min-h-screen">
       {/* ── Nav ──────────────────────────────────────────────────────────────── */}
-      <header className="sticky top-0 z-50 border-b border-gray-100/80 bg-white/80 backdrop-blur-xl">
-        <nav className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3.5">
-          <Link href="/" className="flex items-center gap-2.5 font-bold text-gray-900">
-            <FlashLogoMark size={30} />
-            <span className="text-lg tracking-tight">
+      {authUser ? (
+        <AppNav username={authUser.username} activePage="explore" />
+      ) : (
+        <header className="sticky top-0 z-50 border-b border-gray-100/80 bg-white/80 backdrop-blur-xl">
+          <nav className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3.5">
+            <Link href="/" className="flex items-center gap-2.5 font-bold text-gray-900 text-lg tracking-tight">
               Flashcard<span className="text-violet-600">AI</span>
-            </span>
-          </Link>
-          <div className="flex items-center gap-2">
-            {userId ? (
-              <Link
-                href="/flashcards"
-                className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-indigo-200 transition hover:bg-indigo-700"
-              >
-                My Library
-              </Link>
-            ) : (
-              <>
-                <Link href="/login" className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100">
-                  Log in
-                </Link>
-                <Link href="/signup" className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-indigo-200 transition hover:bg-indigo-700 active:scale-95">
-                  Get Started Free
-                </Link>
-              </>
-            )}
-          </div>
-        </nav>
-      </header>
+            </Link>
+            <div className="flex items-center gap-2">
+              <Link href="/login" className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100">Log in</Link>
+              <Link href="/signup" className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700">Get Started Free</Link>
+            </div>
+          </nav>
+        </header>
+      )}
 
-      <main className="mx-auto max-w-5xl px-6 py-10">
+      <main className="mx-auto max-w-5xl px-6 py-10 pb-24 sm:pb-10">
         {/* ── Back link ────────────────────────────────────────────────────── */}
         <Link
           href="/explore"
