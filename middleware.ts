@@ -24,8 +24,36 @@ async function checkToken(token: string): Promise<TokenStatus> {
   }
 }
 
+// ── Admin subdomain routing ───────────────────────────────────────────────────
+// Requests to admin.flashcardai.app (or admin.localhost in dev) are internally
+// rewritten to /admin/* so they're served by app/admin/ without a separate
+// deployment. The original URL is preserved for the browser.
+
+function isAdminHost(req: NextRequest): boolean {
+  const host = req.headers.get('host') ?? '';
+  return host.startsWith('admin.');
+}
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // ── Admin subdomain ───────────────────────────────────────────────────────
+  if (isAdminHost(request)) {
+    // Rewrite /  → /admin
+    // Rewrite /login → /admin/login
+    // Rewrite everything else → /admin/<path>
+    // Pass /api/* through without rewriting (cookies still work)
+    if (pathname.startsWith('/api/')) {
+      return NextResponse.next();
+    }
+
+    const adminPath = pathname === '/' ? '/admin' : `/admin${pathname}`;
+    const url = request.nextUrl.clone();
+    url.pathname = adminPath;
+    return NextResponse.rewrite(url);
+  }
+
+  // ── Regular app ───────────────────────────────────────────────────────────
   const token = request.cookies.get('token')?.value;
 
   // Protect /dashboard, /flashcards, and /settings
@@ -45,14 +73,11 @@ export async function middleware(request: NextRequest) {
     }
 
     if (status === 'expired') {
-      // Access token expired — try to silently refresh using the refresh_token
-      // cookie (which the silent-refresh route can read because it's under /api/auth).
       const refreshUrl = new URL('/api/auth/silent-refresh', request.url);
       refreshUrl.searchParams.set('next', pathname + request.nextUrl.search);
       return NextResponse.redirect(refreshUrl);
     }
 
-    // Invalid signature or other JWT error — force re-login
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
@@ -68,5 +93,14 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/flashcards/:path*', '/settings/:path*', '/login', '/signup'],
+  matcher: [
+    // Regular app protected routes + auth pages
+    '/dashboard/:path*',
+    '/flashcards/:path*',
+    '/settings/:path*',
+    '/login',
+    '/signup',
+    // Catch all paths so admin subdomain routing fires on every request
+    '/((?!_next/static|_next/image|favicon.ico|icons|.*\\.png$).*)',
+  ],
 };

@@ -1,0 +1,16 @@
+import { NextResponse } from 'next/server';
+import { ADMIN_COOKIE } from '@/lib/adminAuth';
+
+export const runtime = 'nodejs';
+
+export async function POST() {
+  const res = NextResponse.json({ ok: true });
+  res.cookies.set(ADMIN_COOKIE, '', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 0,
+    path: '/',
+  });
+  return res;
+}
