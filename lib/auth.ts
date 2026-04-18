@@ -56,7 +56,7 @@ export const COOKIE_OPTIONS = {
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
   sameSite: 'lax' as const,
-  maxAge: 15 * 60, // 15 minutes
+  maxAge: 30 * 24 * 60 * 60, // 30 days — JWT inside expires in 15 min; middleware triggers silent-refresh
   path: '/',
 };
 
