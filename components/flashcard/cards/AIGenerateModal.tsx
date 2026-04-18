@@ -273,7 +273,7 @@ export default function AIGenerateModal({ deckId, onClose, onGenerated }: Props)
                   <div>
                     <p className="text-base font-bold text-gray-900">Monthly limit reached</p>
                     <p className="text-sm text-gray-500 mt-1">
-                      You've used all 200 free AI cards for this month.<br />Your quota resets at the start of next month.
+                      You've used all 189 free AI cards for this month.<br />Your quota resets at the start of next month.
                     </p>
                   </div>
                 </div>

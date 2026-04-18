@@ -1,11 +1,10 @@
 /**
  * lib/ai.ts
- * Flashcard generation via Groq (primary, free) → Gemini free → Gemini paid.
+ * Flashcard generation via Groq (primary, free) → OpenRouter Gemini 2.0 Flash (fallback + PDF vision).
  * Falls through tiers automatically on 429 / quota errors.
  */
 
 import Groq from 'groq-sdk';
-import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export interface GeneratedCard {
   front: string;
@@ -14,7 +13,7 @@ export interface GeneratedCard {
 
 export interface GenerateResult {
   cards: GeneratedCard[];
-  provider: 'groq' | 'gemini';
+  provider: 'groq' | 'openrouter';
   model: string;
 }
 
@@ -62,18 +61,33 @@ async function generateWithGroq(text: string, count: number): Promise<GenerateRe
   return { cards, provider: 'groq', model: 'llama-3.3-70b-versatile' };
 }
 
-async function generateWithGemini(text: string, count: number): Promise<GenerateResult> {
-  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? '');
-  const model = genAI.getGenerativeModel({
-    model: 'gemini-2.0-flash',
-    generationConfig: { responseMimeType: 'application/json', temperature: 0.4 },
+async function generateWithOpenRouter(text: string, count: number): Promise<GenerateResult> {
+  const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+      'Content-Type': 'application/json',
+      'HTTP-Referer': 'https://flashcardai.app',
+      'X-Title': 'FlashcardAI',
+    },
+    body: JSON.stringify({
+      model: 'google/gemini-2.0-flash',
+      messages: [
+        { role: 'system', content: SYSTEM_PROMPT },
+        { role: 'user',   content: buildUserPrompt(text, count) },
+      ],
+      temperature: 0.4,
+      response_format: { type: 'json_object' },
+    }),
   });
-  const result = await model.generateContent(
-    `${SYSTEM_PROMPT}\n\n${buildUserPrompt(text, count)}`,
-  );
-  const raw = result.response.text();
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`OpenRouter ${res.status}: ${err}`);
+  }
+  const data = await res.json() as { choices: { message: { content: string } }[] };
+  const raw = data.choices[0]?.message?.content ?? '';
   const cards = await parseCards(raw);
-  return { cards, provider: 'gemini', model: 'gemini-2.0-flash' };
+  return { cards, provider: 'openrouter', model: 'gemini-2.0-flash' };
 }
 
 function isRateLimitError(err: unknown): boolean {
@@ -88,40 +102,60 @@ export async function generateFlashcards(
   text: string,
   count = 20,
 ): Promise<GenerateResult> {
-  // Tier 1 — Groq (free)
+  // Tier 1 — Groq (free, fast)
   try {
     return await generateWithGroq(text, count);
   } catch (err) {
     if (!isRateLimitError(err)) throw err;
-    console.log('[AI] Groq rate limited — falling back to Gemini');
+    console.log('[AI] Groq rate limited — falling back to OpenRouter');
   }
 
-  // Tier 2 & 3 — Gemini (free tier first, then paid automatically)
-  return await generateWithGemini(text, count);
+  // Tier 2 — OpenRouter Gemini 2.0 Flash
+  return await generateWithOpenRouter(text, count);
 }
 
-// PDF path — always uses Gemini vision (handles text, diagrams, scanned pages)
+// PDF path — OpenRouter Gemini 2.0 Flash vision (handles text, diagrams, scanned pages)
 export async function generateFlashcardsFromPdf(
   pdfBuffer: Buffer,
   count = 20,
 ): Promise<GenerateResult> {
-  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? '');
-  const model = genAI.getGenerativeModel({
-    model: 'gemini-2.0-flash',
-    generationConfig: { responseMimeType: 'application/json', temperature: 0.4 },
+  const base64 = pdfBuffer.toString('base64');
+  const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+      'Content-Type': 'application/json',
+      'HTTP-Referer': 'https://flashcardai.app',
+      'X-Title': 'FlashcardAI',
+    },
+    body: JSON.stringify({
+      model: 'google/gemini-2.0-flash',
+      messages: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'image_url',
+              image_url: { url: `data:application/pdf;base64,${base64}` },
+            },
+            {
+              type: 'text',
+              text: `${SYSTEM_PROMPT}\n\nGenerate exactly ${count} flashcards from this PDF. Include content from diagrams, charts, and images you can see — not just the text.`,
+            },
+          ],
+        },
+      ],
+      temperature: 0.4,
+      response_format: { type: 'json_object' },
+    }),
   });
 
-  const result = await model.generateContent([
-    {
-      inlineData: {
-        mimeType: 'application/pdf',
-        data: pdfBuffer.toString('base64'),
-      },
-    },
-    `${SYSTEM_PROMPT}\n\nGenerate exactly ${count} flashcards from this PDF. Include content from diagrams, charts, and images you can see — not just the text.`,
-  ]);
-
-  const raw = result.response.text();
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`OpenRouter ${res.status}: ${err}`);
+  }
+  const data = await res.json() as { choices: { message: { content: string } }[] };
+  const raw = data.choices[0]?.message?.content ?? '';
   const cards = await parseCards(raw);
-  return { cards, provider: 'gemini', model: 'gemini-2.0-flash (vision)' };
+  return { cards, provider: 'openrouter', model: 'gemini-2.0-flash (vision)' };
 }

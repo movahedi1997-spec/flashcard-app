@@ -19,7 +19,7 @@ import { generateFlashcards, generateFlashcardsFromPdf } from '@/lib/ai';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-const FREE_MONTHLY_LIMIT = 200;
+const FREE_MONTHLY_LIMIT = 189;
 
 const secret = new TextEncoder().encode(
   process.env.ACCESS_JWT_SECRET ?? 'dev-access-secret-change-in-production-32x',
