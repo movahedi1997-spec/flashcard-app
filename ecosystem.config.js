@@ -7,8 +7,10 @@ module.exports = {
     interpreter: 'node',
     exec_mode: 'fork',
     instances: 1,
-    kill_timeout: 5000,
+    kill_timeout: 10000,
+    wait_ready: false,
     autorestart: true,
+    exp_backoff_restart_delay: 1000,
     env: {
       NODE_ENV: 'production',
     },
