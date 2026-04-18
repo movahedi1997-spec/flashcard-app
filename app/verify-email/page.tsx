@@ -68,7 +68,7 @@ export default function VerifyEmailPage() {
         setCode(['', '', '', '', '', '']);
         inputs.current[0]?.focus();
       } else {
-        router.replace('/dashboard');
+        router.replace('/onboarding');
       }
     } catch {
       setError('Network error. Please try again.');

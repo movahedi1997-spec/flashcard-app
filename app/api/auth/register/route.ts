@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
 
     const result = await query<{ id: string; name: string; email: string }>(
       `INSERT INTO users (name, email, password_hash, coppa_verified, email_verified, two_fa_enabled)
-       VALUES ($1, $2, $3, true, false, true)
+       VALUES ($1, $2, $3, true, false, false)
        RETURNING id, name, email`,
       [name.trim(), normalizedEmail, passwordHash],
     );

@@ -4,10 +4,13 @@
 
 ALTER TABLE users
   ADD COLUMN IF NOT EXISTS email_verified BOOLEAN NOT NULL DEFAULT false,
-  ADD COLUMN IF NOT EXISTS two_fa_enabled  BOOLEAN NOT NULL DEFAULT true;
+  ADD COLUMN IF NOT EXISTS two_fa_enabled  BOOLEAN NOT NULL DEFAULT false;
 
 -- All existing users are treated as already-verified (they proved email ownership by logging in)
 UPDATE users SET email_verified = true WHERE email_verified = false;
+
+-- 2FA is opt-in — existing users default to off
+UPDATE users SET two_fa_enabled = false WHERE two_fa_enabled = true AND email_verified = true;
 
 CREATE TABLE IF NOT EXISTS otp_codes (
   id         UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
