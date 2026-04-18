@@ -1,25 +1,7 @@
 'use client';
 
-/**
- * app/flashcards/page.tsx  (TASK-006 update)
- *
- * Orchestrates the flashcard app shell.
- *
- * Key changes from legacy version:
- *  - useBoxes / useCards now async (no localStorage)
- *  - updateCardScore removed — SRS grading is handled inside StudySession
- *  - ModeSelector re-introduced: Study → Choose Mode → SRS Study | Cram/Turbo
- *  - SRS Study: fetches due cards from API, grades recorded, schedule adapts
- *  - Cram/Turbo: read-only, shows all cards shuffled, nothing recorded
- *  - loadCards(deckId) called on goToStudy so ModeSelector + CramSession have data
- *  - BoxList / CardList receive loading + error props from hooks
- *  - StudySession receives deck object + onBack only
- *  - Import flow: BoxList notifies via onImport(title, rawCards); parent creates
- *    deck, then bulk-imports cards with the new deckId
- */
-
 import { useState, useCallback, useEffect } from 'react';
-import { BookOpen } from 'lucide-react';
+import { BookOpen, ArrowLeft, Play, Plus } from 'lucide-react';
 import Link from 'next/link';
 import { useBoxes } from '@/hooks/useBoxes';
 import { useCards } from '@/hooks/useCards';
@@ -32,16 +14,12 @@ import ModeSelector from '@/components/flashcard/study/ModeSelector';
 import SplashPage from '@/components/flashcard/SplashPage';
 import BottomNav from '@/components/BottomNav';
 
-// ── View state ────────────────────────────────────────────────────────────────
-
 type View =
   | { type: 'home' }
   | { type: 'box'; deckId: string }
   | { type: 'study-select'; deckId: string }
   | { type: 'study-srs'; deckId: string }
   | { type: 'study-cram'; deckId: string };
-
-// ── Raw card shape from BoxList JSON import ───────────────────────────────────
 
 interface RawImportCard {
   front: string;
@@ -50,159 +28,110 @@ interface RawImportCard {
   backImageUrl?: string;
 }
 
-// ── Page ──────────────────────────────────────────────────────────────────────
-
 export default function FlashcardsPage() {
   const [showSplash, setShowSplash] = useState(true);
   const [view, setView] = useState<View>({ type: 'home' });
+  const [addCardOpen, setAddCardOpen] = useState(false);
 
-  // ── Hooks ─────────────────────────────────────────────────────────────────────
   const {
-    decks,
-    loading: decksLoading,
-    error: decksError,
-    createBox,
-    updateBox,
-    deleteBox,
-    importBoxes,
-    syncDeck,
+    decks, loading: decksLoading, error: decksError,
+    createBox, updateBox, deleteBox, importBoxes, syncDeck,
   } = useBoxes();
 
   const {
-    cards,
-    loading: cardsLoading,
-    error: cardsError,
-    loadCards,
-    getBoxCards,
-    createCard,
-    updateCard,
-    deleteCard,
-    deleteBoxCards,
-    importCards,
+    cards, loading: cardsLoading, error: cardsError,
+    loadCards, getBoxCards, createCard, updateCard, deleteCard, deleteBoxCards, importCards,
   } = useCards();
-
-  // ── Navigation helpers ────────────────────────────────────────────────────────
 
   const goHome = useCallback(() => setView({ type: 'home' }), []);
 
-  const goToBox = useCallback(
-    (deckId: string) => {
-      setView({ type: 'box', deckId });
-      void loadCards(deckId);
-    },
-    [loadCards],
-  );
+  const goToBox = useCallback((deckId: string) => {
+    setView({ type: 'box', deckId });
+    void loadCards(deckId);
+  }, [loadCards]);
 
-  const goToStudy = useCallback(
-    (deckId: string) => {
-      // Load cards first so ModeSelector can show total count
-      // and CramSession has cards ready without an extra fetch.
-      void loadCards(deckId);
-      setView({ type: 'study-select', deckId });
-    },
-    [loadCards],
-  );
+  const goToStudy = useCallback((deckId: string) => {
+    void loadCards(deckId);
+    setView({ type: 'study-select', deckId });
+  }, [loadCards]);
 
-  // Reload cards whenever the box view is re-entered (handles edits, deletes, etc.)
   useEffect(() => {
-    if (view.type === 'box') {
-      void loadCards(view.deckId);
-    }
+    if (view.type === 'box') void loadCards(view.deckId);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [view]);
 
-  // ── Deck CRUD ─────────────────────────────────────────────────────────────────
+  const handleDeleteBox = useCallback(async (id: string) => {
+    await deleteBox(id);
+    deleteBoxCards(id);
+    if (view.type !== 'home' && 'deckId' in view && view.deckId === id) goHome();
+  }, [deleteBox, deleteBoxCards, view, goHome]);
 
-  const handleDeleteBox = useCallback(
-    async (id: string) => {
-      await deleteBox(id);
-      deleteBoxCards(id);
-      // Navigate home if we were inside the deleted deck
-      if (view.type !== 'home' && 'deckId' in view && view.deckId === id) {
-        goHome();
-      }
-    },
-    [deleteBox, deleteBoxCards, view, goHome],
-  );
+  const handleImport = useCallback(async (deckTitle: string, rawCards: RawImportCard[]) => {
+    const deck = await createBox(deckTitle);
+    if (!deck) return;
+    if (rawCards.length > 0) {
+      await importCards(rawCards.map((c) => ({
+        deckId: deck.id, front: c.front, back: c.back,
+        frontImageUrl: c.frontImageUrl, backImageUrl: c.backImageUrl,
+      })));
+    }
+  }, [createBox, importCards]);
 
-  // ── JSON import ───────────────────────────────────────────────────────────────
-
-  /**
-   * Called by BoxList after parsing a JSON file.
-   * Creates the deck, then imports each card under the new deckId.
-   */
-  const handleImport = useCallback(
-    async (deckTitle: string, rawCards: RawImportCard[]) => {
-      const deck = await createBox(deckTitle);
-      if (!deck) return;
-
-      if (rawCards.length > 0) {
-        await importCards(
-          rawCards.map((c) => ({
-            deckId: deck.id,
-            front: c.front,
-            back: c.back,
-            frontImageUrl: c.frontImageUrl,
-            backImageUrl: c.backImageUrl,
-          })),
-        );
-      }
-    },
-    [createBox, importCards],
-  );
-
-  // ── Unused importBoxes — satisfied for hook completeness ─────────────────────
-  void importBoxes; // retained in hook but not needed in current UI flows
-
-  // ── Resolve current deck ──────────────────────────────────────────────────────
+  void importBoxes;
 
   function getCurrentDeck(): Deck | undefined {
     if ('deckId' in view) return decks.find((d) => d.id === view.deckId);
     return undefined;
   }
 
-  // ── Render ────────────────────────────────────────────────────────────────────
+  // ── Back action per view ───────────────────────────────────────────────────
+
+  function getBackAction(): (() => void) | null {
+    if (view.type === 'home') return null;
+    if (view.type === 'box') return goHome;
+    if (view.type === 'study-select') return () => goToBox((view as { deckId: string }).deckId);
+    if (view.type === 'study-srs') return () => setView({ type: 'study-select', deckId: (view as { deckId: string }).deckId });
+    if (view.type === 'study-cram') return () => setView({ type: 'study-select', deckId: (view as { deckId: string }).deckId });
+    return null;
+  }
+
+  function getHeaderTitle(): string {
+    if (view.type === 'home') return '';
+    const deck = getCurrentDeck();
+    if (view.type === 'box') return deck?.title ?? '';
+    if (view.type === 'study-select') return 'Choose Mode';
+    if (view.type === 'study-srs') return deck?.title ?? 'Daily Review';
+    if (view.type === 'study-cram') return deck?.title ?? 'Turbo';
+    return '';
+  }
 
   function renderView() {
-    // ── Home: deck list ──────────────────────────────────────────────────────
     if (view.type === 'home') {
       return (
         <BoxList
-          decks={decks}
-          loading={decksLoading}
-          error={decksError}
-          onCreateBox={createBox}
-          onUpdateBox={updateBox}
-          onDeleteBox={handleDeleteBox}
-          onOpenBox={goToBox}
-          onStudyBox={goToStudy}
-          onImport={handleImport}
+          decks={decks} loading={decksLoading} error={decksError}
+          onCreateBox={createBox} onUpdateBox={updateBox} onDeleteBox={handleDeleteBox}
+          onOpenBox={goToBox} onStudyBox={goToStudy} onImport={handleImport}
         />
       );
     }
 
-    // ── Box: card list ───────────────────────────────────────────────────────
     if (view.type === 'box') {
       const deck = getCurrentDeck();
       if (!deck) { goHome(); return null; }
       const boxCards = getBoxCards(view.deckId);
       return (
         <CardList
-          deck={deck}
-          cards={boxCards}
-          loading={cardsLoading}
-          error={cardsError}
+          deck={deck} cards={boxCards} loading={cardsLoading} error={cardsError}
           onCreateCard={(front, back, fi, bi) => createCard(view.deckId, front, back, fi, bi)}
-          onUpdateCard={updateCard}
-          onDeleteCard={deleteCard}
-          onBack={goHome}
-          onStudy={() => goToStudy(view.deckId)}
+          onUpdateCard={updateCard} onDeleteCard={deleteCard}
+          onBack={goHome} onStudy={() => goToStudy(view.deckId)}
           onUpdateDeck={syncDeck}
+          addCardOpen={addCardOpen} onAddCardOpenChange={setAddCardOpen}
         />
       );
     }
 
-    // ── Study: mode selector ─────────────────────────────────────────────────
     if (view.type === 'study-select') {
       const deck = getCurrentDeck();
       if (!deck) { goHome(); return null; }
@@ -215,15 +144,12 @@ export default function FlashcardsPage() {
             const due = c.srs?.dueDate;
             return !due || new Date(due) <= new Date();
           }).length}
-          onSelect={(mode) =>
-            setView({ type: mode === 'srs' ? 'study-srs' : 'study-cram', deckId: view.deckId })
-          }
+          onSelect={(mode) => setView({ type: mode === 'srs' ? 'study-srs' : 'study-cram', deckId: view.deckId })}
           onBack={() => goToBox(view.deckId)}
         />
       );
     }
 
-    // ── Study: SRS session ───────────────────────────────────────────────────
     if (view.type === 'study-srs') {
       const deck = getCurrentDeck();
       if (!deck) { goHome(); return null; }
@@ -235,15 +161,13 @@ export default function FlashcardsPage() {
       );
     }
 
-    // ── Study: Cram / Turbo session ──────────────────────────────────────────
     if (view.type === 'study-cram') {
       const deck = getCurrentDeck();
       if (!deck) { goHome(); return null; }
       const boxCards = getBoxCards(view.deckId);
       return (
         <CramSession
-          deck={deck}
-          cards={boxCards}
+          deck={deck} cards={boxCards}
           onBack={() => setView({ type: 'study-select', deckId: view.deckId })}
         />
       );
@@ -252,92 +176,88 @@ export default function FlashcardsPage() {
     return null;
   }
 
-  // ── Splash screen ─────────────────────────────────────────────────────────────
-
-  if (showSplash) {
-    return <SplashPage onStart={() => setShowSplash(false)} />;
-  }
-
-  // ── Active deck for breadcrumbs ───────────────────────────────────────────────
+  if (showSplash) return <SplashPage onStart={() => setShowSplash(false)} />;
 
   const activeDeck = getCurrentDeck();
+  const backAction = getBackAction();
 
   return (
     <div className="min-h-screen">
-      {/* ── Header / breadcrumb ───────────────────────────────────────────── */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-30" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center gap-3">
-          <button
-            onClick={goHome}
-            className="flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer"
-          >
-            <div className="p-1.5 rounded-lg bg-indigo-600 text-white">
-              <BookOpen size={16} />
-            </div>
-            <span className="font-bold text-slate-800">Flashcard<span className="text-violet-600">AI</span></span>
-          </button>
+      {/* ── Sticky header ─────────────────────────────────────────────────── */}
+      <header
+        className="bg-white border-b border-slate-200 sticky top-0 z-30"
+        style={{ paddingTop: 'env(safe-area-inset-top)' }}
+      >
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center gap-2">
 
-          {view.type === 'home' && (
-            <div className="ml-auto">
-              <Link
-                href="/dashboard"
-                className="text-sm text-slate-500 hover:text-indigo-600 transition-colors"
-              >
-                ← Dashboard
-              </Link>
-            </div>
-          )}
-
-          {view.type !== 'home' && (
-            <div className="flex items-center gap-1.5 text-sm text-slate-500 ml-2">
-              <span>/</span>
+          {view.type === 'home' ? (
+            /* Home: logo + dashboard link */
+            <>
               <button
                 onClick={goHome}
-                className="hover:text-indigo-600 transition-colors cursor-pointer"
+                className="flex items-center gap-2 hover:opacity-80 transition-opacity"
               >
-                Decks
+                <div className="p-1.5 rounded-lg bg-indigo-600 text-white">
+                  <BookOpen size={16} />
+                </div>
+                <span className="font-bold text-slate-800">Flashcard<span className="text-violet-600">AI</span></span>
               </button>
-              {activeDeck && (
-                <>
-                  <span>/</span>
-                  <button
-                    onClick={() =>
-                      view.type !== 'box' ? goToBox(activeDeck.id) : undefined
-                    }
-                    className={`hover:text-indigo-600 transition-colors cursor-pointer ${
-                      view.type === 'box' ? 'text-slate-800 font-medium pointer-events-none' : ''
-                    }`}
-                  >
-                    {activeDeck.title}
-                  </button>
-                </>
-              )}
-              {view.type === 'study-select' && (
-                <>
-                  <span>/</span>
-                  <span className="text-slate-800 font-medium">Choose Mode</span>
-                </>
-              )}
-              {view.type === 'study-srs' && (
-                <>
-                  <span>/</span>
-                  <span className="text-slate-800 font-medium">SRS Study</span>
-                </>
-              )}
-              {view.type === 'study-cram' && (
-                <>
-                  <span>/</span>
-                  <span className="text-slate-800 font-medium">Turbo</span>
-                </>
-              )}
-            </div>
-          )}
+              <div className="ml-auto">
+                <Link href="/dashboard" className="text-sm text-slate-500 hover:text-indigo-600 transition-colors">
+                  ← Dashboard
+                </Link>
+              </div>
+            </>
+          ) : (
+            /* Sub-view: back ← · title · right action */
+            <>
+              {/* Back button — large tap target */}
+              <button
+                onClick={backAction ?? goHome}
+                className="flex items-center gap-1.5 -ml-1 px-3 py-2 rounded-xl text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 active:scale-95 transition"
+                aria-label="Back"
+              >
+                <ArrowLeft size={18} />
+                <span className="text-sm font-semibold hidden sm:inline">Back</span>
+              </button>
 
+              {/* Center title */}
+              <h1 className="flex-1 text-center text-sm font-bold text-slate-800 truncate px-2">
+                {getHeaderTitle()}
+              </h1>
+
+              {/* Right action */}
+              {view.type === 'box' && activeDeck ? (
+                <div className="flex items-center gap-1.5">
+                  {/* Add Card — icon on mobile, text on desktop */}
+                  <button
+                    onClick={() => setAddCardOpen(true)}
+                    className="flex items-center gap-1 px-2.5 py-2 rounded-xl border border-slate-200 text-slate-600 hover:border-indigo-300 hover:text-indigo-600 hover:bg-indigo-50 active:scale-95 transition"
+                    aria-label="Add card"
+                  >
+                    <Plus size={16} />
+                    <span className="text-xs font-semibold hidden sm:inline">Add</span>
+                  </button>
+                  {/* Study */}
+                  <button
+                    onClick={() => goToStudy(view.deckId)}
+                    className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-indigo-600 text-white text-xs font-bold hover:bg-indigo-700 active:scale-95 transition"
+                  >
+                    <Play size={14} />
+                    <span className="hidden sm:inline">Study</span>
+                  </button>
+                </div>
+              ) : (
+                /* Spacer to keep title centered */
+                <div className="w-16 sm:w-20" />
+              )}
+            </>
+          )}
         </div>
       </header>
 
       {/* ── Main content ──────────────────────────────────────────────────── */}
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 pb-24 sm:pb-8">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-6 pb-28 sm:pb-8">
         {renderView()}
       </main>
 

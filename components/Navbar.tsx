@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import FlashLogoMark from './FlashLogoMark';
+import InstallPWAButton from './InstallPWAButton';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -45,7 +46,8 @@ export default function Navbar() {
           >
             Blog
           </a>
-          <div className="mx-3 h-5 w-px bg-gray-200" />
+          <InstallPWAButton />
+          <div className="mx-2 h-5 w-px bg-gray-200" />
           <Link
             href="/login"
             className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100"

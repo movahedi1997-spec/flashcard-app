@@ -50,6 +50,8 @@ interface Props {
   onBack: () => void;
   onStudy: () => void;
   onUpdateDeck?: (updated: Deck) => void;
+  addCardOpen?: boolean;
+  onAddCardOpenChange?: (open: boolean) => void;
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -65,8 +67,15 @@ export default function CardList({
   onBack,
   onStudy,
   onUpdateDeck,
+  addCardOpen: externalAddCardOpen,
+  onAddCardOpenChange,
 }: Props) {
-  const [createOpen, setCreateOpen] = useState(false);
+  const [internalCreateOpen, setInternalCreateOpen] = useState(false);
+  const createOpen = externalAddCardOpen ?? internalCreateOpen;
+  function setCreateOpen(v: boolean) {
+    setInternalCreateOpen(v);
+    onAddCardOpenChange?.(v);
+  }
   const [editCard, setEditCard] = useState<ApiCard | null>(null);
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState<SortOption>('newest');
@@ -116,21 +125,11 @@ export default function CardList({
 
   return (
     <div>
-      {/* ── Header ─────────────────────────────────────────────────────────── */}
-      <div className="flex items-center gap-3 mb-6">
-        <button
-          onClick={onBack}
-          aria-label="Back to decks"
-          className="p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
-        >
-          ←
-        </button>
-        <div className="flex-1 min-w-0">
-          <h2 className="text-xl font-bold text-slate-800 truncate">{deck.title}</h2>
-          <p className="text-sm text-slate-500">
-            {loading ? 'Loading…' : `${cards.length} ${cards.length === 1 ? 'card' : 'cards'}`}
-          </p>
-        </div>
+      {/* ── Sub-header: card count + share ─────────────────────────────────── */}
+      <div className="flex items-center justify-between mb-5">
+        <p className="text-sm text-slate-500">
+          {loading ? 'Loading…' : `${cards.length} ${cards.length === 1 ? 'card' : 'cards'}`}
+        </p>
         <Button
           variant="secondary"
           size="sm"
@@ -138,17 +137,6 @@ export default function CardList({
           aria-pressed={showShare}
         >
           <Share2 size={13} /> Share
-        </Button>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={onStudy}
-          disabled={cards.length === 0 || loading}
-        >
-          <Play size={13} /> Study
-        </Button>
-        <Button size="sm" onClick={() => setCreateOpen(true)}>
-          <Plus size={14} /> Add Card
         </Button>
       </div>
 

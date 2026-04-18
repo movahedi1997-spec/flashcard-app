@@ -385,37 +385,16 @@ export default function StudySession({ deck, onBack }: Props) {
       )}
 
       <div className="max-w-2xl mx-auto">
-        {/* ── Header ────────────────────────────────────────────────────────── */}
+        {/* ── Session info bar ──────────────────────────────────────────────── */}
         <div className="flex items-center justify-between mb-6">
-          <button
-            onClick={onBack}
-            aria-label="Back to deck"
-            className="p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
-          >
-            <ArrowLeft size={18} />
-          </button>
-
-          <div className="text-center">
-            <p className="text-sm font-medium text-slate-600">{deck.title}</p>
-            <p className="text-xs text-slate-400">
-              {isCatchup && (
-                <span className="text-amber-500 font-medium">Catch-Up · </span>
-              )}
-              Card {index + 1} of {total}
-            </p>
-          </div>
-
           <div className="flex gap-3 text-xs font-medium">
-            <span className="text-red-500" aria-label={`${stats.again} again`}>
-              ↩ {stats.again}
-            </span>
-            <span
-              className="text-emerald-600"
-              aria-label={`${stats.good + stats.easy} retained`}
-            >
-              ✓ {stats.good + stats.easy}
-            </span>
+            <span className="text-red-500" aria-label={`${stats.again} again`}>↩ {stats.again}</span>
+            <span className="text-emerald-600" aria-label={`${stats.good + stats.easy} retained`}>✓ {stats.good + stats.easy}</span>
           </div>
+          <p className="text-xs text-slate-400">
+            {isCatchup && <span className="text-amber-500 font-medium">Catch-Up · </span>}
+            {index + 1} / {total}
+          </p>
         </div>
 
         {/* ── Progress bar ───────────────────────────────────────────────────── */}

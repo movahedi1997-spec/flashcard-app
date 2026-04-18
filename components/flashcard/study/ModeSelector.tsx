@@ -1,5 +1,4 @@
 import { Zap, Brain } from 'lucide-react';
-import { ArrowLeft } from 'lucide-react';
 import type { Deck } from '@/types/api';
 
 export type StudyMode = 'srs' | 'cram';
@@ -15,18 +14,8 @@ interface Props {
 export default function ModeSelector({ deck, cardCount, dueCount, onSelect, onBack }: Props) {
   return (
     <div className="max-w-lg mx-auto">
-      <div className="flex items-center gap-3 mb-8">
-        <button
-          onClick={onBack}
-          aria-label="Back"
-          className="p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
-        >
-          <ArrowLeft size={18} />
-        </button>
-        <div>
-          <h2 className="text-xl font-bold text-slate-800">{deck.title}</h2>
-          <p className="text-sm text-slate-500">{cardCount} cards · Choose a study mode</p>
-        </div>
+      <div className="mb-8">
+        <p className="text-sm text-slate-500">{cardCount} cards · Choose a study mode</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
