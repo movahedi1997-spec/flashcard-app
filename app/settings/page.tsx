@@ -1,8 +1,9 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { jwtVerify } from 'jose';
-import { User, ShieldAlert, Globe } from 'lucide-react';
+import { User, ShieldAlert, Globe, LogOut } from 'lucide-react';
 import AppNav from '@/components/AppNav';
+import LogoutButton from '@/components/LogoutButton';
 import Link from 'next/link';
 import DeleteAccountButton from './DeleteAccountButton';
 import EditProfileForm from './EditProfileForm';
@@ -83,6 +84,18 @@ export default async function SettingsPage() {
             initialBio={profile.bio}
             initialAvatarUrl={profile.avatar_url}
           />
+        </section>
+
+        {/* Sign out */}
+        <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gray-50 text-gray-500">
+              <LogOut className="h-5 w-5" />
+            </div>
+            <h2 className="text-base font-semibold text-gray-900">Sign out</h2>
+          </div>
+          <p className="text-sm text-gray-500 mb-5">Sign out of your account on this device.</p>
+          <LogoutButton />
         </section>
 
         {/* Danger zone */}

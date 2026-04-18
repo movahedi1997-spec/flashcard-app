@@ -1,7 +1,6 @@
 import Link from 'next/link';
-import { BookOpen, Compass, User, Settings } from 'lucide-react';
-import FlashLogoMark from './FlashLogoMark';
-import LogoutButton from './LogoutButton';
+import { LayoutDashboard, BookOpen, Compass, User, Settings } from 'lucide-react';
+import NavLogo from './NavLogo';
 import BottomNav from './BottomNav';
 
 export type ActivePage = 'decks' | 'explore' | 'profile' | 'settings';
@@ -12,9 +11,10 @@ interface Props {
 }
 
 const NAV_ITEMS = [
-  { key: 'decks',    href: '/flashcards', icon: BookOpen, label: 'My Decks' },
-  { key: 'explore',  href: '/explore',    icon: Compass,  label: 'Explore'  },
-  { key: 'settings', href: '/settings',   icon: Settings, label: 'Settings' },
+  { key: 'dashboard', href: '/dashboard',  icon: LayoutDashboard, label: 'Dashboard' },
+  { key: 'decks',     href: '/flashcards', icon: BookOpen,         label: 'My Decks'  },
+  { key: 'explore',   href: '/explore',    icon: Compass,          label: 'Explore'   },
+  { key: 'settings',  href: '/settings',   icon: Settings,         label: 'Settings'  },
 ] as const;
 
 export default function AppNav({ username, activePage }: Props) {
@@ -27,15 +27,9 @@ export default function AppNav({ username, activePage }: Props) {
         style={{ paddingTop: 'env(safe-area-inset-top)' }}
       >
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          {/* Logo — always visible */}
-          <Link href="/" className="flex items-center gap-2 font-bold text-gray-900">
-            <FlashLogoMark size={28} />
-            <span className="text-sm">
-              Flashcard<span className="text-violet-600">AI</span>
-            </span>
-          </Link>
+          <NavLogo />
 
-          {/* Desktop nav — hidden on mobile (BottomNav takes over) */}
+          {/* Desktop nav only — BottomNav handles mobile */}
           <nav className="hidden sm:flex items-center gap-0.5">
             {NAV_ITEMS.map(({ key, href, icon: Icon, label }) => {
               const active = activePage === key;
@@ -66,13 +60,10 @@ export default function AppNav({ username, activePage }: Props) {
               <User className="h-4 w-4 flex-shrink-0" />
               <span>Profile</span>
             </Link>
-
-            <LogoutButton />
           </nav>
         </div>
       </header>
 
-      {/* Mobile bottom nav */}
       <BottomNav username={username} />
     </>
   );
