@@ -25,6 +25,11 @@ import type { NextRequest } from 'next/server';
 
 // ─── Secrets ─────────────────────────────────────────────────────────────────
 
+if (process.env.NODE_ENV === 'production') {
+  if (!process.env.ACCESS_JWT_SECRET)  throw new Error('ACCESS_JWT_SECRET must be set in production');
+  if (!process.env.REFRESH_JWT_SECRET) throw new Error('REFRESH_JWT_SECRET must be set in production');
+}
+
 const ACCESS_SECRET = new TextEncoder().encode(
   process.env.ACCESS_JWT_SECRET ?? 'dev-access-secret-change-in-production-32x',
 );

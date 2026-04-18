@@ -7,8 +7,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 import { verifyOtpSession, OTP_SESSION_COOKIE } from '@/lib/auth';
-import { storeAndSendOtp } from '@/lib/otp';
-import { checkRateLimit } from '@/lib/rateLimit';
+import { storeAndSendOtp, checkOtpRateLimit } from '@/lib/otp';
 import type { OtpPurpose } from '@/lib/email';
 
 export const runtime = 'nodejs';
@@ -25,10 +24,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Session invalid or expired.' }, { status: 401 });
   }
 
-  const rl = checkRateLimit(`resend-otp:${session.userId}`, 3, 5 * 60 * 1000);
+  const rl = await checkOtpRateLimit(session.userId, session.purpose as OtpPurpose, 5, 10 * 60 * 1000);
   if (!rl.allowed) {
     return NextResponse.json(
-      { error: 'Too many resend attempts. Please wait a few minutes.' },
+      { error: 'Too many attempts. Please wait 10 minutes before requesting a new code.' },
       { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } },
     );
   }

@@ -23,7 +23,7 @@ import {
   getClientIp,
 } from '@/lib/auth';
 import { checkRateLimit } from '@/lib/rateLimit';
-import { storeAndSendOtp } from '@/lib/otp';
+import { storeAndSendOtp, checkOtpRateLimit } from '@/lib/otp';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -84,7 +84,8 @@ export async function POST(req: NextRequest) {
 
     // ── Email not verified → resend verification OTP ──────────────────────────
     if (!user.email_verified) {
-      await storeAndSendOtp(user.id, 'email_verification', user.email, user.name);
+      const rl = await checkOtpRateLimit(user.id, 'email_verification');
+      if (rl.allowed) await storeAndSendOtp(user.id, 'email_verification', user.email, user.name);
       const otpToken = await signOtpSession(user.id, 'email_verification');
       const res = NextResponse.json({ requires_verification: true });
       res.cookies.set(OTP_SESSION_COOKIE, otpToken, OTP_SESSION_COOKIE_OPTIONS);
@@ -93,7 +94,8 @@ export async function POST(req: NextRequest) {
 
     // ── 2FA enabled → send login OTP ─────────────────────────────────────────
     if (user.two_fa_enabled) {
-      await storeAndSendOtp(user.id, 'login_2fa', user.email, user.name);
+      const rl = await checkOtpRateLimit(user.id, 'login_2fa');
+      if (rl.allowed) await storeAndSendOtp(user.id, 'login_2fa', user.email, user.name);
       const otpToken = await signOtpSession(user.id, 'login_2fa');
       const res = NextResponse.json({ requires_otp: true });
       res.cookies.set(OTP_SESSION_COOKIE, otpToken, OTP_SESSION_COOKIE_OPTIONS);

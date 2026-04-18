@@ -6,6 +6,26 @@ export function generateOtpCode(): string {
   return String(randomInt(100000, 999999));
 }
 
+// DB-backed rate limit: max `limit` OTPs per user+purpose within `windowMs`
+export async function checkOtpRateLimit(
+  userId: string,
+  purpose: OtpPurpose,
+  limit = 5,
+  windowMs = 10 * 60 * 1000,
+): Promise<{ allowed: boolean; retryAfter?: number }> {
+  const since = new Date(Date.now() - windowMs);
+  const result = await query<{ count: string }>(
+    `SELECT COUNT(*) AS count FROM otp_codes
+     WHERE user_id = $1 AND purpose = $2 AND created_at > $3`,
+    [userId, purpose, since],
+  );
+  const count = parseInt(result.rows[0]?.count ?? '0', 10);
+  if (count >= limit) {
+    return { allowed: false, retryAfter: Math.ceil(windowMs / 1000) };
+  }
+  return { allowed: true };
+}
+
 export async function storeAndSendOtp(
   userId: string,
   purpose: OtpPurpose,
