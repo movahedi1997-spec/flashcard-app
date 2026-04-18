@@ -1,106 +1,142 @@
-import { Brain, Zap, CalendarClock, FlaskConical, WifiOff, BarChart3 } from 'lucide-react';
+import {
+  Brain, Zap, CalendarClock, WifiOff, BarChart3, Users,
+  Shield, Globe, Smartphone,
+} from 'lucide-react';
 
 const FEATURES = [
   {
     icon: Brain,
-    bg: 'bg-indigo-600',
-    glow: 'shadow-indigo-200',
+    color: 'text-indigo-400',
+    ring: 'ring-indigo-500/20',
+    bg: 'bg-indigo-500/10',
     title: 'Daily Review',
-    description:
-      'The SM-2 algorithm tracks every answer and calculates exactly when each card should come back. You only study what you need today — nothing more.',
-    badge: 'Core',
+    description: 'The SM-2 algorithm calculates exactly when each card should return. Study only what you need — nothing more, nothing wasted.',
+    badge: 'SM-2 Algorithm',
   },
   {
     icon: Zap,
-    bg: 'bg-amber-500',
-    glow: 'shadow-amber-200',
+    color: 'text-amber-400',
+    ring: 'ring-amber-500/20',
+    bg: 'bg-amber-500/10',
     title: 'Turbo Mode',
-    description:
-      'Flip through every card in your deck in random order without recording any grades. Perfect for last-minute cramming before boards.',
+    description: 'Flip through every card in random order — no grades recorded. Perfect for last-minute cramming before exams.',
     badge: 'Fast review',
   },
   {
     icon: CalendarClock,
-    bg: 'bg-violet-600',
-    glow: 'shadow-violet-200',
+    color: 'text-violet-400',
+    ring: 'ring-violet-500/20',
+    bg: 'bg-violet-500/10',
     title: 'Smart Scheduling',
-    description:
-      "Cards you answer with 'Easy' are pushed weeks out. Cards you struggle with come back tomorrow. Your schedule adapts in real time.",
-    badge: 'SM-2 algorithm',
-  },
-  {
-    icon: FlaskConical,
-    bg: 'bg-emerald-600',
-    glow: 'shadow-emerald-200',
-    title: 'Domain-Specific',
-    description:
-      'Built for high-stakes exams — USMLE Steps 1–3, NAPLEX, MPJE, Organic Chemistry, and AP exams. Deck subjects match the material.',
-    badge: 'Medicine · Pharmacy · Chem',
+    description: "Cards you know well are pushed out weeks. Weak cards return tomorrow. Your schedule adapts automatically after every answer.",
+    badge: 'Adaptive',
   },
   {
     icon: WifiOff,
-    bg: 'bg-rose-500',
-    glow: 'shadow-rose-200',
+    color: 'text-rose-400',
+    ring: 'ring-rose-500/20',
+    bg: 'bg-rose-500/10',
     title: 'Works Offline',
-    description:
-      'Install FlashCard as a PWA on your phone or tablet. Study sessions work without internet — ideal for commutes, libraries, or low-signal areas.',
+    description: 'Install FlashcardAI as a PWA on any device. Study sessions work without internet — ideal for commutes and hospitals.',
     badge: 'PWA',
   },
   {
     icon: BarChart3,
-    bg: 'bg-cyan-600',
-    glow: 'shadow-cyan-200',
-    title: 'Progress Tracking',
-    description:
-      'Session stats, retention percentage, day streak, and cards reviewed today — all on your dashboard so you always know how you are doing.',
+    color: 'text-cyan-400',
+    ring: 'ring-cyan-500/20',
+    bg: 'bg-cyan-500/10',
+    title: 'Progress Dashboard',
+    description: 'Day streak, retention %, cards studied today, and a study activity chart — always know where you stand.',
     badge: 'Analytics',
+  },
+  {
+    icon: Users,
+    color: 'text-emerald-400',
+    ring: 'ring-emerald-500/20',
+    bg: 'bg-emerald-500/10',
+    title: 'Community Decks',
+    description: 'Browse and copy thousands of free decks from the community. Share your own and build a public creator profile.',
+    badge: 'Explore',
+  },
+  {
+    icon: Globe,
+    color: 'text-sky-400',
+    ring: 'ring-sky-500/20',
+    bg: 'bg-sky-500/10',
+    title: 'Public Profiles',
+    description: 'Every creator gets a shareable profile page at /creators/username — show your decks to the world.',
+    badge: 'Creator',
+  },
+  {
+    icon: Shield,
+    color: 'text-green-400',
+    ring: 'ring-green-500/20',
+    bg: 'bg-green-500/10',
+    title: 'DSGVO & Privacy',
+    description: 'Built in Germany, stored in Germany. No trackers, no data selling, no ads. Your study data is yours — always.',
+    badge: 'DSGVO · GDPR',
+  },
+  {
+    icon: Smartphone,
+    color: 'text-pink-400',
+    ring: 'ring-pink-500/20',
+    bg: 'bg-pink-500/10',
+    title: 'Install on Any Device',
+    description: 'Add to home screen on iOS or Android in seconds. Looks and feels like a native app — without the App Store.',
+    badge: 'Cross-platform',
   },
 ];
 
 export default function Features() {
   return (
-    <section id="features" className="bg-gray-50 py-24">
-      <div className="mx-auto max-w-6xl px-6">
+    <section id="features" className="relative bg-slate-950 py-24 overflow-hidden">
+      {/* Graph paper overlay */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 0v40M0 0h40' stroke='%23fff' stroke-width='0.5'/%3E%3C/svg%3E")`,
+          backgroundSize: '40px 40px',
+        }}
+      />
+
+      {/* Accent orb */}
+      <div aria-hidden className="pointer-events-none absolute top-0 right-0 h-[600px] w-[600px] -translate-y-1/2 translate-x-1/2 rounded-full bg-indigo-600/10 blur-3xl" />
+
+      <div className="relative mx-auto max-w-6xl px-6">
         {/* Heading */}
-        <div className="mb-16 text-center">
-          <span className="mb-3 inline-block rounded-full bg-indigo-100 px-3 py-1 text-xs font-semibold text-indigo-700">
-            Why FlashCard?
+        <div className="mb-16 max-w-2xl">
+          <span className="mb-3 inline-block rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3 py-1 text-xs font-semibold text-indigo-400">
+            Everything you need
           </span>
-          <h2 className="text-4xl font-extrabold tracking-tight text-gray-900">
-            Everything you need to{' '}
-            <span className="gradient-text">ace your exams</span>
+          <h2 className="text-4xl font-black tracking-tight text-white sm:text-5xl">
+            Built for serious learners.<br />
+            <span className="shimmer-text">Free for everyone.</span>
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-gray-500">
-            Simple enough to start in seconds. Powerful enough to carry you through finals, boards, and beyond.
+          <p className="mt-4 text-slate-400 leading-relaxed">
+            Simple enough to start in 60 seconds. Powerful enough to carry you through finals, boards, and licensing exams.
           </p>
         </div>
 
         {/* Grid */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {FEATURES.map(({ icon: Icon, bg, glow, title, description, badge }) => (
+        <div className="grid gap-px overflow-hidden rounded-2xl border border-white/5 bg-white/5 sm:grid-cols-2 lg:grid-cols-3">
+          {FEATURES.map(({ icon: Icon, color, ring, bg, title, description, badge }) => (
             <div
               key={title}
-              className="group relative rounded-2xl border border-gray-100 bg-white p-7 shadow-sm transition duration-300 hover:-translate-y-1.5 hover:shadow-lg"
+              className="group relative bg-slate-900/80 p-7 transition duration-300 hover:bg-slate-800/80"
             >
-              {/* 3D icon — flat on top, depth on bottom-right */}
-              <div className="mb-5 inline-block">
-                <div
-                  className={`flex h-12 w-12 items-center justify-center rounded-2xl ${bg} text-white shadow-lg ${glow}`}
-                  style={{
-                    boxShadow: `0 6px 0 -1px color-mix(in srgb, currentColor 30%, transparent), 0 8px 16px -2px color-mix(in srgb, currentColor 20%, transparent)`,
-                  }}
-                >
-                  <Icon className="h-6 w-6" />
-                </div>
+              {/* Icon */}
+              <div className={`mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl ${bg} ring-1 ${ring}`}>
+                <Icon className={`h-5 w-5 ${color}`} />
               </div>
 
               {/* Badge */}
-              <span className="mb-3 inline-block rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-500">
+              <span className="mb-3 inline-block rounded-full bg-white/5 px-2.5 py-0.5 text-xs font-medium text-slate-400">
                 {badge}
               </span>
 
-              <h3 className="mb-2 text-lg font-bold text-gray-900">{title}</h3>
-              <p className="text-sm leading-relaxed text-gray-500">{description}</p>
+              <h3 className="mb-2 text-base font-bold text-white">{title}</h3>
+              <p className="text-sm leading-relaxed text-slate-400">{description}</p>
             </div>
           ))}
         </div>

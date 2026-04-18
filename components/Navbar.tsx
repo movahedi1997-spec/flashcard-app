@@ -39,6 +39,12 @@ export default function Navbar() {
           >
             Subjects
           </a>
+          <a
+            href="/blog"
+            className="rounded-lg px-4 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-100 hover:text-gray-900"
+          >
+            Blog
+          </a>
           <div className="mx-3 h-5 w-px bg-gray-200" />
           <Link
             href="/login"
@@ -71,6 +77,7 @@ export default function Navbar() {
             <a href="#how-it-works" onClick={() => setOpen(false)} className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100">How it works</a>
             <a href="#features"     onClick={() => setOpen(false)} className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100">Features</a>
             <a href="#subjects"     onClick={() => setOpen(false)} className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100">Subjects</a>
+            <a href="/blog"        onClick={() => setOpen(false)} className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100">Blog</a>
             <div className="my-1 h-px bg-gray-100" />
             <Link href="/login"  onClick={() => setOpen(false)} className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100">Log in</Link>
             <Link href="/signup" onClick={() => setOpen(false)} className="rounded-xl bg-indigo-600 px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-indigo-700">Get Started Free</Link>

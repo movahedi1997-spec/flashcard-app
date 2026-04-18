@@ -63,6 +63,34 @@
 }
 .hero-cards-float { animation: heroCardsFloat 5s ease-in-out infinite; }
 
+/* ── 3D individual card floats ── */
+@keyframes floatCard1 {
+  0%, 100% { transform: perspective(1000px) rotateY(-8deg) rotateX(3deg) translateY(0px); }
+  50%       { transform: perspective(1000px) rotateY(-10deg) rotateX(5deg) translateY(-16px); }
+}
+@keyframes floatCard2 {
+  0%, 100% { transform: perspective(1000px) rotateY(-16deg) rotateX(6deg) translateY(0px); }
+  50%       { transform: perspective(1000px) rotateY(-18deg) rotateX(8deg) translateY(-9px); }
+}
+@keyframes floatCard3 {
+  0%, 100% { transform: perspective(1000px) rotateY(-22deg) rotateX(9deg) translateY(0px); }
+  50%       { transform: perspective(1000px) rotateY(-24deg) rotateX(11deg) translateY(-5px); }
+}
+@keyframes orbPulse {
+  0%, 100% { opacity: 0.25; transform: scale(1); }
+  50%       { opacity: 0.45; transform: scale(1.12); }
+}
+.float-card-1 { animation: floatCard1 5s ease-in-out infinite; }
+.float-card-2 { animation: floatCard2 6.5s 0.6s ease-in-out infinite; }
+.float-card-3 { animation: floatCard3 8s 1.2s ease-in-out infinite; }
+.orb-pulse    { animation: orbPulse 5s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .float-card-1, .float-card-2, .float-card-3, .hero-cards-float, .orb-pulse {
+    animation: none;
+  }
+}
+
 /* ── Animations ── */
 @keyframes fadeSlideIn {
   from { opacity: 0; transform: translateY(8px); }

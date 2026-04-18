@@ -4,6 +4,7 @@ import Hero from '@/components/Hero';
 import HowItWorks from '@/components/HowItWorks';
 import Features from '@/components/Features';
 import SubjectHubs from '@/components/SubjectHubs';
+import BlogPreview from '@/components/BlogPreview';
 import CTABanner from '@/components/CTABanner';
 import Footer from '@/components/Footer';
 
@@ -19,6 +20,7 @@ export default function HomePage() {
         <HowItWorks />
         <Features />
         <SubjectHubs />
+        <BlogPreview />
         <CTABanner />
       </main>
       <Footer />
