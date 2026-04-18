@@ -129,28 +129,42 @@ export default function CardList({
 
   return (
     <div>
+      {/* ── AI Generate — primary CTA ─────────────────────────────────────────── */}
+      <button
+        onClick={() => setShowAI(true)}
+        className="w-full mb-5 group relative overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 px-5 py-4 text-left shadow-lg shadow-indigo-200/50 transition-all hover:shadow-xl hover:shadow-indigo-300/50 hover:scale-[1.01] active:scale-[0.99]"
+      >
+        {/* Animated background shimmer */}
+        <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+              <Sparkles className="h-5 w-5 text-white" />
+            </div>
+            <div>
+              <p className="text-sm font-black text-white tracking-tight">Generate with AI</p>
+              <p className="text-xs text-indigo-200 mt-0.5">Upload a PDF or paste notes — get flashcards instantly</p>
+            </div>
+          </div>
+          <div className="shrink-0 rounded-lg bg-white/20 px-3 py-1.5 text-xs font-bold text-white group-hover:bg-white/30 transition-colors">
+            Generate →
+          </div>
+        </div>
+      </button>
+
       {/* ── Sub-header: card count + share ─────────────────────────────────── */}
       <div className="flex items-center justify-between mb-5">
         <p className="text-sm text-slate-500">
           {loading ? 'Loading…' : `${cards.length} ${cards.length === 1 ? 'card' : 'cards'}`}
         </p>
-        <div className="flex gap-2">
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => setShowAI(true)}
-          >
-            <Sparkles size={13} /> Generate
-          </Button>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => setShowShare((p) => !p)}
-            aria-pressed={showShare}
-          >
-            <Share2 size={13} /> Share
-          </Button>
-        </div>
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => setShowShare((p) => !p)}
+          aria-pressed={showShare}
+        >
+          <Share2 size={13} /> Share
+        </Button>
       </div>
 
       {/* ── Share panel ──────────────────────────────────────────────────────── */}
