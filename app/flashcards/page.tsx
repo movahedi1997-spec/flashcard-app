@@ -30,6 +30,7 @@ import StudySession from '@/components/flashcard/study/StudySession';
 import CramSession from '@/components/flashcard/study/CramSession';
 import ModeSelector from '@/components/flashcard/study/ModeSelector';
 import SplashPage from '@/components/flashcard/SplashPage';
+import BottomNav from '@/components/BottomNav';
 
 // ── View state ────────────────────────────────────────────────────────────────
 
@@ -264,7 +265,7 @@ export default function FlashcardsPage() {
   return (
     <div className="min-h-screen">
       {/* ── Header / breadcrumb ───────────────────────────────────────────── */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-30" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center gap-3">
           <button
             onClick={goHome}
@@ -336,9 +337,11 @@ export default function FlashcardsPage() {
       </header>
 
       {/* ── Main content ──────────────────────────────────────────────────── */}
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 pb-24 sm:pb-8">
         {renderView()}
       </main>
+
+      <BottomNav />
     </div>
   );
 }

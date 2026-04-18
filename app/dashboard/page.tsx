@@ -94,7 +94,7 @@ export default async function DashboardPage() {
     <div className="min-h-screen bg-gray-50">
       <AppNav username={data.username} />
 
-      <main className="mx-auto max-w-6xl px-4 py-8 space-y-6">
+      <main className="mx-auto max-w-6xl px-4 py-8 pb-24 sm:pb-8 space-y-6">
         {/* ── Welcome ──────────────────────────────────────────────────── */}
         <div>
           <h1 className="text-2xl font-extrabold text-gray-900 sm:text-3xl">

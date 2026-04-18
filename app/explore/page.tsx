@@ -136,7 +136,7 @@ export default async function ExplorePage() {
         </header>
       )}
 
-      <main className="mx-auto max-w-7xl px-6 py-10">
+      <main className="mx-auto max-w-7xl px-6 py-10 pb-24 sm:pb-10">
         {/* ── Hero ─────────────────────────────────────────────────────────── */}
         <div className="mb-10 text-center">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-indigo-50 px-4 py-1.5 text-sm font-semibold text-indigo-600">

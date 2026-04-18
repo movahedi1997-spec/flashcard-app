@@ -46,7 +46,7 @@ export default async function SettingsPage() {
     <div className="min-h-screen">
       <AppNav username={profile.username} activePage="settings" />
 
-      <main className="mx-auto max-w-2xl px-6 py-12 space-y-8">
+      <main className="mx-auto max-w-2xl px-6 py-12 pb-24 sm:pb-12 space-y-8">
         <h1 className="text-2xl font-extrabold text-gray-900">Account Settings</h1>
 
         {/* Account info */}

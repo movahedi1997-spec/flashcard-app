@@ -187,7 +187,7 @@ export default async function CreatorProfilePage({ params }: Props) {
         </header>
       )}
 
-      <main className="mx-auto max-w-5xl px-6 py-10">
+      <main className="mx-auto max-w-5xl px-6 py-10 pb-24 sm:pb-10">
         {/* Profile header */}
         <div className="flex flex-col items-center text-center sm:flex-row sm:text-left sm:items-start gap-6 mb-12">
           {creator.avatar_url ? (
