@@ -38,9 +38,16 @@ export async function POST(req: NextRequest) {
         break;
       }
 
-      case 'customer.subscription.deleted': {
+      case 'customer.subscription.deleted':
+      case 'customer.subscription.paused': {
         const sub = event.data.object as Stripe.Subscription;
-        await deactivateSubscription(sub.customer as string);
+        await deactivateSubscription(sub.customer as string, sub.status);
+        break;
+      }
+
+      case 'customer.subscription.resumed': {
+        const sub = event.data.object as Stripe.Subscription;
+        await activateSubscription(sub);
         break;
       }
 
@@ -75,13 +82,12 @@ async function activateSubscription(sub: Stripe.Subscription) {
   );
 }
 
-async function deactivateSubscription(customerId: string) {
+async function deactivateSubscription(customerId: string, status = 'canceled') {
   await query(
     `UPDATE users
      SET is_pro = false,
-         stripe_subscription_id = NULL,
-         subscription_status = 'canceled'
-     WHERE stripe_customer_id = $1`,
-    [customerId],
+         subscription_status = $1
+     WHERE stripe_customer_id = $2`,
+    [status, customerId],
   );
 }
