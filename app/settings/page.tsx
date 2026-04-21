@@ -8,6 +8,7 @@ import LogoutButton from '@/components/LogoutButton';
 import Link from 'next/link';
 import DeleteAccountButton from './DeleteAccountButton';
 import EditProfileForm from './EditProfileForm';
+import SubscriptionSection from './SubscriptionSection';
 import { query } from '@/lib/db';
 
 const secret = new TextEncoder().encode(
@@ -32,6 +33,8 @@ interface ProfileRow {
   bio: string | null;
   avatar_url: string | null;
   two_fa_enabled: boolean;
+  is_pro: boolean;
+  subscription_status: string | null;
 }
 
 export default async function SettingsPage() {
@@ -39,11 +42,15 @@ export default async function SettingsPage() {
 
   // Fetch extended profile fields (may not exist on older accounts)
   const profileResult = await query<ProfileRow>(
-    'SELECT username, bio, avatar_url, COALESCE(two_fa_enabled, true) AS two_fa_enabled FROM users WHERE id = $1',
+    `SELECT username, bio, avatar_url,
+            COALESCE(two_fa_enabled, true) AS two_fa_enabled,
+            COALESCE(is_pro, false) AS is_pro,
+            subscription_status
+     FROM users WHERE id = $1`,
     [user!.userId],
-  ).catch(() => ({ rows: [{ username: null, bio: null, avatar_url: null, two_fa_enabled: true }] }));
+  ).catch(() => ({ rows: [{ username: null, bio: null, avatar_url: null, two_fa_enabled: true, is_pro: false, subscription_status: null }] }));
 
-  const profile = profileResult.rows[0] ?? { username: null, bio: null, avatar_url: null, two_fa_enabled: true };
+  const profile = profileResult.rows[0] ?? { username: null, bio: null, avatar_url: null, two_fa_enabled: true, is_pro: false, subscription_status: null };
 
   return (
     <div className="min-h-screen">
@@ -87,6 +94,9 @@ export default async function SettingsPage() {
             initialAvatarUrl={profile.avatar_url}
           />
         </section>
+
+        {/* Subscription */}
+        <SubscriptionSection isPro={profile.is_pro} subscriptionStatus={profile.subscription_status} />
 
         {/* Security */}
         <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">

@@ -9,10 +9,12 @@
  */
 
 import { type FormEvent, useState } from 'react';
+import { Sparkles } from 'lucide-react';
 import Modal from '@/components/ui/Modal';
 import Textarea from '@/components/ui/Textarea';
 import ImageUpload from '@/components/ui/ImageUpload';
 import Button from '@/components/ui/Button';
+import AIImproveModal from './AIImproveModal';
 import type { ApiCard } from '@/types/api';
 
 interface Props {
@@ -38,6 +40,7 @@ export default function CardForm({ open, onClose, onSubmit, initialCard, mode }:
     initialCard?.backImageUrl ?? undefined,
   );
   const [errors, setErrors] = useState({ front: '', back: '' });
+  const [improveOpen, setImproveOpen] = useState(false);
 
   // Sync state when switching to a different card in edit mode
   if (mode === 'edit' && open && initialCard) {
@@ -127,13 +130,29 @@ export default function CardForm({ open, onClose, onSubmit, initialCard, mode }:
           />
         </div>
 
-        <div className="flex gap-3 justify-end">
-          <Button variant="secondary" type="button" onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button type="submit">{mode === 'create' ? 'Add Card' : 'Save Changes'}</Button>
+        <div className="flex items-center justify-between">
+          <button
+            type="button"
+            onClick={() => setImproveOpen(true)}
+            disabled={!front.trim() && !back.trim()}
+            className="flex items-center gap-1.5 text-xs font-medium text-violet-600 hover:text-violet-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          >
+            <Sparkles size={13} /> Improve with AI
+          </button>
+          <div className="flex gap-3">
+            <Button variant="secondary" type="button" onClick={handleClose}>Cancel</Button>
+            <Button type="submit">{mode === 'create' ? 'Add Card' : 'Save Changes'}</Button>
+          </div>
         </div>
       </form>
+
+      <AIImproveModal
+        open={improveOpen}
+        onClose={() => setImproveOpen(false)}
+        currentFront={front}
+        currentBack={back}
+        onApply={(f, b) => { setFront(f); setBack(b); }}
+      />
     </Modal>
   );
 }

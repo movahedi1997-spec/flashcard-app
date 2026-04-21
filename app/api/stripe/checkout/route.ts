@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
     payment_method_types: ['card'],
     line_items: [{ price: priceId, quantity: 1 }],
     success_url: `${siteUrl}/settings?upgraded=true`,
-    cancel_url: `${siteUrl}/pricing`,
+    cancel_url: `${siteUrl}/settings?upgraded=cancelled`,
     allow_promotion_codes: true,
     subscription_data: {
       metadata: { userId },

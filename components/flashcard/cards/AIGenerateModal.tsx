@@ -137,7 +137,7 @@ function QuotaBar({ quota }: { quota: Quota }) {
         <span className={`font-medium ${isDanger ? 'text-red-700' : isWarning ? 'text-amber-700' : 'text-indigo-700'}`}>
           {isDanger  ? '⚠️ Almost out of free cards!' :
            isWarning ? '🔥 Using up fast…' :
-                       '✨ Free daily cards'}
+                       '✨ Free monthly cards'}
         </span>
         <span className={`font-bold tabular-nums ${isDanger ? 'text-red-700' : isWarning ? 'text-amber-700' : 'text-indigo-700'}`}>
           {quota.remaining} left
@@ -276,6 +276,13 @@ export default function AIGenerateModal({ deckId, onClose, onGenerated }: Props)
                       You've used all 189 free AI cards for this month.<br />Your quota resets at the start of next month.
                     </p>
                   </div>
+                  <a
+                    href="/pricing"
+                    className="flex items-center justify-center gap-2 w-full rounded-xl bg-indigo-600 py-3 text-sm font-bold text-white hover:bg-indigo-700 transition-colors"
+                  >
+                    <Zap className="h-4 w-4" /> Upgrade to Pro — unlimited cards
+                  </a>
+                  <p className="text-xs text-gray-400">From €6.99/month · Cancel anytime</p>
                 </div>
               ) : (
                 <>

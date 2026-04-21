@@ -9,19 +9,22 @@
  */
 
 import { useState } from 'react';
-import { Pencil, Trash2, ChevronDown, ChevronUp, ImageIcon, Brain } from 'lucide-react';
+import { Pencil, Trash2, ChevronDown, ChevronUp, ImageIcon, Brain, Sparkles } from 'lucide-react';
 import type { ApiCard } from '@/types/api';
 import ConfirmDialog from '@/components/ui/ConfirmDialog';
+import AIImproveModal from './AIImproveModal';
 
 interface Props {
   card: ApiCard;
   onEdit: () => void;
   onDelete: () => void;
+  onImprove?: (front: string, back: string) => void;
 }
 
-export default function CardItem({ card, onEdit, onDelete }: Props) {
+export default function CardItem({ card, onEdit, onDelete, onImprove }: Props) {
   const [expanded, setExpanded] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [improveOpen, setImproveOpen] = useState(false);
 
   // Format the SRS due / interval badge
   const srsLabel = (() => {
@@ -106,6 +109,14 @@ export default function CardItem({ card, onEdit, onDelete }: Props) {
               {expanded ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
             </button>
             <button
+              onClick={() => setImproveOpen(true)}
+              aria-label="Improve card with AI"
+              title="Improve with AI"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-violet-600 hover:bg-violet-50 transition-colors cursor-pointer"
+            >
+              <Sparkles size={15} />
+            </button>
+            <button
               onClick={onEdit}
               aria-label="Edit card"
               className="p-1.5 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors cursor-pointer"
@@ -129,6 +140,14 @@ export default function CardItem({ card, onEdit, onDelete }: Props) {
         onConfirm={onDelete}
         title="Delete Card"
         message="Are you sure you want to delete this card? This cannot be undone."
+      />
+
+      <AIImproveModal
+        open={improveOpen}
+        onClose={() => setImproveOpen(false)}
+        currentFront={card.front}
+        currentBack={card.back}
+        onApply={(front, back) => onImprove?.(front, back)}
       />
     </>
   );

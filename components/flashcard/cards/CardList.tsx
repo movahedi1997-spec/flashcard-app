@@ -264,6 +264,7 @@ export default function CardList({
               card={card}
               onEdit={() => setEditCard(card)}
               onDelete={() => void onDeleteCard(card.id)}
+              onImprove={(front, back) => void onUpdateCard(card.id, { front, back })}
             />
           ))}
         </div>
