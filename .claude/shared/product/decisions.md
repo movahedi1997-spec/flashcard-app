@@ -2408,3 +2408,53 @@ EDGE CASES — DECK DETAIL/SETTINGS
     Study Settings: if max reviews × avg card time > 60 min,
     show: "This session will take approx. N minutes. Consider reducing
     the limit to avoid burnout." Non-blocking.
+
+────────────────────────────────────────────────────────────────────────────────
+[CONSULT-003] AI Model & Monetization Strategy
+- Date: 2026-04-19
+- Triggered by: user concern about scalability of free AI tier for 1000+ users
+- Participants: critical-consultant, user
+
+- Key assumptions challenged:
+  1. Two-model split (Gemma free / Gemini paid) saves money — verdict: invalid
+     (risks activation metric; quality gap kills first experience)
+  2. OpenRouter free tier is reliable for production — verdict: invalid
+     (no SLA, can be pulled anytime)
+  3. Ads during study sessions are acceptable — verdict: invalid
+     (churn risk outweighs CPM revenue at this stage)
+
+- Risks identified:
+  1. Free tier AI quality gap — likelihood: high — impact: high
+  2. OpenRouter free model availability — likelihood: medium — impact: high
+  3. Ad placement disrupting study flow — likelihood: high — impact: high
+
+- Recommended path forward:
+  1. Use same model (Gemini 2.0 Flash via OpenRouter paid) for all users
+  2. Differentiate only on quantity: free=189 cards/month, pro=unlimited
+  3. Defer ads to Phase 4-5, only between sessions never during study
+
+- Decision made:
+  - AI stack: Groq (Llama 3.3-70b) primary for text → OpenRouter
+    google/gemini-2.0-flash-001 fallback + PDF vision
+  - Free tier: 189 cards/month, max 50 per session
+  - Pro tier: unlimited cards
+  - Ads: deferred, not before retention is validated
+
+- Confidence level: high
+- Next review: when approaching 500 active users
+- Status: agreed
+
+────────────────────────────────────────────────────────────────────────────────
+[DECISION-007] Pricing Tiers
+- Date: 2026-04-19
+- Owner: User
+
+- Tiers at launch:
+  1. Free — 189 AI cards/month, max 50/session
+  2. Pro Monthly — unlimited AI, all features
+  3. Pro Annual — same as monthly, discounted
+
+- Removed: Lifetime plan — AI costs make it unsustainable
+- Deferred to Phase 4-5: Enterprise (schools, universities, companies)
+
+- Status: approved
