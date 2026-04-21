@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import PWAInstallPrompt from '@/components/PWAInstallPrompt';
+import CookieConsent from '@/components/CookieConsent';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
 
@@ -109,8 +110,8 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         {children}
-        {/* PWA install prompt — client-only, renders after hydration */}
         <PWAInstallPrompt />
+        <CookieConsent />
       </body>
     </html>
   );

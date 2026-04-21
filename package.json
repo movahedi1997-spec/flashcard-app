@@ -30,7 +30,8 @@
     "pdf-parse": "^1.1.1",
     "pg": "^8.20.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "vanilla-cookieconsent": "^3.1.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",

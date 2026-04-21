@@ -50,7 +50,7 @@ export default function Footer() {
             </nav>
           </div>
 
-          {/* Account + Legal */}
+          {/* Account */}
           <div>
             <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-gray-400">Account</p>
             <nav className="flex flex-col gap-2.5 text-sm text-gray-500">
@@ -60,6 +60,17 @@ export default function Footer() {
               <Link href="/settings"  className="transition hover:text-indigo-600">Einstellungen</Link>
             </nav>
           </div>
+        </div>
+
+        {/* Legal bar */}
+        <div className="mt-10 border-t border-gray-100 pt-6 flex flex-wrap items-center justify-between gap-4">
+          <p className="text-xs text-gray-300">© {new Date().getFullYear()} FlashcardAI — Mohammad M. Movahedi Najafabadi</p>
+          <nav className="flex flex-wrap gap-4 text-xs text-gray-400">
+            <Link href="/privacy"   className="transition hover:text-indigo-600">Privacy Policy</Link>
+            <Link href="/terms"     className="transition hover:text-indigo-600">Terms of Service</Link>
+            <Link href="/cookies"   className="transition hover:text-indigo-600">Cookie Policy</Link>
+            <Link href="/impressum" className="transition hover:text-indigo-600">Impressum</Link>
+          </nav>
         </div>
       </div>
     </footer>
