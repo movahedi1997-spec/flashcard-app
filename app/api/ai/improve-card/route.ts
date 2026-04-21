@@ -69,10 +69,23 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Prompt must be 350 characters or less.' }, { status: 400 });
   }
 
-  const userMessage = `Improve this flashcard${prompt ? ` with these instructions: "${prompt}"` : ''}.
+  // Strip common prompt injection patterns from user-supplied fields
+  const sanitize = (s: string) =>
+    s.replace(/ignore\s+(all\s+)?(previous\s+)?(instructions?|prompts?)/gi, '')
+     .replace(/system\s+prompt/gi, '')
+     .replace(/you\s+are\s+now/gi, '')
+     .replace(/act\s+as/gi, '')
+     .replace(/jailbreak/gi, '')
+     .trim();
 
-Current front: ${front}
-Current back: ${back}`;
+  const safePrompt = prompt ? sanitize(prompt) : undefined;
+  const safeFront  = sanitize(front ?? '');
+  const safeBack   = sanitize(back ?? '');
+
+  const userMessage = `Improve this flashcard${safePrompt ? ` with these instructions: "${safePrompt}"` : ''}.
+
+Current front: ${safeFront}
+Current back: ${safeBack}`;
 
   let suggestedFront = front;
   let suggestedBack  = back;
