@@ -3,6 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: false,       // sequential — tests share a live DB
+  workers: 1,                 // one browser project at a time — prevents fixture email collision
   retries: 1,
   reporter: [['html', { open: 'never' }], ['list']],
   timeout: 30_000,
@@ -16,10 +17,11 @@ export default defineConfig({
   },
 
   projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
+    { name: 'chromium',        use: { ...devices['Desktop Chrome'] } },
+    { name: 'firefox',         use: { ...devices['Desktop Firefox'] } },
+    { name: 'webkit',          use: { ...devices['Desktop Safari'] } },
+    { name: 'mobile-chrome',   use: { ...devices['Pixel 5'] } },
+    { name: 'mobile-safari',   use: { ...devices['iPhone 13'] } },
   ],
 
   // Start the Next.js dev server automatically before the test run.

@@ -252,6 +252,7 @@ export default function FlashcardsPage() {
                   {/* Study */}
                   <button
                     onClick={() => goToStudy(view.deckId)}
+                    aria-label="Study"
                     className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-indigo-600 text-white text-xs font-bold hover:bg-indigo-700 active:scale-95 transition"
                   >
                     <Play size={14} />

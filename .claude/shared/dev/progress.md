@@ -622,3 +622,50 @@ Date: 2026-04-22
 - OTP brute-force: FIXED inline — rate limit added to `/api/auth/verify-otp` (5 attempts/min per userId)
 
 TASK-030 (full pre-launch QA regression) is unblocked.
+
+---
+
+## [QA TESTER] TASK-028 — AI accuracy test
+Date: 2026-04-22
+
+**Status: COMPLETE — manually verified by founder**
+
+20-PDF corpus tested against the AI generation pipeline. Factual error rate confirmed <5%. AI accurately generates Q/A flashcards from medical/pharmacy/chemistry PDFs with domain context injection working correctly.
+
+TASK-030 (full pre-launch regression) is unblocked.
+
+---
+
+## [QA TESTER] TASK-030 — Pre-launch P0 regression suite
+Date: 2026-04-22
+
+**Status: COMPLETE — QA sign-off granted**
+
+### Suite: p0-flows.spec.ts (8 tests × 5 browsers = 40 total)
+All 40 tests passed with no retries needed on final run.
+
+| Test | Chrome | Firefox | WebKit | Mobile Chrome | Mobile Safari |
+|------|--------|---------|--------|---------------|---------------|
+| Login → /flashcards | PASS | PASS | PASS | PASS | PASS |
+| Create deck → appears in list | PASS | PASS | PASS | PASS | PASS |
+| Add card → appears | PASS | PASS | PASS | PASS | PASS |
+| Study session — card flip | PASS | PASS | PASS | PASS | PASS |
+| Pricing page Free + Pro | PASS | PASS | PASS | PASS | PASS |
+| Share deck → toggle public → URL shown | PASS | PASS | PASS | PASS | PASS |
+| Explore page — subject tiles visible | PASS | PASS | PASS | PASS | PASS |
+| Account deletion — password confirm | PASS | PASS | PASS | PASS | PASS |
+
+### Suite: otp-flow.spec.ts (4 tests, Chromium)
+All 4 OTP email verification tests pass.
+
+### Fixes made during TASK-030
+- `aria-label="Study"` added to the mobile Study button (hidden text on mobile)
+- `dismissPWA()` helper added to fixtures to handle mobile Safari/Chrome PWA install prompt
+- `workers: 1` set in playwright.config.ts to prevent fixture email collision across browser projects
+- Explore page test updated: h1 is "Free Flashcard Decks" not "Explore"; subject tiles are `<div>`s not buttons
+- Share deck test: toggle is `<button aria-label="Make public">` not a switch/checkbox
+- Account deletion test: `.first()` added to resolve strict mode violation (two password inputs)
+
+### QA SIGN-OFF
+All P0 acceptance criteria met across all 5 browsers/platforms.
+**QA sign-off granted — pre-launch regression complete. TASK-031 (Technical Writer) may begin.**
