@@ -2,7 +2,7 @@
 
 import { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { FlaskConical, Pill, Stethoscope, BookOpen, ArrowRight, Sparkles } from 'lucide-react';
+import { FlaskConical, Pill, Stethoscope, BookOpen, ArrowRight, Sparkles, Zap, Check } from 'lucide-react';
 
 const SUBJECTS = [
   {
@@ -174,6 +174,59 @@ function OnboardingContent() {
         <p className="mt-4 text-center text-xs text-gray-400">
           You can always add decks from any subject later.
         </p>
+      </div>
+
+      {/* Free vs Pro teaser */}
+      <div className="mt-10 w-full max-w-lg">
+        <div className="rounded-2xl border border-gray-100 bg-gray-50 p-5">
+          <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-gray-400">What you get</p>
+          <div className="grid grid-cols-2 gap-3">
+            {/* Free */}
+            <div className="rounded-xl border border-gray-200 bg-white p-4">
+              <p className="mb-3 text-sm font-bold text-gray-700">Free</p>
+              <ul className="space-y-2">
+                {[
+                  '189 AI cards / month',
+                  '49 card improvements / month',
+                  'Spaced repetition (SRS)',
+                  'Public & private decks',
+                ].map((f) => (
+                  <li key={f} className="flex items-start gap-2 text-xs text-gray-500">
+                    <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gray-400" />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Pro */}
+            <div className="rounded-xl border border-indigo-200 bg-indigo-50 p-4">
+              <div className="mb-3 flex items-center gap-1.5">
+                <Zap className="h-3.5 w-3.5 text-indigo-600" />
+                <p className="text-sm font-bold text-indigo-700">Pro</p>
+              </div>
+              <ul className="space-y-2">
+                {[
+                  '499 AI cards / month',
+                  '299 card improvements / month',
+                  'Advanced SRS analytics',
+                  'Premium deck themes',
+                ].map((f) => (
+                  <li key={f} className="flex items-start gap-2 text-xs text-indigo-600">
+                    <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-indigo-400" />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <a
+                href="/pricing"
+                className="mt-4 block text-center rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-700 transition-colors"
+              >
+                Upgrade to Pro →
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
