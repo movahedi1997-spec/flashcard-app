@@ -36,7 +36,7 @@ async function getStats() {
       `SELECT COUNT(DISTINCT user_id)::text AS count FROM review_log WHERE reviewed_at >= NOW() - INTERVAL '30 days'`,
     ),
     query<{ count: string }>(
-      `SELECT COALESCE(SUM(count), 0)::text AS count FROM ai_usage
+      `SELECT COALESCE(SUM(cards_generated), 0)::text AS count FROM ai_usage
        WHERE month = TO_CHAR(NOW(), 'YYYY-MM')`,
     ),
     query<{ count: string }>(
