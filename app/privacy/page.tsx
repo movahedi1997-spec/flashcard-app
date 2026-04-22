@@ -29,27 +29,37 @@ export default function PrivacyPage() {
 
       <Section title="2. Data We Collect">
         <SubSection title="Account data">
-          When you register, we collect your email address, username, and a hashed password. We also store your subject preference (e.g. Medicine, Pharmacy, Chemistry) chosen during onboarding.
+          When you register, we collect your email address, display name, and a hashed (bcrypt) password. We also store your subject preference (e.g. Medicine, Pharmacy, Chemistry) chosen during onboarding.
+        </SubSection>
+        <SubSection title="IP addresses">
+          We record your IP address at the time of account registration (<em>registration IP</em>) and update it on each successful login (<em>last known IP</em>). These are stored as part of your account record for security, fraud prevention, and compliance with legal obligations under EU DSA and German NetzDG. They are not stored only in server logs — they are retained as account data until your account is deleted or as required by law.
+        </SubSection>
+        <SubSection title="Phone number (optional)">
+          You may voluntarily provide a phone number in your account settings. This is used solely for identity verification if required by law enforcement or regulatory authorities. It is never used for marketing.
         </SubSection>
         <SubSection title="User-generated content">
-          Flashcard decks and individual cards you create, including any text content used to generate AI flashcards.
+          Flashcard decks and individual cards you create, including any text content used to generate AI flashcards. Public decks are visible to all users and may be subject to content moderation.
         </SubSection>
         <SubSection title="Study and usage data">
           Spaced repetition (SRS) progress, study session history, and daily/weekly/monthly activity statistics.
         </SubSection>
+        <SubSection title="Content reports and moderation data">
+          When a user submits a report about a public deck, we store: the reporter's user ID, the reported deck ID, the reason category, and any details provided. We also store moderation actions taken against accounts (warnings, bans, and ban history), including reasons and the IP address at the time of action. This data is retained for platform integrity and legal compliance purposes.
+        </SubSection>
         <SubSection title="Technical data">
-          IP addresses stored in server access logs (retained for 30 days), browser type, and device information sent as part of standard HTTP requests.
+          Browser type and device information sent as part of standard HTTP requests.
         </SubSection>
         <SubSection title="Communications">
-          Email address used to send account verification codes and transactional notifications (e.g. password reset).
+          Email address used to send account verification codes and transactional notifications (e.g. password reset, 2FA codes).
         </SubSection>
       </Section>
 
       <Section title="3. Legal Basis for Processing (GDPR / UK GDPR)">
         <ul className="mt-3 list-disc pl-5 space-y-2 text-sm">
           <li><strong>Contract performance (Art. 6(1)(b) GDPR):</strong> Account registration, authentication, flashcard storage, and study features are necessary to provide the service.</li>
-          <li><strong>Legitimate interest (Art. 6(1)(f) GDPR):</strong> Server security logs, fraud prevention, and service analytics.</li>
-          <li><strong>Legal obligation (Art. 6(1)(c) GDPR):</strong> Retaining certain records where required by applicable law.</li>
+          <li><strong>Legitimate interest (Art. 6(1)(f) GDPR):</strong> IP logging for fraud prevention, abuse detection, and platform security.</li>
+          <li><strong>Legal obligation (Art. 6(1)(c) GDPR):</strong> Retaining moderation records, IP addresses, and user identity data as required by EU DSA (Regulation (EU) 2022/2065), German NetzDG (Netzwerkdurchsetzungsgesetz), and other applicable law, including cooperation with law enforcement authorities.</li>
+          <li><strong>Consent (Art. 6(1)(a) GDPR):</strong> Phone number collection — provided voluntarily and removable at any time.</li>
         </ul>
       </Section>
 
@@ -91,11 +101,30 @@ export default function PrivacyPage() {
 
       <Section title="5. Data Retention">
         <ul className="mt-3 list-disc pl-5 space-y-2 text-sm">
-          <li>Account data: retained until you delete your account.</li>
+          <li>Account data (name, email, username, bio): retained until you delete your account.</li>
           <li>Flashcard content and study data: retained until account deletion.</li>
-          <li>Server access logs: automatically deleted after 30 days.</li>
-          <li>Email verification codes: expire after 10 minutes and are deleted after use.</li>
+          <li>IP addresses (registration IP and last known IP): retained as part of your account record until account deletion, or longer if required by law.</li>
+          <li>Phone number: retained until you remove it in settings or delete your account.</li>
+          <li>Content reports: retained for 2 years from submission for audit and legal compliance purposes.</li>
+          <li>Moderation records (warnings, bans, ban history): retained for 3 years from the date of action, in accordance with EU DSA Art. 17 record-keeping obligations.</li>
+          <li>Email verification and 2FA codes: expire after 10 minutes and are deleted after use.</li>
         </ul>
+      </Section>
+
+      <Section title="5a. Content Moderation & EU DSA Compliance">
+        <p className="text-sm">FlashcardAI operates a content moderation system for public decks in compliance with the EU Digital Services Act (DSA, Regulation (EU) 2022/2065) and German NetzDG.</p>
+        <ul className="mt-3 list-disc pl-5 space-y-2 text-sm">
+          <li><strong>Reporting:</strong> Any registered user may report a public deck for illegal content, copyright violation, hate speech, misinformation, spam, violence, or other policy violations.</li>
+          <li><strong>Review:</strong> Reports are reviewed by our moderation team within 24 hours.</li>
+          <li><strong>Actions:</strong> We may issue warnings, remove content (set decks to private), or suspend/ban accounts. Account bans are logged permanently for legal compliance.</li>
+          <li><strong>Auto-escalation:</strong> Accounts that receive 3 or more warnings within a rolling 90-day period are automatically suspended pending review, in line with EU DSA Art. 23 obligations regarding repeat infringers.</li>
+          <li><strong>Appeals:</strong> You may appeal any moderation decision by contacting <a href="mailto:privacy@flashcardai.app" className="text-indigo-600 hover:underline">privacy@flashcardai.app</a>. We respond within 14 days.</li>
+        </ul>
+      </Section>
+
+      <Section title="5b. Law Enforcement & Disclosure">
+        <p className="text-sm">We may be required by law to disclose personal data to law enforcement, courts, or regulatory authorities. Data that may be disclosed includes: account information, IP addresses (registration and last known), phone number (if provided), flashcard content, and moderation history.</p>
+        <p className="mt-2 text-sm">We will notify you of such a request unless we are legally prohibited from doing so (e.g. by a court order or gag order). Disclosures under German NetzDG are made without prior user notification where the law requires.</p>
       </Section>
 
       <Section title="6. Your Rights">
