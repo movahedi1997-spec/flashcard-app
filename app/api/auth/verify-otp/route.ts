@@ -17,6 +17,7 @@ import {
 import { verifyOtp } from '@/lib/otp';
 import type { OtpPurpose } from '@/lib/email';
 import { issueSession } from '@/app/api/auth/login/route';
+import { checkRateLimit } from '@/lib/rateLimit';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -30,6 +31,15 @@ export async function POST(req: NextRequest) {
   const session = await verifyOtpSession(sessionToken);
   if (!session) {
     return NextResponse.json({ error: 'Session invalid or expired. Please start again.' }, { status: 401 });
+  }
+
+  // 5 attempts per minute per user — prevents brute-force of 6-digit space
+  const rl = checkRateLimit(`verify-otp:${session.userId}`, 5, 60_000);
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: 'Too many attempts. Please wait before trying again.' },
+      { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } },
+    );
   }
 
   const body = await req.json().catch(() => null) as Record<string, unknown> | null;

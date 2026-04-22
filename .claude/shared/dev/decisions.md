@@ -789,3 +789,67 @@ Document in deployment runbook.
 ### SECURITY AUDIT VERDICT
 **SIGNED OFF for Phase 2** with SA-18 flagged as a required pre-production action.
 No critical vulnerabilities in Phase 2 code. All IDOR, auth, and injection vectors confirmed clear.
+
+---
+
+## [CODE REVIEWER] TASK-029 — Phase 3 Code Review
+Date: 2026-04-22
+
+### Scope
+AI prompt injection · Stripe webhook security · hardcoded prices · OTP flow (new)
+
+---
+
+### AI Prompt Injection — PASS
+
+- System prompt is a hardcoded constant; domain context (medicine/pharmacy/chemistry) is immutable and cannot be overridden by user content.
+- PDF content is sent as a raw file part to Gemini vision API — no intermediate text extraction means no injection surface at extraction stage.
+- User-supplied text is truncated to 12,000 chars and placed in the `user` message role; cannot escape prompt boundary.
+- AI response validated with strict JSON parsing + card structure check; malformed output rejected.
+
+Files: `app/api/ai/generate/route.ts`, `lib/ai.ts`, `lib/pdf.ts`
+
+---
+
+### Stripe Webhook Security — PASS
+
+- `stripe.webhooks.constructEvent()` called with raw body (Next.js `request.text()`) and `STRIPE_WEBHOOK_SECRET` env var — correct order, no bypass possible.
+- Unverified events cannot reach handler logic; error path returns 400 immediately.
+- All subscription state updates use parameterised SQL queries.
+
+File: `app/api/stripe/webhook/route.ts`
+
+---
+
+### Hardcoded Prices — WARN (Low, post-launch OK)
+
+- Price display strings (`€6.99`, `€5.83`, `€69.99`) are hardcoded in `app/pricing/page.tsx`.
+- Actual Stripe charges use env-var-driven price IDs — no financial risk.
+- Impact: UI shows stale amounts if prices change in Stripe without a redeploy.
+- Recommendation: move display amounts to env vars post-launch for operational hygiene.
+
+---
+
+### OTP Flow — PASS with fix applied
+
+**CR-OTP-01 (MEDIUM — was BLOCKING, now RESOLVED)**
+`/api/auth/verify-otp` had no rate limiting on code submission, allowing brute-force of the 6-digit space within a 10-minute OTP window.
+Fix applied: `checkRateLimit(`verify-otp:${session.userId}`, 5, 60_000)` added before `verifyOtp()` call.
+File: `app/api/auth/verify-otp/route.ts`
+
+**CR-OTP-02 (LOW — post-launch)**
+OTP code comparison uses SQL `=` operator rather than `crypto.timingSafeEqual()`. Network latency dominates timing differences in practice; deferred to post-launch hardening.
+
+All other OTP controls pass: `crypto.randomInt()` for generation, 10-minute expiry enforced, resend rate-limited to 5/10min.
+
+---
+
+### Open items carried forward
+
+| ID | Finding | Priority |
+|----|---------|----------|
+| CR-OTP-02 | OTP: timing-safe comparison | Low (post-launch) |
+| CR-PRICE-01 | Hardcoded price display amounts | Low (post-launch) |
+
+### TASK-029 VERDICT
+**SIGNED OFF.** Blocking issue (verify-otp brute-force) resolved inline. Phase 3 code review complete. TASK-030 (full pre-launch QA regression) may begin.

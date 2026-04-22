@@ -608,3 +608,17 @@ Date: 2026-04-14
 ### QA SIGN-OFF
 All Phase 2 acceptance criteria met. No blocking issues remain.
 **QA sign-off granted — Phase 3 may begin.**
+
+---
+
+## [CODE REVIEWER] TASK-029 — Phase 3 Code Review
+Date: 2026-04-22
+
+**Status: COMPLETE — signed off**
+
+- AI prompt injection: PASS (system prompt hardcoded, PDF to vision API, text truncated + isolated)
+- Stripe webhooks: PASS (raw body + constructEvent, parameterised SQL)
+- Hardcoded prices: WARN low (display only, no charge risk — deferred post-launch)
+- OTP brute-force: FIXED inline — rate limit added to `/api/auth/verify-otp` (5 attempts/min per userId)
+
+TASK-030 (full pre-launch QA regression) is unblocked.
