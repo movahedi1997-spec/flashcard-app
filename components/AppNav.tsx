@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import { LayoutDashboard, BookOpen, Compass, User, Settings } from 'lucide-react';
+import { LayoutDashboard, BookOpen, Compass, User, Settings, BarChart2 } from 'lucide-react';
 import NavLogo from './NavLogo';
 import BottomNav from './BottomNav';
 
-export type ActivePage = 'decks' | 'explore' | 'profile' | 'settings';
+export type ActivePage = 'decks' | 'explore' | 'profile' | 'settings' | 'stats';
 
 interface Props {
   username?: string | null;
@@ -14,6 +14,7 @@ const NAV_ITEMS = [
   { key: 'dashboard', href: '/dashboard',  icon: LayoutDashboard, label: 'Dashboard' },
   { key: 'decks',     href: '/flashcards', icon: BookOpen,         label: 'My Decks'  },
   { key: 'explore',   href: '/explore',    icon: Compass,          label: 'Explore'   },
+  { key: 'stats',     href: '/stats',      icon: BarChart2,        label: 'Analytics' },
   { key: 'settings',  href: '/settings',   icon: Settings,         label: 'Settings'  },
 ] as const;
 

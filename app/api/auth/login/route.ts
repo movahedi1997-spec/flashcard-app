@@ -103,6 +103,8 @@ export async function POST(req: NextRequest) {
     }
 
     // ── No 2FA → issue full session ───────────────────────────────────────────
+    // Update last known IP (best-effort, non-blocking)
+    query('UPDATE users SET last_known_ip=$1 WHERE id=$2', [ip, user.id]).catch(() => {});
     return issueSession(user);
   } catch (err) {
     console.error('[POST /api/auth/login]', err);

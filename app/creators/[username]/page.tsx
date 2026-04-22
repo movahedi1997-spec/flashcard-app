@@ -16,6 +16,7 @@ import { jwtVerify }      from 'jose';
 import { query }          from '@/lib/db';
 import AppNav             from '@/components/AppNav';
 import ExploreDeckCard    from '@/components/ExploreDeckCard';
+import ProBadge           from '@/components/ProBadge';
 import type { PublicDeck } from '@/types/api';
 
 const _secret = new TextEncoder().encode(
@@ -48,6 +49,7 @@ interface UserRow {
   bio:                 string | null;
   avatar_url:          string | null;
   is_verified_creator: boolean;
+  is_pro:              boolean;
   created_at:          string;
 }
 
@@ -71,6 +73,7 @@ async function getCreatorByUsername(username: string) {
   const result = await query<UserRow>(
     `SELECT id, name, username, bio, avatar_url,
             COALESCE(is_verified_creator, false) AS is_verified_creator,
+            COALESCE(is_pro, false) AS is_pro,
             created_at
        FROM users
       WHERE LOWER(username) = LOWER($1)`,
@@ -208,6 +211,7 @@ export default async function CreatorProfilePage({ params }: Props) {
               {creator.is_verified_creator && (
                 <BadgeCheck className="h-6 w-6 text-indigo-500 flex-shrink-0" />
               )}
+              <ProBadge isPro={creator.is_pro} size="md" />
             </div>
             {creator.username && (
               <p className="text-sm text-gray-400 mt-0.5">@{creator.username}</p>

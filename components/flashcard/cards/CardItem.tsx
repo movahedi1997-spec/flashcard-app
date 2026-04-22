@@ -13,6 +13,7 @@ import { Pencil, Trash2, ChevronDown, ChevronUp, ImageIcon, Brain, Sparkles } fr
 import type { ApiCard } from '@/types/api';
 import ConfirmDialog from '@/components/ui/ConfirmDialog';
 import AIImproveModal from './AIImproveModal';
+import MathContent from '@/components/MathContent';
 
 interface Props {
   card: ApiCard;
@@ -54,9 +55,10 @@ export default function CardItem({ card, onEdit, onDelete, onImprove }: Props) {
                   <Brain size={10} /> AI
                 </span>
               )}
-              <p className="text-sm font-medium text-slate-800 line-clamp-2">
-                {card.front || <span className="italic text-slate-400">No text</span>}
-              </p>
+              {card.front
+                ? <MathContent text={card.front} className="text-sm font-medium text-slate-800 line-clamp-2" />
+                : <span className="italic text-slate-400 text-sm">No text</span>
+              }
             </div>
 
             {expanded && (
@@ -77,9 +79,10 @@ export default function CardItem({ card, onEdit, onDelete, onImprove }: Props) {
                       </span>
                     )}
                   </p>
-                  <p className="text-sm text-slate-700">
-                    {card.back || <span className="italic text-slate-400">No text</span>}
-                  </p>
+                  {card.back
+                    ? <MathContent text={card.back} block className="text-sm text-slate-700" />
+                    : <span className="italic text-slate-400 text-sm">No text</span>
+                  }
                   {card.backImageUrl && (
                     <img
                       src={card.backImageUrl}

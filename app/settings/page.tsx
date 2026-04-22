@@ -32,6 +32,7 @@ interface ProfileRow {
   username: string | null;
   bio: string | null;
   avatar_url: string | null;
+  phone_number: string | null;
   two_fa_enabled: boolean;
   is_pro: boolean;
   subscription_status: string | null;
@@ -42,15 +43,15 @@ export default async function SettingsPage() {
 
   // Fetch extended profile fields (may not exist on older accounts)
   const profileResult = await query<ProfileRow>(
-    `SELECT username, bio, avatar_url,
+    `SELECT username, bio, avatar_url, phone_number,
             COALESCE(two_fa_enabled, true) AS two_fa_enabled,
             COALESCE(is_pro, false) AS is_pro,
             subscription_status
      FROM users WHERE id = $1`,
     [user!.userId],
-  ).catch(() => ({ rows: [{ username: null, bio: null, avatar_url: null, two_fa_enabled: true, is_pro: false, subscription_status: null }] }));
+  ).catch(() => ({ rows: [{ username: null, bio: null, avatar_url: null, phone_number: null, two_fa_enabled: true, is_pro: false, subscription_status: null }] }));
 
-  const profile = profileResult.rows[0] ?? { username: null, bio: null, avatar_url: null, two_fa_enabled: true, is_pro: false, subscription_status: null };
+  const profile = profileResult.rows[0] ?? { username: null, bio: null, avatar_url: null, phone_number: null, two_fa_enabled: true, is_pro: false, subscription_status: null };
 
   return (
     <div className="min-h-screen">
@@ -92,6 +93,7 @@ export default async function SettingsPage() {
             initialUsername={profile.username}
             initialBio={profile.bio}
             initialAvatarUrl={profile.avatar_url}
+            initialPhoneNumber={profile.phone_number}
           />
         </section>
 

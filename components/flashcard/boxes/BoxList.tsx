@@ -19,6 +19,7 @@ import BoxCard from './BoxCard';
 import BoxForm, { type DeckFormValues } from './BoxForm';
 import EmptyState from '@/components/ui/EmptyState';
 import Button from '@/components/ui/Button';
+import GoProBanner from '@/components/GoProBanner';
 
 // ── Raw card shape coming from legacy JSON export files ───────────────────────
 
@@ -35,6 +36,7 @@ interface Props {
   decks: Deck[];
   loading: boolean;
   error: string | null;
+  isPro?: boolean;
   onCreateBox: (name: string, description?: string, subject?: undefined, color?: string, emoji?: string) => Promise<Deck | null>;
   onUpdateBox: (id: string, updates: DeckUpdate) => Promise<void>;
   onDeleteBox: (id: string) => Promise<void>;
@@ -65,6 +67,7 @@ export default function BoxList({
   decks,
   loading,
   error,
+  isPro = false,
   onCreateBox,
   onUpdateBox,
   onDeleteBox,
@@ -152,6 +155,10 @@ export default function BoxList({
         </div>
       </div>
 
+      <div className="mb-6">
+        <GoProBanner isPro={isPro} context="499 AI cards/month · Premium colors · LaTeX · Advanced analytics" />
+      </div>
+
       {error && (
         <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3 mb-6">
           <AlertCircle size={16} className="shrink-0" />
@@ -197,6 +204,7 @@ export default function BoxList({
           void onCreateBox(name, description, undefined, color, emoji)
         }
         mode="create"
+        isPro={isPro}
       />
 
       {/* Edit deck form */}
@@ -214,6 +222,7 @@ export default function BoxList({
           emoji: editDeck.emoji,
         } : undefined}
         mode="edit"
+        isPro={isPro}
       />
     </div>
   );

@@ -15,6 +15,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { fetchWithRefresh } from '@/lib/fetchWithRefresh';
 import { ArrowLeft, Trophy, RotateCcw, AlertTriangle, Loader2 } from 'lucide-react';
+import MathContent from '@/components/MathContent';
 import type {
   Deck,
   StudyCard,
@@ -30,6 +31,7 @@ import Button from '@/components/ui/Button';
 interface Props {
   deck: Deck;
   onBack: () => void;
+  isPro?: boolean;
 }
 
 // ── Session stats ─────────────────────────────────────────────────────────────
@@ -98,7 +100,7 @@ function fmtDays(days: number): string {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function StudySession({ deck, onBack }: Props) {
+export default function StudySession({ deck, onBack, isPro = false }: Props) {
   // ── Session fetch state ─────────────────────────────────────────────────────
   const [sessionLoading, setSessionLoading] = useState(true);
   const [sessionError, setSessionError] = useState<string | null>(null);
@@ -435,7 +437,7 @@ export default function StudySession({ deck, onBack }: Props) {
                   AI-generated
                 </span>
               )}
-              <div className="flex flex-col items-center gap-3 px-6 pt-10 pb-6 w-full">
+              <div className={`flex flex-col items-center gap-3 px-6 pt-10 pb-6 w-full ${isPro ? 'overflow-y-auto max-h-[420px]' : ''}`}>
                 {current?.frontImageUrl && (
                   <img
                     src={current.frontImageUrl}
@@ -444,9 +446,11 @@ export default function StudySession({ deck, onBack }: Props) {
                   />
                 )}
                 {current?.front && (
-                  <p className="text-lg font-medium text-slate-800 text-center leading-relaxed">
-                    {current.front}
-                  </p>
+                  <MathContent
+                    text={current.front}
+                    block
+                    className={`font-medium text-slate-800 text-center leading-relaxed w-full ${isPro ? 'text-xl' : 'text-lg'}`}
+                  />
                 )}
               </div>
             </div>
@@ -456,7 +460,7 @@ export default function StudySession({ deck, onBack }: Props) {
               <span className="absolute top-4 left-4 text-xs font-semibold uppercase tracking-widest text-indigo-400">
                 Answer
               </span>
-              <div className="flex flex-col items-center gap-3 px-6 pt-10 pb-6 w-full">
+              <div className={`flex flex-col items-center gap-3 px-6 pt-10 pb-6 w-full ${isPro ? 'overflow-y-auto max-h-[420px]' : ''}`}>
                 {current?.backImageUrl && (
                   <img
                     src={current.backImageUrl}
@@ -465,9 +469,11 @@ export default function StudySession({ deck, onBack }: Props) {
                   />
                 )}
                 {current?.back && (
-                  <p className="text-lg font-medium text-indigo-900 text-center leading-relaxed">
-                    {current.back}
-                  </p>
+                  <MathContent
+                    text={current.back}
+                    block
+                    className={`font-medium text-indigo-900 text-center leading-relaxed w-full ${isPro ? 'text-xl' : 'text-lg'}`}
+                  />
                 )}
               </div>
             </div>

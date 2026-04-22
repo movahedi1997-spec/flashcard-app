@@ -5,6 +5,8 @@ import { BookOpen, Zap, Trophy, LayoutGrid } from 'lucide-react';
 import Link from 'next/link';
 import AppNav from '@/components/AppNav';
 import StudyChart from '@/components/dashboard/StudyChart';
+import ProBadge from '@/components/ProBadge';
+import GoProBanner from '@/components/GoProBanner';
 import { query } from '@/lib/db';
 
 const secret = new TextEncoder().encode(
@@ -45,7 +47,7 @@ function calculateStreak(sortedDates: string[]): number {
 }
 
 async function getDashboardData(userId: string) {
-  const [decksRes, cardsRes, todayRes, daysRes, profileRes] = await Promise.all([
+  const [decksRes, cardsRes, todayRes, daysRes, profileRes, proRes] = await Promise.all([
     query<{ count: string }>(
       'SELECT COUNT(*)::text AS count FROM decks WHERE user_id = $1',
       [userId],
@@ -74,6 +76,10 @@ async function getDashboardData(userId: string) {
       'SELECT username, avatar_url FROM users WHERE id = $1',
       [userId],
     ),
+    query<{ is_pro: boolean }>(
+      'SELECT is_pro FROM users WHERE id = $1',
+      [userId],
+    ),
   ]);
 
   return {
@@ -83,6 +89,7 @@ async function getDashboardData(userId: string) {
     streak: calculateStreak(daysRes.rows.map((r) => r.review_date)),
     username:  profileRes.rows[0]?.username  ?? null,
     avatarUrl: profileRes.rows[0]?.avatar_url ?? null,
+    isPro:     proRes.rows[0]?.is_pro        ?? false,
   };
 }
 
@@ -115,9 +122,12 @@ export default async function DashboardPage() {
           </Link>
 
           <div>
-            <h1 className="text-2xl font-extrabold text-gray-900 sm:text-3xl">
-              Welcome back, {user.name.split(' ')[0]}! 👋
-            </h1>
+            <div className="flex items-center gap-2 flex-wrap">
+              <h1 className="text-2xl font-extrabold text-gray-900 sm:text-3xl">
+                Welcome back, {user.name.split(' ')[0]}! 👋
+              </h1>
+              <ProBadge isPro={data.isPro} />
+            </div>
             {data.username && (
               <p className="text-sm text-indigo-500 font-medium">@{data.username}</p>
             )}
@@ -147,6 +157,9 @@ export default async function DashboardPage() {
             </div>
           ))}
         </div>
+
+        {/* ── Go Pro banner ────────────────────────────────────────────── */}
+        <GoProBanner isPro={data.isPro} context="499 AI cards · Advanced analytics · LaTeX · Premium deck colors" />
 
         {/* ── Study activity chart ──────────────────────────────────────── */}
         <StudyChart />

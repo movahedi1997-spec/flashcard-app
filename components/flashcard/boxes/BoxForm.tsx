@@ -4,16 +4,26 @@ import { useState, useEffect } from 'react';
 import Modal from '@/components/ui/Modal';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
+import Link from 'next/link';
+import { Lock } from 'lucide-react';
 
 // ── Palette options (must match BoxCard PALETTES keys) ────────────────────────
 
-const COLOR_OPTIONS = [
+const FREE_COLORS = [
   { key: 'indigo',  label: 'Indigo',  swatch: 'bg-indigo-500'  },
   { key: 'emerald', label: 'Emerald', swatch: 'bg-emerald-500' },
   { key: 'amber',   label: 'Amber',   swatch: 'bg-amber-500'   },
   { key: 'rose',    label: 'Rose',    swatch: 'bg-rose-500'    },
   { key: 'sky',     label: 'Sky',     swatch: 'bg-sky-500'     },
-] as const;
+];
+
+const PRO_COLORS = [
+  { key: 'violet',  label: 'Violet',   swatch: 'bg-violet-600'  },
+  { key: 'fuchsia', label: 'Fuchsia',  swatch: 'bg-fuchsia-500' },
+  { key: 'teal',    label: 'Teal',     swatch: 'bg-teal-500'    },
+  { key: 'gold',    label: 'Gold',     swatch: 'bg-yellow-500'  },
+  { key: 'slate',   label: 'Charcoal', swatch: 'bg-slate-700'   },
+];
 
 const EMOJI_PRESETS = [
   '📚','📖','🔬','🧪','💊','🩺','⚗️','🧬','🔭','✏️',
@@ -36,11 +46,12 @@ interface Props {
   onSubmit: (values: DeckFormValues) => void;
   initial?: Partial<DeckFormValues>;
   mode: 'create' | 'edit';
+  isPro?: boolean;
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function BoxForm({ open, onClose, onSubmit, initial, mode }: Props) {
+export default function BoxForm({ open, onClose, onSubmit, initial, mode, isPro = false }: Props) {
   const [name, setName]               = useState(initial?.name        ?? '');
   const [description, setDescription] = useState(initial?.description ?? '');
   const [color, setColor]             = useState(initial?.color       ?? 'indigo');
@@ -107,8 +118,8 @@ export default function BoxForm({ open, onClose, onSubmit, initial, mode }: Prop
         {/* Colour picker */}
         <div className="flex flex-col gap-2">
           <label className="text-sm font-medium text-slate-700">Colour</label>
-          <div className="flex gap-2.5">
-            {COLOR_OPTIONS.map((c) => (
+          <div className="flex flex-wrap gap-2.5">
+            {FREE_COLORS.map((c) => (
               <button
                 key={c.key}
                 type="button"
@@ -121,7 +132,37 @@ export default function BoxForm({ open, onClose, onSubmit, initial, mode }: Prop
                 }`}
               />
             ))}
+            {/* Pro-only colors */}
+            {PRO_COLORS.map((c) => (
+              isPro ? (
+                <button
+                  key={c.key}
+                  type="button"
+                  title={c.label}
+                  onClick={() => setColor(c.key)}
+                  className={`h-8 w-8 rounded-full ${c.swatch} transition-all ${
+                    color === c.key
+                      ? 'ring-2 ring-offset-2 ring-slate-500 scale-110'
+                      : 'opacity-60 hover:opacity-100'
+                  }`}
+                />
+              ) : (
+                <Link
+                  key={c.key}
+                  href="/pricing"
+                  title={`${c.label} — Pro only`}
+                  className={`relative h-8 w-8 rounded-full ${c.swatch} opacity-40 flex items-center justify-center`}
+                >
+                  <Lock size={11} className="text-white drop-shadow" />
+                </Link>
+              )
+            ))}
           </div>
+          {!isPro && (
+            <p className="text-xs text-indigo-500">
+              <Link href="/pricing" className="hover:underline font-medium">Upgrade to Pro</Link> for Violet, Fuchsia, Teal, Gold, and Charcoal
+            </p>
+          )}
         </div>
 
         {/* Emoji picker */}

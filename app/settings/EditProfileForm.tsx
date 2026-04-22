@@ -8,14 +8,15 @@
  */
 
 import { useState, useRef } from 'react';
-import { Check, Loader2, ExternalLink, Upload } from 'lucide-react';
+import { Check, Loader2, ExternalLink, Upload, Phone } from 'lucide-react';
 import { fetchWithRefresh } from '@/lib/fetchWithRefresh';
 
 interface Props {
-  initialName:      string;
-  initialUsername:  string | null;
-  initialBio:       string | null;
-  initialAvatarUrl: string | null;
+  initialName:        string;
+  initialUsername:    string | null;
+  initialBio:         string | null;
+  initialAvatarUrl:   string | null;
+  initialPhoneNumber: string | null;
 }
 
 export default function EditProfileForm({
@@ -23,11 +24,13 @@ export default function EditProfileForm({
   initialUsername,
   initialBio,
   initialAvatarUrl,
+  initialPhoneNumber,
 }: Props) {
-  const [name,      setName]      = useState(initialName      ?? '');
-  const [username,  setUsername]  = useState(initialUsername   ?? '');
-  const [bio,       setBio]       = useState(initialBio        ?? '');
-  const [avatarUrl, setAvatarUrl] = useState(initialAvatarUrl  ?? '');
+  const [name,        setName]        = useState(initialName        ?? '');
+  const [username,    setUsername]    = useState(initialUsername     ?? '');
+  const [bio,         setBio]         = useState(initialBio          ?? '');
+  const [avatarUrl,   setAvatarUrl]   = useState(initialAvatarUrl    ?? '');
+  const [phoneNumber, setPhoneNumber] = useState(initialPhoneNumber  ?? '');
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -65,10 +68,11 @@ export default function EditProfileForm({
         method:  'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name:      name.trim()      || undefined,
-          username:  username.trim()  || '',
-          bio:       bio.trim()       || '',
-          avatarUrl: avatarUrl.trim() || '',
+          name:        name.trim()        || undefined,
+          username:    username.trim()    || '',
+          bio:         bio.trim()         || '',
+          avatarUrl:   avatarUrl.trim()   || '',
+          phoneNumber: phoneNumber.trim() || '',
         }),
       });
 
@@ -158,6 +162,25 @@ export default function EditProfileForm({
           maxLength={300}
           className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 resize-none focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-100"
         />
+      </div>
+
+      {/* Phone number */}
+      <div>
+        <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
+          Phone number
+          <span className="ml-1 normal-case font-normal text-gray-400">(optional — used only for identity verification if required by law)</span>
+        </label>
+        <div className="relative">
+          <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
+          <input
+            type="tel"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            placeholder="+49 123 456 7890"
+            maxLength={20}
+            className="w-full rounded-xl border border-gray-200 pl-9 pr-4 py-2.5 text-sm text-gray-800 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+          />
+        </div>
       </div>
 
       {/* Avatar */}

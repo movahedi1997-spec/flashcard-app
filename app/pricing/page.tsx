@@ -22,6 +22,7 @@ const PRICES = {
 
 const FREE_FEATURES = [
   '189 AI-generated cards per month',
+  '49 AI card improvements per month',
   'Up to 50 cards per generation',
   'Unlimited manual flashcards',
   'Spaced repetition (SRS)',
@@ -30,9 +31,9 @@ const FREE_FEATURES = [
 ];
 
 const PRO_FEATURES = [
-  'Unlimited AI card generation',
-  'Unlimited cards per session',
-  'Priority AI processing',
+  '499 AI-generated cards per month',
+  '299 AI card improvements per month',
+  'Up to 50 cards per generation',
   'Advanced SRS analytics',
   'Early access to new features',
   'All Free features included',

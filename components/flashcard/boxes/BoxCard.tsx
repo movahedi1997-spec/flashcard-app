@@ -20,11 +20,17 @@ interface Props {
 // All hover shadow classes written as full strings so Tailwind JIT includes them.
 
 const PALETTES: Record<string, { gradient: string; border: string; hoverShadow: string }> = {
-  indigo:  { gradient: 'from-indigo-600 to-violet-600', border: 'border-indigo-100',  hoverShadow: 'hover:shadow-indigo-200/70'  },
-  emerald: { gradient: 'from-emerald-600 to-teal-600',  border: 'border-emerald-100', hoverShadow: 'hover:shadow-emerald-200/70' },
-  amber:   { gradient: 'from-amber-500 to-orange-500',  border: 'border-amber-100',   hoverShadow: 'hover:shadow-amber-200/70'   },
-  rose:    { gradient: 'from-rose-500 to-pink-600',     border: 'border-rose-100',    hoverShadow: 'hover:shadow-rose-200/70'    },
-  sky:     { gradient: 'from-sky-500 to-cyan-600',      border: 'border-sky-100',     hoverShadow: 'hover:shadow-sky-200/70'     },
+  indigo:  { gradient: 'from-indigo-600 to-violet-600',   border: 'border-indigo-100',   hoverShadow: 'hover:shadow-indigo-200/70'   },
+  emerald: { gradient: 'from-emerald-600 to-teal-600',    border: 'border-emerald-100',  hoverShadow: 'hover:shadow-emerald-200/70'  },
+  amber:   { gradient: 'from-amber-500 to-orange-500',    border: 'border-amber-100',    hoverShadow: 'hover:shadow-amber-200/70'    },
+  rose:    { gradient: 'from-rose-500 to-pink-600',       border: 'border-rose-100',     hoverShadow: 'hover:shadow-rose-200/70'     },
+  sky:     { gradient: 'from-sky-500 to-cyan-600',        border: 'border-sky-100',      hoverShadow: 'hover:shadow-sky-200/70'      },
+  // Pro colors
+  violet:  { gradient: 'from-violet-600 to-purple-700',   border: 'border-violet-100',   hoverShadow: 'hover:shadow-violet-200/70'   },
+  fuchsia: { gradient: 'from-fuchsia-500 to-pink-600',    border: 'border-fuchsia-100',  hoverShadow: 'hover:shadow-fuchsia-200/70'  },
+  teal:    { gradient: 'from-teal-500 to-cyan-600',       border: 'border-teal-100',     hoverShadow: 'hover:shadow-teal-200/70'     },
+  gold:    { gradient: 'from-yellow-500 to-amber-600',    border: 'border-yellow-100',   hoverShadow: 'hover:shadow-yellow-200/70'   },
+  slate:   { gradient: 'from-slate-700 to-slate-900',     border: 'border-slate-200',    hoverShadow: 'hover:shadow-slate-300/70'    },
 };
 
 const DEFAULT_PALETTE = PALETTES.indigo;

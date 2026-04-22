@@ -32,6 +32,7 @@ export default function FlashcardsPage() {
   const [showSplash, setShowSplash] = useState(true);
   const [view, setView] = useState<View>({ type: 'home' });
   const [addCardOpen, setAddCardOpen] = useState(false);
+  const [isPro, setIsPro] = useState(false);
 
   const {
     decks, loading: decksLoading, error: decksError,
@@ -42,6 +43,13 @@ export default function FlashcardsPage() {
     cards, loading: cardsLoading, error: cardsError,
     loadCards, getBoxCards, createCard, updateCard, deleteCard, deleteBoxCards, importCards,
   } = useCards();
+
+  useEffect(() => {
+    fetch('/api/user/me')
+      .then((r) => r.json())
+      .then((d: { isPro?: boolean }) => { if (d.isPro) setIsPro(true); })
+      .catch(() => {});
+  }, []);
 
   const goHome = useCallback(() => setView({ type: 'home' }), []);
 
@@ -110,6 +118,7 @@ export default function FlashcardsPage() {
       return (
         <BoxList
           decks={decks} loading={decksLoading} error={decksError}
+          isPro={isPro}
           onCreateBox={createBox} onUpdateBox={updateBox} onDeleteBox={handleDeleteBox}
           onOpenBox={goToBox} onStudyBox={goToStudy} onImport={handleImport}
         />
@@ -158,6 +167,7 @@ export default function FlashcardsPage() {
         <StudySession
           deck={deck}
           onBack={() => setView({ type: 'study-select', deckId: view.deckId })}
+          isPro={isPro}
         />
       );
     }

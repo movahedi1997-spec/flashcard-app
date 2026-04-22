@@ -40,11 +40,12 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid JSON.' }, { status: 400 });
   }
 
-  const { name, username, bio, avatarUrl } = body as {
-    name?:      string;
-    username?:  string;
-    bio?:       string;
-    avatarUrl?: string;
+  const { name, username, bio, avatarUrl, phoneNumber } = body as {
+    name?:        string;
+    username?:    string;
+    bio?:         string;
+    avatarUrl?:   string;
+    phoneNumber?: string;
   };
 
   // ── Validation ────────────────────────────────────────────────────────────
@@ -99,6 +100,14 @@ export async function PATCH(req: NextRequest) {
   if (avatarUrl !== undefined) {
     values.push(avatarUrl || null);
     setClauses.push(`avatar_url = $${values.length}`);
+  }
+  if (phoneNumber !== undefined) {
+    const cleaned = phoneNumber?.trim() ?? '';
+    if (cleaned && !/^\+?[\d\s\-().]{7,20}$/.test(cleaned)) {
+      return NextResponse.json({ error: 'Invalid phone number format.' }, { status: 400 });
+    }
+    values.push(cleaned || null);
+    setClauses.push(`phone_number = $${values.length}`);
   }
 
   if (setClauses.length === 1) {

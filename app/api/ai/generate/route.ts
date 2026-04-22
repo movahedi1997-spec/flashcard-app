@@ -6,8 +6,8 @@
  *   - deckId — UUID of the deck to add cards to
  *   - count? — number of cards to generate (default 20, max 50)
  *
- * Free users: 50 AI cards/month
- * Pro users:  unlimited
+ * Free users: 189 AI cards/month
+ * Pro users:  499 AI cards/month
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -20,6 +20,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 const FREE_MONTHLY_LIMIT = 189;
+const PRO_MONTHLY_LIMIT  = 499;
 
 const secret = new TextEncoder().encode(
   process.env.ACCESS_JWT_SECRET ?? 'dev-access-secret-change-in-production-32x',
@@ -52,15 +53,16 @@ export async function POST(req: NextRequest) {
     [userId, month],
   );
   const used = usageRow.rows[0]?.cards_generated ?? 0;
-  const remaining = FREE_MONTHLY_LIMIT - used;
+  const limit = isPro ? PRO_MONTHLY_LIMIT : FREE_MONTHLY_LIMIT;
+  const remaining = limit - used;
 
-  if (!isPro && used >= FREE_MONTHLY_LIMIT) {
+  if (used >= limit) {
     return NextResponse.json(
       {
-        error: `Monthly limit reached. You've used all ${FREE_MONTHLY_LIMIT} free AI cards for this month.`,
+        error: `Monthly limit reached. You've used all ${limit} AI cards for this month.`,
         code: 'QUOTA_EXCEEDED',
         used,
-        limit: FREE_MONTHLY_LIMIT,
+        limit,
         remaining: 0,
         resetsAt: 'next month',
       },
@@ -121,10 +123,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'No cards could be generated from this content.' }, { status: 422 });
   }
 
-  // Cap at remaining quota for free users
-  const cards = isPro
-    ? result.cards
-    : result.cards.slice(0, remaining);
+  // Cap at remaining quota
+  const cards = result.cards.slice(0, remaining);
 
   // ── Insert cards ──────────────────────────────────────────────────────────
   for (const card of cards) {
@@ -150,7 +150,7 @@ export async function POST(req: NextRequest) {
     provider: result.provider,
     model: result.model,
     used: newUsed,
-    limit: isPro ? null : FREE_MONTHLY_LIMIT,
-    remaining: isPro ? null : FREE_MONTHLY_LIMIT - newUsed,
+    limit,
+    remaining: limit - newUsed,
   });
 }

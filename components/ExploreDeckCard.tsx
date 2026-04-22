@@ -9,7 +9,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { BookOpen, Copy, Check, Loader2, BadgeCheck } from 'lucide-react';
+import { BookOpen, Copy, Check, Loader2, BadgeCheck, Flag } from 'lucide-react';
 import type { PublicDeck } from '@/types/api';
 import { fetchWithRefresh } from '@/lib/fetchWithRefresh';
 
@@ -21,6 +21,11 @@ const PALETTES: Record<string, { gradient: string; border: string; shadow: strin
   amber:   { gradient: 'from-amber-500 to-orange-500',   border: 'border-amber-100',   shadow: 'hover:shadow-amber-200/60'   },
   rose:    { gradient: 'from-rose-500 to-pink-600',      border: 'border-rose-100',    shadow: 'hover:shadow-rose-200/60'    },
   sky:     { gradient: 'from-sky-500 to-cyan-600',       border: 'border-sky-100',     shadow: 'hover:shadow-sky-200/60'     },
+  violet:  { gradient: 'from-violet-600 to-purple-700',  border: 'border-violet-100',  shadow: 'hover:shadow-violet-200/60'  },
+  fuchsia: { gradient: 'from-fuchsia-500 to-pink-600',   border: 'border-fuchsia-100', shadow: 'hover:shadow-fuchsia-200/60' },
+  teal:    { gradient: 'from-teal-500 to-cyan-600',      border: 'border-teal-100',    shadow: 'hover:shadow-teal-200/60'    },
+  gold:    { gradient: 'from-yellow-500 to-amber-600',   border: 'border-yellow-100',  shadow: 'hover:shadow-yellow-200/60'  },
+  slate:   { gradient: 'from-slate-700 to-slate-900',    border: 'border-slate-200',   shadow: 'hover:shadow-slate-300/60'   },
 };
 const DEFAULT_PALETTE = PALETTES.indigo;
 function getPalette(color: string) { return PALETTES[color] ?? DEFAULT_PALETTE; }
@@ -31,11 +36,51 @@ interface Props {
   onCopied?: (deckId: string) => void;
 }
 
+const REPORT_REASONS = [
+  { key: 'illegal_content', label: 'Illegal content' },
+  { key: 'copyright',       label: 'Copyright violation' },
+  { key: 'hate_speech',     label: 'Hate speech' },
+  { key: 'misinformation',  label: 'Misinformation' },
+  { key: 'spam',            label: 'Spam' },
+  { key: 'violence',        label: 'Violence' },
+  { key: 'other',           label: 'Other' },
+] as const;
+
 export default function ExploreDeckCard({ deck, onCopied }: Props) {
   const palette = getPalette(deck.color);
-  const [copying, setCopying]     = useState(false);
+  const [copying, setCopying]       = useState(false);
   const [justCopied, setJustCopied] = useState(false);
-  const [error, setError]         = useState('');
+  const [error, setError]           = useState('');
+  const [showReport, setShowReport] = useState(false);
+  const [reportReason, setReportReason] = useState('');
+  const [reportDetails, setReportDetails] = useState('');
+  const [reporting, setReporting]   = useState(false);
+  const [reported, setReported]     = useState(false);
+
+  async function handleReport(e: React.MouseEvent) {
+    e.preventDefault();
+    setShowReport(true);
+  }
+
+  async function submitReport(e: React.MouseEvent) {
+    e.preventDefault();
+    if (!reportReason) return;
+    setReporting(true);
+    try {
+      const res = await fetchWithRefresh('/api/decks/report', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ deckId: deck.id, reason: reportReason, details: reportDetails }),
+      });
+      if (res.status === 401) { window.location.href = '/login'; return; }
+      setReported(true);
+      setShowReport(false);
+    } catch {
+      // silent
+    } finally {
+      setReporting(false);
+    }
+  }
 
   async function handleCopy(e: React.MouseEvent) {
     e.preventDefault(); // don't navigate to slug page
@@ -143,7 +188,76 @@ export default function ExploreDeckCard({ deck, onCopied }: Props) {
             <><Copy className="h-4 w-4" /> Copy to Library</>
           )}
         </button>
+
+        {/* Report link */}
+        <div className="flex justify-end">
+          {reported ? (
+            <span className="text-xs text-gray-400">Thanks for your report.</span>
+          ) : (
+            <button
+              onClick={handleReport}
+              className="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 transition-colors"
+            >
+              <Flag size={11} /> Report
+            </button>
+          )}
+        </div>
       </div>
+
+      {/* Report modal */}
+      {showReport && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+          onClick={(e) => { e.preventDefault(); setShowReport(false); }}
+        >
+          <div
+            className="bg-white rounded-2xl shadow-xl max-w-sm w-full p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="text-base font-bold text-gray-900 mb-1">Report this deck</h3>
+            <p className="text-xs text-gray-400 mb-4">
+              Reports are reviewed by our moderation team within 24 hours.
+            </p>
+            <div className="flex flex-col gap-2 mb-4">
+              {REPORT_REASONS.map((r) => (
+                <label key={r.key} className="flex items-center gap-2.5 cursor-pointer group">
+                  <input
+                    type="radio"
+                    name="reason"
+                    value={r.key}
+                    checked={reportReason === r.key}
+                    onChange={() => setReportReason(r.key)}
+                    className="accent-indigo-600"
+                  />
+                  <span className="text-sm text-gray-700 group-hover:text-gray-900">{r.label}</span>
+                </label>
+              ))}
+            </div>
+            <textarea
+              value={reportDetails}
+              onChange={(e) => setReportDetails(e.target.value.slice(0, 500))}
+              placeholder="Additional details (optional)…"
+              rows={2}
+              className="w-full text-sm rounded-xl border border-gray-200 px-3 py-2 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-400 mb-4"
+            />
+            <div className="flex gap-2 justify-end">
+              <button
+                onClick={() => setShowReport(false)}
+                className="px-4 py-2 rounded-xl border border-gray-200 text-sm text-gray-600 hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={submitReport}
+                disabled={!reportReason || reporting}
+                className="px-4 py-2 rounded-xl bg-red-600 text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-50"
+              >
+                {reporting ? 'Submitting…' : 'Submit Report'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </Link>
   );
 }
