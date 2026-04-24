@@ -669,3 +669,30 @@ All 4 OTP email verification tests pass.
 ### QA SIGN-OFF
 All P0 acceptance criteria met across all 5 browsers/platforms.
 **QA sign-off granted — pre-launch regression complete. TASK-031 (Technical Writer) may begin.**
+
+---
+
+## [TECHNICAL WRITER] TASK-031 — Documentation
+Date: 2026-04-24
+
+**Status: COMPLETE**
+
+### Deliverables
+
+| Document | Location | Description |
+|---|---|---|
+| README | `README.md` | Full rewrite: features, tech stack, local setup, env vars, project structure, migrations table, deployment |
+| API reference | `docs/api.md` | All 40+ endpoints documented: method, path, request body, response shape, status codes |
+| SRS algorithm | `docs/srs-algorithm.md` | SM-2 algorithm explanation with grade mapping, EF formula, interval rules, Smart Catch-Up, example scheduling trace, references to Wozniak 1990 and Anki FAQ |
+| Seed deck guide | `docs/seed-deck-guide.md` | How to become a verified creator, CSV/Node import scripts, subject → deck mapping, how to add new subjects |
+
+`.env.example` also updated to include previously undocumented vars: `SMTP_*`, `OPENROUTER_API_KEY`, `GROQ_API_KEY`, `NEXT_PUBLIC_SITE_URL`, `ADMIN_USERNAME`, `DAILY_REVIEW_LIMIT`, `DATABASE_SSL_CA`.
+
+### Phase 3 sign-off
+All Phase 3 tasks are now complete:
+- TASK-028 ✓ AI accuracy test (manually verified by founder)
+- TASK-029 ✓ Phase 3 code review (signed off)
+- TASK-030 ✓ P0 regression suite 40/40 across 5 browsers
+- TASK-031 ✓ Technical Writer docs
+
+**Phase 3 is COMPLETE. Ready for Phase 4 (i18n + post-launch growth).**
