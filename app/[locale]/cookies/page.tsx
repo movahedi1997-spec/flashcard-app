@@ -28,7 +28,7 @@ export default function CookiesPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
-              <tr className="bg-gray-50 text-left">
+              <tr className="bg-gray-50 text-start">
                 <th className="border border-gray-200 px-3 py-2">Cookie name</th>
                 <th className="border border-gray-200 px-3 py-2">Purpose</th>
                 <th className="border border-gray-200 px-3 py-2">Duration</th>
@@ -75,7 +75,7 @@ export default function CookiesPage() {
 
       <Section title="Managing cookies">
         <p>Because we only use essential cookies, disabling them will prevent you from logging in. You can manage or delete cookies through your browser settings:</p>
-        <ul className="mt-2 list-disc pl-5 space-y-1">
+        <ul className="mt-2 list-disc ps-5 space-y-1">
           <li><a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">Google Chrome</a></li>
           <li><a href="https://support.mozilla.org/en-US/kb/enhanced-tracking-protection-firefox-desktop" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">Mozilla Firefox</a></li>
           <li><a href="https://support.apple.com/guide/safari/manage-cookies-sfri11471/mac" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">Apple Safari</a></li>

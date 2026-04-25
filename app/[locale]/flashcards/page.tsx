@@ -213,7 +213,7 @@ export default function FlashcardsPage() {
                 </div>
                 <span className="font-bold text-slate-800">Flashcard<span className="text-violet-600">AI</span></span>
               </button>
-              <div className="ml-auto">
+              <div className="ms-auto">
                 <Link href="/dashboard" className="text-sm text-slate-500 hover:text-indigo-600 transition-colors">
                   ← Dashboard
                 </Link>
@@ -225,7 +225,7 @@ export default function FlashcardsPage() {
               {/* Back button — large tap target */}
               <button
                 onClick={backAction ?? goHome}
-                className="flex items-center gap-1.5 -ml-1 px-3 py-2 rounded-xl text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 active:scale-95 transition"
+                className="flex items-center gap-1.5 -ms-1 px-3 py-2 rounded-xl text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 active:scale-95 transition"
                 aria-label="Back"
               >
                 <ArrowLeft size={18} />

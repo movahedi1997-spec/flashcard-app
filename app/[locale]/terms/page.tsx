@@ -23,7 +23,7 @@ export default function TermsPage() {
       </Section>
 
       <Section title="2. Your Account">
-        <ul className="list-disc pl-5 space-y-2">
+        <ul className="list-disc ps-5 space-y-2">
           <li>You are responsible for maintaining the security of your account credentials.</li>
           <li>You must provide accurate information during registration.</li>
           <li>You must notify us immediately at <a href="mailto:contact@movahedi.net" className="text-indigo-600 hover:underline">contact@movahedi.net</a> if you suspect unauthorized access to your account.</li>
@@ -33,7 +33,7 @@ export default function TermsPage() {
 
       <Section title="3. Acceptable Use">
         <p>You agree not to:</p>
-        <ul className="mt-2 list-disc pl-5 space-y-2">
+        <ul className="mt-2 list-disc ps-5 space-y-2">
           <li>Use the Service for any unlawful purpose.</li>
           <li>Publish or share content that is illegal under applicable law, including content that is illegal under EU DSA, German NetzDG, or UK Online Safety Act (e.g. CSAM, terrorist content, content inciting racial hatred).</li>
           <li>Publish content that constitutes hate speech, harassment, misinformation, or incitement to violence.</li>
@@ -75,7 +75,7 @@ export default function TermsPage() {
 
       <Section title="9a. Content Moderation">
         <p>FlashcardAI moderates public decks in compliance with the EU Digital Services Act (DSA) and German NetzDG. By publishing a public deck, you accept that it is subject to review.</p>
-        <ul className="mt-2 list-disc pl-5 space-y-2">
+        <ul className="mt-2 list-disc ps-5 space-y-2">
           <li><strong>Reporting:</strong> Any registered user may report a public deck. Reports are reviewed within 24 hours.</li>
           <li><strong>Actions:</strong> Violations may result in content removal (deck set to private), a formal warning on your account, temporary suspension, or permanent ban.</li>
           <li><strong>Repeat infringers:</strong> Accounts receiving 3 or more warnings within a rolling 90-day period are automatically suspended, in line with EU DSA Art. 23 repeat-infringer obligations.</li>

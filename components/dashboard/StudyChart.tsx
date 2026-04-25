@@ -141,7 +141,7 @@ export default function StudyChart() {
         /* Chart: Y-axis labels + gridlines + bars */
         <div className="flex gap-2">
           {/* Y-axis labels */}
-          <div className="flex flex-col justify-between items-end pr-1 h-40 shrink-0">
+          <div className="flex flex-col justify-between items-end pe-1 h-40 shrink-0">
             {[1, 0.75, 0.5, 0.25, 0].map((frac) => (
               <span key={frac} className="text-[10px] text-gray-400 leading-none">
                 {Math.round(maxTotal * frac)}

@@ -429,11 +429,11 @@ export default function StudySession({ deck, onBack, isPro = false }: Props) {
           >
             {/* Front face */}
             <div className="flashcard-face bg-white border-2 border-slate-200 shadow-sm rounded-2xl overflow-hidden">
-              <span className="absolute top-4 left-4 text-xs font-semibold uppercase tracking-widest text-slate-400">
+              <span className="absolute top-4 start-4 text-xs font-semibold uppercase tracking-widest text-slate-400">
                 Question
               </span>
               {current?.aiGenerated && (
-                <span className="absolute top-4 right-4 text-xs font-medium px-2 py-0.5 rounded-full bg-purple-50 text-purple-500 border border-purple-100">
+                <span className="absolute top-4 end-4 text-xs font-medium px-2 py-0.5 rounded-full bg-purple-50 text-purple-500 border border-purple-100">
                   AI-generated
                 </span>
               )}
@@ -457,7 +457,7 @@ export default function StudySession({ deck, onBack, isPro = false }: Props) {
 
             {/* Back face */}
             <div className="flashcard-face flashcard-back bg-indigo-50 border-2 border-indigo-200 shadow-sm rounded-2xl overflow-hidden">
-              <span className="absolute top-4 left-4 text-xs font-semibold uppercase tracking-widest text-indigo-400">
+              <span className="absolute top-4 start-4 text-xs font-semibold uppercase tracking-widest text-indigo-400">
                 Answer
               </span>
               <div className={`flex flex-col items-center gap-3 px-6 pt-10 pb-6 w-full ${isPro ? 'overflow-y-auto max-h-[420px]' : ''}`}>

@@ -95,7 +95,7 @@ export default function BoxCard({
 
               {menuOpen && (
                 <div
-                  className="absolute right-0 top-full mt-1 w-44 bg-white rounded-xl shadow-lg border border-slate-200 py-1 z-50"
+                  className="absolute end-0 top-full mt-1 w-44 bg-white rounded-xl shadow-lg border border-slate-200 py-1 z-50"
                   onMouseLeave={() => setMenuOpen(false)}
                 >
                   <button

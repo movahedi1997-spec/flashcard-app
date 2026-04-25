@@ -57,7 +57,7 @@ export default function BlogPage() {
             href={`/blog/${featured.slug}`}
             className="group mb-12 flex flex-col overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm transition hover:shadow-md sm:flex-row"
           >
-            <div className="flex w-full items-center justify-center bg-gradient-to-br from-indigo-50 to-violet-50 p-12 text-7xl sm:w-56 sm:flex-shrink-0 sm:rounded-l-3xl">
+            <div className="flex w-full items-center justify-center bg-gradient-to-br from-indigo-50 to-violet-50 p-12 text-7xl sm:w-56 sm:flex-shrink-0 sm:rounded-s-3xl">
               {featured.coverEmoji}
             </div>
             <div className="flex flex-col justify-center p-8">

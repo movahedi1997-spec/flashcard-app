@@ -64,7 +64,7 @@ export default function InstallPWAButton() {
 
       {/* iOS tip popover */}
       {showIOSHint && (
-        <div className="absolute right-0 top-full mt-2 w-64 rounded-2xl border border-gray-100 bg-white p-4 shadow-xl z-50 text-sm text-gray-600">
+        <div className="absolute end-0 top-full mt-2 w-64 rounded-2xl border border-gray-100 bg-white p-4 shadow-xl z-50 text-sm text-gray-600">
           <p className="font-semibold text-gray-900 mb-1">Install on iPhone</p>
           <p>Tap the <span className="font-semibold">Share</span> button in Safari, then choose <span className="font-semibold">"Add to Home Screen"</span>.</p>
           <button

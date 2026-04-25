@@ -129,7 +129,7 @@ export default function ExploreDeckCard({ deck, onCopied }: Props) {
             <p className="text-white/60 text-[11px] font-semibold uppercase tracking-widest mb-1.5">
               {deck.cardCount} {deck.cardCount === 1 ? 'card' : 'cards'}
               {deck.copyCount != null && deck.copyCount > 0 && (
-                <span className="ml-2 opacity-80">· {deck.copyCount} copies</span>
+                <span className="ms-2 opacity-80">· {deck.copyCount} copies</span>
               )}
             </p>
             <h3 className="text-white font-extrabold text-lg leading-snug line-clamp-2">

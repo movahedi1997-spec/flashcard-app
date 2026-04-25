@@ -192,7 +192,7 @@ export default async function CreatorProfilePage({ params }: Props) {
 
       <main className="mx-auto max-w-5xl px-6 py-10 pb-24 sm:pb-10">
         {/* Profile header */}
-        <div className="flex flex-col items-center text-center sm:flex-row sm:text-left sm:items-start gap-6 mb-12">
+        <div className="flex flex-col items-center text-center sm:flex-row sm:text-start sm:items-start gap-6 mb-12">
           {creator.avatar_url ? (
             /* eslint-disable-next-line @next/next/no-img-element */
             <img
@@ -251,7 +251,7 @@ export default async function CreatorProfilePage({ params }: Props) {
           <>
             <h2 className="text-lg font-bold text-gray-900 mb-5">
               Public Decks
-              <span className="ml-2 text-sm font-normal text-gray-400">({decks.length})</span>
+              <span className="ms-2 text-sm font-normal text-gray-400">({decks.length})</span>
             </h2>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {decks.map((deck) => (

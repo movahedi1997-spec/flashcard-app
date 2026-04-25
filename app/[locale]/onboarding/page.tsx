@@ -110,7 +110,7 @@ function OnboardingContent() {
               key={s.id}
               onClick={() => setSelected(s.id)}
               className={`
-                group relative flex flex-col items-start gap-3 rounded-2xl border-2 p-5 text-left transition-all duration-200
+                group relative flex flex-col items-start gap-3 rounded-2xl border-2 p-5 text-start transition-all duration-200
                 ${isSelected
                   ? `border-transparent ring-2 ${s.ring} ${s.bg} shadow-md scale-[1.02]`
                   : 'border-gray-100 bg-white hover:border-gray-200 hover:shadow-sm'
@@ -132,7 +132,7 @@ function OnboardingContent() {
 
               {/* Selected indicator */}
               {isSelected && (
-                <span className={`absolute top-3 right-3 flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-br ${s.gradient}`}>
+                <span className={`absolute top-3 end-3 flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-br ${s.gradient}`}>
                   <svg className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>

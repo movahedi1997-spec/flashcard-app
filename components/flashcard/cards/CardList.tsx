@@ -132,7 +132,7 @@ export default function CardList({
       {/* ── AI Generate — primary CTA ─────────────────────────────────────────── */}
       <button
         onClick={() => setShowAI(true)}
-        className="w-full mb-5 group relative overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 px-5 py-4 text-left shadow-lg shadow-indigo-200/50 transition-all hover:shadow-xl hover:shadow-indigo-300/50 hover:scale-[1.01] active:scale-[0.99]"
+        className="w-full mb-5 group relative overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 px-5 py-4 text-start shadow-lg shadow-indigo-200/50 transition-all hover:shadow-xl hover:shadow-indigo-300/50 hover:scale-[1.01] active:scale-[0.99]"
       >
         {/* Animated background shimmer */}
         <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
@@ -196,13 +196,13 @@ export default function CardList({
           <div className="relative flex-1">
             <Search
               size={15}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              className="absolute start-3 top-1/2 -translate-y-1/2 text-slate-400"
             />
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search cards…"
-              className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+              className="w-full ps-9 pe-3 py-2 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
             />
           </div>
           <div className="relative">
@@ -215,14 +215,14 @@ export default function CardList({
             </Button>
             {showSort && (
               <div
-                className="absolute right-0 mt-1 w-44 bg-white rounded-xl shadow-lg border border-slate-200 py-1 z-10"
+                className="absolute end-0 mt-1 w-44 bg-white rounded-xl shadow-lg border border-slate-200 py-1 z-10"
                 onMouseLeave={() => setShowSort(false)}
               >
                 {(Object.keys(SORT_LABELS) as SortOption[]).map((opt) => (
                   <button
                     key={opt}
                     onClick={() => { setSort(opt); setShowSort(false); }}
-                    className={`w-full text-left px-3 py-2 text-sm hover:bg-slate-50 cursor-pointer ${
+                    className={`w-full text-start px-3 py-2 text-sm hover:bg-slate-50 cursor-pointer ${
                       sort === opt ? 'text-indigo-600 font-medium' : 'text-slate-600'
                     }`}
                   >

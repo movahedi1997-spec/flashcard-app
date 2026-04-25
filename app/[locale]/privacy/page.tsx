@@ -55,7 +55,7 @@ export default function PrivacyPage() {
       </Section>
 
       <Section title="3. Legal Basis for Processing (GDPR / UK GDPR)">
-        <ul className="mt-3 list-disc pl-5 space-y-2 text-sm">
+        <ul className="mt-3 list-disc ps-5 space-y-2 text-sm">
           <li><strong>Contract performance (Art. 6(1)(b) GDPR):</strong> Account registration, authentication, flashcard storage, and study features are necessary to provide the service.</li>
           <li><strong>Legitimate interest (Art. 6(1)(f) GDPR):</strong> IP logging for fraud prevention, abuse detection, and platform security.</li>
           <li><strong>Legal obligation (Art. 6(1)(c) GDPR):</strong> Retaining moderation records, IP addresses, and user identity data as required by EU DSA (Regulation (EU) 2022/2065), German NetzDG (Netzwerkdurchsetzungsgesetz), and other applicable law, including cooperation with law enforcement authorities.</li>
@@ -67,7 +67,7 @@ export default function PrivacyPage() {
         <p className="text-sm mb-3">We share data with the following processors solely to operate the service:</p>
         <table className="w-full text-sm border-collapse">
           <thead>
-            <tr className="bg-gray-50 text-left">
+            <tr className="bg-gray-50 text-start">
               <th className="border border-gray-200 px-3 py-2">Processor</th>
               <th className="border border-gray-200 px-3 py-2">Purpose</th>
               <th className="border border-gray-200 px-3 py-2">Location</th>
@@ -100,7 +100,7 @@ export default function PrivacyPage() {
       </Section>
 
       <Section title="5. Data Retention">
-        <ul className="mt-3 list-disc pl-5 space-y-2 text-sm">
+        <ul className="mt-3 list-disc ps-5 space-y-2 text-sm">
           <li>Account data (name, email, username, bio): retained until you delete your account.</li>
           <li>Flashcard content and study data: retained until account deletion.</li>
           <li>IP addresses (registration IP and last known IP): retained as part of your account record until account deletion, or longer if required by law.</li>
@@ -113,7 +113,7 @@ export default function PrivacyPage() {
 
       <Section title="5a. Content Moderation & EU DSA Compliance">
         <p className="text-sm">FlashcardAI operates a content moderation system for public decks in compliance with the EU Digital Services Act (DSA, Regulation (EU) 2022/2065) and German NetzDG.</p>
-        <ul className="mt-3 list-disc pl-5 space-y-2 text-sm">
+        <ul className="mt-3 list-disc ps-5 space-y-2 text-sm">
           <li><strong>Reporting:</strong> Any registered user may report a public deck for illegal content, copyright violation, hate speech, misinformation, spam, violence, or other policy violations.</li>
           <li><strong>Review:</strong> Reports are reviewed by our moderation team within 24 hours.</li>
           <li><strong>Actions:</strong> We may issue warnings, remove content (set decks to private), or suspend/ban accounts. Account bans are logged permanently for legal compliance.</li>
@@ -129,7 +129,7 @@ export default function PrivacyPage() {
 
       <Section title="6. Your Rights">
         <p className="text-sm mb-3">Depending on your location, you have the following rights regarding your personal data:</p>
-        <ul className="list-disc pl-5 space-y-2 text-sm">
+        <ul className="list-disc ps-5 space-y-2 text-sm">
           <li><strong>Access:</strong> Request a copy of the personal data we hold about you.</li>
           <li><strong>Rectification:</strong> Correct inaccurate or incomplete data.</li>
           <li><strong>Erasure ("Right to be Forgotten"):</strong> Request deletion of your account and all associated data.</li>

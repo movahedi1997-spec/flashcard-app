@@ -81,7 +81,7 @@ export default function AIImproveModal({ open, onClose, currentFront, currentBac
             rows={2}
             className="w-full text-sm rounded-xl border border-gray-200 px-3 py-2.5 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           />
-          <p className="text-right text-xs text-gray-300 mt-1">{prompt.length}/350</p>
+          <p className="text-end text-xs text-gray-300 mt-1">{prompt.length}/350</p>
         </div>
 
         {/* Error */}
@@ -89,7 +89,7 @@ export default function AIImproveModal({ open, onClose, currentFront, currentBac
           <div className="rounded-xl bg-red-50 border border-red-100 px-4 py-3 text-sm text-red-600">
             {error}
             {error.includes('Upgrade') && (
-              <a href="/pricing" className="ml-2 font-semibold underline">View Pro plans →</a>
+              <a href="/pricing" className="ms-2 font-semibold underline">View Pro plans →</a>
             )}
           </div>
         )}

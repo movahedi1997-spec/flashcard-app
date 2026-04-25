@@ -120,7 +120,7 @@ export default function EditProfileForm({
       <div>
         <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
           Username
-          <span className="ml-1 normal-case font-normal text-gray-400">(used in your public profile URL)</span>
+          <span className="ms-1 normal-case font-normal text-gray-400">(used in your public profile URL)</span>
         </label>
         <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-2">
           <span className="text-xs text-gray-400 sm:text-sm sm:flex-shrink-0">/creators/</span>
@@ -152,7 +152,7 @@ export default function EditProfileForm({
       <div>
         <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
           Bio
-          <span className="ml-1 normal-case font-normal text-gray-400">({bio.length}/300)</span>
+          <span className="ms-1 normal-case font-normal text-gray-400">({bio.length}/300)</span>
         </label>
         <textarea
           value={bio}
@@ -168,17 +168,17 @@ export default function EditProfileForm({
       <div>
         <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
           Phone number
-          <span className="ml-1 normal-case font-normal text-gray-400">(optional — used only for identity verification if required by law)</span>
+          <span className="ms-1 normal-case font-normal text-gray-400">(optional — used only for identity verification if required by law)</span>
         </label>
         <div className="relative">
-          <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
+          <Phone className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
           <input
             type="tel"
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
             placeholder="+49 123 456 7890"
             maxLength={20}
-            className="w-full rounded-xl border border-gray-200 pl-9 pr-4 py-2.5 text-sm text-gray-800 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+            className="w-full rounded-xl border border-gray-200 ps-9 pe-4 py-2.5 text-sm text-gray-800 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-100"
           />
         </div>
       </div>
@@ -187,7 +187,7 @@ export default function EditProfileForm({
       <div>
         <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
           Profile picture
-          <span className="ml-1 normal-case font-normal text-gray-400">(JPEG, PNG, WebP · max 6 MB)</span>
+          <span className="ms-1 normal-case font-normal text-gray-400">(JPEG, PNG, WebP · max 6 MB)</span>
         </label>
         <div className="flex items-center gap-4">
           {avatarUrl ? (

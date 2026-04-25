@@ -4,6 +4,8 @@
 
 @layer base {
   html { scroll-behavior: smooth; }
+  /* Vazirmatn scoped to Persian locale only */
+  html[lang="fa"] body { font-family: var(--font-vazirmatn), sans-serif; }
   body {
     @apply font-sans text-gray-900 antialiased;
     /* Squared notebook paper — subtle grid on every page */
@@ -31,6 +33,10 @@
   min-height: 260px;
 }
 .flashcard.flipped { transform: rotateY(180deg); }
+
+/* RTL: mirror the flip direction so it feels natural */
+[dir="rtl"] .flashcard.flipped { transform: rotateY(-180deg); }
+[dir="rtl"] .flashcard-back    { transform: rotateY(-180deg); }
 
 /* Respect the OS reduced-motion preference — disable the flip */
 @media (prefers-reduced-motion: reduce) {

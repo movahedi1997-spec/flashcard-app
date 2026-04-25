@@ -58,7 +58,7 @@ export default function Navbar() {
           </Link>
           <Link
             href="/signup"
-            className="ml-1 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-indigo-200 transition hover:bg-indigo-700 active:scale-95"
+            className="ms-1 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-indigo-200 transition hover:bg-indigo-700 active:scale-95"
           >
             Get Started Free
           </Link>

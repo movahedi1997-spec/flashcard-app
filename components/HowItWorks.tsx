@@ -72,7 +72,7 @@ export default function HowItWorks() {
               {/* Number + emoji */}
               <div className="mb-6 flex items-center gap-4">
                 <div className="relative flex-shrink-0">
-                  <span className="absolute -top-2 -left-2 text-5xl font-black text-gray-100 select-none leading-none">
+                  <span className="absolute -top-2 -start-2 text-5xl font-black text-gray-100 select-none leading-none">
                     {num}
                   </span>
                   <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-2xl shadow-lg shadow-gray-200/80 ring-1 ring-gray-100">

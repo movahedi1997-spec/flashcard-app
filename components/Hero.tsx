@@ -89,18 +89,18 @@ export default function Hero() {
               {/* Card 3 — deepest */}
               <div
                 aria-hidden
-                className="float-card-3 absolute top-14 left-0 h-52 w-72 rounded-2xl border border-white/8 bg-gradient-to-br from-slate-800 to-slate-900"
+                className="float-card-3 absolute top-14 start-0 h-52 w-72 rounded-2xl border border-white/8 bg-gradient-to-br from-slate-800 to-slate-900"
               />
 
               {/* Card 2 — middle */}
               <div
                 aria-hidden
-                className="float-card-2 absolute top-7 left-6 h-52 w-72 rounded-2xl border border-white/10 bg-gradient-to-br from-indigo-900/80 to-violet-900/80"
+                className="float-card-2 absolute top-7 start-6 h-52 w-72 rounded-2xl border border-white/10 bg-gradient-to-br from-indigo-900/80 to-violet-900/80"
               />
 
               {/* Card 1 — front (full UI mockup) */}
               <div
-                className="float-card-1 absolute top-0 left-12 w-[280px] rounded-2xl bg-white shadow-2xl shadow-black/50"
+                className="float-card-1 absolute top-0 start-12 w-[280px] rounded-2xl bg-white shadow-2xl shadow-black/50"
               >
                 {/* Card header */}
                 <div className="flex items-center justify-between border-b border-gray-100 px-5 pt-4 pb-3">

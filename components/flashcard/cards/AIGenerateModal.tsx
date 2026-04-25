@@ -323,7 +323,7 @@ export default function AIGenerateModal({ deckId, onClose, onGenerated }: Props)
                           <span className="text-sm font-medium truncate max-w-xs">{file.name}</span>
                           <button
                             onClick={(e) => { e.stopPropagation(); setFile(null); }}
-                            className="ml-1 text-indigo-400 hover:text-indigo-600"
+                            className="ms-1 text-indigo-400 hover:text-indigo-600"
                           >
                             <X className="h-4 w-4" />
                           </button>

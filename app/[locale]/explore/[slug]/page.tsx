@@ -264,7 +264,7 @@ export default async function DeckLandingPage({ params }: Props) {
               <div className="flex items-center justify-between mb-4">
                 <h2 className="font-bold text-gray-900">
                   Preview
-                  <span className="ml-2 text-sm font-normal text-gray-500">
+                  <span className="ms-2 text-sm font-normal text-gray-500">
                     ({cards.length} of {totalCards} cards)
                   </span>
                 </h2>

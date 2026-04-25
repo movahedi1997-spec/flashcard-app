@@ -22,7 +22,7 @@ export default function ModeSelector({ deck, cardCount, dueCount, onSelect, onBa
         {/* SRS Study */}
         <button
           onClick={() => onSelect('srs')}
-          className="group bg-white border-2 border-slate-200 hover:border-indigo-400 rounded-2xl p-6 text-left transition-all hover:shadow-md cursor-pointer"
+          className="group bg-white border-2 border-slate-200 hover:border-indigo-400 rounded-2xl p-6 text-start transition-all hover:shadow-md cursor-pointer"
         >
           <div className="p-3 rounded-xl bg-indigo-50 text-indigo-600 w-fit mb-4 group-hover:bg-indigo-100 transition-colors">
             <Brain size={24} />
@@ -39,7 +39,7 @@ export default function ModeSelector({ deck, cardCount, dueCount, onSelect, onBa
         {/* Cram / Turbo */}
         <button
           onClick={() => onSelect('cram')}
-          className="group bg-white border-2 border-slate-200 hover:border-amber-400 rounded-2xl p-6 text-left transition-all hover:shadow-md cursor-pointer"
+          className="group bg-white border-2 border-slate-200 hover:border-amber-400 rounded-2xl p-6 text-start transition-all hover:shadow-md cursor-pointer"
         >
           <div className="p-3 rounded-xl bg-amber-50 text-amber-600 w-fit mb-4 group-hover:bg-amber-100 transition-colors">
             <Zap size={24} />

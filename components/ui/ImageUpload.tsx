@@ -48,7 +48,7 @@ export default function ImageUpload({ label, value, onChange }: Props) {
           <button
             type="button"
             onClick={() => onChange(undefined)}
-            className="absolute top-2 right-2 p-1.5 rounded-full bg-black/60 text-white hover:bg-red-600 transition-colors cursor-pointer"
+            className="absolute top-2 end-2 p-1.5 rounded-full bg-black/60 text-white hover:bg-red-600 transition-colors cursor-pointer"
             title="Remove image"
           >
             <X size={14} />

@@ -105,18 +105,18 @@ export default function ExploreGrid() {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
         {/* Search input */}
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
+          <Search className="absolute start-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
           <input
             type="text"
             placeholder="Search decks…"
             value={search}
             onChange={(e) => handleSearchChange(e.target.value)}
-            className="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-10 pr-9 text-sm text-gray-800 placeholder:text-gray-400 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+            className="w-full rounded-xl border border-gray-200 bg-white py-2.5 ps-10 pe-9 text-sm text-gray-800 placeholder:text-gray-400 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-100"
           />
           {search && (
             <button
               onClick={() => { setSearch(''); setDebouncedSearch(''); }}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              className="absolute end-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
               aria-label="Clear search"
             >
               <X className="h-3.5 w-3.5" />

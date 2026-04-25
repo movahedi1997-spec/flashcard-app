@@ -39,7 +39,7 @@ function Heatmap({ data }: { data: Array<{ date: string; count: number }> }) {
     <div className="overflow-x-auto">
       <div className="flex gap-1 min-w-0">
         {/* Day labels */}
-        <div className="flex flex-col gap-1 mr-1 pt-5">
+        <div className="flex flex-col gap-1 me-1 pt-5">
           {dayLabels.map((d) => (
             <div key={d} className="h-3 text-[10px] text-gray-400 leading-3">{d}</div>
           ))}

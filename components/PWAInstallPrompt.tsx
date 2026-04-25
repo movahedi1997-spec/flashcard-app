@@ -166,7 +166,7 @@ export default function PWAInstallPrompt() {
           {/* Close */}
           <button
             onClick={handleDismiss}
-            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+            className="absolute top-4 end-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
             aria-label="Dismiss install prompt"
           >
             <X size={20} aria-hidden="true" />
@@ -253,7 +253,7 @@ export default function PWAInstallPrompt() {
         {/* Close */}
         <button
           onClick={handleDismiss}
-          className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+          className="absolute top-3 end-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
           aria-label="Dismiss install prompt"
         >
           <X size={18} aria-hidden="true" />
@@ -269,12 +269,12 @@ export default function PWAInstallPrompt() {
             height={52}
             className="rounded-xl flex-shrink-0"
           />
-          <div className="flex-1 min-w-0 pr-4">
+          <div className="flex-1 min-w-0 pe-4">
             <p className="font-bold text-gray-900 dark:text-white text-sm leading-snug">
               Install FlashCard
             </p>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-              <Smartphone size={11} className="inline-block mr-1 align-middle" aria-hidden="true" />
+              <Smartphone size={11} className="inline-block me-1 align-middle" aria-hidden="true" />
               Study offline · No app store needed
             </p>
           </div>
