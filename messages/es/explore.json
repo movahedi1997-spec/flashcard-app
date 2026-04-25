@@ -1,0 +1,34 @@
+{
+  "badge": "Explore",
+  "title": "Free Flashcard Decks",
+  "subtitle": "Browse community-made decks for medicine, pharmacy, chemistry, and more. Copy any deck to your library and study with spaced repetition — free.",
+  "browseBySubject": "Browse by subject",
+  "deck": "deck",
+  "decks": "decks",
+  "copyDeck": "Copy deck",
+  "copied": "Copied!",
+  "alreadyCopied": "Already in library",
+  "loginToCopy": "Log in to copy",
+  "searchPlaceholder": "Search decks…",
+  "noResults": "No decks found",
+  "allSubjects": "All subjects",
+  "subjects": {
+    "medicine": { "label": "Medicine", "description": "USMLE, MCAT, Anatomy, Physiology, Pathology, Pharmacology" },
+    "pharmacy": { "label": "Pharmacy", "description": "NAPLEX, Top 200 Drugs, Drug Mechanisms, Medicinal Chemistry" },
+    "chemistry": { "label": "Chemistry", "description": "Organic Chemistry, Biochemistry, Reaction Mechanisms" },
+    "other": { "label": "Other", "description": "Biology, Physics, Nursing, Dentistry, and more" }
+  },
+  "reportDeck": "Report deck",
+  "report": {
+    "title": "Report Deck",
+    "reason": "Reason",
+    "spam": "Spam",
+    "inappropriate": "Inappropriate content",
+    "copyright": "Copyright violation",
+    "misinformation": "Misinformation",
+    "other": "Other",
+    "details": "Additional details (optional)",
+    "submit": "Submit Report",
+    "success": "Report submitted. Thank you."
+  }
+}

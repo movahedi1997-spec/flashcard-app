@@ -1,4 +1,6 @@
 const withPWA = require('@ducanh2912/next-pwa').default;
+const createNextIntlPlugin = require('next-intl/plugin');
+const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
 /**
  * next-pwa configuration.
@@ -120,4 +122,4 @@ const pwaConfig = {
 // The old Express backend rewrite was removed in TASK-008.
 const nextConfig = {};
 
-module.exports = withPWA(pwaConfig)(nextConfig);
+module.exports = withNextIntl(withPWA(pwaConfig)(nextConfig));

@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Vazirmatn } from 'next/font/google';
 import './globals.css';
 import PWAInstallPrompt from '@/components/PWAInstallPrompt';
 import CookieConsent from '@/components/CookieConsent';
+import { headers } from 'next/headers';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
+const vazirmatn = Vazirmatn({ subsets: ['arabic'], display: 'swap', variable: '--font-vazirmatn' });
 
 // ─── Viewport (must be exported separately in Next.js 14) ────────────────────
 export const viewport: Viewport = {
@@ -98,8 +100,15 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // next-intl middleware injects this header so we can set lang/dir here
+  const locale = headers().get('x-next-intl-locale') ?? 'en';
+  const isRtl = locale === 'fa';
+  const bodyClass = isRtl
+    ? `${vazirmatn.variable} font-vazirmatn`
+    : inter.className;
+
   return (
-    <html lang="en">
+    <html lang={locale} dir={isRtl ? 'rtl' : 'ltr'}>
       <head>
         {/* MS Tiles (Windows pinned sites) */}
         <meta name="msapplication-TileColor" content="#6366f1" />
@@ -108,7 +117,7 @@ export default function RootLayout({
         {/* Safari pinned tab */}
         <link rel="mask-icon" href="/favicon.svg" color="#6366f1" />
       </head>
-      <body className={inter.className}>
+      <body className={bodyClass}>
         {children}
         <PWAInstallPrompt />
         <CookieConsent />

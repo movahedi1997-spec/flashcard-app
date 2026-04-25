@@ -1,0 +1,48 @@
+{
+  "title": "My Flashcards",
+  "newDeck": "New Deck",
+  "aiGenerate": "AI Generate",
+  "study": "Study",
+  "edit": "Edit",
+  "delete": "Delete",
+  "share": "Share",
+  "cards": "{count, plural, one {# card} other {# cards}}",
+  "copyCount": "{count} {count, plural, one {copy} other {copies}}",
+  "emptyTitle": "No decks yet",
+  "emptySubtitle": "Create your first deck to get started",
+  "createDeck": {
+    "title": "Create New Deck",
+    "titleLabel": "Title",
+    "titlePlaceholder": "e.g. USMLE Pharmacology",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Optional deck description…",
+    "submit": "Create Deck"
+  },
+  "editDeck": {
+    "title": "Edit Deck",
+    "submit": "Save Changes"
+  },
+  "deleteDeck": {
+    "title": "Delete Deck",
+    "message": "Are you sure you want to delete \"{name}\"? This will permanently delete all {count} {count, plural, one {card} other {cards}}. This action cannot be undone.",
+    "confirm": "Delete Deck",
+    "cancel": "Cancel"
+  },
+  "shareDeck": {
+    "title": "Share Deck",
+    "makePublic": "Make public",
+    "makePrivate": "Make private",
+    "publicUrl": "Public URL",
+    "copyLink": "Copy link",
+    "copied": "Copied!"
+  },
+  "card": {
+    "front": "Front",
+    "back": "Back",
+    "addCard": "Add Card",
+    "editCard": "Edit Card",
+    "deleteCard": "Delete Card",
+    "aiImprove": "AI Improve",
+    "aiGenerated": "AI generated"
+  }
+}

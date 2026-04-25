@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
+import createMiddleware from 'next-intl/middleware';
+import { routing } from '@/i18n/routing';
 
 const secret = new TextEncoder().encode(
   process.env.ACCESS_JWT_SECRET ?? 'dev-access-secret-change-in-production-32x',
 );
+
+const intlMiddleware = createMiddleware(routing);
 
 type TokenStatus = 'valid' | 'expired' | 'invalid';
 
@@ -25,15 +29,28 @@ async function checkToken(token: string): Promise<TokenStatus> {
 }
 
 // ── Admin subdomain routing ───────────────────────────────────────────────────
-// Requests to admin.flashcardai.app (or admin.localhost in dev) are internally
-// rewritten to /admin/* so they're served by app/admin/ without a separate
-// deployment. The original URL is preserved for the browser.
-
 function isAdminHost(req: NextRequest): boolean {
-  // Admin subdomain is production-only — disabled in local dev mode
   if (process.env.NEXT_PUBLIC_LOCAL_MODE === 'true') return false;
   const host = req.headers.get('host') ?? '';
   return host.startsWith('admin.');
+}
+
+// Protected path segments (after optional locale prefix)
+const PROTECTED_SEGMENTS = ['/dashboard', '/flashcards', '/settings'];
+
+function isProtected(pathname: string): boolean {
+  const stripped = pathname.replace(/^\/(en|de|fr|es|fa)/, '');
+  return PROTECTED_SEGMENTS.some((p) => stripped.startsWith(p));
+}
+
+function isAuthPage(pathname: string): boolean {
+  const stripped = pathname.replace(/^\/(en|de|fr|es|fa)/, '');
+  return stripped === '/login' || stripped === '/signup';
+}
+
+function localePrefix(pathname: string): string {
+  const m = pathname.match(/^\/(en|de|fr|es|fa)(\/|$)/);
+  return m ? `/${m[1]}` : '';
 }
 
 export async function middleware(request: NextRequest) {
@@ -41,40 +58,32 @@ export async function middleware(request: NextRequest) {
 
   // ── Admin subdomain ───────────────────────────────────────────────────────
   if (isAdminHost(request)) {
-    if (pathname.startsWith('/api/')) {
-      return NextResponse.next();
-    }
-
-    // Already an /admin/* path (e.g. after a server-side redirect) — serve directly
-    if (pathname.startsWith('/admin')) {
-      return NextResponse.next();
-    }
-
-    // Rewrite / → /admin, /login → /admin/login, etc.
+    if (pathname.startsWith('/api/')) return NextResponse.next();
+    if (pathname.startsWith('/admin')) return NextResponse.next();
     const adminPath = pathname === '/' ? '/admin' : `/admin${pathname}`;
     const url = request.nextUrl.clone();
     url.pathname = adminPath;
     return NextResponse.rewrite(url);
   }
 
-  // ── Regular app ───────────────────────────────────────────────────────────
-  const token = request.cookies.get('token')?.value;
+  // ── Skip i18n + auth for API and admin routes ─────────────────────────────
+  if (pathname.startsWith('/api/') || pathname.startsWith('/admin')) {
+    return NextResponse.next();
+  }
 
-  // Protect /dashboard, /flashcards, and /settings
-  if (
-    pathname.startsWith('/dashboard') ||
-    pathname.startsWith('/flashcards') ||
-    pathname.startsWith('/settings')
-  ) {
-    if (!token) {
-      return NextResponse.redirect(new URL('/login', request.url));
-    }
+  // ── Run next-intl middleware first (sets x-next-intl-locale header) ────────
+  const intlResponse = intlMiddleware(request);
+
+  // ── Auth guard on protected routes ────────────────────────────────────────
+  if (isProtected(pathname)) {
+    const token = request.cookies.get('token')?.value;
+    const prefix = localePrefix(pathname);
+    const loginUrl = new URL(`${prefix}/login`, request.url);
+
+    if (!token) return NextResponse.redirect(loginUrl);
 
     const status = await checkToken(token);
-
-    if (status === 'valid') {
-      return NextResponse.next();
-    }
+    if (status === 'valid') return intlResponse ?? NextResponse.next();
 
     if (status === 'expired') {
       const refreshUrl = new URL('/api/auth/silent-refresh', request.url);
@@ -82,29 +91,23 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(refreshUrl);
     }
 
-    return NextResponse.redirect(new URL('/login', request.url));
+    return NextResponse.redirect(loginUrl);
   }
 
-  // Redirect already-logged-in users away from auth pages
-  if (pathname === '/login' || pathname === '/signup') {
+  // ── Redirect logged-in users away from auth pages ─────────────────────────
+  if (isAuthPage(pathname)) {
+    const token = request.cookies.get('token')?.value;
     if (token && (await checkToken(token)) === 'valid') {
-      return NextResponse.redirect(new URL('/flashcards', request.url));
+      const prefix = localePrefix(pathname);
+      return NextResponse.redirect(new URL(`${prefix}/flashcards`, request.url));
     }
-    return NextResponse.next();
   }
 
-  return NextResponse.next();
+  return intlResponse ?? NextResponse.next();
 }
 
 export const config = {
   matcher: [
-    // Regular app protected routes + auth pages
-    '/dashboard/:path*',
-    '/flashcards/:path*',
-    '/settings/:path*',
-    '/login',
-    '/signup',
-    // Catch all paths so admin subdomain routing fires on every request
     '/((?!_next/static|_next/image|favicon.ico|icons|uploads|.*\\.png$).*)',
   ],
 };

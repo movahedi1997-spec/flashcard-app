@@ -1,0 +1,44 @@
+{
+  "brand": "FlashcardAI",
+  "nav": {
+    "howItWorks": "Wie es funktioniert",
+    "features": "Features",
+    "subjects": "Fachbereiche",
+    "blog": "Blog",
+    "login": "Anmelden",
+    "getStarted": "Kostenlos starten",
+    "toggleMenu": "Menü öffnen"
+  },
+  "appNav": {
+    "dashboard": "Dashboard",
+    "myDecks": "Meine Decks",
+    "explore": "Entdecken",
+    "analytics": "Statistiken",
+    "settings": "Einstellungen",
+    "profile": "Profil"
+  },
+  "footer": {
+    "tagline": "Intelligentes Lernen mit Spaced Repetition — kostenlos, datenschutzkonform und offline-fähig.",
+    "madeIn": "🇩🇪 Made in Germany",
+    "gdpr": "🔒 DSGVO konform",
+    "free": "🆓 Kostenlos",
+    "copyright": "© {year} FlashcardAI. Alle Rechte vorbehalten.",
+    "copyrightFull": "© {year} FlashcardAI — Mohammad M. Movahedi Najafabadi",
+    "product": "Produkt",
+    "account": "Account",
+    "howItWorks": "Wie es funktioniert",
+    "features": "Features",
+    "subjects": "Fachbereiche",
+    "exploreDecks": "Decks entdecken",
+    "blog": "Blog",
+    "getStartedFree": "Kostenlos starten",
+    "loginLink": "Anmelden",
+    "signupLink": "Registrieren",
+    "dashboard": "Dashboard",
+    "settingsLink": "Einstellungen",
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen",
+    "cookies": "Cookie-Richtlinie",
+    "impressum": "Impressum"
+  }
+}

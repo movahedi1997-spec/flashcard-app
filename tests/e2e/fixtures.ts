@@ -18,12 +18,13 @@ export const FIXTURE_NAME     = 'QA Fixture';
 // Captured once in createVerifiedUser(), reused by all authedPage fixtures
 let capturedToken: string | null = null;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function dbQuery<T = Record<string, unknown>>(sql: string, params: unknown[] = []): Promise<T[]> {
   const client = new Client({ connectionString: DB });
   await client.connect();
   try {
-    const res = await client.query<T>(sql, params);
-    return res.rows;
+    const res = await client.query<T & import('pg').QueryResultRow>(sql, params);
+    return res.rows as T[];
   } finally {
     await client.end();
   }

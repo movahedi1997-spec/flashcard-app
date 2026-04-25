@@ -8,6 +8,7 @@ import StudyChart from '@/components/dashboard/StudyChart';
 import ProBadge from '@/components/ProBadge';
 import GoProBanner from '@/components/GoProBanner';
 import { query } from '@/lib/db';
+import { getTranslations } from 'next-intl/server';
 
 const secret = new TextEncoder().encode(
   process.env.ACCESS_JWT_SECRET ?? 'dev-access-secret-change-in-production-32x',
@@ -94,6 +95,7 @@ async function getDashboardData(userId: string) {
 }
 
 export default async function DashboardPage() {
+  const t = await getTranslations('dashboard');
   const user = await getUserFromCookie();
   const data = await getDashboardData(user!.userId);
   const profileHref = data.username ? `/creators/${data.username}` : '/settings';
@@ -124,7 +126,7 @@ export default async function DashboardPage() {
           <div>
             <div className="flex items-center gap-2 flex-wrap">
               <h1 className="text-2xl font-extrabold text-gray-900 sm:text-3xl">
-                Welcome back, {user.name.split(' ')[0]}! 👋
+                {t('welcome', { name: user.name.split(' ')[0] })}
               </h1>
               <ProBadge isPro={data.isPro} />
             </div>
@@ -132,7 +134,7 @@ export default async function DashboardPage() {
               <p className="text-sm text-indigo-500 font-medium">@{data.username}</p>
             )}
             <p className="text-gray-500 text-sm sm:text-base">
-              Ready to sharpen your knowledge today?
+              {t('readyToStudy')}
             </p>
           </div>
         </div>
@@ -140,10 +142,10 @@ export default async function DashboardPage() {
         {/* ── Stats ────────────────────────────────────────────────────── */}
         <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
           {[
-            { icon: BookOpen,   label: 'Total Decks', value: String(data.totalDecks), color: 'text-indigo-600 bg-indigo-50'   },
-            { icon: LayoutGrid, label: 'Total Cards', value: String(data.totalCards), color: 'text-violet-600 bg-violet-50'   },
-            { icon: Zap,        label: 'Cards Today', value: String(data.cardsToday), color: 'text-amber-600 bg-amber-50'     },
-            { icon: Trophy,     label: 'Day Streak',  value: String(data.streak),     color: 'text-emerald-600 bg-emerald-50' },
+            { icon: BookOpen,   label: t('totalDecks'), value: String(data.totalDecks), color: 'text-indigo-600 bg-indigo-50'   },
+            { icon: LayoutGrid, label: t('totalCards'), value: String(data.totalCards), color: 'text-violet-600 bg-violet-50'   },
+            { icon: Zap,        label: t('cardsToday'), value: String(data.cardsToday), color: 'text-amber-600 bg-amber-50'     },
+            { icon: Trophy,     label: t('dayStreak'),  value: String(data.streak),     color: 'text-emerald-600 bg-emerald-50' },
           ].map(({ icon: Icon, label, value, color }) => (
             <div
               key={label}
@@ -165,7 +167,7 @@ export default async function DashboardPage() {
         <StudyChart />
 
         <p className="text-center text-xs text-gray-400">
-          Logged in as {user.email}
+          {t('loggedInAs', { email: user.email })}
         </p>
       </main>
     </div>

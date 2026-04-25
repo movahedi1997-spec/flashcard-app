@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import FlashLogoMark from './FlashLogoMark';
 import InstallPWAButton from './InstallPWAButton';
+import LocaleSwitcher from './LocaleSwitcher';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -47,6 +48,7 @@ export default function Navbar() {
             Blog
           </a>
           <InstallPWAButton />
+          <LocaleSwitcher />
           <div className="mx-2 h-5 w-px bg-gray-200" />
           <Link
             href="/login"

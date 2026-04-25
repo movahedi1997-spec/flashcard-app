@@ -1,0 +1,33 @@
+{
+  "badge": "Almost there — one quick question",
+  "title": "What are you studying?",
+  "subtitle": "We'll add a starter deck to your library so you can jump in right away.",
+  "continueWith": "Start with {deck} →",
+  "pickSubject": "Pick a subject to continue",
+  "settingUp": "Setting up your library…",
+  "footer": "You can always add decks from any subject later.",
+  "subjects": {
+    "medicine": { "label": "Medicine", "sub": "USMLE Step 1 · Step 2 · Boards", "deck": "Pharmacology Fundamentals" },
+    "pharmacy": { "label": "Pharmacy", "sub": "NAPLEX · MPJE · Drug Therapy", "deck": "Top 200 Drugs" },
+    "chemistry": { "label": "Chemistry", "sub": "AP Chem · Organic · Biochemistry", "deck": "AP Chemistry" },
+    "other": { "label": "Other / Mixed", "sub": "General studying · Custom decks", "deck": "Pharmacology Fundamentals" }
+  },
+  "teaser": {
+    "title": "What you get",
+    "freePlan": "Free",
+    "proPlan": "Pro",
+    "upgradeButton": "Upgrade to Pro →",
+    "freeFeatures": [
+      "189 AI cards / month",
+      "49 card improvements / month",
+      "Spaced repetition (SRS)",
+      "Public & private decks"
+    ],
+    "proFeatures": [
+      "499 AI cards / month",
+      "299 card improvements / month",
+      "Advanced SRS analytics",
+      "Premium deck themes"
+    ]
+  }
+}

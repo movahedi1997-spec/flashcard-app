@@ -4,8 +4,10 @@ import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { MailCheck, Loader2, RefreshCw } from 'lucide-react';
 import FlashLogoMark from '@/components/FlashLogoMark';
+import { useTranslations } from 'next-intl';
 
 export default function VerifyEmailPage() {
+  const t = useTranslations('auth.verifyEmail');
   const router = useRouter();
   const [code, setCode]       = useState(['', '', '', '', '', '']);
   const [error, setError]     = useState('');
@@ -15,14 +17,12 @@ export default function VerifyEmailPage() {
   const [cooldown, setCooldown] = useState(0);
   const inputs = useRef<(HTMLInputElement | null)[]>([]);
 
-  useEffect(() => {
-    inputs.current[0]?.focus();
-  }, []);
+  useEffect(() => { inputs.current[0]?.focus(); }, []);
 
   useEffect(() => {
     if (cooldown <= 0) return;
-    const t = setTimeout(() => setCooldown((c) => c - 1), 1000);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setCooldown((c) => c - 1), 1000);
+    return () => clearTimeout(timer);
   }, [cooldown]);
 
   function handleDigit(idx: number, val: string) {
@@ -36,16 +36,13 @@ export default function VerifyEmailPage() {
   }
 
   function handleKeyDown(idx: number, e: React.KeyboardEvent) {
-    if (e.key === 'Backspace' && !code[idx] && idx > 0) {
-      inputs.current[idx - 1]?.focus();
-    }
+    if (e.key === 'Backspace' && !code[idx] && idx > 0) inputs.current[idx - 1]?.focus();
   }
 
   function handlePaste(e: React.ClipboardEvent) {
     const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
     if (pasted.length === 6) {
-      const digits = pasted.split('');
-      setCode(digits);
+      setCode(pasted.split(''));
       inputs.current[5]?.focus();
       void submit(pasted);
     }
@@ -64,14 +61,14 @@ export default function VerifyEmailPage() {
       });
       const data = await res.json() as { error?: string };
       if (!res.ok) {
-        setError(data.error ?? 'Invalid code. Please try again.');
+        setError(data.error ?? t('errorInvalidCode'));
         setCode(['', '', '', '', '', '']);
         inputs.current[0]?.focus();
       } else {
         router.replace('/onboarding');
       }
     } catch {
-      setError('Network error. Please try again.');
+      setError(t('errorNetwork'));
     } finally {
       setLoading(false);
     }
@@ -87,10 +84,10 @@ export default function VerifyEmailPage() {
         setCooldown(60);
       } else {
         const data = await res.json() as { error?: string };
-        setError(data.error ?? 'Could not resend code.');
+        setError(data.error ?? t('errorResend'));
       }
     } catch {
-      setError('Network error.');
+      setError(t('errorNetwork'));
     } finally {
       setResending(false);
     }
@@ -104,7 +101,6 @@ export default function VerifyEmailPage() {
       }}
     >
       <div className="w-full max-w-sm">
-        {/* Logo */}
         <div className="flex justify-center mb-8">
           <div className="flex items-center gap-2.5 font-bold text-gray-900 text-xl">
             <FlashLogoMark size={32} />
@@ -113,19 +109,15 @@ export default function VerifyEmailPage() {
         </div>
 
         <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm">
-          {/* Icon */}
           <div className="flex justify-center mb-5">
             <div className="h-14 w-14 rounded-2xl bg-indigo-50 flex items-center justify-center">
               <MailCheck className="h-7 w-7 text-indigo-600" />
             </div>
           </div>
 
-          <h1 className="text-xl font-bold text-gray-900 text-center mb-1">Verify your email</h1>
-          <p className="text-sm text-gray-500 text-center mb-8">
-            We sent a 6-digit code to your email address. Enter it below to activate your account.
-          </p>
+          <h1 className="text-xl font-bold text-gray-900 text-center mb-1">{t('title')}</h1>
+          <p className="text-sm text-gray-500 text-center mb-8">{t('subtitle')}</p>
 
-          {/* 6-digit input */}
           <div className="flex gap-2 justify-center mb-6" onPaste={handlePaste}>
             {code.map((digit, i) => (
               <input
@@ -145,30 +137,28 @@ export default function VerifyEmailPage() {
           </div>
 
           {error && (
-            <p className="text-sm text-red-600 text-center mb-4 rounded-xl bg-red-50 border border-red-100 px-3 py-2">
-              {error}
-            </p>
+            <p className="text-sm text-red-600 text-center mb-4 rounded-xl bg-red-50 border border-red-100 px-3 py-2">{error}</p>
           )}
 
-          {/* Submit */}
           <button
             onClick={() => void submit(code.join(''))}
             disabled={loading || code.some((d) => !d)}
             className="w-full rounded-xl bg-indigo-600 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-indigo-700 active:scale-95 disabled:opacity-50"
           >
-            {loading ? <span className="flex items-center justify-center gap-2"><Loader2 className="h-4 w-4 animate-spin" /> Verifying…</span> : 'Verify email'}
+            {loading
+              ? <span className="flex items-center justify-center gap-2"><Loader2 className="h-4 w-4 animate-spin" /> {t('submitting')}</span>
+              : t('submit')}
           </button>
 
-          {/* Resend */}
           <div className="mt-5 text-center">
-            {resent && <p className="text-xs text-emerald-600 mb-2">Code resent! Check your inbox.</p>}
+            {resent && <p className="text-xs text-emerald-600 mb-2">{t('resentSuccess')}</p>}
             <button
               onClick={() => void handleResend()}
               disabled={resending || cooldown > 0}
               className="text-sm text-indigo-600 hover:underline disabled:opacity-40 inline-flex items-center gap-1.5"
             >
               <RefreshCw className="h-3.5 w-3.5" />
-              {cooldown > 0 ? `Resend in ${cooldown}s` : resending ? 'Sending…' : "Didn't receive it? Resend"}
+              {cooldown > 0 ? t('resendIn', { cooldown }) : resending ? t('sending') : t('resend')}
             </button>
           </div>
         </div>

@@ -1,0 +1,32 @@
+{
+  "title": "Simple, honest pricing",
+  "subtitle": "Start free. Upgrade when you need more AI power.",
+  "backLink": "← Back to FlashcardAI",
+  "monthly": "Monthly",
+  "annual": "Annual",
+  "save": "Save 17%",
+  "billedAnnually": "billed annually",
+  "freePlan": "Free",
+  "proPlan": "Pro",
+  "getStartedFree": "Get Started Free",
+  "noCard": "No credit card required",
+  "upgradeToPro": "Upgrade to Pro",
+  "redirectingToCheckout": "Redirecting to checkout…",
+  "freeFeatures": [
+    "189 AI-generated cards per month",
+    "49 AI card improvements per month",
+    "Up to 50 cards per generation",
+    "Unlimited manual flashcards",
+    "Spaced repetition (SRS)",
+    "PDF & text upload",
+    "Public deck sharing"
+  ],
+  "proFeatures": [
+    "499 AI-generated cards per month",
+    "299 AI card improvements per month",
+    "Up to 50 cards per generation",
+    "Advanced SRS analytics",
+    "Early access to new features",
+    "All Free features included"
+  ]
+}
