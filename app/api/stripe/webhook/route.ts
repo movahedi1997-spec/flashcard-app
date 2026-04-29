@@ -71,6 +71,11 @@ export async function POST(req: NextRequest) {
 }
 
 async function activateSubscription(sub: Stripe.Subscription) {
+  const customerId = typeof sub.customer === 'string' ? sub.customer : null;
+  if (!customerId) {
+    console.error('[Stripe webhook] activateSubscription: missing customer ID', sub.id);
+    return;
+  }
   const isActive = sub.status === 'active' || sub.status === 'trialing';
   await query(
     `UPDATE users
@@ -78,11 +83,15 @@ async function activateSubscription(sub: Stripe.Subscription) {
          stripe_subscription_id = $2,
          subscription_status = $3
      WHERE stripe_customer_id = $4`,
-    [isActive, sub.id, sub.status, sub.customer as string],
+    [isActive, sub.id, sub.status, customerId],
   );
 }
 
 async function deactivateSubscription(customerId: string, status = 'canceled') {
+  if (!customerId || typeof customerId !== 'string') {
+    console.error('[Stripe webhook] deactivateSubscription: missing customer ID');
+    return;
+  }
   await query(
     `UPDATE users
      SET is_pro = false,

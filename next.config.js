@@ -117,9 +117,59 @@ const pwaConfig = {
   },
 };
 
+// ── Security headers ─────────────────────────────────────────────────────────
+const securityHeaders = [
+  // Prevent browsers from MIME-sniffing the declared Content-Type
+  { key: 'X-Content-Type-Options', value: 'nosniff' },
+  // Deny framing from any origin (clickjacking protection)
+  { key: 'X-Frame-Options', value: 'DENY' },
+  // Control referrer info sent to external sites
+  { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+  // Strict HTTPS only (enable HSTS once cert + domain are stable)
+  { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
+  // Restrict browser features to only what the app needs
+  { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), payment=()' },
+  // Content-Security-Policy
+  // - default-src 'self'           : only same-origin by default
+  // - script-src 'self' + 'unsafe-eval' : Next.js requires unsafe-eval for hot reload in dev
+  //   In production we keep unsafe-inline for next-intl/RSC hydration scripts
+  // - style-src 'self' 'unsafe-inline' : Tailwind and component styles require unsafe-inline
+  // - font-src 'self' Google Fonts
+  // - connect-src 'self' + Stripe telemetry
+  // - img-src 'self' data: blob: for avatar uploads and Next.js image opt
+  // - frame-src Stripe checkout iframe
+  // - worker-src 'self' blob: for PWA service worker
+  {
+    key: 'Content-Security-Policy',
+    value: [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "font-src 'self' https://fonts.gstatic.com",
+      "img-src 'self' data: blob: https:",
+      "connect-src 'self' https://api.stripe.com",
+      "frame-src https://js.stripe.com https://hooks.stripe.com",
+      "worker-src 'self' blob:",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "upgrade-insecure-requests",
+    ].join('; '),
+  },
+];
+
 /** @type {import('next').NextConfig} */
 // No API rewrites needed — all /api/* routes are handled by Next.js App Router.
 // The old Express backend rewrite was removed in TASK-008.
-const nextConfig = {};
+const nextConfig = {
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: securityHeaders,
+      },
+    ];
+  },
+};
 
 module.exports = withNextIntl(withPWA(pwaConfig)(nextConfig));

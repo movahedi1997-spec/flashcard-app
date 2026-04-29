@@ -78,7 +78,9 @@ export async function GET(req: NextRequest) {
       await query(`UPDATE refresh_tokens SET revoked = true WHERE user_id = $1`, [userId]).catch(
         () => {},
       );
-      console.warn(`[SECURITY] Refresh token reuse in silent-refresh for user ${userId}`);
+      // Log hashed userId only — raw ID must not appear in shared/centralised logs.
+      const idHint = userId.slice(0, 8) + '…';
+      console.warn(`[SECURITY] Refresh token reuse detected (user prefix: ${idHint}) — all sessions revoked.`);
       return failRedirect(loginUrl);
     }
 
