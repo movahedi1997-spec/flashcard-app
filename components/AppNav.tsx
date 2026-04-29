@@ -1,25 +1,42 @@
 import Link from 'next/link';
-import { LayoutDashboard, BookOpen, Compass, User, Settings, BarChart2 } from 'lucide-react';
+import { LayoutDashboard, BookOpen, Compass, User, Settings, BarChart2, type LucideIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import NavLogo from './NavLogo';
 import BottomNav from './BottomNav';
 
-export type ActivePage = 'decks' | 'explore' | 'profile' | 'settings' | 'stats';
+export type ActivePage = 'dashboard' | 'decks' | 'explore' | 'profile' | 'settings' | 'stats';
 
 interface Props {
   username?: string | null;
   activePage?: ActivePage;
 }
 
-const NAV_ITEMS = [
-  { key: 'dashboard', href: '/dashboard',  icon: LayoutDashboard, label: 'Dashboard' },
-  { key: 'decks',     href: '/flashcards', icon: BookOpen,         label: 'My Decks'  },
-  { key: 'explore',   href: '/explore',    icon: Compass,          label: 'Explore'   },
-  { key: 'stats',     href: '/stats',      icon: BarChart2,        label: 'Analytics' },
-  { key: 'settings',  href: '/settings',   icon: Settings,         label: 'Settings'  },
-] as const;
+type NavItem = {
+  key: ActivePage;
+  href: string;
+  icon: LucideIcon;
+  labelKey: 'dashboard' | 'myDecks' | 'explore' | 'analytics' | 'settings' | 'profile';
+};
+
+const linkClass = (active: boolean) =>
+  `inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition ${
+    active
+      ? 'bg-indigo-50 text-indigo-600'
+      : 'text-gray-600 hover:bg-indigo-50 hover:text-indigo-600'
+  }`;
 
 export default function AppNav({ username, activePage }: Props) {
+  const t = useTranslations('common.appNav');
   const profileHref = username ? `/creators/${username}` : '/settings';
+
+  const navItems: NavItem[] = [
+    { key: 'dashboard', href: '/dashboard',  icon: LayoutDashboard, labelKey: 'dashboard' },
+    { key: 'decks',     href: '/flashcards', icon: BookOpen,        labelKey: 'myDecks'   },
+    { key: 'explore',   href: '/explore',    icon: Compass,         labelKey: 'explore'   },
+    { key: 'stats',     href: '/stats',      icon: BarChart2,       labelKey: 'analytics' },
+    { key: 'settings',  href: '/settings',   icon: Settings,        labelKey: 'settings'  },
+    { key: 'profile',   href: profileHref,   icon: User,            labelKey: 'profile'   },
+  ];
 
   return (
     <>
@@ -32,35 +49,20 @@ export default function AppNav({ username, activePage }: Props) {
 
           {/* Desktop nav only — BottomNav handles mobile */}
           <nav className="hidden sm:flex items-center gap-0.5">
-            {NAV_ITEMS.map(({ key, href, icon: Icon, label }) => {
-              const active = activePage === key;
+            {navItems.map(({ key, href, icon: Icon, labelKey }) => {
+              const label = t(labelKey);
               return (
                 <Link
                   key={key}
                   href={href}
-                  className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition ${
-                    active
-                      ? 'bg-indigo-50 text-indigo-600'
-                      : 'text-gray-600 hover:bg-indigo-50 hover:text-indigo-600'
-                  }`}
+                  aria-current={activePage === key ? 'page' : undefined}
+                  className={linkClass(activePage === key)}
                 >
-                  <Icon className="h-4 w-4 flex-shrink-0" />
+                  <Icon className="h-4 w-4 flex-shrink-0" aria-hidden="true" />
                   <span>{label}</span>
                 </Link>
               );
             })}
-
-            <Link
-              href={profileHref}
-              className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition ${
-                activePage === 'profile'
-                  ? 'bg-indigo-50 text-indigo-600'
-                  : 'text-gray-600 hover:bg-indigo-50 hover:text-indigo-600'
-              }`}
-            >
-              <User className="h-4 w-4 flex-shrink-0" />
-              <span>Profile</span>
-            </Link>
           </nav>
         </div>
       </header>

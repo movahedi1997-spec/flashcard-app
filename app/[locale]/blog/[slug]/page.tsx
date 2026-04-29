@@ -6,7 +6,17 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { BLOG_POSTS, getBlogPost } from '@/lib/blog';
 
-type Props = { params: { slug: string } };
+type Props = { params: { slug: string; locale: string } };
+
+// fa uses -u-nu-latn so dates render with Western digits (8 instead of ۸),
+// matching the Western numerals used throughout the Persian translation strings.
+const DATE_LOCALE_MAP: Record<string, string> = {
+  en: 'en-US',
+  de: 'de-DE',
+  fr: 'fr-FR',
+  es: 'es-ES',
+  fa: 'fa-IR-u-nu-latn',
+};
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = getBlogPost(params.slug);
@@ -70,7 +80,7 @@ export default function BlogPostPage({ params }: Props) {
                 {post.readTime} Min. Lesezeit
               </span>
               <span className="text-xs text-slate-500">
-                {new Date(post.date).toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' })}
+                {new Date(post.date).toLocaleDateString(DATE_LOCALE_MAP[params.locale] ?? 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
               </span>
             </div>
 

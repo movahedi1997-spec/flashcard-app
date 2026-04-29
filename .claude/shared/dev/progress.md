@@ -696,3 +696,40 @@ All Phase 3 tasks are now complete:
 - TASK-031 ✓ Technical Writer docs
 
 **Phase 3 is COMPLETE. Ready for Phase 4 (i18n + post-launch growth).**
+
+---
+
+## [DEVOPS] 2026-04-28 — Production Outage + Resilience Hardening
+
+### Incident
+- **Site down:** ~6 hours (06:14 UTC – ~12:08 UTC) on `flashcardai.app`
+- **Symptom:** HTTPS port 443 connection refused; SSH (22) still reachable
+- **Root cause:** Stray `nano` backup files (`movahedi.net.save`, `movahedi.net.save.1`) in `/etc/nginx/sites-enabled/` had unterminated `}` blocks. Nginx loads every file in `sites-enabled/` regardless of name. A kernel security upgrade triggered an nginx restart at 06:14 UTC — `nginx -t` failed, the service refused to come back up, the site went dark silently.
+- **Detection:** Founder noticed manually after hours of downtime — no monitoring was in place.
+- **Fix:** Moved the two `.save` files to `/root/nginx-backups/`, ran `nginx -t` (clean), `systemctl start nginx` → site recovered.
+- **Secondary issue post-reboot:** PM2 hadn't auto-resurrected — site returned 502 Bad Gateway briefly. Resolved with `pm2 resurrect && pm2 save`.
+
+### Resilience hardening (now in production)
+
+| Layer | Change | Effect |
+|---|---|---|
+| **Prevent** | `/etc/nginx/nginx.conf` line 60: `include /etc/nginx/sites-enabled/*` → `include /etc/nginx/sites-enabled/*.conf` | Stray non-`.conf` files (editor backups, `.bak`, `.save`) are now ignored by nginx |
+| **Prevent** | All 4 symlinks in `sites-enabled/` renamed to `*.conf` (`flashcardai.conf`, `admin.flashcardai.conf`, `default.conf`, `movahedi.net.conf`) | Required for the include glob change above |
+| **Detect** | UptimeRobot configured with 3 monitors (`flashcardai.app`, `admin.flashcardai.app`, `movahedi.net`) — 5-min HTTPS HEAD checks, email alerts to founder | Future outages detected within 5 min instead of hours |
+| **Recover** | `pm2-root.service` confirmed `enabled` in systemd; `pm2 save` run with current process list | PM2 auto-starts `flashcard-app` and `melden_spd` on every reboot |
+| **Recover** | `/etc/systemd/system/nginx.service.d/override.conf` adds `Restart=on-failure` + `RestartSec=5s` | systemd auto-restarts nginx 5s after any crash (OOM, segfault) |
+| **Guardrail** | `safe-reboot` alias in `/root/.bashrc`: `nginx -t && pm2 save && sleep 5 && reboot` | Reboot aborts if nginx config is broken — fix interactively while you can still SSH |
+
+### Verification
+- `nginx -t` → syntax ok
+- All 3 sites return 200/307 (production smoke test from local Mac)
+- `systemctl show nginx -p Restart` → `Restart=on-failure`, `RestartUSec=5s`
+- UptimeRobot first ping confirmed all 3 monitors `Up`
+
+### Outcome
+With this stack, an identical incident today would have:
+1. Been **prevented entirely** at boot — `safe-reboot` would catch the broken config before rebooting
+2. Even if missed, been **detected in ≤5 min** by UptimeRobot
+3. **Auto-recovered** if it were a transient nginx crash (no human action needed)
+
+Memory persisted for future sessions: `feedback_nginx_save_files.md` in user auto-memory.

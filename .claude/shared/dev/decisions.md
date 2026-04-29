@@ -853,3 +853,74 @@ All other OTP controls pass: `crypto.randomInt()` for generation, 10-minute expi
 
 ### TASK-029 VERDICT
 **SIGNED OFF.** Blocking issue (verify-otp brute-force) resolved inline. Phase 3 code review complete. TASK-030 (full pre-launch QA regression) may begin.
+
+## [CODE REVIEWER] 2026-04-29 — TASK-041: i18n Code Review
+
+### Scope
+Phase 4 i18n implementation review across 5 locales (en, de, fr, es, fa) before any locale goes live. Six AC checks, evidence captured below.
+
+### AC#1 — Hardcoded UI strings
+**PARTIAL — production-app code clean; landing-page components carry hardcoded English (out of Phase 4 scope).**
+- ✅ Authenticated-app pages (`dashboard`, `flashcards`, `study`, `settings`, `explore`, `pricing`) consume `useTranslations()` / `getTranslations()` from `messages/{locale}/*.json`.
+- ✅ `AppNav.tsx` and `BottomNav.tsx` migrated to `common.appNav` keys this pass; `BottomNav` active-state logic also fixed to strip the `/<locale>` prefix (was broken on all non-English locales).
+- ⚠️ Landing-page components (`Hero`, `Features`, `HowItWorks`, `CTABanner`, `SubjectHubs`, `Navbar`, `BlogPreview`) and the marketing pricing client (`PricingClient.tsx`) still contain hardcoded English. **Deferred to Phase 5** — translating the landing page requires new `landing.*` namespaces in all 5 locales (≈300 strings). Tracked separately.
+
+### AC#2 — RTL implementation
+**PASS.**
+- Zero directional Tailwind classes (`ml-*`, `mr-*`, `pl-*`, `pr-*`, `left-*`, `right-*`) found on interactive/user-visible elements outside `app/admin/*` (admin is English-only, no RTL concern).
+- `components/flashcard/SplashPage.tsx` decorative card-mockup wrapper now `aria-hidden="true"` (commit this pass).
+- `components/dashboard/StudyChart.tsx:204` uses `left-1/2 -translate-x-1/2` — symmetric centering, not directional. Acceptable in RTL.
+- `<html dir="rtl">` and Vazirmatn font scoping for `fa` were verified in TASK-033 sign-off.
+
+### AC#3 — Locale routing auth
+**PASS.** Full matrix tested with dev server, no auth cookie:
+
+| Path | Redirect | ✓/✗ |
+|---|---|---|
+| `/dashboard` | `/login` | ✓ |
+| `/flashcards` | `/login` | ✓ |
+| `/settings` | `/login` | ✓ |
+| `/de/dashboard` | `/de/login` | ✓ |
+| `/de/flashcards` | `/de/login` | ✓ |
+| `/de/settings` | `/de/login` | ✓ |
+| `/fr/{dashboard,flashcards,settings}` | `/fr/login` | ✓ |
+| `/es/{dashboard,flashcards,settings}` | `/es/login` | ✓ |
+| `/fa/{dashboard,flashcards,settings}` | `/fa/login` | ✓ |
+
+15/15 redirect to the locale-prefixed login page. No locale-prefix bypass exists.
+
+### AC#4 — Translation file key parity
+**PASS.** Automated check (`/tmp/key-parity.mjs`) compared every locale's flattened key set against `en/`:
+> ✅ All locales have identical keys (5 locales × 10 namespaces = 50 files, zero mismatches)
+
+### AC#5 — Hardcoded `Intl` locale strings
+**PASS — bug fixed inline.**
+- `app/[locale]/blog/[slug]/page.tsx:73` was hardcoded to `'de-DE'` — would have rendered German-formatted dates for English/French/Spanish/Persian users on blog post pages. **Fixed:** new `DATE_LOCALE_MAP` keyed off `params.locale`, applied at the call site.
+- `lib/flashcard/helpers.ts:6` `formatDate` hardcodes `'en-US'` — confirmed dead code (zero imports across the entire monorepo). Left as-is; cleanup deferred (delete unused functions in a separate sweep).
+- No other `Intl.*` factory calls or `toLocaleString` calls with hardcoded locale tags exist.
+
+### AC#6 — Persian numeral consistency
+**PASS — proactive fix applied.**
+- All Persian translation strings in `messages/fa/*.json` use Western digits (0-9), never Eastern Arabic-Indic (۰-۹). Modern Iranian web UX convention.
+- Default `fa-IR` for `toLocaleDateString` would render dates with Eastern digits (`۹ اردیبهشت ۱۴۰۵`), creating a visible inconsistency on blog post pages. **Fixed:** `DATE_LOCALE_MAP[fa] = 'fa-IR-u-nu-latn'` — Persian calendar, Persian month names, Western digits → `9 اردیبهشت 1405`. Verified via `Intl.DateTimeFormat`.
+
+### Files modified this pass
+| File | Change |
+|---|---|
+| `components/AppNav.tsx` | Wired to `useTranslations('common.appNav')`, added `aria-current` and `aria-hidden` for icons, added `'dashboard'` to `ActivePage` union |
+| `components/BottomNav.tsx` | Same translations wiring + locale-prefix strip in active-state detection (was broken on de/fr/es/fa) |
+| `messages/fa/flashcards.json` | Added missing ICU `{count, plural, one {...} other {...}}` to `cards`, `copyCount`, `deleteDeck.message` |
+| `middleware.ts` | Excluded `sitemap.xml` and `robots.txt` from intl-middleware matcher |
+| `components/flashcard/SplashPage.tsx` | `aria-hidden="true"` on decorative wrapper |
+| `app/[locale]/blog/[slug]/page.tsx` | `DATE_LOCALE_MAP` keyed off `params.locale`; fa uses `-u-nu-latn` |
+
+### Open items carried forward
+
+| ID | Finding | Priority |
+|----|---------|----------|
+| CR-I18N-01 | Landing-page components still hardcoded English (Hero, Features, HowItWorks, CTABanner, SubjectHubs, Navbar, BlogPreview, PricingClient, blog pages) | Phase 5 — deferred |
+| CR-I18N-02 | `lib/flashcard/helpers.ts` is dead code (zero imports); delete in next cleanup sweep | Low |
+| CR-I18N-03 | Native-speaker review of de/fr/es/fa medical/pharmacy strings before public launch | Pre-launch |
+
+### TASK-041 VERDICT
+**SIGNED OFF.** Production-app i18n implementation is correct, secure, and ready for QA. Three real bugs (AppNav/BottomNav untranslated nav, BottomNav broken active-state on non-English locales, blog date hardcoded to `de-DE`) found and fixed inline this pass. AC#1 partial-pass scoped down to Phase 5 by mutual scope agreement (founder confirmed landing page translation is post-MVP work). TASK-042 (cross-locale + iOS QA) unblocked and may begin.

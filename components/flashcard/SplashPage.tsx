@@ -7,7 +7,7 @@ interface Props {
 export default function SplashPage({ onStart }: Props) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-indigo-900 to-purple-950 flex items-center justify-center relative overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
+      <div aria-hidden="true" className="absolute inset-0 pointer-events-none select-none overflow-hidden">
         <div className="card-drift-1 absolute -top-4 left-8 w-36 h-24 bg-white/8 backdrop-blur-sm rounded-2xl border border-white/15 p-3 hidden sm:block">
           <div className="h-2 bg-indigo-400/40 rounded mb-2 w-3/4" />
           <div className="h-2 bg-white/20 rounded mb-1.5 w-full" />
