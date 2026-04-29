@@ -3,13 +3,41 @@ import { getAuthUser, getClientIp } from '@/lib/auth';
 import { checkRateLimit } from '@/lib/rateLimit';
 import { query } from '@/lib/db';
 
-// Maps subject → preferred seed deck title to copy into the user's library
-const STARTER_DECK_MAP: Record<string, string> = {
-  medicine:  'Pharmacology Fundamentals — USMLE Step 1',
-  pharmacy:  'Top 200 Drugs — NAPLEX Core List',
-  chemistry: 'AP Chemistry — Equilibrium, Kinetics & Electrochemistry',
-  other:     'Pharmacology Fundamentals — USMLE Step 1',
+// Maps locale → subject → seed deck title (must match the "title" field in scripts/seeds/)
+const STARTER_DECK_MAP: Record<string, Record<string, string>> = {
+  en: {
+    medicine:  'Pharmacology Fundamentals — USMLE Step 1',
+    pharmacy:  'Top 200 Drugs — NAPLEX Core List',
+    chemistry: 'AP Chemistry — Equilibrium, Kinetics & Electrochemistry',
+    other:     'Pharmacology Fundamentals — USMLE Step 1',
+  },
+  de: {
+    medicine:  'Pharmakologie Grundlagen — Physikum',
+    pharmacy:  'Top 200 Arzneimittel — Pharmazeutische Grundlagen',
+    chemistry: 'Organische Chemie — Grundlagen & Reaktionen',
+    other:     'Pharmakologie Grundlagen — Physikum',
+  },
+  fr: {
+    medicine:  'Pharmacologie Fondamentale — EDN',
+    pharmacy:  'Top 200 Médicaments — Pharmacie Clinique',
+    chemistry: 'Chimie Organique — Fondamentaux & Réactions',
+    other:     'Pharmacologie Fondamentale — EDN',
+  },
+  es: {
+    medicine:  'Farmacología Básica — MIR',
+    pharmacy:  'Top 200 Fármacos — Farmacia Clínica',
+    chemistry: 'Química Orgánica — Fundamentos y Reacciones',
+    other:     'Farmacología Básica — MIR',
+  },
+  fa: {
+    medicine:  'داروشناسی پایه — کنکور علوم پزشکی',
+    pharmacy:  '200 داروی برتر — داروسازی بالینی',
+    chemistry: 'شیمی آلی — مفاهیم پایه و واکنش‌ها',
+    other:     'داروشناسی پایه — کنکور علوم پزشکی',
+  },
 };
+
+const SUPPORTED_LOCALES = Object.keys(STARTER_DECK_MAP);
 
 function slugify(text: string): string {
   return text
@@ -36,10 +64,15 @@ export async function POST(req: NextRequest) {
 
   const body = await req.json().catch(() => ({}));
   const subject: string = body.subject ?? 'other';
+  const locale: string = body.locale ?? 'en';
   const validSubjects = ['medicine', 'pharmacy', 'chemistry', 'other'];
   if (!validSubjects.includes(subject)) {
     return NextResponse.json({ error: 'Invalid subject' }, { status: 400 });
   }
+
+  // Resolve locale deck map — fall back to English if locale is unsupported
+  const resolvedLocale = SUPPORTED_LOCALES.includes(locale) ? locale : 'en';
+  const localeMap = STARTER_DECK_MAP[resolvedLocale];
 
   // 1. Persist subject preference on user profile
   await query(
@@ -49,8 +82,8 @@ export async function POST(req: NextRequest) {
     // Column may not exist yet — migration 007 adds it; fail silently
   });
 
-  // 2. Find a verified-creator seed deck for this subject
-  const deckTitle = STARTER_DECK_MAP[subject];
+  // 2. Find a verified-creator seed deck for this subject + locale, fall back to English
+  const deckTitle = localeMap[subject];
   const seedRows = await query<{
     id: string;
     title: string;
@@ -70,8 +103,24 @@ export async function POST(req: NextRequest) {
   );
 
   if (seedRows.rows.length === 0) {
-    // Seeds not imported yet — return success without adding a deck
-    return NextResponse.json({ ok: true, deckAdded: false });
+    // Locale-specific deck not found — try English fallback before giving up
+    if (resolvedLocale !== 'en') {
+      const fallbackTitle = STARTER_DECK_MAP['en'][subject];
+      const fallbackRows = await query<{
+        id: string; title: string; description: string; emoji: string; color: string; subject: string;
+      }>(
+        `SELECT d.id, d.title, d.description, d.emoji, d.color, d.subject
+         FROM decks d JOIN users u ON u.id = d.user_id
+         WHERE u.is_verified_creator = true AND d.title = $1 AND d.is_public = true LIMIT 1`,
+        [fallbackTitle]
+      );
+      if (fallbackRows.rows.length > 0) {
+        seedRows.rows.push(fallbackRows.rows[0]);
+      }
+    }
+    if (seedRows.rows.length === 0) {
+      return NextResponse.json({ ok: true, deckAdded: false });
+    }
   }
 
   const source = seedRows.rows[0];

@@ -4,11 +4,20 @@ import { ArrowRight, Clock } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { BLOG_POSTS } from '@/lib/blog';
+import { hreflangAlternates } from '@/lib/hreflang';
 
-export const metadata: Metadata = {
-  title: 'Blog — FlashcardAI',
-  description: 'Lerntipps, Wissenschaft hinter Spaced Repetition, Datenschutz und mehr — der FlashcardAI Blog.',
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Promise<Metadata> {
+  return {
+    title: 'Blog — FlashcardAI',
+    description:
+      'Study tips, the science behind spaced repetition, privacy news, and more — the FlashcardAI blog.',
+    alternates: hreflangAlternates(params.locale, '/blog'),
+  };
+}
 
 const CATEGORY_COLORS: Record<string, string> = {
   Produkt:    'bg-indigo-50 text-indigo-700',

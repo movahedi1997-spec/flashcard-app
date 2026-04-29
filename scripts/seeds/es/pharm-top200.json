@@ -1,0 +1,69 @@
+{
+  "title": "Top 200 Fármacos — Farmacia Clínica",
+  "description": "Los 200 fármacos más prescritos en España: clase farmacológica, indicación principal y efectos adversos clave.",
+  "emoji": "🏥",
+  "color": "emerald",
+  "subject": "pharmacy",
+  "cards": [
+    {
+      "front": "Bisoprolol — clase, indicación, efectos adversos",
+      "back": "Clase: betabloqueante β1-cardioselectivo. Indicaciones: IC crónica (titular despacio), HTA, angina estable. EA: bradicardia, fatiga, extremidades frías, broncoespasmo (raro si β1-selectivo). CI: BAV 2.º-3.º grado, asma grave."
+    },
+    {
+      "front": "Enalapril / Ramipril — clase, indicación, EA principal",
+      "back": "Clase: IECA. Indicaciones: HTA, IC, nefroprotección (DM1/DM2). EA: tos seca (20%, por ↑ bradicinina), angioedema (raro, suspender de inmediato), hiperpotasemia, hipotensión 1.ª dosis. CI: embarazo."
+    },
+    {
+      "front": "Amlodipino — clase, indicación, EA",
+      "back": "Clase: calcioantagonista dihidropiridínico (vasoselectivo). Indicaciones: HTA, angina estable. EA: edema maleolar (dosis-dependiente), rubor, palpitaciones. Sin efecto inotrópico negativo significativo."
+    },
+    {
+      "front": "Atorvastatina — clase, indicación, vigilancia",
+      "back": "Clase: estatina (inhibidor HMG-CoA reductasa). Indicación: hipercolesterolemia, prevención CV primaria y secundaria. Vigilar: CPK (miopatía), transaminasas. Interacción: inhibidores CYP3A4 (macrólidos, zumo de pomelo) → riesgo de rabdomiólisis."
+    },
+    {
+      "front": "Metformina — clase, indicación, normas de prescripción",
+      "back": "Clase: biguanida. Indicación: DM2 (1.ª línea). Suspender si FG < 30, antes de contraste yodado, cirugía mayor. Sin hipoglucemia en monoterapia. EA: diarrhea, náuseas (tomar con las comidas); titulación progresiva."
+    },
+    {
+      "front": "Omeprazol / Pantoprazol — clase, indicación, precauciones",
+      "back": "Clase: IBP. Indicaciones: ERGE, úlcera péptica, erradicación H. pylori, profilaxis AINE. Precauciones: déficit de Mg²⁺ y B12 a largo plazo. Interacción: clopidogrel (omeprazol inhibe CYP2C19; preferir pantoprazol)."
+    },
+    {
+      "front": "Ibuprofeno — clase, indicación, contraindicaciones",
+      "back": "Clase: AINE no selectivo (inhibidor COX-1/COX-2). Indicaciones: dolor leve-moderado, fiebre, dismenorrea, artritis. CI: úlcera activa, IR grave, embarazo ≥ 28 semanas. EA: úlcera GI (proteger con IBP), retención de Na⁺/agua, riesgo CV."
+    },
+    {
+      "front": "Amoxicilina (± ácido clavulánico) — clase, espectro, EA",
+      "back": "Clase: aminopenicilina (± inhibidor β-lactamasa). Espectro: grampositivos, H. influenzae, E. coli sensibles; con clavulánico cubre enterobacterias productoras de BLEE no BLEE. EA: diarrea, exantema, anafilaxia; colitis por C. difficile."
+    },
+    {
+      "front": "Ciprofloxacino — clase, espectro, EA importantes",
+      "back": "Clase: fluoroquinolona. Espectro: gramnegativos (Pseudomonas), atípicos. EA: tendinopatía/rotura (Aquiles, ancianos + corticoides), fotosensibilidad, QT largo, convulsiones. Absorción reducida por antiácidos (2 h de separación)."
+    },
+    {
+      "front": "Sertralina — clase, indicaciones, EA",
+      "back": "Clase: ISRS. Indicaciones: depresión, TOC, trastorno de pánico, fobia social, TEPT. EA: náuseas (inicio), insomnio, disfunción sexual, síndrome serotoninérgico (si se asocia con IMAO, tramadol o triptanes)."
+    },
+    {
+      "front": "Levotiroxina (T4) — indicación y normas de toma",
+      "back": "Indicación: hipotiroidismo (Hashimoto, postquirúrgico, congénito). Tomar en ayunas, 30-60 min antes del desayuno. Interacciones: calcio, hierro, colestiramina, IBP (↓ absorción). Vigilar TSH cada 6-12 meses."
+    },
+    {
+      "front": "Furosemida — clase, indicación, EA",
+      "back": "Clase: diurético de asa. Indicaciones: edema agudo de pulmón (iv urgente), IC, cirrosis con ascitis, HTA resistente. EA: hipopotasemia (vigilar ECG), hiponatremia, hipovolemia, hiperuricemia, ototoxicidad (dosis alta iv)."
+    },
+    {
+      "front": "Clopidogrel — clase, indicación, interacción clave",
+      "back": "Clase: antiagregante plaquetario (inhibidor P2Y12). Indicaciones: síndrome coronario agudo, prevención secundaria, stent coronario. Interacción: omeprazol/esomeprazol inhiben CYP2C19 → ↓ efecto. Preferir pantoprazol."
+    },
+    {
+      "front": "Prednisona / Prednisolona — mecanismo y EA largo plazo",
+      "back": "Clase: glucocorticoide. Mecanismo: ↓ fosfolipasa A2 → ↓ prostaglandinas y leucotrienos. EA largo plazo: síndrome de Cushing, osteoporosis (Ca²⁺ + Vit D profilácticos), DM, cataratas, infecciones. Retirada gradual para evitar insuficiencia suprarrenal."
+    },
+    {
+      "front": "Sildenafilo — clase, mecanismo, contraindicación absoluta",
+      "back": "Clase: inhibidor de la PDE5. Mecanismo: ↑ GMPc → relajación del músculo liso → vasodilatación. Indicación: disfunción eréctil, hipertensión arterial pulmonar. CI absoluta: nitratos (hipotensión grave, potencialmente mortal) y alfabloqueantes en dosis no estables."
+    }
+  ]
+}

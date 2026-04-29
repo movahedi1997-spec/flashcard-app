@@ -1,0 +1,69 @@
+{
+  "title": "Top 200 Médicaments — Pharmacie Clinique",
+  "description": "Les 200 médicaments les plus prescrits en France : classe pharmacologique, indication principale et effets indésirables clés.",
+  "emoji": "🏥",
+  "color": "emerald",
+  "subject": "pharmacy",
+  "cards": [
+    {
+      "front": "Bisoprolol — classe, indication, effets indésirables principaux",
+      "back": "Classe : bêta-1-bloquant cardiosélectif. Indications : HTA, insuffisance cardiaque chronique, angor. EI : bradycardie, fatigue, extrémités froides, bronchospasme (rare si β1-sélectif). CI : BAV 2e et 3e degré, asthme sévère."
+    },
+    {
+      "front": "Ramipril — classe, indication, effets indésirables",
+      "back": "Classe : IEC. Indications : HTA, insuffisance cardiaque, néphroprotection (DT1/DT2). EI : toux sèche (20%), angio-œdème (rare, arrêt immédiat), hyperkaliémie, hypotension 1re dose. CI : grossesse (tératogène)."
+    },
+    {
+      "front": "Amlodipine — classe, indication, effets indésirables",
+      "back": "Classe : inhibiteur calcique dihydropyridine (vasoséléctif). Indications : HTA, angor stable. EI : œdèmes des membres inférieurs (dose-dépendant), flush, palpitations. Pas d'effet inotrope négatif."
+    },
+    {
+      "front": "Atorvastatine — classe, indication, surveillance",
+      "back": "Classe : statine (inhibiteur HMG-CoA réductase). Indication : hypercholestérolémie, prévention CV. Surveillance : CPK (myopathie), transaminases. Interaction : inhibiteurs CYP3A4 (claritromycine, jus de pamplemousse) → risque de rhabdomyolyse."
+    },
+    {
+      "front": "Metformine — classe, indication, règles de prescription",
+      "back": "Classe : biguanide. Indication : DT2 (1re ligne). Arrêter si DFG < 30 mL/min, avant injection iodée, en préopératoire. Pas d'hypoglycémie seule. EI : diarrhée, nausées (prendre pendant les repas)."
+    },
+    {
+      "front": "Oméprazole — classe, indication, précautions",
+      "back": "Classe : IPP. Indications : RGO, ulcère gastroduodénal, éradication H. pylori, prévention des ulcères sous AINS. Précautions : risque de carence en magnésium, B12 (traitement prolongé), interaction clopidogrel (réduire l'effet antiplaquettaire)."
+    },
+    {
+      "front": "Ibuprofène — classe, indication, contre-indications",
+      "back": "Classe : AINS non sélectif. Indications : douleur, fièvre, inflammation. CI absolues : ulcère évolutif, IR sévère, grossesse ≥ 6 mois. EI : ulcère GI (protection IPP si facteur de risque), insuffisance rénale aiguë, risque CV."
+    },
+    {
+      "front": "Amoxicilline — classe, spectre, effets indésirables",
+      "back": "Classe : aminopénicilline (bêta-lactamine). Spectre : cocci gram+, H. influenzae, entérocoques. EI : réaction allergique (urticaire, anaphylaxie), diarrhée, colite à C. difficile. Allergie croisée avec céphalosporines (rare, < 2%)."
+    },
+    {
+      "front": "Ciprofloxacine — classe, spectre, effets indésirables importants",
+      "back": "Classe : fluoroquinolone. Spectre : gram- (Pseudomonas, entérobactéries), atypiques. EI : tendinopathie/rupture (Achille ++, surtout corticoïdes + âge), photosensibilité, allongement QT, convulsions. Absorption réduite par les antiacides."
+    },
+    {
+      "front": "Sertraline — classe, indications, effets indésirables",
+      "back": "Classe : ISRS. Indications : dépression, TOC, trouble panique, PTSD, phobie sociale. EI : nausées (initialement), insomnie, dysfonction sexuelle, syndrome sérotoninergique si association avec IMAO ou tramadol."
+    },
+    {
+      "front": "Lévothyroxine (L-T4) — indication et règles de prise",
+      "back": "Indication : hypothyroïdie (iatrogène, auto-immune, congénitale). Prise : à jeun, 30 min avant le petit-déjeuner. Interactions : calcium, fer, cholestyramine, IPP (↓ absorption). Surveillance : TSH tous les 6–12 mois."
+    },
+    {
+      "front": "Furosémide — classe, indication, effets indésirables",
+      "back": "Classe : diurétique de l'anse. Indications : OAP (urgence), insuffisance cardiaque, cirrhose ascitique, HTA résistante. EI : hypokaliémie (ECG, risque arythmie), hyponatrémie, hypovolémie, hyperuricémie, ototoxicité (iv rapide)."
+    },
+    {
+      "front": "Clopidogrel — classe, indication, précaution majeure",
+      "back": "Classe : antiagrégant plaquettaire (inhibiteur P2Y12). Indication : SCA, prévention secondaire AVC/IDM, stent coronaire. Précaution : association avec IPP (oméprazole/ésoméprazole ↓ effet par compétition CYP2C19 → préférer pantoprazole)."
+    },
+    {
+      "front": "Prednisolone — mécanisme et effets indésirables long cours",
+      "back": "Classe : glucocorticoïde. Mécanisme : ↓ phospholipase A2 (lipocortine) → ↓ prostaglandines et leucotriènes. EI long cours : syndrome de Cushing, ostéoporose (supplémenter Ca²⁺ + vit D), diabète, cataracts, infections. Décroissance progressive obligatoire."
+    },
+    {
+      "front": "Vardénafil / Sildénafil — classe, mécanisme, contre-indication absolue",
+      "back": "Classe : inhibiteurs de la PDE5. Mécanisme : ↑ GMPc → vasodilatation des corps caverneux. Indication : dysfonction érectile. CI absolue : association avec dérivés nitrés (hypotension sévère mortelle) et alpha-bloquants (sauf si dose stable)."
+    }
+  ]
+}

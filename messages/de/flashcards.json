@@ -1,48 +1,48 @@
 {
-  "title": "My Flashcards",
-  "newDeck": "New Deck",
-  "aiGenerate": "AI Generate",
-  "study": "Study",
-  "edit": "Edit",
-  "delete": "Delete",
-  "share": "Share",
-  "cards": "{count, plural, one {# card} other {# cards}}",
-  "copyCount": "{count} {count, plural, one {copy} other {copies}}",
-  "emptyTitle": "No decks yet",
-  "emptySubtitle": "Create your first deck to get started",
+  "title": "Meine Karteikarten",
+  "newDeck": "Neues Deck",
+  "aiGenerate": "KI generieren",
+  "study": "Lernen",
+  "edit": "Bearbeiten",
+  "delete": "Löschen",
+  "share": "Teilen",
+  "cards": "{count, plural, one {# Karte} other {# Karten}}",
+  "copyCount": "{count} {count, plural, one {Kopie} other {Kopien}}",
+  "emptyTitle": "Noch keine Decks",
+  "emptySubtitle": "Erstelle dein erstes Deck, um loszulegen",
   "createDeck": {
-    "title": "Create New Deck",
-    "titleLabel": "Title",
-    "titlePlaceholder": "e.g. USMLE Pharmacology",
-    "descriptionLabel": "Description",
-    "descriptionPlaceholder": "Optional deck description…",
-    "submit": "Create Deck"
+    "title": "Neues Deck erstellen",
+    "titleLabel": "Titel",
+    "titlePlaceholder": "z. B. Pharmakologie Physikum",
+    "descriptionLabel": "Beschreibung",
+    "descriptionPlaceholder": "Optionale Deck-Beschreibung…",
+    "submit": "Deck erstellen"
   },
   "editDeck": {
-    "title": "Edit Deck",
-    "submit": "Save Changes"
+    "title": "Deck bearbeiten",
+    "submit": "Änderungen speichern"
   },
   "deleteDeck": {
-    "title": "Delete Deck",
-    "message": "Are you sure you want to delete \"{name}\"? This will permanently delete all {count} {count, plural, one {card} other {cards}}. This action cannot be undone.",
-    "confirm": "Delete Deck",
-    "cancel": "Cancel"
+    "title": "Deck löschen",
+    "message": "Möchtest du \"{name}\" wirklich löschen? Dies löscht unwiderruflich alle {count} {count, plural, one {Karte} other {Karten}}. Diese Aktion kann nicht rückgängig gemacht werden.",
+    "confirm": "Deck löschen",
+    "cancel": "Abbrechen"
   },
   "shareDeck": {
-    "title": "Share Deck",
-    "makePublic": "Make public",
-    "makePrivate": "Make private",
-    "publicUrl": "Public URL",
-    "copyLink": "Copy link",
-    "copied": "Copied!"
+    "title": "Deck teilen",
+    "makePublic": "Öffentlich machen",
+    "makePrivate": "Privat machen",
+    "publicUrl": "Öffentliche URL",
+    "copyLink": "Link kopieren",
+    "copied": "Kopiert!"
   },
   "card": {
-    "front": "Front",
-    "back": "Back",
-    "addCard": "Add Card",
-    "editCard": "Edit Card",
-    "deleteCard": "Delete Card",
-    "aiImprove": "AI Improve",
-    "aiGenerated": "AI generated"
+    "front": "Vorderseite",
+    "back": "Rückseite",
+    "addCard": "Karte hinzufügen",
+    "editCard": "Karte bearbeiten",
+    "deleteCard": "Karte löschen",
+    "aiImprove": "KI verbessern",
+    "aiGenerated": "KI-generiert"
   }
 }

@@ -1,11 +1,11 @@
 {
-  "generic": "Something went wrong. Please try again.",
-  "network": "Network error. Please check your connection.",
-  "unauthorized": "You must be logged in to do that.",
-  "notFound": "Page not found.",
-  "rateLimited": "Too many requests. Please slow down.",
-  "quotaExhausted": "AI quota exhausted. Upgrade to Pro for more.",
-  "serverError": "Server error. Please try again later.",
-  "forbidden": "You don't have permission to do that.",
-  "invalidInput": "Please check your input and try again."
+  "generic": "Quelque chose s'est mal passé. Veuillez réessayer.",
+  "network": "Erreur réseau. Vérifie ta connexion.",
+  "unauthorized": "Tu dois être connecté pour faire ça.",
+  "notFound": "Page introuvable.",
+  "rateLimited": "Trop de requêtes. Veuillez ralentir.",
+  "quotaExhausted": "Quota IA épuisé. Passe à Pro pour en avoir plus.",
+  "serverError": "Erreur serveur. Veuillez réessayer plus tard.",
+  "forbidden": "Tu n'as pas la permission de faire ça.",
+  "invalidInput": "Vérifie ta saisie et réessaie."
 }

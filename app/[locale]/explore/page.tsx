@@ -13,6 +13,7 @@
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { hreflangAlternates } from '@/lib/hreflang';
 import { Compass } from 'lucide-react';
 import { cookies } from 'next/headers';
 import { jwtVerify } from 'jose';
@@ -37,17 +38,24 @@ async function getOptionalUser() {
   }
 }
 
-export const metadata: Metadata = {
-  title: 'Explore Flashcard Decks — FlashcardAI',
-  description:
-    'Browse thousands of free flashcard decks for medicine, pharmacy, chemistry, and more. ' +
-    'Copy any deck to your library and start studying with spaced repetition.',
-  openGraph: {
+export async function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Promise<Metadata> {
+  return {
     title: 'Explore Flashcard Decks — FlashcardAI',
-    description: 'Free SRS flashcard decks for medicine, pharmacy, chemistry, and more.',
-    type: 'website',
-  },
-};
+    description:
+      'Browse thousands of free flashcard decks for medicine, pharmacy, chemistry, and more. ' +
+      'Copy any deck to your library and start studying with spaced repetition.',
+    openGraph: {
+      title: 'Explore Flashcard Decks — FlashcardAI',
+      description: 'Free SRS flashcard decks for medicine, pharmacy, chemistry, and more.',
+      type: 'website',
+    },
+    alternates: hreflangAlternates(params.locale, '/explore'),
+  };
+}
 
 // ── Category metadata ─────────────────────────────────────────────────────────
 

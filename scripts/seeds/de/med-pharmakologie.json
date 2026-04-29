@@ -1,0 +1,69 @@
+{
+  "title": "Pharmakologie Grundlagen — Physikum",
+  "description": "Hochrangige Pharmakologie-Karten für das Physikum und Staatsexamen: Wirkmechanismen, Pharmakokinetik und wichtige Arzneimittelklassen.",
+  "emoji": "💊",
+  "color": "rose",
+  "subject": "medicine",
+  "cards": [
+    {
+      "front": "Welches Prinzip beschreibt die Pharmakokinetik mit den vier Phasen?",
+      "back": "ADME — Absorption, Distribution, Metabolismus, Elimination. Zusammen bestimmen sie den Wirkstoffspiegel im Blut über die Zeit."
+    },
+    {
+      "front": "Was ist der Unterschied zwischen einem Agonisten und einem Antagonisten?",
+      "back": "Agonist: bindet am Rezeptor und aktiviert ihn (Antwort = max. Effekt). Antagonist: bindet am Rezeptor, blockiert ihn, erzeugt aber keinen eigenen Effekt."
+    },
+    {
+      "front": "Wie wirken β-Blocker (β-Adrenorezeptor-Antagonisten)?",
+      "back": "Kompetitive Hemmung der β1/β2-Adrenorezeptoren → ↓ Herzfrequenz, ↓ Kontraktilität, ↓ Blutdruck. Einsatz: Hypertonie, koronare Herzkrankheit, Herzinsuffizienz."
+    },
+    {
+      "front": "Mechanismus der ACE-Hemmer (z. B. Ramipril)",
+      "back": "Hemmung des Angiotensin-konvertierenden Enzyms → ↓ Angiotensin II → Vasodilatation + ↓ Aldosteron → ↓ Blutdruck. NW: trockener Husten (Bradykinin ↑)."
+    },
+    {
+      "front": "Wie wirken Schleifendiuretika (z. B. Furosemid)?",
+      "back": "Hemmung des Na⁺/K⁺/2Cl⁻-Kotransporters in der Henle-Schleife → ↑ Natriurese, ↑ Diurese. Einsatz: Herzinsuffizienz, Ödeme, Hypertonie."
+    },
+    {
+      "front": "Wirkmechanismus von NSAIDs (z. B. Ibuprofen, ASS)",
+      "back": "Hemmung der Cyclooxygenase (COX-1 und COX-2) → ↓ Prostaglandinsynthese → analgetisch, antipyretisch, antiphlogistisch. ASS hemmt COX irreversibel."
+    },
+    {
+      "front": "Wie wirken Benzodiazepine?",
+      "back": "Positive allosterische Modulation am GABA-A-Rezeptor → ↑ Öffnungsfrequenz des Cl⁻-Kanals → Hyperpolarisation → ZNS-Dämpfung. Einsatz: Angst, Schlafstörungen, Epilepsie."
+    },
+    {
+      "front": "Welche Substanzklasse hemmt die Protonenpumpe (H⁺/K⁺-ATPase)?",
+      "back": "Protonenpumpeninhibitoren (PPIs) wie Omeprazol, Pantoprazol. Irreversible Hemmung der Magensäureproduktion. Einsatz: Ulkus, GERD."
+    },
+    {
+      "front": "Wirkmechanismus von Statinen (z. B. Simvastatin)",
+      "back": "Hemmung der HMG-CoA-Reduktase → ↓ Cholesterinsynthese in der Leber → ↑ LDL-Rezeptoren → ↓ LDL-Cholesterin. Einsatz: Hypercholesterinämie, KHK-Prävention."
+    },
+    {
+      "front": "Wie wirken Penicilline antibiotisch?",
+      "back": "Hemmung der Transpeptidasen (PBP = Penicillin-bindende Proteine) → gestörte Quervernetzung der bakteriellen Zellwand (Peptidoglykan) → Bakteriolyse. Nur bei sich teilenden Bakterien wirksam."
+    },
+    {
+      "front": "Was ist der Wirkungsmechanismus von Opioiden (z. B. Morphin)?",
+      "back": "Agonismus an μ-, κ- und δ-Opioidrezeptoren (Gi-Protein-gekoppelt) → ↓ cAMP, ↑ K⁺-Ausstrom, ↓ Ca²⁺-Einstrom → Hemmung der Schmerzübertragung. NW: Atemdepression, Obstipation, Euphorie."
+    },
+    {
+      "front": "Welche NW hat Metformin und warum wird es bei Niereninsuffizienz abgesetzt?",
+      "back": "NW: GI-Beschwerden, Laktatazidose (selten). Bei Niereninsuffizienz (eGFR < 30) Akkumulation → Laktatazidose-Risiko ↑ → Kontraindikation."
+    },
+    {
+      "front": "Wirkmechanismus von L-DOPA bei Parkinson",
+      "back": "L-DOPA überquert die Blut-Hirn-Schranke (Dopamin selbst nicht) → Umwandlung zu Dopamin durch DOPA-Decarboxylase → kompensiert Dopaminmangel im Striatum. Kombiniert mit Carbidopa (periphere Decarboxylase-Hemmung)."
+    },
+    {
+      "front": "Was beschreibt die biologische Verfügbarkeit (Bioverfügbarkeit)?",
+      "back": "Anteil (%) des Wirkstoffs, der nach extravaskuärer Applikation unverändert in den systemischen Kreislauf gelangt. i.v. = 100%. Beeinflusst durch First-Pass-Effekt, Absorption, Proteinbindung."
+    },
+    {
+      "front": "Welcher Effekt beschreibt die Abnahme der Wirkung bei wiederholter Gabe eines Opioids?",
+      "back": "Toleranz: Durch Rezeptor-Desensibilisierung und -Internalisierung nimmt die Wirkung trotz gleicher Dosis ab → höhere Dosis nötig. Davon getrennt: Abhängigkeit (physisch/psychisch)."
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "title": "Farmacología Básica — MIR",
+  "description": "Tarjetas de farmacología de alta rentabilidad para el MIR y EIR: mecanismos de acción, farmacocinética y clases farmacológicas esenciales.",
+  "emoji": "💊",
+  "color": "rose",
+  "subject": "medicine",
+  "cards": [
+    {
+      "front": "¿Cuáles son las 4 fases de la farmacocinética?",
+      "back": "ADME — Absorción, Distribución, Metabolismo y Excreción. Determinan la concentración plasmática del fármaco a lo largo del tiempo."
+    },
+    {
+      "front": "Diferencia entre agonista completo, agonista parcial y antagonista",
+      "back": "Agonista completo: eficacia máxima (Emax 100%). Agonista parcial: Emax < 100% aunque sature el receptor. Antagonista: sin efecto propio; desplaza al agonista (competitivo) o altera el receptor (no competitivo)."
+    },
+    {
+      "front": "Mecanismo de los betabloqueantes (ej. metoprolol, bisoprolol)",
+      "back": "Antagonistas competitivos de los receptores β1 (y β2) adrenérgicos → ↓ FC, ↓ gasto cardíaco, ↓ PA. Indicaciones: HTA, IC, cardiopatía isquémica, arritmias. Contraindicación: asma, BAV avanzado."
+    },
+    {
+      "front": "Mecanismo de los IECA (ej. enalapril, ramipril) y efecto adverso principal",
+      "back": "Inhiben la enzima convertidora de angiotensina → ↓ angiotensina II → vasodilatación + ↓ aldosterona → ↓ PA. EA principal: tos seca (↑ bradicinina). Contraindicación: embarazo, angioedema previo."
+    },
+    {
+      "front": "Mecanismo de los diuréticos del asa (ej. furosemida)",
+      "back": "Inhiben el cotransportador Na⁺/K⁺/2Cl⁻ en el asa de Henle → ↑↑ natriuresis y diuresis. Indicaciones: edema pulmonar agudo (iv urgente), IC, cirrosis. EA: hipopotasemia, hiponatremia, ototoxicidad (iv rápido)."
+    },
+    {
+      "front": "Mecanismo de los AINE (ej. ibuprofeno, diclofenaco, AAS)",
+      "back": "Inhibición de ciclooxigenasas COX-1 y COX-2 → ↓ prostaglandinas → analgesia, antipiresis, antiinflamación. AAS inhibe COX irreversiblemente. EA: úlcera GI (protección con IBP), IR, riesgo CV, broncoespasmo."
+    },
+    {
+      "front": "Mecanismo de las benzodiacepinas",
+      "back": "Modulación alostérica positiva del receptor GABA-A → ↑ frecuencia de apertura del canal Cl⁻ → hiperpolarización neuronal → ansiolítico, hipnótico, anticonvulsivante, miorrelajante. Antídoto: flumazenilo."
+    },
+    {
+      "front": "Mecanismo de los inhibidores de la bomba de protones (IBP)",
+      "back": "Inhibición irreversible de la H⁺/K⁺-ATPasa de las células parietales gástricas → ↓↓ secreción ácida. Indicaciones: ERGE, úlcera péptica, erradicación H. pylori, profilaxis AINE. Tomar en ayunas 30 min antes."
+    },
+    {
+      "front": "Mecanismo de las estatinas y vigilancia",
+      "back": "Inhibición de la HMG-CoA reductasa → ↓ síntesis hepática de colesterol → ↑ receptores LDL → ↓ LDL-c. Vigilar: CPK (miopatía/rabdomiólisis), transaminasas. Interacción: inhibidores CYP3A4 (claritromicina, zumo de pomelo)."
+    },
+    {
+      "front": "Mecanismo de la penicilina G y resistencias",
+      "back": "Inhibe las PBP (transpeptidasas) → defecto en la síntesis de peptidoglicano → lisis bacteriana. Resistencia: β-lactamasas (penicilinasa). Solución: asociar con inhibidores de β-lactamasa (ác. clavulánico, sulbactam, tazobactam)."
+    },
+    {
+      "front": "Mecanismo de los opioides y principales efectos adversos",
+      "back": "Agonistas de receptores μ, κ, δ (proteína Gi) → ↓ AMPc, ↑ K⁺, ↓ Ca²⁺ → inhibición de la nocicepción. EA: depresión respiratoria (antídoto: naloxona), estreñimiento, sedación, tolerancia, dependencia."
+    },
+    {
+      "front": "Metformina — mecanismo y contraindicaciones",
+      "back": "Biguanida: activa AMPK → ↓ gluconeogénesis hepática, ↑ sensibilidad insulínica. 1ª línea en DM2. CI: FG < 30 mL/min, contraste yodado, cirugía mayor (riesgo de acidosis láctica). No produce hipoglucemia en monoterapia."
+    },
+    {
+      "front": "¿Qué es el efecto de primer paso hepático?",
+      "back": "Tras absorción intestinal, el fármaco llega al hígado por vena porta y se metaboliza antes de alcanzar la circulación sistémica → ↓ biodisponibilidad oral. Ejemplos: morfina (30%), nitroglicerina (< 1%). Alternativas: sublingual, iv, transdérmico."
+    },
+    {
+      "front": "Levodopa + carbidopa en Parkinson — ¿por qué la combinación?",
+      "back": "Levodopa cruza la barrera hematoencefálica (dopamina no puede). La carbidopa inhibe la DOPA-descarboxilasa periférica → menos EA periféricos (náuseas, hipotensión) y más levodopa disponible para el SNC."
+    },
+    {
+      "front": "Corticoides — mecanismo y efectos adversos a largo plazo",
+      "back": "Fijación a receptores intracellulares → modulación génica → ↓ fosfolipasa A2 → ↓ prostaglandinas y leucotrienos. EA largo plazo: síndrome de Cushing iatrogénico, osteoporosis (suplementar Ca²⁺ + Vit D), DM, cataratas, infecciones. Retirada gradual obligatoria."
+    }
+  ]
+}

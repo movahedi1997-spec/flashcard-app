@@ -1,0 +1,69 @@
+{
+  "title": "Pharmacologie Fondamentale — EDN",
+  "description": "Cartes de pharmacologie haute densité pour l'EDN et les ECOS : mécanismes d'action, pharmacocinétique et classes médicamenteuses essentielles.",
+  "emoji": "💊",
+  "color": "rose",
+  "subject": "medicine",
+  "cards": [
+    {
+      "front": "Quelles sont les 4 phases de la pharmacocinétique ?",
+      "back": "ADME — Absorption, Distribution, Métabolisme, Élimination. Ensemble, elles déterminent la concentration plasmatique du médicament au fil du temps."
+    },
+    {
+      "front": "Différence entre agoniste complet, agoniste partiel et antagoniste",
+      "back": "Agoniste complet : efficacité maximale (Emax = 100%). Agoniste partiel : Emax < 100% même à saturation. Antagoniste : aucun effet propre, déplace l'agoniste (compétitif) ou modifie le récepteur (non compétitif)."
+    },
+    {
+      "front": "Mécanisme d'action des bêta-bloquants (ex. bisoprolol)",
+      "back": "Antagonistes compétitifs des récepteurs β1 (et β2) adrénergiques → ↓ FC, ↓ débit cardiaque, ↓ PA. Indications : HTA, insuffisance cardiaque, angor, arythmies. Contre-indication : asthme, BAV."
+    },
+    {
+      "front": "Mécanisme et effets secondaires des IEC (ex. ramipril)",
+      "back": "Inhibition de l'enzyme de conversion → ↓ angiotensine II → vasodilatation + ↓ aldostérone → ↓ PA. EI majeur : toux sèche (accumulation de bradykinine), angio-œdème (rare). CI : grossesse."
+    },
+    {
+      "front": "Mécanisme des diurétiques de l'anse (ex. furosémide)",
+      "back": "Inhibition du cotransporteur Na⁺/K⁺/2Cl⁻ dans l'anse de Henle → forte natriurèse et diurèse. Indications : OAP (i.v. en urgence), insuffisance cardiaque, œdèmes réfractaires. EI : hypokaliémie, hyponatrémie."
+    },
+    {
+      "front": "Mécanisme des AINS (ex. ibuprofène, aspirine)",
+      "back": "Inhibition des cyclo-oxygénases COX-1 et COX-2 → ↓ prostaglandines → effet antalgique, antipyrétique, anti-inflammatoire. L'aspirine inhibe COX de façon irréversible. EI : ulcère GI, insuffisance rénale, risque CV."
+    },
+    {
+      "front": "Comment les benzodiazépines agissent-elles ?",
+      "back": "Modulation allostérique positive du récepteur GABA-A → ↑ fréquence d'ouverture du canal Cl⁻ → hyperpolarisation neuronale → effet anxiolytique, hypnotique, anticonvulsivant, myorelaxant."
+    },
+    {
+      "front": "Mécanisme des IPP (ex. oméprazole)",
+      "back": "Inhibition irréversible de la H⁺/K⁺-ATPase (pompe à protons) des cellules pariétales → ↓↓ sécrétion acide gastrique. Indications : RGO, ulcère gastroduodénal, éradication H. pylori (triple thérapie)."
+    },
+    {
+      "front": "Mécanisme des statines et surveillance",
+      "back": "Inhibition de la HMG-CoA réductase → ↓ synthèse hépatique de cholestérol → ↑ récepteurs LDL → ↓ LDL-cholestérol. Surveillance : transaminases + CPK (risque de myopathie/rhabdomyolyse). Interaction : pamplemousse (CYP3A4)."
+    },
+    {
+      "front": "Mécanisme d'action de la pénicilline G",
+      "back": "Inhibition des PLP (protéines liant les pénicillines = transpeptidases) → défaut de synthèse de la paroi bactérienne (peptidoglycane) → lyse bactérienne. Actif seulement sur les bactéries en phase de croissance."
+    },
+    {
+      "front": "Mécanisme des opioïdes et principaux effets indésirables",
+      "back": "Agonistes des récepteurs μ, κ, δ (protéines Gi) → ↓ AMPc, ↑ K⁺, ↓ Ca²⁺ → inhibition de la transmission nociceptive. EI : dépression respiratoire (antidote : naloxone), constipation, sédation, tolérance, dépendance."
+    },
+    {
+      "front": "Métformine — mécanisme et contre-indications principales",
+      "back": "Biguanide : activation de l'AMPK → ↓ néoglucogenèse hépatique, ↑ sensibilité à l'insuline. 1re intention dans le DT2. CI : DFG < 30 mL/min, injection de produit de contraste iodé (risque d'acidose lactique)."
+    },
+    {
+      "front": "Qu'est-ce que l'effet de premier passage hépatique ?",
+      "back": "Après absorption intestinale, le médicament passe par la veine porte → foie → métabolisme avant d'atteindre la circulation générale. Réduit la biodisponibilité orale (ex. morphine 30%, lidocaïne < 5%). Contournement : voie sublinguale, i.v., transdermique."
+    },
+    {
+      "front": "L-DOPA + carbidopa dans la maladie de Parkinson — pourquoi combiner ?",
+      "back": "L-DOPA franchit la barrière hémato-encéphalique (la dopamine ne le peut pas). La carbidopa inhibe la DOPA-décarboxylase périphérique → moins d'effets secondaires périphériques (nausées, hypotension) et plus de L-DOPA disponible pour le SNC."
+    },
+    {
+      "front": "Corticoïdes — mécanisme et effets secondaires au long cours",
+      "back": "Fixation sur les récepteurs intracellulaires → modulation de la transcription génique → ↓ phospholipase A2 → ↓ prostaglandines et leucotriènes. EI long cours : syndrome de Cushing iatrogène, ostéoporose, diabète, infections opportunistes, insuffisance surrénale au sevrage."
+    }
+  ]
+}

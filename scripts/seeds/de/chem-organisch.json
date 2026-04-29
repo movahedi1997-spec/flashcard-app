@@ -1,0 +1,69 @@
+{
+  "title": "Organische Chemie — Grundlagen & Reaktionen",
+  "description": "Kernkonzepte der organischen Chemie: Reaktionsmechanismen, Stereochemie und funktionelle Gruppen für Studium und Abitur.",
+  "emoji": "⚗️",
+  "color": "sky",
+  "subject": "chemistry",
+  "cards": [
+    {
+      "front": "SN1 vs. SN2 — Hauptunterschiede",
+      "back": "SN1: zweistufig, Carbokation-Zwischenstufe, bevorzugt tertiäre Substrate, Racemisierung, polare protische LM. SN2: einstufig, Walden-Umkehr (Inversion), bevorzugt primäre Substrate, polare aprotische LM."
+    },
+    {
+      "front": "Markovnikov-Regel",
+      "back": "Bei Addition von HX an ein asymmetrisches Alken lagert sich H an den C-Atom mit dem größten H-Anteil an (Proton an das wasserstoffreichere C). Erklärt durch Stabilität des Carbokation-Zwischenprodukts."
+    },
+    {
+      "front": "Was ist ein Grignard-Reagenz und wie reagiert es?",
+      "back": "RMgX (Alkylmagnesiumhalogenid) — nucleophile Reaktion mit Carbonylverbindungen (Aldehyde → sekundärer Alkohol, Ketone → tertiärer Alkohol, CO₂ → Carbonsäure). Herstellung aus Alkylhalogenid + Mg in abs. Ether."
+    },
+    {
+      "front": "Aldolreaktion — Produkt und Bedingungen",
+      "back": "Reaktion zweier Carbonylverbindungen (H als α-C-Säure und eine als Elektrophil) → β-Hydroxycarbonylverbindung (Aldol). Bei Erhitzen: Aldolkondensation → α,β-ungesättigte Carbonylverbindung (Wasser wird eliminiert)."
+    },
+    {
+      "front": "Diels-Alder-Reaktion — Prinzip und Stereochemie",
+      "back": "[4+2]-Cycloaddition zwischen einem konjugierten Dien (s-cis-Konformation) und einem dienophilen Alken. Stereoselektiv: syn-Addition → endo-Produkt (Hauptprodukt, kinetisch). Wichtig für Sechsring-Synthesen."
+    },
+    {
+      "front": "Fischer-Veresterung — Reaktion und Gleichgewicht",
+      "back": "Carbonsäure + Alkohol ⇌ Ester + Wasser (säurekatalysiert, reversibel). Gleichgewicht durch Wasserentzug (Trockenmittel, azeotrope Destillation) oder Überschuss eines Reaktanden auf die Produktseite schieben."
+    },
+    {
+      "front": "Was sind Enantiomere und Diastereomere?",
+      "back": "Enantiomere: Stereoisomere, die sich wie Bild und Spiegelbild verhalten (alle Stereozentrenzuordnungen invertiert). Diastereomere: Stereoisomere, die keine Spiegelbilder sind (mindestens ein Zentrum gleich, eines verschieden). Epimere: Diastereomere, die sich an genau einem Zentrum unterscheiden."
+    },
+    {
+      "front": "Aromatizität — Hückel-Regel",
+      "back": "Aromatisch: planarer, cyclisch konjugierter Ring mit (4n+2) π-Elektronen (n = 0,1,2,…). Bsp: Benzol (6 e⁻), Naphthalin (10 e⁻), Cyclopentadienyl-Anion (6 e⁻). Antiaromat: 4n π-Elektronen."
+    },
+    {
+      "front": "Eliminierungsreaktion E1 vs. E2",
+      "back": "E1: zweistufig, Carbokation-ZS, tertiäre Substrate, schwache Base, Zaitsev-Produkt. E2: einstufig, antiperiplanare Anordnung von H und Abgangsgruppe nötig, starke Base, stereospezifisch (trans-Alken bevorzugt)."
+    },
+    {
+      "front": "Oxidationsstufe des Kohlenstoffs — Reihenfolge",
+      "back": "Alkan < Alken < Alkohol < Aldehyd < Carbonsäure < CO₂. Merke: Oxidation = Elektronenverlust / Zunahme der C–O-Bindungen oder Abnahme der C–H-Bindungen."
+    },
+    {
+      "front": "Induktiver vs. mesomerer Effekt",
+      "back": "+I-Effekt (elektronenschiebend, σ-Bindung): Alkylgruppen. −I-Effekt: Halogen, OH, COOH. +M-Effekt (Konjugation, π-System): −NH₂, −OH, −OR (Elektronendonatoren). −M-Effekt: C=O, NO₂ (Akzeptoren). Entscheidend für Reaktivität und Regioselektivität."
+    },
+    {
+      "front": "Was ist ein nukleophiler Aromat-Angriff (SEAr)?",
+      "back": "Elektrophile aromatische Substitution: Elektrophil greift am aromatischen Ring an → σ-Komplex (Areniumion/Meisenheimer) → Deprotonierung → aromatisches Produkt. Beispiele: Nitrierung, Halogenierung (FeBr₃), Friedel-Crafts."
+    },
+    {
+      "front": "Konstitutionsisomere, Konformationsisomere, Konfigurationsisomere — Unterschiede",
+      "back": "Konstitutionsisomere: gleiche Formel, unterschiedliche Bindungsverknüpfung (z. B. n-Butan/Isobutan). Konformationsisomere: ineinander überführbar durch Rotation (Staffel-/Sesselkonformation). Konfigurationsisomere: nicht ohne Bindungsbruch ineinander überführbar (E/Z, R/S)."
+    },
+    {
+      "front": "Was beschreibt der pKa-Wert einer Carbonsäure?",
+      "back": "pKa = negativer dekadischer Logarithmus der Säurekonstante Ka. Niedrigerer pKa = stärkere Säure. Carbonsäuren: pKa ~4–5 (z. B. Essigsäure 4,75). Durch EW-Substituenten ↓ pKa (stärker). Henderson-Hasselbalch: pH = pKa + log([A⁻]/[HA])."
+    },
+    {
+      "front": "Kolbe-Elektrolyse — Produkt und Bedeutung",
+      "back": "Oxidative Decarboxylierung von Carbonsäure-Anionen an der Anode → Alkylradikal → Kupplung → Alkan (R–R). Bsp: 2 CH₃COO⁻ → C₂H₆ + 2 CO₂. Historisch erste elektrochemische Kohlenstoff-Kohlenstoff-Knüpfung."
+    }
+  ]
+}

@@ -86,16 +86,26 @@ async function main() {
     [creator.id],
   );
 
-  // Read all seed JSON files
+  // Collect all seed JSON files — root dir + one level of locale subdirectories (en/de/fr/es/fa)
   const seedsDir = path.join(process.cwd(), 'scripts', 'seeds');
-  const files = fs.readdirSync(seedsDir).filter((f) => f.endsWith('.json'));
-  console.log(`\n📂  Found ${files.length} seed file(s) in scripts/seeds/\n`);
+  const allFiles: string[] = [];
+  for (const entry of fs.readdirSync(seedsDir)) {
+    const entryPath = path.join(seedsDir, entry);
+    if (fs.statSync(entryPath).isDirectory()) {
+      for (const f of fs.readdirSync(entryPath)) {
+        if (f.endsWith('.json')) allFiles.push(path.join(entryPath, f));
+      }
+    } else if (entry.endsWith('.json')) {
+      allFiles.push(entryPath);
+    }
+  }
+  console.log(`\n📂  Found ${allFiles.length} seed file(s) in scripts/seeds/ (incl. locale subdirs)\n`);
 
   let imported = 0;
   let skipped  = 0;
 
-  for (const file of files) {
-    const raw  = fs.readFileSync(path.join(seedsDir, file), 'utf-8');
+  for (const file of allFiles) {
+    const raw  = fs.readFileSync(file, 'utf-8');
     const deck = JSON.parse(raw) as SeedDeck;
 
     // Idempotency check — skip if deck with same title already exists for this user

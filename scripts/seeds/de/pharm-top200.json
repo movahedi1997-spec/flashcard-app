@@ -1,0 +1,69 @@
+{
+  "title": "Top 200 Arzneimittel — Pharmazeutische Grundlagen",
+  "description": "Die 200 meistverordneten Arzneimittel in Deutschland: Wirkstoffklasse, Indikation und wichtige Nebenwirkungen auf einen Blick.",
+  "emoji": "🏥",
+  "color": "emerald",
+  "subject": "pharmacy",
+  "cards": [
+    {
+      "front": "Metoprolol — Klasse, Indikation, wichtigste NW",
+      "back": "Klasse: β1-selektiver Blocker. Indikation: Hypertonie, KHK, Herzinsuffizienz, Tachyarrhythmien. NW: Bradykardie, Müdigkeit, Bronchospasmus (bei hohen Dosen), Kältegefühl Hände/Füße."
+    },
+    {
+      "front": "Ramipril — Klasse, Indikation, wichtigste NW",
+      "back": "Klasse: ACE-Hemmer. Indikation: Hypertonie, Herzinsuffizienz, Nephroprotektktion bei Diabetes. NW: trockener Reizhusten (Bradykinin), Hypotonie (erste Dosis), Hyperkaliämie, Angioödem (selten)."
+    },
+    {
+      "front": "Amlodipin — Klasse, Indikation, wichtigste NW",
+      "back": "Klasse: Calciumkanalblocker (Dihydropyridin). Indikation: Hypertonie, stabile Angina pectoris. NW: Fußknöchelödeme, Flush, Palpitationen. Kein negativ inotroper Effekt."
+    },
+    {
+      "front": "Simvastatin — Klasse, Indikation, wichtigste NW",
+      "back": "Klasse: Statin (HMG-CoA-Reduktase-Hemmer). Indikation: Hypercholesterinämie, KHK-Prävention. NW: Myopathie/Rhabdomyolyse (CK-Kontrolle!), ↑ Transaminasen, GI-Beschwerden."
+    },
+    {
+      "front": "Metformin — Klasse, Indikation, Kontraindikation",
+      "back": "Klasse: Biguanid. Indikation: Diabetes mellitus Typ 2 (Mittel der 1. Wahl). Kontraindikation: eGFR < 30, Kontrastmittelgabe, Operationen (Laktatazidose-Risiko). Keine Hypoglykämie."
+    },
+    {
+      "front": "Omeprazol / Pantoprazol — Klasse, Indikation",
+      "back": "Klasse: Protonenpumpeninhibitoren (PPIs). Indikation: GERD, peptisches Ulkus (inkl. H.-pylori-Eradikation), NSAR-Prophylaxe, Zollinger-Ellison-Syndrom. Cave: Magnesiummangel bei Langzeittherapie."
+    },
+    {
+      "front": "Ibuprofen — Klasse, Indikation, wichtigste NW",
+      "back": "Klasse: NSAID (nicht-selektiver COX-Hemmer). Indikation: Schmerz, Fieber, Entzündung. NW: GI-Ulzera (PPI-Schutz!), Nierenfunktionsstörung, ↑ kardiovaskuläres Risiko, Bronchokonstriktion bei ASS-Asthma."
+    },
+    {
+      "front": "Amoxicillin — Klasse, Spektrum, wichtigste NW",
+      "back": "Klasse: Aminopenicillin (β-Lactam). Spektrum: grampositiv + gramnegativ (H. influenzae, E. coli). NW: allergische Reaktion (Exanthem!), GI-Beschwerden, pseudomembranöse Kolitis. Cave: Ampicillin-Exanthem bei EBV."
+    },
+    {
+      "front": "Ciprofloxacin — Klasse, Spektrum, wichtigste NW",
+      "back": "Klasse: Fluorchinolon. Spektrum: gramnegativ (inkl. Pseudomonas), atypische Erreger. NW: Sehnenrupturen (cave Älterey + Kortison), Photosensitivität, QT-Verlängerung, GI-Beschwerden. Interaktion: Antazida ↓ Resorption."
+    },
+    {
+      "front": "Sertralin — Klasse, Indikation, wichtigste NW",
+      "back": "Klasse: SSRI (selektiver Serotonin-Wiederaufnahme-Hemmer). Indikation: Depression, Angststörungen, OCD, Panikstörung. NW: Übelkeit (initial), sexuelle Dysfunktion, Schlafstörungen, Serotonin-Syndrom (mit MAO-Hemmern)."
+    },
+    {
+      "front": "Levothyroxin (L-Thyroxin) — Indikation, wichtige Einnahmehinweise",
+      "back": "Indikation: Hypothyreose, Schilddrüsenhormonersatz nach Thyreoidektomie. Einnahme: nüchtern, 30 min vor dem Frühstück. Interaktionen: Kalzium, Eisen, PPIs ↓ Resorption. TSH-Kontrolle alle 6–12 Monate."
+    },
+    {
+      "front": "Furosemid — Klasse, Indikation, wichtigste NW",
+      "back": "Klasse: Schleifendiuretikum. Indikation: Herzinsuffizienz, Lungenödem (i.v.), chronische Ödeme, Hypertonie (2. Wahl). NW: Hypokaliämie, Hyponatriämie, Hypovolämie, Hyperurikämie, Ototoxizität (hohe i.v.-Dosen)."
+    },
+    {
+      "front": "Hydrochlorothiazid (HCT) — Klasse, Indikation, NW",
+      "back": "Klasse: Thiaziddiuretikum. Indikation: Hypertonie (oft Kombination), leichte Ödeme. NW: Hypokaliämie, Hyperurikämie (Gicht), Hyponatriämie, Glukoseintoleranz, Hyperlipidämie."
+    },
+    {
+      "front": "Candesartan / Losartan — Klasse, Unterschied zu ACE-Hemmern",
+      "back": "Klasse: AT1-Antagonisten (Sartane). Selektive Blockade des Angiotensin-II-Typ-1-Rezeptors → ähnlicher Effekt wie ACE-Hemmer. Vorteil: kein Husten (kein Bradykinin-Anstieg). Kontraindikation: Schwangerschaft."
+    },
+    {
+      "front": "Prednisolon — Klasse, Indikation, Cushing-Schwellendosis",
+      "back": "Klasse: Glukokortikoid. Indikation: Autoimmunerkrankungen, Asthma-Exazerbation, allergische Reaktionen, Immunsuppression. Cushing-Schwellendosis: > 7,5 mg/Tag über Wochen. NW: Osteoporose, Hyperglykämie, Infektanfälligkeit."
+    }
+  ]
+}

@@ -1,33 +1,33 @@
 {
-  "badge": "Almost there — one quick question",
-  "title": "What are you studying?",
-  "subtitle": "We'll add a starter deck to your library so you can jump in right away.",
-  "continueWith": "Start with {deck} →",
-  "pickSubject": "Pick a subject to continue",
-  "settingUp": "Setting up your library…",
-  "footer": "You can always add decks from any subject later.",
+  "badge": "Fast geschafft — eine kurze Frage",
+  "title": "Was lernst du?",
+  "subtitle": "Wir fügen deiner Bibliothek ein Starter-Deck hinzu, damit du sofort loslegen kannst.",
+  "continueWith": "Starten mit {deck} →",
+  "pickSubject": "Wähle ein Fach, um fortzufahren",
+  "settingUp": "Deine Bibliothek wird eingerichtet…",
+  "footer": "Du kannst jederzeit Decks aus allen Fachbereichen hinzufügen.",
   "subjects": {
-    "medicine": { "label": "Medicine", "sub": "USMLE Step 1 · Step 2 · Boards", "deck": "Pharmacology Fundamentals" },
-    "pharmacy": { "label": "Pharmacy", "sub": "NAPLEX · MPJE · Drug Therapy", "deck": "Top 200 Drugs" },
-    "chemistry": { "label": "Chemistry", "sub": "AP Chem · Organic · Biochemistry", "deck": "AP Chemistry" },
-    "other": { "label": "Other / Mixed", "sub": "General studying · Custom decks", "deck": "Pharmacology Fundamentals" }
+    "medicine": { "label": "Medizin", "sub": "Physikum · Staatsexamen · Klinik", "deck": "Pharmakologie Grundlagen" },
+    "pharmacy": { "label": "Pharmazie", "sub": "Apothekerwesen · Pharmakologie · APTA", "deck": "Top 200 Arzneimittel" },
+    "chemistry": { "label": "Chemie", "sub": "Organische Chemie · Biochemie · Analytik", "deck": "Organische Chemie AP" },
+    "other": { "label": "Sonstige / Gemischt", "sub": "Allgemeines Lernen · Eigene Decks", "deck": "Pharmakologie Grundlagen" }
   },
   "teaser": {
-    "title": "What you get",
-    "freePlan": "Free",
+    "title": "Was du bekommst",
+    "freePlan": "Kostenlos",
     "proPlan": "Pro",
-    "upgradeButton": "Upgrade to Pro →",
+    "upgradeButton": "Jetzt upgraden →",
     "freeFeatures": [
-      "189 AI cards / month",
-      "49 card improvements / month",
-      "Spaced repetition (SRS)",
-      "Public & private decks"
+      "189 KI-Karten / Monat",
+      "49 Kartenverbesserungen / Monat",
+      "Spaced Repetition (SRS)",
+      "Öffentliche & private Decks"
     ],
     "proFeatures": [
-      "499 AI cards / month",
-      "299 card improvements / month",
-      "Advanced SRS analytics",
-      "Premium deck themes"
+      "499 KI-Karten / Monat",
+      "299 Kartenverbesserungen / Monat",
+      "Erweiterte SRS-Analysen",
+      "Premium Deck-Designs"
     ]
   }
 }

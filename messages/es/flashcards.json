@@ -1,48 +1,48 @@
 {
-  "title": "My Flashcards",
-  "newDeck": "New Deck",
-  "aiGenerate": "AI Generate",
-  "study": "Study",
-  "edit": "Edit",
-  "delete": "Delete",
-  "share": "Share",
-  "cards": "{count, plural, one {# card} other {# cards}}",
-  "copyCount": "{count} {count, plural, one {copy} other {copies}}",
-  "emptyTitle": "No decks yet",
-  "emptySubtitle": "Create your first deck to get started",
+  "title": "Mis tarjetas",
+  "newDeck": "Nuevo mazo",
+  "aiGenerate": "Generar con IA",
+  "study": "Estudiar",
+  "edit": "Editar",
+  "delete": "Eliminar",
+  "share": "Compartir",
+  "cards": "{count, plural, one {# tarjeta} other {# tarjetas}}",
+  "copyCount": "{count} {count, plural, one {copia} other {copias}}",
+  "emptyTitle": "Sin mazos todavía",
+  "emptySubtitle": "Crea tu primer mazo para empezar",
   "createDeck": {
-    "title": "Create New Deck",
-    "titleLabel": "Title",
-    "titlePlaceholder": "e.g. USMLE Pharmacology",
-    "descriptionLabel": "Description",
-    "descriptionPlaceholder": "Optional deck description…",
-    "submit": "Create Deck"
+    "title": "Crear nuevo mazo",
+    "titleLabel": "Título",
+    "titlePlaceholder": "ej. Farmacología MIR",
+    "descriptionLabel": "Descripción",
+    "descriptionPlaceholder": "Descripción opcional del mazo…",
+    "submit": "Crear mazo"
   },
   "editDeck": {
-    "title": "Edit Deck",
-    "submit": "Save Changes"
+    "title": "Editar mazo",
+    "submit": "Guardar cambios"
   },
   "deleteDeck": {
-    "title": "Delete Deck",
-    "message": "Are you sure you want to delete \"{name}\"? This will permanently delete all {count} {count, plural, one {card} other {cards}}. This action cannot be undone.",
-    "confirm": "Delete Deck",
-    "cancel": "Cancel"
+    "title": "Eliminar mazo",
+    "message": "¿Seguro que quieres eliminar «{name}»? Esto eliminará permanentemente las {count} {count, plural, one {tarjeta} other {tarjetas}}. Esta acción no se puede deshacer.",
+    "confirm": "Eliminar mazo",
+    "cancel": "Cancelar"
   },
   "shareDeck": {
-    "title": "Share Deck",
-    "makePublic": "Make public",
-    "makePrivate": "Make private",
-    "publicUrl": "Public URL",
-    "copyLink": "Copy link",
-    "copied": "Copied!"
+    "title": "Compartir mazo",
+    "makePublic": "Hacer público",
+    "makePrivate": "Hacer privado",
+    "publicUrl": "URL pública",
+    "copyLink": "Copiar enlace",
+    "copied": "¡Copiado!"
   },
   "card": {
-    "front": "Front",
-    "back": "Back",
-    "addCard": "Add Card",
-    "editCard": "Edit Card",
-    "deleteCard": "Delete Card",
-    "aiImprove": "AI Improve",
-    "aiGenerated": "AI generated"
+    "front": "Anverso",
+    "back": "Reverso",
+    "addCard": "Añadir tarjeta",
+    "editCard": "Editar tarjeta",
+    "deleteCard": "Eliminar tarjeta",
+    "aiImprove": "Mejorar con IA",
+    "aiGenerated": "Generado por IA"
   }
 }

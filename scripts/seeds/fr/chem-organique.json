@@ -1,0 +1,69 @@
+{
+  "title": "Chimie Organique — Fondamentaux & Réactions",
+  "description": "Concepts clés de chimie organique : mécanismes réactionnels, stéréochimie et groupes fonctionnels pour les études de santé et de chimie.",
+  "emoji": "⚗️",
+  "color": "sky",
+  "subject": "chemistry",
+  "cards": [
+    {
+      "front": "SN1 vs SN2 — différences principales",
+      "back": "SN1 : 2 étapes, carbocation intermédiaire, substrat tertiaire favorisé, racémisation, solvant polaire protique. SN2 : 1 étape concertée, inversion de Walden, substrat primaire favorisé, solvant polaire aprotique (acétone, DMF)."
+    },
+    {
+      "front": "Règle de Markovnikov",
+      "back": "Lors de l'addition de HX sur un alcène asymétrique, H se fixe sur le carbone le plus hydrogéné (le carbocation le plus stable se forme). Exemple : propène + HBr → 2-bromopropane (et non 1-bromopropane)."
+    },
+    {
+      "front": "Réactif de Grignard — structure et réactivité",
+      "back": "R-MgX (halogénure d'alkylmagnésium). Nucléophile puissant : réagit avec aldéhydes (→ alcool 2°), cétones (→ alcool 3°), esters (→ alcool 3° + diol), CO₂ (→ acide carboxylique). Préparation dans l'éther anhydre absolu."
+    },
+    {
+      "front": "Condensation aldolique — principe",
+      "back": "En milieu basique, le carbanion α (énolate) attaque le carbonyle d'une autre molécule → β-hydroxy-carbonyle (aldol). Par chauffage, déshydratation → composé α,β-insaturé (énal ou énone). Réaction fondamentale de formation C–C."
+    },
+    {
+      "front": "Réaction de Diels-Alder — caractéristiques",
+      "back": "[4+2] cycloaddition entre un diène conjugué (conformation s-cis obligatoire) et un diénophile (activé par groupes attracteurs). Stéréosélective : syn-addition, produit endo majoritaire (cinétique). Forme un cyclohexène."
+    },
+    {
+      "front": "Estérification de Fischer — équilibre et déplacement",
+      "back": "Acide carboxylique + alcool ⇌ ester + eau (catalyse acide, réversible). Déplacement de l'équilibre : excès d'alcool, élimination de l'eau (desséchant, distillation azéotropique). Hydrolyse de l'ester : ajout d'eau en excès."
+    },
+    {
+      "front": "Énantiomères vs. diastéréomères",
+      "back": "Énantiomères : images non superposables l'une à l'autre (tous les centres stéréogènes inversés). Diastéréomères : stéréoisomères non énantiomères (au moins un centre identique). Épimères : diastéréomères différant en un seul centre."
+    },
+    {
+      "front": "Aromaticité — règle de Hückel",
+      "back": "Cyclique, plan, conjugué, (4n+2) électrons π (n entier ≥ 0). Ex : benzène (6e⁻), naphtalène (10e⁻), ion cyclopentadiényle anion (6e⁻). Anti-aromatique : 4n e⁻ π (destabilisé). Non aromatique : non conjugué ou non cyclique."
+    },
+    {
+      "front": "Élimination E1 vs. E2",
+      "back": "E1 : 2 étapes, carbocation intermédiaire, substrat tertiaire, base faible, produit Zaïtsev. E2 : 1 étape, base forte, géométrie anti-périplanaire (H et groupe partant en trans), stéréospécifique → alcène trans majoritaire. Favorisé par bases volumineuses (alcool-tBuO⁻) → produit Hofmann."
+    },
+    {
+      "front": "Degrés d'oxydation du carbone — ordre croissant",
+      "back": "Alcane < alcène/alcyne < alcool < aldéhyde < acide carboxylique < CO₂. Oxydation = perte d'H ou gain d'O liés au C. Réduction = l'inverse (NaBH₄, LiAlH₄ pour les réduire)."
+    },
+    {
+      "front": "Effet inductif vs. effet mésomère",
+      "back": "+I : groupes alkyle (donne des électrons par σ). −I : halogènes, OH, COOH. +M : −NH₂, −OH, −OR (donneurs en conjugaison). −M : C=O, NO₂, CN (attracteurs en conjugaison). Le mésomère > inductif si les deux coexistent."
+    },
+    {
+      "front": "Substitution électrophile aromatique (SEAr) — étapes",
+      "back": "1) Électrophile (E⁺) attaque le cycle → complexe σ (arénonium, perte de l'aromaticité). 2) Déprotonation → produit aromatique substitué + H⁺. Exemples : nitration (HNO₃/H₂SO₄), halogénation (FeBr₃), Friedel-Crafts (AlCl₃)."
+    },
+    {
+      "front": "Isomérie constitutionnelle vs. stéréoisomérie — distinction",
+      "back": "Isomères constitutionnels : même formule brute, connectivité différente (ex : butane/isobutane). Stéréoisomères : même connectivité, disposition spatiale différente. Sous-catégories : conformationnel (rotation), configurationnel (E/Z, R/S — interconversion nécessite rupture de liaison)."
+    },
+    {
+      "front": "pKa d'un acide et facteurs qui le modifient",
+      "back": "pKa = −log Ka. Acide fort → pKa faible. Facteurs stabilisant l'anion conjugué → acide plus fort : effet inductif −I (ex. haloglènes), résonance (phénol < alcool), hybridation (sp > sp² > sp³ — l'alcyne est le plus acide des hydrocarbures)."
+    },
+    {
+      "front": "Synthèse de Williamson",
+      "back": "Formation d'un éther : alcoolate (nucléophile fort) + halogénure d'alkyle primaire (mécanisme SN2) → éther R–O–R' + halogénure. Le substrat doit être primaire (sinon élimination préférentielle). Exemple : CH₃O⁻ + C₂H₅Br → CH₃OC₂H₅ (éther méthyl éthylique)."
+    }
+  ]
+}

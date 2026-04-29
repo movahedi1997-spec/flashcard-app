@@ -1,48 +1,48 @@
 {
-  "title": "My Flashcards",
-  "newDeck": "New Deck",
-  "aiGenerate": "AI Generate",
-  "study": "Study",
-  "edit": "Edit",
-  "delete": "Delete",
-  "share": "Share",
-  "cards": "{count, plural, one {# card} other {# cards}}",
-  "copyCount": "{count} {count, plural, one {copy} other {copies}}",
-  "emptyTitle": "No decks yet",
-  "emptySubtitle": "Create your first deck to get started",
+  "title": "Mes fiches",
+  "newDeck": "Nouveau deck",
+  "aiGenerate": "Générer avec l'IA",
+  "study": "Étudier",
+  "edit": "Modifier",
+  "delete": "Supprimer",
+  "share": "Partager",
+  "cards": "{count, plural, one {# fiche} other {# fiches}}",
+  "copyCount": "{count} {count, plural, one {copie} other {copies}}",
+  "emptyTitle": "Aucun deck pour l'instant",
+  "emptySubtitle": "Crée ton premier deck pour commencer",
   "createDeck": {
-    "title": "Create New Deck",
-    "titleLabel": "Title",
-    "titlePlaceholder": "e.g. USMLE Pharmacology",
+    "title": "Créer un nouveau deck",
+    "titleLabel": "Titre",
+    "titlePlaceholder": "ex. Pharmacologie EDN",
     "descriptionLabel": "Description",
-    "descriptionPlaceholder": "Optional deck description…",
-    "submit": "Create Deck"
+    "descriptionPlaceholder": "Description optionnelle du deck…",
+    "submit": "Créer le deck"
   },
   "editDeck": {
-    "title": "Edit Deck",
-    "submit": "Save Changes"
+    "title": "Modifier le deck",
+    "submit": "Enregistrer les modifications"
   },
   "deleteDeck": {
-    "title": "Delete Deck",
-    "message": "Are you sure you want to delete \"{name}\"? This will permanently delete all {count} {count, plural, one {card} other {cards}}. This action cannot be undone.",
-    "confirm": "Delete Deck",
-    "cancel": "Cancel"
+    "title": "Supprimer le deck",
+    "message": "Es-tu sûr de vouloir supprimer « {name} » ? Cela supprimera définitivement les {count} {count, plural, one {fiche} other {fiches}}. Cette action est irréversible.",
+    "confirm": "Supprimer le deck",
+    "cancel": "Annuler"
   },
   "shareDeck": {
-    "title": "Share Deck",
-    "makePublic": "Make public",
-    "makePrivate": "Make private",
-    "publicUrl": "Public URL",
-    "copyLink": "Copy link",
-    "copied": "Copied!"
+    "title": "Partager le deck",
+    "makePublic": "Rendre public",
+    "makePrivate": "Rendre privé",
+    "publicUrl": "URL publique",
+    "copyLink": "Copier le lien",
+    "copied": "Copié !"
   },
   "card": {
-    "front": "Front",
-    "back": "Back",
-    "addCard": "Add Card",
-    "editCard": "Edit Card",
-    "deleteCard": "Delete Card",
-    "aiImprove": "AI Improve",
-    "aiGenerated": "AI generated"
+    "front": "Recto",
+    "back": "Verso",
+    "addCard": "Ajouter une fiche",
+    "editCard": "Modifier la fiche",
+    "deleteCard": "Supprimer la fiche",
+    "aiImprove": "Améliorer avec l'IA",
+    "aiGenerated": "Généré par l'IA"
   }
 }

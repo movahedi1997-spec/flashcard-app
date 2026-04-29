@@ -1,9 +1,9 @@
 {
-  "welcome": "Welcome back, {name}! 👋",
-  "readyToStudy": "Ready to sharpen your knowledge today?",
-  "totalDecks": "Total Decks",
-  "totalCards": "Total Cards",
-  "cardsToday": "Cards Today",
-  "dayStreak": "Day Streak",
-  "loggedInAs": "Logged in as {email}"
+  "welcome": "خوش برگشتی، {name}! 👋",
+  "readyToStudy": "آماده‌ای امروز دانشت را تقویت کنی؟",
+  "totalDecks": "کل دسته‌ها",
+  "totalCards": "کل کارت‌ها",
+  "cardsToday": "کارت‌های امروز",
+  "dayStreak": "روز متوالی",
+  "loggedInAs": "وارد شده به عنوان {email}"
 }

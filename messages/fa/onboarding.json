@@ -1,33 +1,33 @@
 {
-  "badge": "Almost there — one quick question",
-  "title": "What are you studying?",
-  "subtitle": "We'll add a starter deck to your library so you can jump in right away.",
-  "continueWith": "Start with {deck} →",
-  "pickSubject": "Pick a subject to continue",
-  "settingUp": "Setting up your library…",
-  "footer": "You can always add decks from any subject later.",
+  "badge": "تقریباً تمام شد — یک سوال کوتاه",
+  "title": "چه چیزی یاد می‌گیری؟",
+  "subtitle": "یک دسته شروع به کتابخانه‌ات اضافه می‌کنیم تا بتوانی فوراً شروع کنی.",
+  "continueWith": "شروع با {deck} ←",
+  "pickSubject": "یک رشته انتخاب کن تا ادامه دهی",
+  "settingUp": "کتابخانه‌ات در حال راه‌اندازی است…",
+  "footer": "هر زمان می‌توانی دسته‌هایی از همه رشته‌ها اضافه کنی.",
   "subjects": {
-    "medicine": { "label": "Medicine", "sub": "USMLE Step 1 · Step 2 · Boards", "deck": "Pharmacology Fundamentals" },
-    "pharmacy": { "label": "Pharmacy", "sub": "NAPLEX · MPJE · Drug Therapy", "deck": "Top 200 Drugs" },
-    "chemistry": { "label": "Chemistry", "sub": "AP Chem · Organic · Biochemistry", "deck": "AP Chemistry" },
-    "other": { "label": "Other / Mixed", "sub": "General studying · Custom decks", "deck": "Pharmacology Fundamentals" }
+    "medicine": { "label": "پزشکی", "sub": "کنکور علوم پزشکی · پیش‌کارورزی · ارتقا", "deck": "داروشناسی پایه" },
+    "pharmacy": { "label": "داروسازی", "sub": "کنکور داروسازی · 200 داروی برتر · فارماکولوژی", "deck": "200 داروی برتر" },
+    "chemistry": { "label": "شیمی", "sub": "شیمی آلی · بیوشیمی · شیمی تجزیه", "deck": "شیمی آلی پیشرفته" },
+    "other": { "label": "سایر / متفرقه", "sub": "یادگیری عمومی · دسته‌های شخصی", "deck": "داروشناسی پایه" }
   },
   "teaser": {
-    "title": "What you get",
-    "freePlan": "Free",
+    "title": "چه چیزی دریافت می‌کنی",
+    "freePlan": "رایگان",
     "proPlan": "Pro",
-    "upgradeButton": "Upgrade to Pro →",
+    "upgradeButton": "ارتقا به Pro ←",
     "freeFeatures": [
-      "189 AI cards / month",
-      "49 card improvements / month",
-      "Spaced repetition (SRS)",
-      "Public & private decks"
+      "189 کارت هوش مصنوعی / ماه",
+      "49 بهبود کارت / ماه",
+      "تکرار فاصله‌دار (SRS)",
+      "دسته‌های عمومی و خصوصی"
     ],
     "proFeatures": [
-      "499 AI cards / month",
-      "299 card improvements / month",
-      "Advanced SRS analytics",
-      "Premium deck themes"
+      "499 کارت هوش مصنوعی / ماه",
+      "299 بهبود کارت / ماه",
+      "تحلیل‌های پیشرفته SRS",
+      "طرح‌های دسته پریمیوم"
     ]
   }
 }

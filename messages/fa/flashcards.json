@@ -1,48 +1,48 @@
 {
-  "title": "My Flashcards",
-  "newDeck": "New Deck",
-  "aiGenerate": "AI Generate",
-  "study": "Study",
-  "edit": "Edit",
-  "delete": "Delete",
-  "share": "Share",
-  "cards": "{count, plural, one {# card} other {# cards}}",
-  "copyCount": "{count} {count, plural, one {copy} other {copies}}",
-  "emptyTitle": "No decks yet",
-  "emptySubtitle": "Create your first deck to get started",
+  "title": "کارت‌های من",
+  "newDeck": "دسته جدید",
+  "aiGenerate": "تولید با هوش مصنوعی",
+  "study": "مطالعه",
+  "edit": "ویرایش",
+  "delete": "حذف",
+  "share": "اشتراک‌گذاری",
+  "cards": "{count, plural, one {# کارت} other {# کارت}}",
+  "copyCount": "{count, plural, one {# کپی} other {# کپی}}",
+  "emptyTitle": "هنوز دسته‌ای نداری",
+  "emptySubtitle": "اولین دسته‌ات را بساز تا شروع کنی",
   "createDeck": {
-    "title": "Create New Deck",
-    "titleLabel": "Title",
-    "titlePlaceholder": "e.g. USMLE Pharmacology",
-    "descriptionLabel": "Description",
-    "descriptionPlaceholder": "Optional deck description…",
-    "submit": "Create Deck"
+    "title": "ایجاد دسته جدید",
+    "titleLabel": "عنوان",
+    "titlePlaceholder": "مثلاً داروشناسی کنکور",
+    "descriptionLabel": "توضیحات",
+    "descriptionPlaceholder": "توضیحات اختیاری دسته…",
+    "submit": "ایجاد دسته"
   },
   "editDeck": {
-    "title": "Edit Deck",
-    "submit": "Save Changes"
+    "title": "ویرایش دسته",
+    "submit": "ذخیره تغییرات"
   },
   "deleteDeck": {
-    "title": "Delete Deck",
-    "message": "Are you sure you want to delete \"{name}\"? This will permanently delete all {count} {count, plural, one {card} other {cards}}. This action cannot be undone.",
-    "confirm": "Delete Deck",
-    "cancel": "Cancel"
+    "title": "حذف دسته",
+    "message": "مطمئنی که می‌خوای «{name}» را حذف کنی؟ این کار {count, plural, one {# کارت} other {# کارت}} را برای همیشه حذف می‌کند. این عمل قابل بازگشت نیست.",
+    "confirm": "حذف دسته",
+    "cancel": "انصراف"
   },
   "shareDeck": {
-    "title": "Share Deck",
-    "makePublic": "Make public",
-    "makePrivate": "Make private",
-    "publicUrl": "Public URL",
-    "copyLink": "Copy link",
-    "copied": "Copied!"
+    "title": "اشتراک‌گذاری دسته",
+    "makePublic": "عمومی کردن",
+    "makePrivate": "خصوصی کردن",
+    "publicUrl": "آدرس عمومی",
+    "copyLink": "کپی لینک",
+    "copied": "کپی شد!"
   },
   "card": {
-    "front": "Front",
-    "back": "Back",
-    "addCard": "Add Card",
-    "editCard": "Edit Card",
-    "deleteCard": "Delete Card",
-    "aiImprove": "AI Improve",
-    "aiGenerated": "AI generated"
+    "front": "روی کارت",
+    "back": "پشت کارت",
+    "addCard": "افزودن کارت",
+    "editCard": "ویرایش کارت",
+    "deleteCard": "حذف کارت",
+    "aiImprove": "بهبود با هوش مصنوعی",
+    "aiGenerated": "تولیدشده با هوش مصنوعی"
   }
 }

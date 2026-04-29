@@ -1,11 +1,11 @@
 {
-  "generic": "Something went wrong. Please try again.",
-  "network": "Network error. Please check your connection.",
-  "unauthorized": "You must be logged in to do that.",
-  "notFound": "Page not found.",
-  "rateLimited": "Too many requests. Please slow down.",
-  "quotaExhausted": "AI quota exhausted. Upgrade to Pro for more.",
-  "serverError": "Server error. Please try again later.",
-  "forbidden": "You don't have permission to do that.",
-  "invalidInput": "Please check your input and try again."
+  "generic": "مشکلی پیش آمد. لطفاً دوباره امتحان کن.",
+  "network": "خطای شبکه. اتصالت را بررسی کن.",
+  "unauthorized": "برای این کار باید وارد شوی.",
+  "notFound": "صفحه پیدا نشد.",
+  "rateLimited": "درخواست‌های زیادی ارسال کردی. کمی صبر کن.",
+  "quotaExhausted": "سهمیه هوش مصنوعی تمام شد. برای سهمیه بیشتر به Pro ارتقا بده.",
+  "serverError": "خطای سرور. لطفاً بعداً دوباره امتحان کن.",
+  "forbidden": "مجاز به انجام این کار نیستی.",
+  "invalidInput": "ورودی‌ات را بررسی کن و دوباره امتحان کن."
 }

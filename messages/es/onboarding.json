@@ -1,33 +1,33 @@
 {
-  "badge": "Almost there — one quick question",
-  "title": "What are you studying?",
-  "subtitle": "We'll add a starter deck to your library so you can jump in right away.",
-  "continueWith": "Start with {deck} →",
-  "pickSubject": "Pick a subject to continue",
-  "settingUp": "Setting up your library…",
-  "footer": "You can always add decks from any subject later.",
+  "badge": "Casi listo — una pregunta rápida",
+  "title": "¿Qué estás aprendiendo?",
+  "subtitle": "Añadimos un mazo inicial a tu biblioteca para que puedas empezar de inmediato.",
+  "continueWith": "Empezar con {deck} →",
+  "pickSubject": "Elige una materia para continuar",
+  "settingUp": "Configurando tu biblioteca…",
+  "footer": "Puedes añadir mazos de cualquier materia en cualquier momento.",
   "subjects": {
-    "medicine": { "label": "Medicine", "sub": "USMLE Step 1 · Step 2 · Boards", "deck": "Pharmacology Fundamentals" },
-    "pharmacy": { "label": "Pharmacy", "sub": "NAPLEX · MPJE · Drug Therapy", "deck": "Top 200 Drugs" },
-    "chemistry": { "label": "Chemistry", "sub": "AP Chem · Organic · Biochemistry", "deck": "AP Chemistry" },
-    "other": { "label": "Other / Mixed", "sub": "General studying · Custom decks", "deck": "Pharmacology Fundamentals" }
+    "medicine": { "label": "Medicina", "sub": "MIR · EIR · Grado en Medicina", "deck": "Farmacología básica" },
+    "pharmacy": { "label": "Farmacia", "sub": "FIR · Top 200 fármacos · Farmacología", "deck": "Top 200 fármacos" },
+    "chemistry": { "label": "Química", "sub": "Química orgánica · Bioquímica · Analítica", "deck": "Química orgánica avanzada" },
+    "other": { "label": "Otro / Mixto", "sub": "Aprendizaje general · Mazos propios", "deck": "Farmacología básica" }
   },
   "teaser": {
-    "title": "What you get",
-    "freePlan": "Free",
+    "title": "Lo que obtienes",
+    "freePlan": "Gratis",
     "proPlan": "Pro",
-    "upgradeButton": "Upgrade to Pro →",
+    "upgradeButton": "Actualizar a Pro →",
     "freeFeatures": [
-      "189 AI cards / month",
-      "49 card improvements / month",
-      "Spaced repetition (SRS)",
-      "Public & private decks"
+      "189 tarjetas IA / mes",
+      "49 mejoras de tarjetas / mes",
+      "Repetición espaciada (SRS)",
+      "Mazos públicos y privados"
     ],
     "proFeatures": [
-      "499 AI cards / month",
-      "299 card improvements / month",
-      "Advanced SRS analytics",
-      "Premium deck themes"
+      "499 tarjetas IA / mes",
+      "299 mejoras de tarjetas / mes",
+      "Análisis SRS avanzados",
+      "Diseños de mazos premium"
     ]
   }
 }

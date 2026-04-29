@@ -1,9 +1,9 @@
 {
-  "welcome": "Welcome back, {name}! 👋",
-  "readyToStudy": "Ready to sharpen your knowledge today?",
-  "totalDecks": "Total Decks",
-  "totalCards": "Total Cards",
-  "cardsToday": "Cards Today",
-  "dayStreak": "Day Streak",
-  "loggedInAs": "Logged in as {email}"
+  "welcome": "Bon retour, {name} ! 👋",
+  "readyToStudy": "Prêt à affûter tes connaissances aujourd'hui ?",
+  "totalDecks": "Decks au total",
+  "totalCards": "Cartes au total",
+  "cardsToday": "Cartes aujourd'hui",
+  "dayStreak": "Jours consécutifs",
+  "loggedInAs": "Connecté en tant que {email}"
 }

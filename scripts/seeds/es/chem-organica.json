@@ -1,0 +1,69 @@
+{
+  "title": "Química Orgánica — Fundamentos y Reacciones",
+  "description": "Conceptos esenciales de química orgánica: mecanismos de reacción, estereoquímica y grupos funcionales para ciencias de la salud y química.",
+  "emoji": "⚗️",
+  "color": "sky",
+  "subject": "chemistry",
+  "cards": [
+    {
+      "front": "SN1 vs. SN2 — diferencias principales",
+      "back": "SN1: 2 etapas, catión intermedio (carbocación), sustrato terciario favorecido, racemización, disolvente polar prótico. SN2: etapa concertada, inversión de Walden, sustrato primario favorecido, disolvente polar aprótico (acetona, DMF, DMSO)."
+    },
+    {
+      "front": "Regla de Markovnikov",
+      "back": "En la adición de HX a un alqueno asimétrico, el H se une al carbono más hidrogenado (el carbocatión más estable es el intermedio). Ejemplo: propeno + HCl → 2-cloropropano (no 1-cloropropano)."
+    },
+    {
+      "front": "Reactivo de Grignard — estructura y reactividad",
+      "back": "R-MgX (haluro de alquilmagnesio). Nucleófilo fuerte: reacciona con aldehídos (→ alcohol 2.º), cetonas (→ alcohol 3.º), CO₂ (→ ácido carboxílico), ésteres (→ alcohol 3.º). Preparación en éter seco absoluto."
+    },
+    {
+      "front": "Condensación aldólica — principio y producto",
+      "back": "En medio básico, el enolato (carbono α) ataca el carbonilo de otro mol → β-hidroxicarbonilo (aldol). Con calor, deshidratación → compuesto α,β-insaturado (enal o enona). Reacción clave para la formación de enlaces C–C."
+    },
+    {
+      "front": "Reacción de Diels-Alder — características",
+      "back": "[4+2] cicloadición entre un dieno conjugado (conformación s-cis obligatoria) y un dienófilo (activado por grupos atractores). Estereoselectiva: adición sin, producto endo mayoritario (cinético). Forma un ciclohexeno."
+    },
+    {
+      "front": "Esterificación de Fischer — equilibrio y desplazamiento",
+      "back": "Ácido carboxílico + alcohol ⇌ éster + agua (catálisis ácida, reversible). Desplazamiento del equilibrio: exceso de alcohol, eliminación de agua (desecante, destilación azeotrópica). Hidrólisis del éster: exceso de agua."
+    },
+    {
+      "front": "Enantiómeros vs. diastereómeros",
+      "back": "Enantiómeros: estereoisómeros imagen especular no superponible (todos los centros estereogénicos invertidos). Diastereómeros: estereoisómeros no enantiómeros (al menos un centro igual, uno diferente). Epímeros: diastereómeros que difieren en un único centro."
+    },
+    {
+      "front": "Aromaticidad — regla de Hückel",
+      "back": "Sistema cíclico, plano, conjugado con (4n+2) electrones π (n = 0, 1, 2…). Ejemplos: benceno (6 e⁻), naftaleno (10 e⁻), ciclopentadienilo anión (6 e⁻). Antiaromático: 4n e⁻ π (desestabilizado). No aromático: no conjugado."
+    },
+    {
+      "front": "Eliminación E1 vs. E2",
+      "back": "E1: 2 etapas, carbocación intermedio, sustrato terciario, base débil, producto Zaitsev. E2: etapa única, base fuerte, disposición anti-periplanar de H y grupo saliente, estereoespecífica → alqueno trans mayoritario. Bases voluminosas → producto Hofmann."
+    },
+    {
+      "front": "Estados de oxidación del carbono — orden creciente",
+      "back": "Alcano < alqueno < alcohol < aldehído < ácido carboxílico < CO₂. Oxidación: pérdida de H o ganancia de O en el C. Agentes reductores: NaBH₄ (aldeídos/cetonas → alcoholes), LiAlH₄ (más potente, reduce también ácidos y ésteres)."
+    },
+    {
+      "front": "Efecto inductivo vs. efecto mesómero",
+      "back": "+I (donador por σ): grupos alquilo. −I: halógenos, OH, COOH. +M (donador por conjugación π): −NH₂, −OH, −OR. −M (atractor por conjugación): C=O, NO₂, CN. El mesómero prevalece sobre el inductivo cuando coexisten."
+    },
+    {
+      "front": "Sustitución electrófila aromática (SEAr) — etapas",
+      "back": "1) El electrófilo (E⁺) ataca el anillo → complejo σ (arenio, pérdida de aromaticidad). 2) Desprotonación → producto aromático + H⁺. Ejemplos: nitración (HNO₃/H₂SO₄), halogenación (FeBr₃), Friedel-Crafts (AlCl₃)."
+    },
+    {
+      "front": "Isomería constitucional vs. estereoisomería",
+      "back": "Isómeros constitucionales: igual fórmula molecular, distinta conectividad (ej. butano/isobutano). Estereoisómeros: misma conectividad, distinta disposición espacial. Subdividen en: conformacionales (rotación libre) y configuracionales (E/Z, R/S; requieren ruptura de enlace)."
+    },
+    {
+      "front": "pKa de un ácido y factores que lo modifican",
+      "back": "pKa = −log Ka. Menor pKa = ácido más fuerte. Factores que estabilizan el anión conjugado → ácido más fuerte: efecto inductivo −I (ej. haluros), resonancia (fenol < alcohol), hibridación (sp más acídico: alquino > alqueno > alcano)."
+    },
+    {
+      "front": "Síntesis de Williamson",
+      "back": "Formación de un éter por SN2: alcóxido (nucleófilo fuerte) + haluro de alquilo primario → éter R–O–R' + haluro. El sustrato debe ser primario (los terciarios sufren eliminación preferente). Ej: CH₃O⁻ + C₂H₅Br → CH₃OC₂H₅."
+    }
+  ]
+}
