@@ -1,7 +1,7 @@
 'use client';
 
 import { useLocale } from 'next-intl';
-import { useRouter, usePathname } from '@/i18n/navigation';
+import { usePathname } from '@/i18n/navigation';
 import { routing, type Locale } from '@/i18n/routing';
 
 const LOCALE_OPTIONS: { locale: Locale; label: string; flag: string; native: string }[] = [
@@ -14,13 +14,14 @@ const LOCALE_OPTIONS: { locale: Locale; label: string; flag: string; native: str
 
 export default function LanguageSetting() {
   const locale = useLocale() as Locale;
-  const router = useRouter();
   const pathname = usePathname();
 
   function switchLocale(next: Locale) {
     if (next === locale) return;
     document.cookie = `NEXT_LOCALE=${next}; path=/; max-age=31536000; SameSite=Lax`;
-    router.replace(pathname, { locale: next });
+    // Full navigation clears Next.js RSC/prefetch cache so stale locale pages don't replay
+    const newPath = next === routing.defaultLocale ? pathname : `/${next}${pathname}`;
+    window.location.href = newPath;
   }
 
   return (

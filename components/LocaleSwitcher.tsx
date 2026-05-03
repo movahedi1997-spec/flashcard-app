@@ -1,7 +1,7 @@
 'use client';
 
 import { useLocale } from 'next-intl';
-import { useRouter, usePathname } from '@/i18n/navigation';
+import { usePathname } from '@/i18n/navigation';
 import { Globe } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { routing, type Locale } from '@/i18n/routing';
@@ -16,7 +16,6 @@ const LOCALE_LABELS: Record<Locale, { label: string; flag: string }> = {
 
 export default function LocaleSwitcher() {
   const locale = useLocale() as Locale;
-  const router = useRouter();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -33,7 +32,9 @@ export default function LocaleSwitcher() {
     setOpen(false);
     if (next === locale) return;
     document.cookie = `NEXT_LOCALE=${next}; path=/; max-age=31536000; SameSite=Lax`;
-    router.replace(pathname, { locale: next });
+    // Full navigation clears Next.js RSC/prefetch cache so stale locale pages don't replay
+    const newPath = next === routing.defaultLocale ? pathname : `/${next}${pathname}`;
+    window.location.href = newPath;
   }
 
   const current = LOCALE_LABELS[locale];
