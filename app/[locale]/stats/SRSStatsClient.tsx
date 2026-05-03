@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Flame, BookOpen, TrendingUp, Brain, Loader2, AlertCircle } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface SRSStats {
   streak: number;
@@ -15,7 +16,7 @@ interface SRSStats {
 
 // ── Heatmap ───────────────────────────────────────────────────────────────────
 
-function Heatmap({ data }: { data: Array<{ date: string; count: number }> }) {
+function Heatmap({ data, less, more }: { data: Array<{ date: string; count: number }>; less: string; more: string }) {
   const max = Math.max(1, ...data.map((d) => d.count));
 
   function cellColor(count: number) {
@@ -27,7 +28,6 @@ function Heatmap({ data }: { data: Array<{ date: string; count: number }> }) {
     return 'bg-indigo-700';
   }
 
-  // Group into weeks (12 weeks × 7 days)
   const weeks: Array<typeof data> = [];
   for (let i = 0; i < data.length; i += 7) {
     weeks.push(data.slice(i, i + 7));
@@ -46,7 +46,6 @@ function Heatmap({ data }: { data: Array<{ date: string; count: number }> }) {
         </div>
         {weeks.map((week, wi) => (
           <div key={wi} className="flex flex-col gap-1">
-            {/* Month label on first day of month */}
             <div className="h-4 text-[10px] text-gray-400">
               {week[0]?.date.endsWith('-01') ? week[0].date.slice(5, 7) === '01'
                 ? 'Jan' : ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(week[0].date.slice(5, 7), 10)]
@@ -63,11 +62,11 @@ function Heatmap({ data }: { data: Array<{ date: string; count: number }> }) {
         ))}
       </div>
       <div className="flex items-center gap-1.5 mt-3 text-xs text-gray-400">
-        <span>Less</span>
+        <span>{less}</span>
         {['bg-gray-100','bg-indigo-200','bg-indigo-400','bg-indigo-500','bg-indigo-700'].map((c) => (
           <div key={c} className={`h-3 w-3 rounded-sm ${c}`} />
         ))}
-        <span>More</span>
+        <span>{more}</span>
       </div>
     </div>
   );
@@ -75,9 +74,8 @@ function Heatmap({ data }: { data: Array<{ date: string; count: number }> }) {
 
 // ── Forecast bar chart ────────────────────────────────────────────────────────
 
-function ForecastChart({ data }: { data: Array<{ label: string; count: number }> }) {
+function ForecastChart({ data, todayLabel, tmrwLabel }: { data: Array<{ label: string; count: number }>; todayLabel: string; tmrwLabel: string }) {
   const max = Math.max(1, ...data.map((d) => d.count));
-  const today = new Date().toISOString().split('T')[0];
 
   return (
     <div className="flex items-end gap-1 h-28">
@@ -93,7 +91,7 @@ function ForecastChart({ data }: { data: Array<{ label: string; count: number }>
               style={{ height: `${heightPct}%` }}
             />
             <span className={`text-[9px] truncate w-full text-center ${isToday ? 'text-indigo-600 font-bold' : 'text-gray-400'}`}>
-              {i === 0 ? 'Today' : i === 1 ? 'Tmrw' : d.label.split(' ')[1] ? d.label.split(' ')[1] : d.label}
+              {i === 0 ? todayLabel : i === 1 ? tmrwLabel : d.label.split(' ')[1] ? d.label.split(' ')[1] : d.label}
             </span>
           </div>
         );
@@ -104,15 +102,19 @@ function ForecastChart({ data }: { data: Array<{ label: string; count: number }>
 
 // ── Maturity bar ──────────────────────────────────────────────────────────────
 
-function MaturityBar({ cardsByMaturity }: { cardsByMaturity: SRSStats['cardsByMaturity'] }) {
+function MaturityBar({ cardsByMaturity, labels, noCardsYet }: {
+  cardsByMaturity: SRSStats['cardsByMaturity'];
+  labels: { new: string; learning: string; young: string; mature: string };
+  noCardsYet: string;
+}) {
   const total = Object.values(cardsByMaturity).reduce((a, b) => a + b, 0);
-  if (total === 0) return <p className="text-sm text-gray-400">No cards yet.</p>;
+  if (total === 0) return <p className="text-sm text-gray-400">{noCardsYet}</p>;
 
   const segments = [
-    { label: 'New',      count: cardsByMaturity.new,      color: 'bg-blue-400'    },
-    { label: 'Learning', count: cardsByMaturity.learning,  color: 'bg-amber-400'   },
-    { label: 'Young',    count: cardsByMaturity.young,     color: 'bg-indigo-400'  },
-    { label: 'Mature',   count: cardsByMaturity.mature,    color: 'bg-emerald-500' },
+    { label: labels.new,      count: cardsByMaturity.new,      color: 'bg-blue-400'    },
+    { label: labels.learning, count: cardsByMaturity.learning,  color: 'bg-amber-400'   },
+    { label: labels.young,    count: cardsByMaturity.young,     color: 'bg-indigo-400'  },
+    { label: labels.mature,   count: cardsByMaturity.mature,    color: 'bg-emerald-500' },
   ];
 
   return (
@@ -144,9 +146,15 @@ function MaturityBar({ cardsByMaturity }: { cardsByMaturity: SRSStats['cardsByMa
 
 // ── Retention gauge ───────────────────────────────────────────────────────────
 
-function RetentionGauge({ rate }: { rate: number }) {
+function RetentionGauge({ rate, excellent, good, needsWork, last30Days }: {
+  rate: number;
+  excellent: string;
+  good: string;
+  needsWork: string;
+  last30Days: string;
+}) {
   const color = rate >= 80 ? 'text-emerald-600' : rate >= 60 ? 'text-amber-500' : 'text-red-500';
-  const label = rate >= 80 ? 'Excellent' : rate >= 60 ? 'Good' : 'Needs work';
+  const label = rate >= 80 ? excellent : rate >= 60 ? good : needsWork;
   const circumference = 2 * Math.PI * 36;
   const progress = (rate / 100) * circumference;
 
@@ -169,7 +177,7 @@ function RetentionGauge({ rate }: { rate: number }) {
         </div>
       </div>
       <span className={`text-xs font-semibold ${color}`}>{label}</span>
-      <span className="text-xs text-gray-400">last 30 days</span>
+      <span className="text-xs text-gray-400">{last30Days}</span>
     </div>
   );
 }
@@ -177,6 +185,7 @@ function RetentionGauge({ rate }: { rate: number }) {
 // ── Main component ────────────────────────────────────────────────────────────
 
 export default function SRSStatsClient() {
+  const t = useTranslations('stats');
   const [stats, setStats] = useState<SRSStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -185,15 +194,15 @@ export default function SRSStatsClient() {
     fetch('/api/stats/srs')
       .then((r) => r.json())
       .then((d: SRSStats) => setStats(d))
-      .catch(() => setError('Failed to load analytics.'))
+      .catch(() => setError(t('errorLoad')))
       .finally(() => setLoading(false));
-  }, []);
+  }, [t]);
 
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20 gap-3 text-gray-400">
         <Loader2 size={22} className="animate-spin" />
-        <span className="text-sm">Loading analytics…</span>
+        <span className="text-sm">{t('loading')}</span>
       </div>
     );
   }
@@ -201,10 +210,16 @@ export default function SRSStatsClient() {
   if (error || !stats) {
     return (
       <div className="flex items-center gap-2 rounded-xl bg-red-50 border border-red-100 px-4 py-3 text-red-600 text-sm">
-        <AlertCircle size={16} /> {error || 'Something went wrong.'}
+        <AlertCircle size={16} /> {error || t('errorGeneric')}
       </div>
     );
   }
+
+  const streakSub = stats.streak === 0
+    ? t('noStreak')
+    : stats.streak === 1
+      ? t('oneDay')
+      : t('nDays', { count: stats.streak });
 
   return (
     <div className="space-y-5">
@@ -213,27 +228,27 @@ export default function SRSStatsClient() {
         {[
           {
             icon: <Flame size={18} className="text-orange-500" />,
-            label: 'Study Streak',
+            label: t('studyStreak'),
             value: `${stats.streak}d`,
-            sub: stats.streak === 1 ? '1 day' : stats.streak === 0 ? 'No streak yet' : `${stats.streak} days`,
+            sub: streakSub,
           },
           {
             icon: <BookOpen size={18} className="text-indigo-500" />,
-            label: 'Total Reviews',
+            label: t('totalReviews'),
             value: stats.totalReviews.toLocaleString(),
-            sub: 'all time',
+            sub: t('allTime'),
           },
           {
             icon: <Brain size={18} className="text-violet-500" />,
-            label: 'Avg Ease',
+            label: t('avgEase'),
             value: stats.easeAvg.toFixed(2),
-            sub: '2.5 = ideal',
+            sub: t('ideal'),
           },
           {
             icon: <TrendingUp size={18} className="text-emerald-500" />,
-            label: 'Cards Tracked',
+            label: t('cardsTracked'),
             value: (Object.values(stats.cardsByMaturity).reduce((a, b) => a + b, 0)).toLocaleString(),
-            sub: 'with SRS data',
+            sub: t('withSRSData'),
           },
         ].map((s) => (
           <div key={s.label} className="rounded-2xl bg-white border border-gray-200 p-4 shadow-sm">
@@ -250,35 +265,45 @@ export default function SRSStatsClient() {
       {/* ── Retention + Maturity ─────────────────────────────────────────── */}
       <div className="grid sm:grid-cols-2 gap-4">
         <div className="rounded-2xl bg-white border border-gray-200 p-5 shadow-sm">
-          <h2 className="text-sm font-bold text-gray-700 mb-4">Retention Rate</h2>
+          <h2 className="text-sm font-bold text-gray-700 mb-4">{t('retentionRate')}</h2>
           <div className="flex justify-center">
-            <RetentionGauge rate={stats.retentionRate} />
+            <RetentionGauge
+              rate={stats.retentionRate}
+              excellent={t('excellent')}
+              good={t('good')}
+              needsWork={t('needsWork')}
+              last30Days={t('last30Days')}
+            />
           </div>
           <p className="text-xs text-gray-400 text-center mt-3">
-            Based on "Good" + "Easy" ratings — Anki standard
+            {t('ankiStandard')}
           </p>
         </div>
 
         <div className="rounded-2xl bg-white border border-gray-200 p-5 shadow-sm">
-          <h2 className="text-sm font-bold text-gray-700 mb-4">Card Maturity</h2>
-          <MaturityBar cardsByMaturity={stats.cardsByMaturity} />
+          <h2 className="text-sm font-bold text-gray-700 mb-4">{t('cardMaturity')}</h2>
+          <MaturityBar
+            cardsByMaturity={stats.cardsByMaturity}
+            labels={{ new: t('new'), learning: t('learning'), young: t('young'), mature: t('mature') }}
+            noCardsYet={t('noCardsYet')}
+          />
           <p className="text-xs text-gray-400 mt-4">
-            Mature = interval &gt; 20 days · Young = 1–20 days
+            {t('maturityDesc')}
           </p>
         </div>
       </div>
 
       {/* ── Activity heatmap ─────────────────────────────────────────────── */}
       <div className="rounded-2xl bg-white border border-gray-200 p-5 shadow-sm">
-        <h2 className="text-sm font-bold text-gray-700 mb-4">Review Activity — Last 12 Weeks</h2>
-        <Heatmap data={stats.heatmap} />
+        <h2 className="text-sm font-bold text-gray-700 mb-4">{t('reviewActivity')}</h2>
+        <Heatmap data={stats.heatmap} less={t('less')} more={t('more')} />
       </div>
 
       {/* ── Due forecast ─────────────────────────────────────────────────── */}
       <div className="rounded-2xl bg-white border border-gray-200 p-5 shadow-sm">
-        <h2 className="text-sm font-bold text-gray-700 mb-1">Due Forecast — Next 14 Days</h2>
-        <p className="text-xs text-gray-400 mb-4">Cards scheduled for review each day</p>
-        <ForecastChart data={stats.forecast} />
+        <h2 className="text-sm font-bold text-gray-700 mb-1">{t('dueForecast')}</h2>
+        <p className="text-xs text-gray-400 mb-4">{t('cardsScheduled')}</p>
+        <ForecastChart data={stats.forecast} todayLabel={t('today')} tmrwLabel={t('tomorrow')} />
       </div>
     </div>
   );

@@ -2,14 +2,15 @@
 
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 export default function TwoFAToggle({ initialEnabled }: { initialEnabled: boolean }) {
+  const t = useTranslations('settings');
   const [enabled, setEnabled] = useState(initialEnabled);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  // Disable flow: step 1 sends the OTP, step 2 verifies it
   const [awaitingCode, setAwaitingCode] = useState(false);
   const [code, setCode] = useState('');
 
@@ -26,7 +27,7 @@ export default function TwoFAToggle({ initialEnabled }: { initialEnabled: boolea
       });
       const data = await res.json() as Record<string, unknown>;
       if (!res.ok) {
-        setError((data.error as string) ?? 'Something went wrong.');
+        setError((data.error as string) ?? t('errorSomethingWentWrong'));
         return;
       }
       if (data.requires_code) {
@@ -36,7 +37,7 @@ export default function TwoFAToggle({ initialEnabled }: { initialEnabled: boolea
       setEnabled(data.two_fa_enabled as boolean);
       setSuccess(data.two_fa_enabled ? '2FA enabled.' : '2FA disabled.');
     } catch {
-      setError('Network error.');
+      setError(t('errorNetworkError'));
     } finally {
       setLoading(false);
     }
@@ -44,7 +45,7 @@ export default function TwoFAToggle({ initialEnabled }: { initialEnabled: boolea
 
   async function submitCode() {
     if (!/^\d{6}$/.test(code.trim())) {
-      setError('Enter the 6-digit code from your email.');
+      setError(t('error2FACode'));
       return;
     }
     setError('');
@@ -58,7 +59,7 @@ export default function TwoFAToggle({ initialEnabled }: { initialEnabled: boolea
       });
       const data = await res.json() as Record<string, unknown>;
       if (!res.ok) {
-        setError((data.error as string) ?? 'Invalid code.');
+        setError((data.error as string) ?? t('errorInvalidCode'));
         return;
       }
       setEnabled(false);
@@ -66,7 +67,7 @@ export default function TwoFAToggle({ initialEnabled }: { initialEnabled: boolea
       setCode('');
       setSuccess('2FA disabled.');
     } catch {
-      setError('Network error.');
+      setError(t('errorNetworkError'));
     } finally {
       setLoading(false);
     }
@@ -77,12 +78,10 @@ export default function TwoFAToggle({ initialEnabled }: { initialEnabled: boolea
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm font-medium text-gray-800">
-            Two-factor authentication
+            {t('twoFactor')}
           </p>
           <p className="text-xs text-gray-400 mt-0.5">
-            {enabled
-              ? 'A code is sent to your email on every login.'
-              : 'Enable to require an email code on every login.'}
+            {enabled ? t('twoFAEnabledDesc') : t('twoFADisabledDesc')}
           </p>
         </div>
         <button
@@ -104,7 +103,7 @@ export default function TwoFAToggle({ initialEnabled }: { initialEnabled: boolea
       {awaitingCode && (
         <div className="rounded-xl border border-indigo-100 bg-indigo-50 p-4 space-y-3">
           <p className="text-sm text-indigo-700">
-            We sent a 6-digit code to your email. Enter it to confirm disabling 2FA.
+            {t('twoFACodePrompt')}
           </p>
           <div className="flex gap-2">
             <input
@@ -122,13 +121,13 @@ export default function TwoFAToggle({ initialEnabled }: { initialEnabled: boolea
               className="flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50"
             >
               {loading && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-              Confirm
+              {t('confirm')}
             </button>
             <button
               onClick={() => { setAwaitingCode(false); setCode(''); setError(''); }}
               className="rounded-xl px-4 py-2 text-sm text-gray-500 hover:bg-gray-100"
             >
-              Cancel
+              {t('cancel')}
             </button>
           </div>
         </div>

@@ -1,14 +1,8 @@
 'use client';
 
-/**
- * EditProfileForm — profile editing section in /settings.
- *
- * Allows the user to update: display name, username (public slug),
- * bio, and avatar URL.
- */
-
 import { useState, useRef } from 'react';
 import { Check, Loader2, ExternalLink, Upload, Phone } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { fetchWithRefresh } from '@/lib/fetchWithRefresh';
 
 interface Props {
@@ -26,6 +20,8 @@ export default function EditProfileForm({
   initialAvatarUrl,
   initialPhoneNumber,
 }: Props) {
+  const t = useTranslations('settings');
+
   const [name,        setName]        = useState(initialName        ?? '');
   const [username,    setUsername]    = useState(initialUsername     ?? '');
   const [bio,         setBio]         = useState(initialBio          ?? '');
@@ -41,7 +37,7 @@ export default function EditProfileForm({
   async function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.size > 6 * 1024 * 1024) { setError('Image must be under 6 MB'); return; }
+    if (file.size > 6 * 1024 * 1024) { setError(t('errorImageTooLarge')); return; }
     setUploading(true);
     setError('');
     try {
@@ -49,10 +45,10 @@ export default function EditProfileForm({
       fd.append('avatar', file);
       const res = await fetch('/api/account/avatar', { method: 'POST', body: fd, credentials: 'include' });
       const data = await res.json() as { avatarUrl?: string; error?: string };
-      if (!res.ok) throw new Error(data.error ?? 'Upload failed');
+      if (!res.ok) throw new Error(data.error ?? t('errorUploadFailed'));
       setAvatarUrl(data.avatarUrl ?? '');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Upload failed');
+      setError(err instanceof Error ? err.message : t('errorUploadFailed'));
     } finally {
       setUploading(false);
     }
@@ -78,13 +74,13 @@ export default function EditProfileForm({
 
       if (!res.ok) {
         const data = (await res.json().catch(() => ({}))) as { error?: string };
-        throw new Error(data.error ?? 'Failed to save profile.');
+        throw new Error(data.error ?? t('errorSaveFailed'));
       }
 
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong.');
+      setError(err instanceof Error ? err.message : t('errorSomethingWentWrong'));
     } finally {
       setSaving(false);
     }
@@ -105,7 +101,7 @@ export default function EditProfileForm({
       {/* Display name */}
       <div>
         <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
-          Display name
+          {t('displayName')}
         </label>
         <input
           type="text"
@@ -119,8 +115,8 @@ export default function EditProfileForm({
       {/* Username */}
       <div>
         <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
-          Username
-          <span className="ms-1 normal-case font-normal text-gray-400">(used in your public profile URL)</span>
+          {t('username')}
+          <span className="ms-1 normal-case font-normal text-gray-400">({t('usernameDesc')})</span>
         </label>
         <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-2">
           <span className="text-xs text-gray-400 sm:text-sm sm:flex-shrink-0">/creators/</span>
@@ -131,7 +127,7 @@ export default function EditProfileForm({
             placeholder="your-username"
             maxLength={30}
             pattern="[a-zA-Z0-9_-]{3,30}"
-            title="3–30 characters: letters, numbers, hyphens, underscores"
+            title={t('usernameFormat')}
             className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-100"
           />
         </div>
@@ -143,7 +139,7 @@ export default function EditProfileForm({
             className="mt-1.5 inline-flex items-center gap-1 text-xs text-indigo-600 hover:underline"
           >
             <ExternalLink className="h-3 w-3" />
-            View profile
+            {t('viewProfile')}
           </a>
         )}
       </div>
@@ -151,13 +147,13 @@ export default function EditProfileForm({
       {/* Bio */}
       <div>
         <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
-          Bio
-          <span className="ms-1 normal-case font-normal text-gray-400">({bio.length}/300)</span>
+          {t('bio')}
+          <span className="ms-1 normal-case font-normal text-gray-400">({t('bioCount', { count: bio.length })})</span>
         </label>
         <textarea
           value={bio}
           onChange={(e) => setBio(e.target.value)}
-          placeholder="Tell people about yourself…"
+          placeholder={t('bioPlaceholder')}
           rows={3}
           maxLength={300}
           className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 resize-none focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-100"
@@ -168,7 +164,7 @@ export default function EditProfileForm({
       <div>
         <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
           Phone number
-          <span className="ms-1 normal-case font-normal text-gray-400">(optional — used only for identity verification if required by law)</span>
+          <span className="ms-1 normal-case font-normal text-gray-400">({t('phoneHint')})</span>
         </label>
         <div className="relative">
           <Phone className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
@@ -176,7 +172,7 @@ export default function EditProfileForm({
             type="tel"
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
-            placeholder="+49 123 456 7890"
+            placeholder={t('phonePlaceholder')}
             maxLength={20}
             className="w-full rounded-xl border border-gray-200 ps-9 pe-4 py-2.5 text-sm text-gray-800 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-100"
           />
@@ -186,15 +182,15 @@ export default function EditProfileForm({
       {/* Avatar */}
       <div>
         <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
-          Profile picture
-          <span className="ms-1 normal-case font-normal text-gray-400">(JPEG, PNG, WebP · max 6 MB)</span>
+          {t('profilePhoto')}
+          <span className="ms-1 normal-case font-normal text-gray-400">({t('pictureHint')})</span>
         </label>
         <div className="flex items-center gap-4">
           {avatarUrl ? (
             /* eslint-disable-next-line @next/next/no-img-element */
             <img
               src={avatarUrl}
-              alt="Avatar preview"
+              alt={t('avatarAlt')}
               className="h-16 w-16 rounded-full object-cover border-2 border-gray-100 shadow-sm flex-shrink-0"
               onError={(e) => (e.currentTarget.style.display = 'none')}
             />
@@ -218,10 +214,10 @@ export default function EditProfileForm({
               className="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 transition hover:border-indigo-300 hover:bg-indigo-50 hover:text-indigo-600 disabled:opacity-60"
             >
               {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
-              {uploading ? 'Uploading…' : 'Upload photo'}
+              {uploading ? t('uploading') : t('uploadPhoto')}
             </button>
             {avatarUrl && (
-              <p className="mt-1 text-xs text-gray-400">Click to replace</p>
+              <p className="mt-1 text-xs text-gray-400">{t('clickToReplace')}</p>
             )}
           </div>
         </div>
@@ -232,9 +228,9 @@ export default function EditProfileForm({
         disabled={saving}
         className="flex items-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm shadow-indigo-200 transition hover:bg-indigo-700 active:scale-95 disabled:opacity-60"
       >
-        {saving  ? <><Loader2 className="h-4 w-4 animate-spin" /> Saving…</> :
-         saved   ? <><Check   className="h-4 w-4" /> Saved!</> :
-                   'Save profile'}
+        {saving  ? <><Loader2 className="h-4 w-4 animate-spin" /> {t('saving')}</> :
+         saved   ? <><Check   className="h-4 w-4" /> {t('saved')}</> :
+                   t('saveProfile')}
       </button>
     </form>
   );

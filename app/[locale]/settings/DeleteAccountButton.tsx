@@ -1,10 +1,12 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { useRouter } from 'next/navigation';
 import { Trash2, X, AlertTriangle } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
 
 export default function DeleteAccountButton() {
+  const t = useTranslations('settings');
   const router = useRouter();
   const [open, setOpen]               = useState(false);
   const [password, setPassword]       = useState('');
@@ -37,15 +39,15 @@ export default function DeleteAccountButton() {
 
   async function handleDelete() {
     if (!password || !confirmPassword) {
-      setError('Please enter and confirm your password.');
+      setError(t('errorPasswordsEmpty'));
       return;
     }
     if (password !== confirmPassword) {
-      setError('Passwords do not match.');
+      setError(t('errorPasswordsMismatch'));
       return;
     }
     if (reasonTrimmed.length < 6) {
-      setError('Please provide a reason (at least 6 characters).');
+      setError(t('errorReasonTooShort'));
       return;
     }
     setLoading(true);
@@ -61,15 +63,14 @@ export default function DeleteAccountButton() {
       const data = await res.json() as { error?: string };
 
       if (!res.ok) {
-        setError(data.error ?? 'Something went wrong. Please try again.');
+        setError(data.error ?? t('errorDeleteFailed'));
         return;
       }
 
-      // Account deleted — redirect to home
-      router.push('/?deleted=1');
+      router.push('/?deleted=1' as Parameters<typeof router.push>[0]);
       router.refresh();
     } catch {
-      setError('Network error. Please check your connection and try again.');
+      setError(t('errorDeleteNetwork'));
     } finally {
       setLoading(false);
     }
@@ -82,7 +83,7 @@ export default function DeleteAccountButton() {
         className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-medium text-red-600 transition hover:bg-red-100 hover:border-red-300"
       >
         <Trash2 className="h-4 w-4" />
-        Delete my account
+        {t('deleteMyAccount')}
       </button>
 
       {open && (
@@ -101,8 +102,8 @@ export default function DeleteAccountButton() {
                   <AlertTriangle className="h-5 w-5" />
                 </div>
                 <div>
-                  <h2 className="text-base font-bold text-gray-900">Delete account</h2>
-                  <p className="text-xs text-gray-500">This action cannot be undone</p>
+                  <h2 className="text-base font-bold text-gray-900">{t('deleteMyAccount')}</h2>
+                  <p className="text-xs text-gray-500">{t('deleteCannotUndo')}</p>
                 </div>
               </div>
               <button
@@ -117,13 +118,12 @@ export default function DeleteAccountButton() {
 
             {/* Warning */}
             <div className="mb-5 rounded-xl bg-red-50 border border-red-100 px-4 py-3 text-sm text-red-700 leading-relaxed">
-              This will permanently delete your account and <strong>all associated data</strong> —
-              decks, cards, study history, and SRS progress. There is no way to recover this.
+              {t('deleteWarningDetail')}
             </div>
 
             {/* Password */}
             <label htmlFor="delete-password" className="mb-1.5 block text-sm font-medium text-gray-700">
-              Password
+              {t('password')}
             </label>
             <input
               id="delete-password"
@@ -138,7 +138,7 @@ export default function DeleteAccountButton() {
 
             {/* Confirm password */}
             <label htmlFor="delete-password-confirm" className="mb-1.5 block text-sm font-medium text-gray-700">
-              Confirm password
+              {t('confirmPassword')}
             </label>
             <input
               id="delete-password-confirm"
@@ -152,20 +152,20 @@ export default function DeleteAccountButton() {
 
             {/* Reason */}
             <label htmlFor="delete-reason" className="mb-1.5 block text-sm font-medium text-gray-700">
-              Why are you deleting your account?{' '}
-              <span className="text-gray-400 font-normal">(min. 6 characters)</span>
+              {t('deleteReason')}{' '}
+              <span className="text-gray-400 font-normal">({t('deleteReasonHint')})</span>
             </label>
             <textarea
               id="delete-reason"
               value={reason}
               onChange={(e) => setReason(e.target.value)}
-              placeholder="e.g. I no longer need this service…"
+              placeholder={t('deleteReasonPlaceholder')}
               disabled={loading}
               rows={3}
               className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none transition focus:border-red-400 focus:ring-2 focus:ring-red-100 disabled:opacity-50 resize-none mb-1"
             />
             <p className={`text-xs mb-3 ${reasonTrimmed.length >= 6 ? 'text-gray-400' : 'text-red-400'}`}>
-              {reasonTrimmed.length}/6 minimum
+              {t('deleteMinChars', { count: reasonTrimmed.length })}
             </p>
 
             {error && (
@@ -179,14 +179,14 @@ export default function DeleteAccountButton() {
                 disabled={loading}
                 className="flex-1 rounded-xl border border-gray-200 py-2.5 text-sm font-medium text-gray-600 transition hover:bg-gray-50 disabled:opacity-50"
               >
-                Cancel
+                {t('cancel')}
               </button>
               <button
                 onClick={() => void handleDelete()}
                 disabled={loading || !canSubmit}
                 className="flex-1 rounded-xl bg-red-600 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? 'Deleting…' : 'Yes, delete everything'}
+                {loading ? t('deleting') : t('deleteEverything')}
               </button>
             </div>
           </div>

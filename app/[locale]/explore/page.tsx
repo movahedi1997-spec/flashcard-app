@@ -1,25 +1,13 @@
-/**
- * app/explore/page.tsx — TASK-013
- *
- * Public Explore page: subject hub tiles + searchable/filterable deck feed.
- *
- * Rendering strategy:
- *   • Server component — category hubs are SSR'd (good for SEO + FCP)
- *   • ExploreGrid is a client component — handles search, filter, pagination
- *
- * Auth: not required. Authenticated users get "already copied" state
- *       and can copy decks without leaving the page.
- */
-
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { hreflangAlternates } from '@/lib/hreflang';
 import { Compass } from 'lucide-react';
 import { cookies } from 'next/headers';
 import { jwtVerify } from 'jose';
 import { query } from '@/lib/db';
+import { getTranslations } from 'next-intl/server';
 import ExploreGrid from '@/components/ExploreGrid';
 import AppNav from '@/components/AppNav';
+import { Link } from '@/i18n/navigation';
 
 const _secret = new TextEncoder().encode(
   process.env.ACCESS_JWT_SECRET ?? 'dev-access-secret-change-in-production-32x',
@@ -57,41 +45,14 @@ export async function generateMetadata({
   };
 }
 
-// ── Category metadata ─────────────────────────────────────────────────────────
-
-const CATEGORY_META: Record<
-  string,
-  { label: string; description: string; gradient: string; emoji: string }
-> = {
-  medicine: {
-    label:       'Medicine',
-    description: 'USMLE, MCAT, Anatomy, Physiology, Pathology, Pharmacology',
-    gradient:    'from-indigo-600 to-violet-600',
-    emoji:       '🩺',
-  },
-  pharmacy: {
-    label:       'Pharmacy',
-    description: 'NAPLEX, Top 200 Drugs, Drug Mechanisms, Medicinal Chemistry',
-    gradient:    'from-emerald-600 to-teal-600',
-    emoji:       '💊',
-  },
-  chemistry: {
-    label:       'Chemistry',
-    description: 'Organic Chemistry, Biochemistry, Reaction Mechanisms',
-    gradient:    'from-amber-500 to-orange-500',
-    emoji:       '⚗️',
-  },
-  other: {
-    label:       'Other',
-    description: 'Biology, Physics, Nursing, Dentistry, and more',
-    gradient:    'from-sky-500 to-cyan-600',
-    emoji:       '📖',
-  },
-};
-
 const ORDERED_SUBJECTS = ['medicine', 'pharmacy', 'chemistry', 'other'];
 
-// ── Data fetching ─────────────────────────────────────────────────────────────
+const SUBJECT_META: Record<string, { gradient: string; emoji: string }> = {
+  medicine:  { gradient: 'from-indigo-600 to-violet-600', emoji: '🩺' },
+  pharmacy:  { gradient: 'from-emerald-600 to-teal-600',  emoji: '💊' },
+  chemistry: { gradient: 'from-amber-500 to-orange-500',  emoji: '⚗️' },
+  other:     { gradient: 'from-sky-500 to-cyan-600',      emoji: '📖' },
+};
 
 async function getCategories() {
   try {
@@ -108,23 +69,25 @@ async function getCategories() {
     }
     return ORDERED_SUBJECTS.map((subject) => ({
       subject,
-      ...CATEGORY_META[subject],
+      ...SUBJECT_META[subject],
       deckCount: countMap[subject] ?? 0,
     }));
   } catch {
-    // Graceful degradation — show tiles with 0 counts
     return ORDERED_SUBJECTS.map((subject) => ({
       subject,
-      ...CATEGORY_META[subject],
+      ...SUBJECT_META[subject],
       deckCount: 0,
     }));
   }
 }
 
-// ── Page ──────────────────────────────────────────────────────────────────────
-
 export default async function ExplorePage() {
-  const [categories, user] = await Promise.all([getCategories(), getOptionalUser()]);
+  const [categories, user, t, tc] = await Promise.all([
+    getCategories(),
+    getOptionalUser(),
+    getTranslations('explore'),
+    getTranslations('common'),
+  ]);
 
   return (
     <div className="min-h-screen">
@@ -137,8 +100,8 @@ export default async function ExplorePage() {
               Flashcard<span className="text-violet-600">AI</span>
             </Link>
             <div className="flex items-center gap-2">
-              <Link href="/login" className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100">Log in</Link>
-              <Link href="/signup" className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700">Get Started Free</Link>
+              <Link href="/login" className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100">{tc('nav.login')}</Link>
+              <Link href="/signup" className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700">{tc('nav.getStarted')}</Link>
             </div>
           </nav>
         </header>
@@ -149,20 +112,19 @@ export default async function ExplorePage() {
         <div className="mb-10 text-center">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-indigo-50 px-4 py-1.5 text-sm font-semibold text-indigo-600">
             <Compass className="h-4 w-4" />
-            Explore
+            {t('badge')}
           </div>
           <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
-            Free Flashcard Decks
+            {t('title')}
           </h1>
           <p className="mt-3 text-lg text-gray-500 max-w-2xl mx-auto">
-            Browse community-made decks for medicine, pharmacy, chemistry, and more.
-            Copy any deck to your library and study with spaced repetition — free.
+            {t('subtitle')}
           </p>
         </div>
 
         {/* ── Subject hub tiles ─────────────────────────────────────────────── */}
-        <section className="mb-10" aria-label="Subject categories">
-          <h2 className="sr-only">Browse by subject</h2>
+        <section className="mb-10" aria-label={t('browseBySubject')}>
+          <h2 className="sr-only">{t('browseBySubject')}</h2>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {categories.map((cat) => (
               <div
@@ -171,12 +133,12 @@ export default async function ExplorePage() {
                   p-5 text-white transition hover:scale-[1.02] hover:shadow-lg cursor-default`}
               >
                 <p className="text-3xl mb-2">{cat.emoji}</p>
-                <p className="font-bold text-base">{cat.label}</p>
+                <p className="font-bold text-base">{t(`subjects.${cat.subject}.label`)}</p>
                 <p className="text-white/70 text-xs mt-0.5 line-clamp-2 hidden sm:block">
-                  {cat.description}
+                  {t(`subjects.${cat.subject}.description`)}
                 </p>
                 <p className="mt-3 text-white/80 text-xs font-semibold">
-                  {cat.deckCount} {cat.deckCount === 1 ? 'deck' : 'decks'}
+                  {cat.deckCount} {cat.deckCount === 1 ? t('deck') : t('decks')}
                 </p>
               </div>
             ))}

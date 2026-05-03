@@ -2,9 +2,10 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { jwtVerify } from 'jose';
 import { query } from '@/lib/db';
+import { getTranslations } from 'next-intl/server';
 import AppNav from '@/components/AppNav';
 import SRSStatsClient from './SRSStatsClient';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { Zap } from 'lucide-react';
 
 const secret = new TextEncoder().encode(
@@ -29,6 +30,7 @@ async function getUser() {
 
 export default async function StatsPage() {
   const user = await getUser();
+  const t = await getTranslations('stats');
 
   const [profileRow, usernameRow] = await Promise.all([
     query<{ is_pro: boolean }>('SELECT is_pro FROM users WHERE id = $1', [user!.userId]),
@@ -47,16 +49,15 @@ export default async function StatsPage() {
             <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-indigo-50">
               <Zap className="h-8 w-8 text-indigo-500" />
             </div>
-            <h1 className="text-2xl font-black text-gray-900">Advanced SRS Analytics</h1>
+            <h1 className="text-2xl font-black text-gray-900">{t('proTitle')}</h1>
             <p className="mt-3 text-gray-500 max-w-sm mx-auto">
-              Track your retention rate, study streak, card maturity, and review forecast.
-              Available on Pro.
+              {t('proDescription')}
             </p>
             <Link
               href="/pricing"
               className="mt-8 inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-6 py-3 text-sm font-bold text-white hover:bg-indigo-700 transition-colors"
             >
-              <Zap size={15} /> Upgrade to Pro
+              <Zap size={15} /> {t('upgradeToPro')}
             </Link>
           </div>
         </main>
@@ -66,11 +67,11 @@ export default async function StatsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <AppNav username={username} />
+      <AppNav username={username} activePage="stats" />
       <main className="mx-auto max-w-5xl px-4 py-8 pb-24 sm:pb-8">
         <div className="mb-6">
-          <h1 className="text-2xl font-black text-gray-900">Study Analytics</h1>
-          <p className="text-sm text-gray-500 mt-1">Your spaced repetition performance over time</p>
+          <h1 className="text-2xl font-black text-gray-900">{t('title')}</h1>
+          <p className="text-sm text-gray-500 mt-1">{t('subtitle')}</p>
         </div>
         <SRSStatsClient />
       </main>

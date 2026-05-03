@@ -8,7 +8,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
     locale = routing.defaultLocale;
   }
 
-  const namespaces = ['common', 'home', 'auth', 'onboarding', 'dashboard', 'flashcards', 'study', 'explore', 'settings', 'pricing', 'errors'];
+  const namespaces = ['common', 'home', 'auth', 'onboarding', 'dashboard', 'flashcards', 'study', 'explore', 'settings', 'pricing', 'errors', 'stats'];
   const loaded = await Promise.all(
     namespaces.map((ns) => import(`../messages/${locale}/${ns}.json`).then((m) => m.default)),
   );

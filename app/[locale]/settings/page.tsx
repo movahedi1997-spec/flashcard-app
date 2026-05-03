@@ -2,10 +2,10 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { jwtVerify } from 'jose';
 import { User, ShieldAlert, Globe, LogOut, ShieldCheck, Languages } from 'lucide-react';
+import { getTranslations } from 'next-intl/server';
 import TwoFAToggle from './TwoFAToggle';
 import AppNav from '@/components/AppNav';
 import LogoutButton from '@/components/LogoutButton';
-import Link from 'next/link';
 import DeleteAccountButton from './DeleteAccountButton';
 import EditProfileForm from './EditProfileForm';
 import SubscriptionSection from './SubscriptionSection';
@@ -41,8 +41,8 @@ interface ProfileRow {
 
 export default async function SettingsPage() {
   const user = await getUserFromCookie();
+  const t = await getTranslations('settings');
 
-  // Fetch extended profile fields (may not exist on older accounts)
   const profileResult = await query<ProfileRow>(
     `SELECT username, bio, avatar_url, phone_number,
             COALESCE(two_fa_enabled, true) AS two_fa_enabled,
@@ -59,7 +59,7 @@ export default async function SettingsPage() {
       <AppNav username={profile.username} activePage="settings" />
 
       <main className="mx-auto max-w-2xl px-6 py-12 pb-24 sm:pb-12 space-y-8">
-        <h1 className="text-2xl font-extrabold text-gray-900">Account Settings</h1>
+        <h1 className="text-2xl font-extrabold text-gray-900">{t('title')}</h1>
 
         {/* Account info */}
         <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
@@ -67,11 +67,11 @@ export default async function SettingsPage() {
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
               <User className="h-5 w-5" />
             </div>
-            <h2 className="text-base font-semibold text-gray-900">Account info</h2>
+            <h2 className="text-base font-semibold text-gray-900">{t('accountInfo')}</h2>
           </div>
           <dl className="space-y-3 text-sm">
             <div className="flex gap-3">
-              <dt className="w-16 text-xs font-semibold text-gray-400 uppercase tracking-wide pt-0.5">Email</dt>
+              <dt className="w-16 text-xs font-semibold text-gray-400 uppercase tracking-wide pt-0.5">{t('email')}</dt>
               <dd className="text-gray-800 font-medium">{user!.email}</dd>
             </div>
           </dl>
@@ -84,8 +84,8 @@ export default async function SettingsPage() {
               <Globe className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-base font-semibold text-gray-900">Public profile</h2>
-              <p className="text-xs text-gray-400">Shown on your creator page and published decks</p>
+              <h2 className="text-base font-semibold text-gray-900">{t('publicProfile')}</h2>
+              <p className="text-xs text-gray-400">{t('publicProfileDesc')}</p>
             </div>
           </div>
 
@@ -105,8 +105,8 @@ export default async function SettingsPage() {
               <Languages className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-base font-semibold text-gray-900">Language</h2>
-              <p className="text-xs text-gray-400">Choose the language for the app interface</p>
+              <h2 className="text-base font-semibold text-gray-900">{t('language')}</h2>
+              <p className="text-xs text-gray-400">{t('languageDesc')}</p>
             </div>
           </div>
           <LanguageSetting />
@@ -121,7 +121,7 @@ export default async function SettingsPage() {
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
               <ShieldCheck className="h-5 w-5" />
             </div>
-            <h2 className="text-base font-semibold text-gray-900">Security</h2>
+            <h2 className="text-base font-semibold text-gray-900">{t('security')}</h2>
           </div>
           <TwoFAToggle initialEnabled={profile.two_fa_enabled} />
         </section>
@@ -132,9 +132,9 @@ export default async function SettingsPage() {
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gray-50 text-gray-500">
               <LogOut className="h-5 w-5" />
             </div>
-            <h2 className="text-base font-semibold text-gray-900">Sign out</h2>
+            <h2 className="text-base font-semibold text-gray-900">{t('signOut')}</h2>
           </div>
-          <p className="text-sm text-gray-500 mb-5">Sign out of your account on this device.</p>
+          <p className="text-sm text-gray-500 mb-5">{t('signOutDesc')}</p>
           <LogoutButton />
         </section>
 
@@ -144,11 +144,10 @@ export default async function SettingsPage() {
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-red-50 text-red-500">
               <ShieldAlert className="h-5 w-5" />
             </div>
-            <h2 className="text-base font-semibold text-gray-900">Danger Zone</h2>
+            <h2 className="text-base font-semibold text-gray-900">{t('dangerZone')}</h2>
           </div>
           <p className="text-sm text-gray-500 mb-5 leading-relaxed">
-            Permanently delete your account and all data — decks, cards, study history, and SRS
-            progress. This cannot be undone.
+            {t('deleteWarningDetail')}
           </p>
           <DeleteAccountButton />
         </section>

@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { CreditCard, Sparkles, CheckCircle2, ExternalLink, Zap, XCircle } from 'lucide-react';
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { Link, useRouter } from '@/i18n/navigation';
 
 interface Props {
   isPro: boolean;
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export default function SubscriptionSection({ isPro, subscriptionStatus }: Props) {
+  const t = useTranslations('settings');
   const searchParams = useSearchParams();
   const router = useRouter();
   const [showSuccess, setShowSuccess] = useState(false);
@@ -21,13 +23,13 @@ export default function SubscriptionSection({ isPro, subscriptionStatus }: Props
     const param = searchParams.get('upgraded');
     if (param === 'true') {
       setShowSuccess(true);
-      router.replace('/settings', { scroll: false });
+      router.replace('/settings' as Parameters<typeof router.replace>[0], { scroll: false });
       const t = setTimeout(() => setShowSuccess(false), 6000);
       return () => clearTimeout(t);
     }
     if (param === 'cancelled') {
       setShowCancelled(true);
-      router.replace('/settings', { scroll: false });
+      router.replace('/settings' as Parameters<typeof router.replace>[0], { scroll: false });
       const t = setTimeout(() => setShowCancelled(false), 6000);
       return () => clearTimeout(t);
     }
@@ -51,8 +53,8 @@ export default function SubscriptionSection({ isPro, subscriptionStatus }: Props
         <div className="mb-5 flex items-center gap-3 rounded-xl bg-amber-50 border border-amber-200 px-4 py-3">
           <XCircle size={18} className="text-amber-500 shrink-0" />
           <div>
-            <p className="text-sm font-semibold text-amber-800">Payment not completed</p>
-            <p className="text-xs text-amber-600 mt-0.5">Your plan is still Free. No charge was made. You can upgrade anytime.</p>
+            <p className="text-sm font-semibold text-amber-800">{t('paymentCancelled')}</p>
+            <p className="text-xs text-amber-600 mt-0.5">{t('paymentCancelledDesc')}</p>
           </div>
         </div>
       )}
@@ -62,8 +64,8 @@ export default function SubscriptionSection({ isPro, subscriptionStatus }: Props
         <div className="mb-5 flex items-center gap-3 rounded-xl bg-green-50 border border-green-200 px-4 py-3">
           <CheckCircle2 size={18} className="text-green-500 shrink-0" />
           <div>
-            <p className="text-sm font-semibold text-green-800">You're now a Pro member!</p>
-            <p className="text-xs text-green-600 mt-0.5">Unlimited AI card generation is now active on your account.</p>
+            <p className="text-sm font-semibold text-green-800">{t('nowPro')}</p>
+            <p className="text-xs text-green-600 mt-0.5">{t('nowProDesc')}</p>
           </div>
         </div>
       )}
@@ -73,8 +75,8 @@ export default function SubscriptionSection({ isPro, subscriptionStatus }: Props
           <CreditCard className="h-5 w-5" />
         </div>
         <div>
-          <h2 className="text-base font-semibold text-gray-900">Subscription</h2>
-          <p className="text-xs text-gray-400">Manage your plan and billing</p>
+          <h2 className="text-base font-semibold text-gray-900">{t('subscription')}</h2>
+          <p className="text-xs text-gray-400">{t('subscriptionDesc')}</p>
         </div>
       </div>
 
@@ -85,14 +87,14 @@ export default function SubscriptionSection({ isPro, subscriptionStatus }: Props
             <div className="flex items-center gap-2.5">
               <Sparkles size={16} className="text-indigo-500" />
               <div>
-                <p className="text-sm font-bold text-indigo-700">Pro Plan</p>
+                <p className="text-sm font-bold text-indigo-700">{t('proPlan')}</p>
                 <p className="text-xs text-indigo-400 mt-0.5 capitalize">
-                  {subscriptionStatus === 'paused' ? 'Paused' : 'Active'} · Unlimited AI generation
+                  {subscriptionStatus === 'paused' ? t('proPaused') : t('proActive')}
                 </p>
               </div>
             </div>
             <span className="text-xs font-bold text-indigo-600 bg-indigo-100 px-2.5 py-1 rounded-full">
-              {subscriptionStatus === 'paused' ? 'Paused' : 'Active'}
+              {subscriptionStatus === 'paused' ? t('statusPaused') : t('statusActive')}
             </span>
           </div>
 
@@ -105,7 +107,7 @@ export default function SubscriptionSection({ isPro, subscriptionStatus }: Props
               ? <span className="h-3.5 w-3.5 rounded-full border-2 border-gray-300 border-t-indigo-500 animate-spin" />
               : <ExternalLink size={14} />
             }
-            Manage subscription, invoices & billing
+            {t('manageSubscription')}
           </button>
         </div>
       ) : (
@@ -113,17 +115,17 @@ export default function SubscriptionSection({ isPro, subscriptionStatus }: Props
           {/* Free badge */}
           <div className="flex items-center justify-between rounded-xl bg-gray-50 border border-gray-100 px-4 py-3">
             <div>
-              <p className="text-sm font-semibold text-gray-700">Free Plan</p>
-              <p className="text-xs text-gray-400 mt-0.5">189 AI cards/month · 50 per session</p>
+              <p className="text-sm font-semibold text-gray-700">{t('freePlan')}</p>
+              <p className="text-xs text-gray-400 mt-0.5">{t('freeHint')}</p>
             </div>
-            <span className="text-xs font-medium text-gray-400 bg-gray-100 px-2.5 py-1 rounded-full">Free</span>
+            <span className="text-xs font-medium text-gray-400 bg-gray-100 px-2.5 py-1 rounded-full">{t('free')}</span>
           </div>
 
           <Link
             href="/pricing"
             className="flex items-center justify-center gap-2 w-full rounded-xl bg-indigo-600 py-2.5 text-sm font-bold text-white hover:bg-indigo-700 transition-colors"
           >
-            <Zap size={14} /> Upgrade to Pro — from €5.83/mo
+            <Zap size={14} /> {t('upgradeProPrice')}
           </Link>
         </div>
       )}
