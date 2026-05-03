@@ -8,8 +8,9 @@
  */
 
 import { useState } from 'react';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { Copy, Check, Loader2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { fetchWithRefresh } from '@/lib/fetchWithRefresh';
 
 interface Props {
@@ -18,6 +19,7 @@ interface Props {
 }
 
 export default function CopyDeckButton({ deckId, alreadyCopied: initialCopied }: Props) {
+  const t = useTranslations('explore');
   const [copied, setCopied]   = useState(initialCopied);
   const [copying, setCopying] = useState(false);
   const [error, setError]     = useState('');
@@ -36,11 +38,11 @@ export default function CopyDeckButton({ deckId, alreadyCopied: initialCopied }:
       }
       if (!res.ok) {
         const data = (await res.json().catch(() => ({}))) as { error?: string };
-        throw new Error(data.error ?? 'Copy failed.');
+        throw new Error(data.error ?? t('copyFailed'));
       }
       setCopied(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong.');
+      setError(err instanceof Error ? err.message : t('somethingWentWrong'));
     } finally {
       setCopying(false);
     }
@@ -51,13 +53,13 @@ export default function CopyDeckButton({ deckId, alreadyCopied: initialCopied }:
       <div className="space-y-3">
         <div className="flex items-center justify-center gap-2 w-full rounded-xl bg-emerald-50 border border-emerald-200 py-3 text-sm font-semibold text-emerald-700">
           <Check className="h-4 w-4" />
-          Added to your library!
+          {t('addedToLibrary')}
         </div>
         <Link
           href="/flashcards"
           className="block w-full text-center rounded-xl border border-indigo-200 py-2.5 text-sm font-semibold text-indigo-600 transition hover:bg-indigo-50"
         >
-          Go to My Library →
+          {t('goToLibrary')}
         </Link>
       </div>
     );
@@ -71,8 +73,8 @@ export default function CopyDeckButton({ deckId, alreadyCopied: initialCopied }:
         className="w-full flex items-center justify-center gap-2 rounded-xl bg-indigo-600 py-3 text-sm font-bold text-white shadow-sm shadow-indigo-200 transition hover:bg-indigo-700 active:scale-95 disabled:opacity-60"
       >
         {copying
-          ? <><Loader2 className="h-4 w-4 animate-spin" /> Copying…</>
-          : <><Copy className="h-4 w-4" /> Copy to My Library</>
+          ? <><Loader2 className="h-4 w-4 animate-spin" /> {t('copying')}</>
+          : <><Copy className="h-4 w-4" /> {t('copyToLibrary')}</>
         }
       </button>
       {error && (

@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { jwtVerify } from 'jose';
 import { BookOpen, Zap, Trophy, LayoutGrid } from 'lucide-react';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import AppNav from '@/components/AppNav';
 import StudyChart from '@/components/dashboard/StudyChart';
 import ProBadge from '@/components/ProBadge';

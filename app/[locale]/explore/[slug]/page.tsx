@@ -15,13 +15,14 @@
 
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { cookies } from 'next/headers';
 import { jwtVerify } from 'jose';
 import {
   BookOpen, Copy, ArrowLeft, BadgeCheck, Eye, EyeOff,
 } from 'lucide-react';
 import { query } from '@/lib/db';
+import { getTranslations } from 'next-intl/server';
 import AppNav from '@/components/AppNav';
 import CopyDeckButton from './CopyDeckButton';
 
@@ -164,7 +165,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default async function DeckLandingPage({ params }: Props) {
-  const deck = await getDeckBySlug(params.slug);
+  const [deck, t] = await Promise.all([
+    getDeckBySlug(params.slug),
+    getTranslations('explore'),
+  ]);
   if (!deck) notFound();
 
   const authUser  = await tryGetUser();
@@ -201,8 +205,8 @@ export default async function DeckLandingPage({ params }: Props) {
               Flashcard<span className="text-violet-600">AI</span>
             </Link>
             <div className="flex items-center gap-2">
-              <Link href="/login" className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100">Log in</Link>
-              <Link href="/signup" className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700">Get Started Free</Link>
+              <Link href="/login" className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100">{t('logIn')}</Link>
+              <Link href="/signup" className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700">{t('getStartedFree')}</Link>
             </div>
           </nav>
         </header>
@@ -215,7 +219,7 @@ export default async function DeckLandingPage({ params }: Props) {
           className="mb-8 inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-gray-800 transition"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
-          Back to Explore
+          {t('backToExplore')}
         </Link>
 
         <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
@@ -235,12 +239,12 @@ export default async function DeckLandingPage({ params }: Props) {
                   <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-white/70">
                     <span className="flex items-center gap-1">
                       <BookOpen className="h-4 w-4" />
-                      {totalCards} {totalCards === 1 ? 'card' : 'cards'}
+                      {totalCards} {totalCards === 1 ? t('card') : t('cards')}
                     </span>
                     {deck.copy_count > 0 && (
                       <span className="flex items-center gap-1">
                         <Copy className="h-4 w-4" />
-                        {deck.copy_count.toLocaleString()} {deck.copy_count === 1 ? 'copy' : 'copies'}
+                        {deck.copy_count.toLocaleString()} {deck.copy_count === 1 ? t('copy') : t('copies')}
                       </span>
                     )}
                     {deck.subject && (
@@ -250,7 +254,7 @@ export default async function DeckLandingPage({ params }: Props) {
                     )}
                   </div>
                   <div className="mt-3 flex items-center gap-1.5 text-sm text-white/70">
-                    <span>by {deck.creator_name}</span>
+                    <span>{t('by')} {deck.creator_name}</span>
                     {deck.is_verified_creator && (
                       <BadgeCheck className="h-4 w-4 text-white" />
                     )}
@@ -263,15 +267,15 @@ export default async function DeckLandingPage({ params }: Props) {
             <div>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="font-bold text-gray-900">
-                  Preview
+                  {t('preview')}
                   <span className="ms-2 text-sm font-normal text-gray-500">
-                    ({cards.length} of {totalCards} cards)
+                    {t('previewCount', { shown: cards.length, total: totalCards })}
                   </span>
                 </h2>
                 {!showBack && (
                   <div className="flex items-center gap-1.5 text-xs text-gray-400">
                     <EyeOff className="h-3.5 w-3.5" />
-                    Back hidden — log in to reveal
+                    {t('backHidden')}
                   </div>
                 )}
               </div>
@@ -288,12 +292,12 @@ export default async function DeckLandingPage({ params }: Props) {
                       </span>
                       <div className="flex-1 min-w-0 grid gap-3 sm:grid-cols-2">
                         <div>
-                          <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 mb-1">Front</p>
+                          <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 mb-1">{t('frontLabel')}</p>
                           <p className="text-sm text-gray-800 leading-relaxed">{card.front}</p>
                         </div>
                         <div>
                           <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 mb-1 flex items-center gap-1">
-                            Back
+                            {t('backLabel')}
                             {!showBack && <EyeOff className="h-3 w-3 text-gray-300" />}
                           </p>
                           {showBack ? (
@@ -314,7 +318,7 @@ export default async function DeckLandingPage({ params }: Props) {
 
               {totalCards > cards.length && (
                 <p className="mt-3 text-center text-sm text-gray-400">
-                  +{totalCards - cards.length} more cards — copy to see all
+                  {t('moreCards', { count: totalCards - cards.length })}
                 </p>
               )}
             </div>
@@ -324,35 +328,35 @@ export default async function DeckLandingPage({ params }: Props) {
           <div className="lg:sticky lg:top-24 lg:self-start">
             <div className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm space-y-5">
               <div>
-                <h2 className="text-lg font-bold text-gray-900">Study this deck</h2>
+                <h2 className="text-lg font-bold text-gray-900">{t('studyThisDeck')}</h2>
                 <p className="text-sm text-gray-500 mt-1">
-                  Copy it to your library and study with spaced repetition — free, forever.
+                  {t('studyThisDeckDesc')}
                 </p>
               </div>
 
               <div className="space-y-2 text-sm text-gray-600">
                 <div className="flex items-center gap-2">
                   <span className="text-base">🧠</span>
-                  <span>Smart SRS scheduling</span>
+                  <span>{t('featureSRS')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-base">📱</span>
-                  <span>Study on any device</span>
+                  <span>{t('featureDevice')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-base">✏️</span>
-                  <span>Edit and add your own cards</span>
+                  <span>{t('featureEdit')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-base">🆓</span>
-                  <span>Completely free</span>
+                  <span>{t('featureFree')}</span>
                 </div>
               </div>
 
               {/* Copy button — client component for interactivity */}
               {isOwner ? (
                 <div className="rounded-xl bg-gray-50 border border-gray-200 px-4 py-3 text-sm text-gray-600 text-center">
-                  This is your deck
+                  {t('yourDeck')}
                 </div>
               ) : userId ? (
                 <CopyDeckButton
@@ -365,12 +369,12 @@ export default async function DeckLandingPage({ params }: Props) {
                     href={`/signup?next=/explore/${deck.slug}`}
                     className="block w-full text-center rounded-xl bg-indigo-600 py-3 text-sm font-bold text-white shadow-sm shadow-indigo-200 transition hover:bg-indigo-700 active:scale-95"
                   >
-                    Sign up free to copy
+                    {t('signUpToCopy')}
                   </Link>
                   <p className="text-center text-xs text-gray-400">
-                    Already have an account?{' '}
+                    {t('alreadyHaveAccount')}{' '}
                     <Link href={`/login?next=/explore/${deck.slug}`} className="text-indigo-600 hover:underline">
-                      Log in
+                      {t('logIn')}
                     </Link>
                   </p>
                 </div>
