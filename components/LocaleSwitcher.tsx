@@ -33,11 +33,10 @@ export default function LocaleSwitcher() {
     setOpen(false);
     if (next === locale) return;
 
-    // Strip the current locale prefix from the pathname (if present)
+    document.cookie = `NEXT_LOCALE=${next}; path=/; max-age=31536000; SameSite=Lax`;
+
     const localePattern = new RegExp(`^/(${routing.locales.join('|')})(/?)`);
     const stripped = pathname.replace(localePattern, '/');
-
-    // Build the new path with the new locale prefix (skip prefix for default locale)
     const newPath = next === routing.defaultLocale ? stripped : `/${next}${stripped}`;
     router.push(newPath);
   }

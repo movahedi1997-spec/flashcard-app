@@ -71,6 +71,20 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // ── Cookie-based locale redirect (persists user's explicit language choice) ─
+  const savedLocale = request.cookies.get('NEXT_LOCALE')?.value;
+  const hasLocalePrefix = /^\/(en|de|fr|es|fa)(\/|$)/.test(pathname);
+  if (
+    !hasLocalePrefix &&
+    savedLocale &&
+    savedLocale !== routing.defaultLocale &&
+    (routing.locales as readonly string[]).includes(savedLocale)
+  ) {
+    const url = request.nextUrl.clone();
+    url.pathname = `/${savedLocale}${pathname === '/' ? '' : pathname}`;
+    return NextResponse.redirect(url, { status: 302 });
+  }
+
   // ── Run next-intl middleware first (sets x-next-intl-locale header) ────────
   const intlResponse = intlMiddleware(request);
 

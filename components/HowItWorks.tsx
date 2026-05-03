@@ -1,28 +1,29 @@
-const STEPS = [
-  {
-    num: '01',
-    emoji: '✏️',
-    title: 'Create or copy a deck',
-    description:
-      'Add cards manually, browse 1,000+ community decks in Explore, or copy one with a single click. Start studying in under a minute — no tutorial needed.',
-  },
-  {
-    num: '02',
-    emoji: '🧠',
-    title: 'Study with smart scheduling',
-    description:
-      'Daily Review shows only the cards due today using the SM-2 algorithm. In a hurry? Switch to Turbo Mode and flip through everything fast.',
-  },
-  {
-    num: '03',
-    emoji: '📈',
-    title: 'Watch your retention grow',
-    description:
-      'Every answer adjusts your schedule in real time. Cards you know move further out. Weak spots come back sooner. Your dashboard tracks every streak and session.',
-  },
-];
+import { useTranslations } from 'next-intl';
 
 export default function HowItWorks() {
+  const t = useTranslations('home.howItWorks');
+
+  const STEPS = [
+    {
+      num: '01',
+      emoji: '✏️',
+      title: t('step1Title'),
+      description: t('step1Desc'),
+    },
+    {
+      num: '02',
+      emoji: '🧠',
+      title: t('step2Title'),
+      description: t('step2Desc'),
+    },
+    {
+      num: '03',
+      emoji: '📈',
+      title: t('step3Title'),
+      description: t('step3Desc'),
+    },
+  ];
+
   return (
     <section id="how-it-works" className="relative overflow-hidden bg-white py-24">
 
@@ -45,14 +46,14 @@ export default function HowItWorks() {
         {/* Heading */}
         <div className="mb-20 text-center">
           <span className="mb-3 inline-block rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">
-            How it works
+            {t('badge')}
           </span>
           <h2 className="text-4xl font-black tracking-tight text-gray-900 sm:text-5xl">
-            Zero to exam-ready.<br />
-            <span className="gradient-text">Three steps.</span>
+            {t('heading')}<br />
+            <span className="gradient-text">{t('headingAccent')}</span>
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-gray-500">
-            No complicated setup. No subscription. Just open, study, repeat.
+            {t('subtext')}
           </p>
         </div>
 

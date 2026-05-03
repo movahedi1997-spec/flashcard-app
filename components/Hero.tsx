@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { ArrowRight, Zap, BookOpen } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 const GRADE_BUTTONS = [
   { label: 'Again', sub: '1d',  bg: 'bg-red-500/20',     text: 'text-red-300'     },
@@ -9,6 +10,8 @@ const GRADE_BUTTONS = [
 ];
 
 export default function Hero() {
+  const t = useTranslations('home.hero');
+
   return (
     <section className="relative overflow-hidden bg-slate-950 pt-28 pb-20 lg:pt-36 lg:pb-28">
 
@@ -34,25 +37,25 @@ export default function Hero() {
             {/* Trust badge */}
             <div className="mb-6 flex flex-wrap items-center gap-2">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-slate-300 backdrop-blur-sm">
-                🇩🇪 Made in Germany
+                {t('badgeMadeIn')}
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-slate-300 backdrop-blur-sm">
-                🔒 DSGVO konform
+                {t('badgeDsgvo')}
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-300 backdrop-blur-sm">
-                🆓 Free forever
+                {t('badgeFree')}
               </span>
             </div>
 
             {/* Headline */}
             <h1 className="text-5xl font-black leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-7xl">
-              Study Smarter.<br />
-              <span className="shimmer-text">Remember Forever.</span>
+              {t('headline1')}<br />
+              <span className="shimmer-text">{t('headline2')}</span>
             </h1>
 
             {/* Sub */}
             <p className="mt-6 text-lg leading-relaxed text-slate-400 max-w-lg">
-              Spaced-repetition flashcards that adapt to you. Create decks, study with AI scheduling, share with the community — free on every device, forever.
+              {t('subtext')}
             </p>
 
             {/* CTAs */}
@@ -61,7 +64,7 @@ export default function Hero() {
                 href="/signup"
                 className="group inline-flex items-center gap-2 rounded-2xl bg-indigo-600 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-indigo-900/50 transition hover:bg-indigo-500 active:scale-[0.98]"
               >
-                Start for free
+                {t('ctaStart')}
                 <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
               </Link>
               <Link
@@ -69,13 +72,13 @@ export default function Hero() {
                 className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-6 py-3.5 text-sm font-bold text-slate-200 backdrop-blur-sm transition hover:bg-white/10 active:scale-[0.98]"
               >
                 <BookOpen className="h-4 w-4" />
-                Browse free decks
+                {t('ctaBrowse')}
               </Link>
             </div>
 
             {/* Social proof */}
             <p className="mt-6 text-xs text-slate-500">
-              No credit card · No setup · Works offline as PWA
+              {t('socialProof')}
             </p>
           </div>
 
@@ -147,10 +150,10 @@ export default function Hero() {
         {/* ── Stats bar ──────────────────────────────────────────────────── */}
         <div className="mt-20 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/8 bg-white/8 sm:grid-cols-4">
           {[
-            { value: 'SM-2',    label: 'Proven algorithm'    },
-            { value: '3',       label: 'Study modes'         },
-            { value: 'Offline', label: 'No Wi-Fi needed'     },
-            { value: '100%',    label: 'Free to use'         },
+            { value: 'SM-2',    label: t('statsAlgorithm') },
+            { value: '3',       label: t('statsModes')     },
+            { value: 'Offline', label: t('statsOffline')   },
+            { value: '100%',    label: t('statsFree')      },
           ].map(({ value, label }) => (
             <div key={label} className="bg-slate-900/60 px-6 py-5 text-center backdrop-blur-sm">
               <p className="text-2xl font-black text-indigo-400">{value}</p>

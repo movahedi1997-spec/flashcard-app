@@ -2,92 +2,95 @@ import {
   Brain, Zap, CalendarClock, WifiOff, BarChart3, Users,
   Shield, Globe, Smartphone,
 } from 'lucide-react';
-
-const FEATURES = [
-  {
-    icon: Brain,
-    color: 'text-indigo-400',
-    ring: 'ring-indigo-500/20',
-    bg: 'bg-indigo-500/10',
-    title: 'Daily Review',
-    description: 'The SM-2 algorithm calculates exactly when each card should return. Study only what you need — nothing more, nothing wasted.',
-    badge: 'SM-2 Algorithm',
-  },
-  {
-    icon: Zap,
-    color: 'text-amber-400',
-    ring: 'ring-amber-500/20',
-    bg: 'bg-amber-500/10',
-    title: 'Turbo Mode',
-    description: 'Flip through every card in random order — no grades recorded. Perfect for last-minute cramming before exams.',
-    badge: 'Fast review',
-  },
-  {
-    icon: CalendarClock,
-    color: 'text-violet-400',
-    ring: 'ring-violet-500/20',
-    bg: 'bg-violet-500/10',
-    title: 'Smart Scheduling',
-    description: "Cards you know well are pushed out weeks. Weak cards return tomorrow. Your schedule adapts automatically after every answer.",
-    badge: 'Adaptive',
-  },
-  {
-    icon: WifiOff,
-    color: 'text-rose-400',
-    ring: 'ring-rose-500/20',
-    bg: 'bg-rose-500/10',
-    title: 'Works Offline',
-    description: 'Install FlashcardAI as a PWA on any device. Study sessions work without internet — ideal for commutes and hospitals.',
-    badge: 'PWA',
-  },
-  {
-    icon: BarChart3,
-    color: 'text-cyan-400',
-    ring: 'ring-cyan-500/20',
-    bg: 'bg-cyan-500/10',
-    title: 'Progress Dashboard',
-    description: 'Day streak, retention %, cards studied today, and a study activity chart — always know where you stand.',
-    badge: 'Analytics',
-  },
-  {
-    icon: Users,
-    color: 'text-emerald-400',
-    ring: 'ring-emerald-500/20',
-    bg: 'bg-emerald-500/10',
-    title: 'Community Decks',
-    description: 'Browse and copy thousands of free decks from the community. Share your own and build a public creator profile.',
-    badge: 'Explore',
-  },
-  {
-    icon: Globe,
-    color: 'text-sky-400',
-    ring: 'ring-sky-500/20',
-    bg: 'bg-sky-500/10',
-    title: 'Public Profiles',
-    description: 'Every creator gets a shareable profile page at /creators/username — show your decks to the world.',
-    badge: 'Creator',
-  },
-  {
-    icon: Shield,
-    color: 'text-green-400',
-    ring: 'ring-green-500/20',
-    bg: 'bg-green-500/10',
-    title: 'DSGVO & Privacy',
-    description: 'Built in Germany, stored in Germany. No trackers, no data selling, no ads. Your study data is yours — always.',
-    badge: 'DSGVO · GDPR',
-  },
-  {
-    icon: Smartphone,
-    color: 'text-pink-400',
-    ring: 'ring-pink-500/20',
-    bg: 'bg-pink-500/10',
-    title: 'Install on Any Device',
-    description: 'Add to home screen on iOS or Android in seconds. Looks and feels like a native app — without the App Store.',
-    badge: 'Cross-platform',
-  },
-];
+import { useTranslations } from 'next-intl';
 
 export default function Features() {
+  const t = useTranslations('home.features');
+
+  const FEATURES = [
+    {
+      icon: Brain,
+      color: 'text-indigo-400',
+      ring: 'ring-indigo-500/20',
+      bg: 'bg-indigo-500/10',
+      title: t('dailyReviewTitle'),
+      description: t('dailyReviewDesc'),
+      badge: t('dailyReviewBadge'),
+    },
+    {
+      icon: Zap,
+      color: 'text-amber-400',
+      ring: 'ring-amber-500/20',
+      bg: 'bg-amber-500/10',
+      title: t('turboTitle'),
+      description: t('turboDesc'),
+      badge: t('turboBadge'),
+    },
+    {
+      icon: CalendarClock,
+      color: 'text-violet-400',
+      ring: 'ring-violet-500/20',
+      bg: 'bg-violet-500/10',
+      title: t('schedulingTitle'),
+      description: t('schedulingDesc'),
+      badge: t('schedulingBadge'),
+    },
+    {
+      icon: WifiOff,
+      color: 'text-rose-400',
+      ring: 'ring-rose-500/20',
+      bg: 'bg-rose-500/10',
+      title: t('offlineTitle'),
+      description: t('offlineDesc'),
+      badge: t('offlineBadge'),
+    },
+    {
+      icon: BarChart3,
+      color: 'text-cyan-400',
+      ring: 'ring-cyan-500/20',
+      bg: 'bg-cyan-500/10',
+      title: t('dashboardTitle'),
+      description: t('dashboardDesc'),
+      badge: t('dashboardBadge'),
+    },
+    {
+      icon: Users,
+      color: 'text-emerald-400',
+      ring: 'ring-emerald-500/20',
+      bg: 'bg-emerald-500/10',
+      title: t('communityTitle'),
+      description: t('communityDesc'),
+      badge: t('communityBadge'),
+    },
+    {
+      icon: Globe,
+      color: 'text-sky-400',
+      ring: 'ring-sky-500/20',
+      bg: 'bg-sky-500/10',
+      title: t('profilesTitle'),
+      description: t('profilesDesc'),
+      badge: t('profilesBadge'),
+    },
+    {
+      icon: Shield,
+      color: 'text-green-400',
+      ring: 'ring-green-500/20',
+      bg: 'bg-green-500/10',
+      title: t('privacyTitle'),
+      description: t('privacyDesc'),
+      badge: t('privacyBadge'),
+    },
+    {
+      icon: Smartphone,
+      color: 'text-pink-400',
+      ring: 'ring-pink-500/20',
+      bg: 'bg-pink-500/10',
+      title: t('installTitle'),
+      description: t('installDesc'),
+      badge: t('installBadge'),
+    },
+  ];
+
   return (
     <section id="features" className="relative bg-slate-950 py-24 overflow-hidden">
       {/* Graph paper overlay */}
@@ -107,14 +110,14 @@ export default function Features() {
         {/* Heading */}
         <div className="mb-16 max-w-2xl">
           <span className="mb-3 inline-block rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3 py-1 text-xs font-semibold text-indigo-400">
-            Everything you need
+            {t('badge')}
           </span>
           <h2 className="text-4xl font-black tracking-tight text-white sm:text-5xl">
-            Built for serious learners.<br />
-            <span className="shimmer-text">Free for everyone.</span>
+            {t('heading')}<br />
+            <span className="shimmer-text">{t('headingAccent')}</span>
           </h2>
           <p className="mt-4 text-slate-400 leading-relaxed">
-            Simple enough to start in 60 seconds. Powerful enough to carry you through finals, boards, and licensing exams.
+            {t('subtext')}
           </p>
         </div>
 

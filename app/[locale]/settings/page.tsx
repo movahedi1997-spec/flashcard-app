@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { jwtVerify } from 'jose';
-import { User, ShieldAlert, Globe, LogOut, ShieldCheck } from 'lucide-react';
+import { User, ShieldAlert, Globe, LogOut, ShieldCheck, Languages } from 'lucide-react';
 import TwoFAToggle from './TwoFAToggle';
 import AppNav from '@/components/AppNav';
 import LogoutButton from '@/components/LogoutButton';
@@ -9,6 +9,7 @@ import Link from 'next/link';
 import DeleteAccountButton from './DeleteAccountButton';
 import EditProfileForm from './EditProfileForm';
 import SubscriptionSection from './SubscriptionSection';
+import LanguageSetting from '@/components/LanguageSetting';
 import { query } from '@/lib/db';
 
 const secret = new TextEncoder().encode(
@@ -95,6 +96,20 @@ export default async function SettingsPage() {
             initialAvatarUrl={profile.avatar_url}
             initialPhoneNumber={profile.phone_number}
           />
+        </section>
+
+        {/* Language */}
+        <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+          <div className="flex items-center gap-3 mb-5">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+              <Languages className="h-5 w-5" />
+            </div>
+            <div>
+              <h2 className="text-base font-semibold text-gray-900">Language</h2>
+              <p className="text-xs text-gray-400">Choose the language for the app interface</p>
+            </div>
+          </div>
+          <LanguageSetting />
         </section>
 
         {/* Subscription */}
