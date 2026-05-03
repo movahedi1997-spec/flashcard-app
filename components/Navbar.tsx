@@ -1,14 +1,16 @@
 'use client';
 
-import Link from 'next/link';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 import FlashLogoMark from './FlashLogoMark';
 import InstallPWAButton from './InstallPWAButton';
 import LocaleSwitcher from './LocaleSwitcher';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const t = useTranslations('common.nav');
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-gray-100/80 bg-white/75 backdrop-blur-xl">
@@ -27,25 +29,25 @@ export default function Navbar() {
             href="#how-it-works"
             className="rounded-lg px-4 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-100 hover:text-gray-900"
           >
-            How it works
+            {t('howItWorks')}
           </a>
           <a
             href="#features"
             className="rounded-lg px-4 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-100 hover:text-gray-900"
           >
-            Features
+            {t('features')}
           </a>
           <a
             href="#subjects"
             className="rounded-lg px-4 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-100 hover:text-gray-900"
           >
-            Subjects
+            {t('subjects')}
           </a>
           <a
             href="/blog"
             className="rounded-lg px-4 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-100 hover:text-gray-900"
           >
-            Blog
+            {t('blog')}
           </a>
           <InstallPWAButton />
           <LocaleSwitcher />
@@ -54,13 +56,13 @@ export default function Navbar() {
             href="/login"
             className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100"
           >
-            Log in
+            {t('login')}
           </Link>
           <Link
             href="/signup"
             className="ms-1 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-indigo-200 transition hover:bg-indigo-700 active:scale-95"
           >
-            Get Started Free
+            {t('getStarted')}
           </Link>
         </div>
 
@@ -68,7 +70,7 @@ export default function Navbar() {
         <button
           className="rounded-lg p-2 text-gray-600 hover:bg-gray-100 md:hidden"
           onClick={() => setOpen(!open)}
-          aria-label="Toggle menu"
+          aria-label={t('toggleMenu')}
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
@@ -78,13 +80,13 @@ export default function Navbar() {
       {open && (
         <div className="border-t border-gray-100 bg-white/95 backdrop-blur-xl px-6 pb-5 md:hidden">
           <div className="flex flex-col gap-1 pt-3">
-            <a href="#how-it-works" onClick={() => setOpen(false)} className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100">How it works</a>
-            <a href="#features"     onClick={() => setOpen(false)} className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100">Features</a>
-            <a href="#subjects"     onClick={() => setOpen(false)} className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100">Subjects</a>
-            <a href="/blog"        onClick={() => setOpen(false)} className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100">Blog</a>
+            <a href="#how-it-works" onClick={() => setOpen(false)} className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100">{t('howItWorks')}</a>
+            <a href="#features"     onClick={() => setOpen(false)} className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100">{t('features')}</a>
+            <a href="#subjects"     onClick={() => setOpen(false)} className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100">{t('subjects')}</a>
+            <a href="/blog"         onClick={() => setOpen(false)} className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100">{t('blog')}</a>
             <div className="my-1 h-px bg-gray-100" />
-            <Link href="/login"  onClick={() => setOpen(false)} className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100">Log in</Link>
-            <Link href="/signup" onClick={() => setOpen(false)} className="rounded-xl bg-indigo-600 px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-indigo-700">Get Started Free</Link>
+            <Link href="/login"  onClick={() => setOpen(false)} className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100">{t('login')}</Link>
+            <Link href="/signup" onClick={() => setOpen(false)} className="rounded-xl bg-indigo-600 px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-indigo-700">{t('getStarted')}</Link>
           </div>
         </div>
       )}

@@ -1,7 +1,7 @@
 'use client';
 
 import { useLocale } from 'next-intl';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter, usePathname } from '@/i18n/navigation';
 import { routing, type Locale } from '@/i18n/routing';
 
 const LOCALE_OPTIONS: { locale: Locale; label: string; flag: string; native: string }[] = [
@@ -20,10 +20,7 @@ export default function LanguageSetting() {
   function switchLocale(next: Locale) {
     if (next === locale) return;
     document.cookie = `NEXT_LOCALE=${next}; path=/; max-age=31536000; SameSite=Lax`;
-    const localePattern = new RegExp(`^/(${routing.locales.join('|')})(/?)`);
-    const stripped = pathname.replace(localePattern, '/');
-    const newPath = next === routing.defaultLocale ? stripped : `/${next}${stripped}`;
-    router.push(newPath);
+    router.replace(pathname, { locale: next });
   }
 
   return (

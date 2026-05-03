@@ -58,5 +58,27 @@
     "installTitle": "Install on Any Device",
     "installDesc": "Add to home screen on iOS or Android in seconds. Looks and feels like a native app — without the App Store.",
     "installBadge": "Cross-platform"
+  },
+  "subjects": {
+    "badge": "Built for your exam",
+    "heading": "Decks for every",
+    "headingAccent": "high-stakes test",
+    "subtext": "Browse community decks or create your own — organized by the subjects that matter most.",
+    "sampleCardLabel": "Sample card",
+    "medicineName": "Medicine",
+    "pharmacyName": "Pharmacy",
+    "chemistryName": "Chemistry",
+    "startStudying": "Start studying {name}"
+  },
+  "cta": {
+    "badge": "Free forever — no credit card needed",
+    "heading": "Ready to ace your next exam?",
+    "subtext": "Join students studying smarter for USMLE, NAPLEX, and Chemistry boards. Create your first deck in under a minute.",
+    "ctaStart": "Get Started Free",
+    "ctaLogin": "Already have an account →",
+    "trust1": "No setup",
+    "trust2": "Works offline",
+    "trust3": "3 study modes",
+    "trust4": "Free forever"
   }
 }

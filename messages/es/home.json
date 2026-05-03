@@ -58,5 +58,27 @@
     "installTitle": "Instalar en cualquier dispositivo",
     "installDesc": "Agrega a la pantalla de inicio en iOS o Android en segundos. Se ve y se siente como una app nativa — sin App Store.",
     "installBadge": "Multiplataforma"
+  },
+  "subjects": {
+    "badge": "Construido para tu examen",
+    "heading": "Mazos para cada",
+    "headingAccent": "examen importante",
+    "subtext": "Explora mazos de la comunidad o crea los tuyos — organizados por las materias que más importan.",
+    "sampleCardLabel": "Tarjeta de ejemplo",
+    "medicineName": "Medicina",
+    "pharmacyName": "Farmacia",
+    "chemistryName": "Química",
+    "startStudying": "Estudiar {name}"
+  },
+  "cta": {
+    "badge": "Gratis para siempre — sin tarjeta de crédito",
+    "heading": "¿Listo para superar tu próximo examen?",
+    "subtext": "Únete a estudiantes que estudian más inteligente para USMLE, NAPLEX y exámenes de química. Crea tu primer mazo en menos de un minuto.",
+    "ctaStart": "Comenzar gratis",
+    "ctaLogin": "¿Ya tienes una cuenta? →",
+    "trust1": "Sin configuración",
+    "trust2": "Funciona sin conexión",
+    "trust3": "3 modos de estudio",
+    "trust4": "Gratis para siempre"
   }
 }

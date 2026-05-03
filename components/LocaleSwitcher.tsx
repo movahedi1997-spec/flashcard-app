@@ -1,7 +1,7 @@
 'use client';
 
 import { useLocale } from 'next-intl';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter, usePathname } from '@/i18n/navigation';
 import { Globe } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { routing, type Locale } from '@/i18n/routing';
@@ -32,13 +32,8 @@ export default function LocaleSwitcher() {
   function switchLocale(next: Locale) {
     setOpen(false);
     if (next === locale) return;
-
     document.cookie = `NEXT_LOCALE=${next}; path=/; max-age=31536000; SameSite=Lax`;
-
-    const localePattern = new RegExp(`^/(${routing.locales.join('|')})(/?)`);
-    const stripped = pathname.replace(localePattern, '/');
-    const newPath = next === routing.defaultLocale ? stripped : `/${next}${stripped}`;
-    router.push(newPath);
+    router.replace(pathname, { locale: next });
   }
 
   const current = LOCALE_LABELS[locale];

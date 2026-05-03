@@ -1,7 +1,10 @@
-import Link from 'next/link';
 import { ArrowRight, Sparkles } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 
 export default function CTABanner() {
+  const t = useTranslations('home.cta');
+
   return (
     <section className="bg-gray-50 py-24">
       <div className="mx-auto max-w-6xl px-6">
@@ -28,14 +31,14 @@ export default function CTABanner() {
           <div className="relative">
             <span className="mb-5 inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3.5 py-1.5 text-xs font-semibold text-white">
               <Sparkles className="h-3.5 w-3.5" />
-              Free forever — no credit card needed
+              {t('badge')}
             </span>
 
             <h2 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
-              Ready to ace your next exam?
+              {t('heading')}
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-lg text-indigo-200 leading-relaxed">
-              Join students studying smarter for USMLE, NAPLEX, and Chemistry boards. Create your first deck in under a minute.
+              {t('subtext')}
             </p>
 
             <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
@@ -43,20 +46,20 @@ export default function CTABanner() {
                 href="/signup"
                 className="inline-flex items-center gap-2 rounded-xl bg-white px-8 py-3.5 text-base font-semibold text-indigo-700 shadow-lg transition hover:bg-indigo-50 active:scale-95"
               >
-                Get Started Free
+                {t('ctaStart')}
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href="/login"
                 className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-8 py-3.5 text-base font-semibold text-white transition hover:bg-white/10"
               >
-                Already have an account →
+                {t('ctaLogin')}
               </Link>
             </div>
 
             {/* Mini trust row */}
             <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-sm text-indigo-200">
-              {['No setup', 'Works offline', '3 study modes', 'Free forever'].map((item) => (
+              {([t('trust1'), t('trust2'), t('trust3'), t('trust4')] as string[]).map((item) => (
                 <span key={item} className="flex items-center gap-1.5">
                   <span className="h-1.5 w-1.5 rounded-full bg-indigo-300" />
                   {item}

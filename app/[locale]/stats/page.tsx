@@ -41,7 +41,7 @@ export default async function StatsPage() {
   if (!isPro) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <AppNav username={username} activePage="settings" />
+        <AppNav username={username} activePage="stats" />
         <main className="mx-auto max-w-2xl px-4 py-20 text-center">
           <div className="rounded-2xl border border-indigo-100 bg-white p-10 shadow-sm">
             <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-indigo-50">

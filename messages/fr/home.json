@@ -58,5 +58,27 @@
     "installTitle": "Installer sur n'importe quel appareil",
     "installDesc": "Ajoutez à l'écran d'accueil sur iOS ou Android en quelques secondes. Ressemble et se comporte comme une application native — sans App Store.",
     "installBadge": "Multi-plateforme"
+  },
+  "subjects": {
+    "badge": "Conçu pour votre examen",
+    "heading": "Des paquets pour chaque",
+    "headingAccent": "examen important",
+    "subtext": "Parcourez les paquets de la communauté ou créez les vôtres — organisés par les matières qui comptent le plus.",
+    "sampleCardLabel": "Carte exemple",
+    "medicineName": "Médecine",
+    "pharmacyName": "Pharmacie",
+    "chemistryName": "Chimie",
+    "startStudying": "Étudier {name}"
+  },
+  "cta": {
+    "badge": "Gratuit pour toujours — sans carte bancaire",
+    "heading": "Prêt à réussir votre prochain examen ?",
+    "subtext": "Rejoignez des étudiants qui étudient plus intelligemment pour l'USMLE, le NAPLEX et les examens de chimie. Créez votre premier paquet en moins d'une minute.",
+    "ctaStart": "Commencer gratuitement",
+    "ctaLogin": "Vous avez déjà un compte ? →",
+    "trust1": "Sans configuration",
+    "trust2": "Fonctionne hors ligne",
+    "trust3": "3 modes d'étude",
+    "trust4": "Gratuit pour toujours"
   }
 }
