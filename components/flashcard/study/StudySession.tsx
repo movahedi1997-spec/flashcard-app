@@ -14,7 +14,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { fetchWithRefresh } from '@/lib/fetchWithRefresh';
-import { ArrowLeft, Trophy, RotateCcw, AlertTriangle, Loader2 } from 'lucide-react';
+import { ArrowLeft, Trophy, RotateCcw, AlertTriangle, Loader2, Share2 } from 'lucide-react';
 import MathContent from '@/components/MathContent';
 import type {
   Deck,
@@ -25,6 +25,7 @@ import type {
   IntervalPreview,
 } from '@/types/api';
 import Button from '@/components/ui/Button';
+import WrappedModal from './WrappedModal';
 
 // ── Props ────────────────────────────────────────────────────────────────────
 
@@ -122,6 +123,7 @@ export default function StudySession({ deck, onBack, isPro = false }: Props) {
 
   // Stats for the complete screen
   const [stats, setStats] = useState<SessionStats>({ again: 0, hard: 0, good: 0, easy: 0 });
+  const [wrappedOpen, setWrappedOpen] = useState(false);
 
   // Reduced-motion detection (read once on mount — stable ref)
   const reducedMotion = useRef(
@@ -283,6 +285,7 @@ export default function StudySession({ deck, onBack, isPro = false }: Props) {
 
   if (done) {
     return (
+      <>
       <div className="max-w-md mx-auto text-center py-12 fade-in">
         <div className="p-5 rounded-full bg-indigo-50 text-indigo-600 w-fit mx-auto mb-6">
           <Trophy size={40} />
@@ -341,11 +344,26 @@ export default function StudySession({ deck, onBack, isPro = false }: Props) {
               <RotateCcw size={15} /> Study Again
             </Button>
           )}
+          {total > 0 && (
+            <Button variant="secondary" onClick={() => setWrappedOpen(true)} fullWidth>
+              <Share2 size={15} /> Share Results
+            </Button>
+          )}
           <Button variant="secondary" onClick={onBack} fullWidth>
             <ArrowLeft size={15} /> Back to Deck
           </Button>
         </div>
       </div>
+
+      <WrappedModal
+        open={wrappedOpen}
+        onClose={() => setWrappedOpen(false)}
+        stats={stats}
+        retention={retention}
+        total={total}
+        deckName={deck.title}
+      />
+      </>
     );
   }
 

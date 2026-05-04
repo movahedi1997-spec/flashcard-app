@@ -36,7 +36,7 @@ export default function FlashcardsPage() {
 
   const {
     decks, loading: decksLoading, error: decksError,
-    createBox, updateBox, deleteBox, importBoxes, syncDeck,
+    createBox, updateBox, deleteBox, importBoxes, syncDeck, reload: reloadDecks,
   } = useBoxes();
 
   const {
@@ -121,6 +121,7 @@ export default function FlashcardsPage() {
           isPro={isPro}
           onCreateBox={createBox} onUpdateBox={updateBox} onDeleteBox={handleDeleteBox}
           onOpenBox={goToBox} onStudyBox={goToStudy} onImport={handleImport}
+          onAnkiImported={(deckId) => { void reloadDecks().then(() => goToBox(deckId)); }}
         />
       );
     }

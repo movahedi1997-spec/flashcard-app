@@ -21,6 +21,7 @@ import BoxForm, { type DeckFormValues } from './BoxForm';
 import EmptyState from '@/components/ui/EmptyState';
 import Button from '@/components/ui/Button';
 import GoProBanner from '@/components/GoProBanner';
+import AnkiImportModal from './AnkiImportModal';
 
 // ── Raw card shape coming from legacy JSON export files ───────────────────────
 
@@ -45,6 +46,7 @@ interface Props {
   onStudyBox: (deckId: string) => void;
   /** Parent orchestrates the server calls: create deck, then bulk-create cards. */
   onImport: (deckTitle: string, rawCards: RawImportCard[]) => Promise<void>;
+  onAnkiImported?: (deckId: string) => void;
 }
 
 // ── Export helper (client-side, no API call needed) ───────────────────────────
@@ -75,11 +77,13 @@ export default function BoxList({
   onOpenBox,
   onStudyBox,
   onImport,
+  onAnkiImported,
 }: Props) {
   const t = useTranslations('flashcards');
   const [createOpen, setCreateOpen] = useState(false);
   const [editDeck, setEditDeck] = useState<Deck | null>(null);
   const [importing, setImporting] = useState(false);
+  const [ankiOpen, setAnkiOpen] = useState(false);
   const importRef = useRef<HTMLInputElement>(null);
 
   // ── JSON import ──────────────────────────────────────────────────────────────
@@ -150,6 +154,14 @@ export default function BoxList({
           >
             {importing ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
             Import
+          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => setAnkiOpen(true)}
+          >
+            <Upload size={14} />
+            Anki
           </Button>
           <Button size="sm" onClick={() => setCreateOpen(true)}>
             <Plus size={14} /> New Deck
@@ -225,6 +237,16 @@ export default function BoxList({
         } : undefined}
         mode="edit"
         isPro={isPro}
+      />
+
+      {/* Anki import modal */}
+      <AnkiImportModal
+        open={ankiOpen}
+        onClose={() => setAnkiOpen(false)}
+        onImported={(deckId) => {
+          setAnkiOpen(false);
+          onAnkiImported?.(deckId);
+        }}
       />
     </div>
   );

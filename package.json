@@ -25,6 +25,7 @@
     "bcryptjs": "^3.0.3",
     "groq-sdk": "^1.1.2",
     "jose": "^5.9.3",
+    "jszip": "^3.10.1",
     "katex": "^0.16.45",
     "lucide-react": "^0.460.0",
     "next": "^14.2.35",
@@ -34,6 +35,7 @@
     "pg": "^8.20.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "sql.js": "^1.14.1",
     "stripe": "^22.0.2",
     "vanilla-cookieconsent": "^3.1.0"
   },
@@ -43,6 +45,7 @@
     "@types/nodemailer": "^8.0.0",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/sql.js": "^1.4.11",
     "autoprefixer": "^10.4.20",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
