@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { query } from '@/lib/db';
 import AppNav from '@/components/AppNav';
 import BuyCreditsButton from './BuyCreditsButton';
-import { CREDIT_PACKAGES } from '@/app/api/stripe/credits/route';
+import { CREDIT_PACKAGES } from '@/lib/creditPackages';
 
 export const dynamic = 'force-dynamic';
 

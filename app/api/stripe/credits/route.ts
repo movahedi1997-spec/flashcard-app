@@ -9,6 +9,7 @@ import { cookies } from 'next/headers';
 import { jwtVerify } from 'jose';
 import Stripe from 'stripe';
 import { query } from '@/lib/db';
+import { CREDIT_PACKAGES } from '@/lib/creditPackages';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -18,13 +19,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2026-03
 const secret = new TextEncoder().encode(
   process.env.ACCESS_JWT_SECRET ?? 'dev-access-secret-change-in-production-32x',
 );
-
-export const CREDIT_PACKAGES = [
-  { id: '39',   credits: 39,   amountCents: 100,  label: '39 Credits',   price: '€1' },
-  { id: '89',   credits: 89,   amountCents: 200,  label: '89 Credits',   price: '€2' },
-  { id: '189',  credits: 189,  amountCents: 400,  label: '189 Credits',  price: '€4' },
-  { id: '1000', credits: 1000, amountCents: 1000, label: '1,000 Credits', price: '€10' },
-] as const;
 
 export async function POST(req: NextRequest) {
   const token = cookies().get('token')?.value;
