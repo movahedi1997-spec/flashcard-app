@@ -1,415 +1,592 @@
-# Graph Report - .  (2026-04-12)
+# Graph Report - app+components+lib  (2026-05-04)
 
 ## Corpus Check
-- Corpus is ~18,944 words - fits in a single context window. You may not need a graph.
+- 137 files · ~68,984 words
+- Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 159 nodes · 142 edges · 57 communities detected
-- Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 7 edges (avg confidence: 0.8)
+- 323 nodes · 300 edges · 88 communities detected
+- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
-- [[_COMMUNITY_Multi-Agent Team Structure|Multi-Agent Team Structure]]
-- [[_COMMUNITY_React Build & Lint Config|React Build & Lint Config]]
-- [[_COMMUNITY_Brand Assets & Visual Identity|Brand Assets & Visual Identity]]
-- [[_COMMUNITY_Database User Operations|Database User Operations]]
+- [[_COMMUNITY_Account & Admin API Routes|Account & Admin API Routes]]
+- [[_COMMUNITY_Auth & Admin Management API|Auth & Admin Management API]]
+- [[_COMMUNITY_Public Content Pages|Public Content Pages]]
+- [[_COMMUNITY_PWA Install Prompt|PWA Install Prompt]]
+- [[_COMMUNITY_Auth Utilities|Auth Utilities]]
+- [[_COMMUNITY_Admin Dashboard|Admin Dashboard]]
+- [[_COMMUNITY_AI Generation|AI Generation]]
+- [[_COMMUNITY_SRS Engine|SRS Engine]]
+- [[_COMMUNITY_Admin Auth|Admin Auth]]
+- [[_COMMUNITY_Email Verification Flow|Email Verification Flow]]
+- [[_COMMUNITY_Legal Pages|Legal Pages]]
+- [[_COMMUNITY_Dashboard & Settings|Dashboard & Settings]]
+- [[_COMMUNITY_Auth Pages|Auth Pages]]
+- [[_COMMUNITY_Cram Study Session|Cram Study Session]]
+- [[_COMMUNITY_OTP System|OTP System]]
 - [[_COMMUNITY_Flashcard Study Logic|Flashcard Study Logic]]
-- [[_COMMUNITY_Image Upload Component|Image Upload Component]]
-- [[_COMMUNITY_Study Session UI|Study Session UI]]
-- [[_COMMUNITY_Utility Helpers|Utility Helpers]]
-- [[_COMMUNITY_Auth Middleware|Auth Middleware]]
-- [[_COMMUNITY_Login Page|Login Page]]
-- [[_COMMUNITY_Confirm Dialog|Confirm Dialog]]
-- [[_COMMUNITY_Button Component|Button Component]]
-- [[_COMMUNITY_Modal Component|Modal Component]]
-- [[_COMMUNITY_Empty State Component|Empty State Component]]
-- [[_COMMUNITY_Study Mode Selector|Study Mode Selector]]
-- [[_COMMUNITY_Card Form Component|Card Form Component]]
-- [[_COMMUNITY_Box List Component|Box List Component]]
-- [[_COMMUNITY_Box Form Component|Box Form Component]]
-- [[_COMMUNITY_Boxes Hook|Boxes Hook]]
-- [[_COMMUNITY_Cards Hook|Cards Hook]]
-- [[_COMMUNITY_Local Storage Layer|Local Storage Layer]]
-- [[_COMMUNITY_Next.js Root Layout|Next.js Root Layout]]
-- [[_COMMUNITY_Next.js Home Page|Next.js Home Page]]
-- [[_COMMUNITY_Flashcards Dashboard|Flashcards Dashboard]]
-- [[_COMMUNITY_Logout Button|Logout Button]]
-- [[_COMMUNITY_Server-Side Auth|Server-Side Auth]]
-- [[_COMMUNITY_JWT Auth Routes|JWT Auth Routes]]
-- [[_COMMUNITY_Navigation Bar|Navigation Bar]]
-- [[_COMMUNITY_Footer Component|Footer Component]]
-- [[_COMMUNITY_Root App Component|Root App Component]]
-- [[_COMMUNITY_Next.js Config|Next.js Config]]
-- [[_COMMUNITY_Next.js Types|Next.js Types]]
-- [[_COMMUNITY_Tailwind Config|Tailwind Config]]
-- [[_COMMUNITY_ESLint Config File|ESLint Config File]]
-- [[_COMMUNITY_Vite Config|Vite Config]]
-- [[_COMMUNITY_PostCSS Config|PostCSS Config]]
-- [[_COMMUNITY_Flashcard Types|Flashcard Types]]
-- [[_COMMUNITY_Express Server Entry|Express Server Entry]]
-- [[_COMMUNITY_Marketing Hero Section|Marketing Hero Section]]
-- [[_COMMUNITY_Marketing Features Section|Marketing Features Section]]
-- [[_COMMUNITY_CTA Banner|CTA Banner]]
-- [[_COMMUNITY_Textarea (Next.js)|Textarea (Next.js)]]
-- [[_COMMUNITY_Input (Next.js)|Input (Next.js)]]
-- [[_COMMUNITY_Splash Page (Next.js)|Splash Page (Next.js)]]
-- [[_COMMUNITY_Card List (Next.js)|Card List (Next.js)]]
-- [[_COMMUNITY_Card Item (Next.js)|Card Item (Next.js)]]
-- [[_COMMUNITY_Box Card (Next.js)|Box Card (Next.js)]]
-- [[_COMMUNITY_Vite Entry Point|Vite Entry Point]]
-- [[_COMMUNITY_App Type Definitions|App Type Definitions]]
-- [[_COMMUNITY_Textarea (Vite)|Textarea (Vite)]]
-- [[_COMMUNITY_Input (Vite)|Input (Vite)]]
-- [[_COMMUNITY_Splash Page (Vite)|Splash Page (Vite)]]
-- [[_COMMUNITY_Card List (Vite)|Card List (Vite)]]
-- [[_COMMUNITY_Card Item (Vite)|Card Item (Vite)]]
-- [[_COMMUNITY_Box Card (Vite)|Box Card (Vite)]]
-- [[_COMMUNITY_Product Feedback Log|Product Feedback Log]]
-- [[_COMMUNITY_React Logo Asset|React Logo Asset]]
+- [[_COMMUNITY_Delete Account UI|Delete Account UI]]
+- [[_COMMUNITY_Image Upload|Image Upload]]
+- [[_COMMUNITY_Database Layer|Database Layer]]
+- [[_COMMUNITY_Flashcard Helpers|Flashcard Helpers]]
+- [[_COMMUNITY_i18n Layout|i18n Layout]]
+- [[_COMMUNITY_2FA Toggle|2FA Toggle]]
+- [[_COMMUNITY_Edit Profile Form|Edit Profile Form]]
+- [[_COMMUNITY_Offline Page|Offline Page]]
+- [[_COMMUNITY_Admin Overview|Admin Overview]]
+- [[_COMMUNITY_PWA Install Button|PWA Install Button]]
+- [[_COMMUNITY_Bottom Navigation|Bottom Navigation]]
+- [[_COMMUNITY_Explore Deck Card|Explore Deck Card]]
+- [[_COMMUNITY_App Navigation|App Navigation]]
+- [[_COMMUNITY_Explore Grid|Explore Grid]]
+- [[_COMMUNITY_Study Session|Study Session]]
+- [[_COMMUNITY_Card List|Card List]]
+- [[_COMMUNITY_Box List|Box List]]
+- [[_COMMUNITY_Share Deck Panel|Share Deck Panel]]
+- [[_COMMUNITY_Box Form|Box Form]]
+- [[_COMMUNITY_Auth Fetch Helper|Auth Fetch Helper]]
+- [[_COMMUNITY_SEO Hreflang|SEO Hreflang]]
+- [[_COMMUNITY_Email & OTP Sender|Email & OTP Sender]]
+- [[_COMMUNITY_robots.ts|robots.ts]]
+- [[_COMMUNITY_sitemap.ts|sitemap.ts]]
+- [[_COMMUNITY_SubscriptionSection.tsx|SubscriptionSection.tsx]]
+- [[_COMMUNITY_page.tsx|page.tsx]]
+- [[_COMMUNITY_CopyDeckButton.tsx|CopyDeckButton.tsx]]
+- [[_COMMUNITY_HomeButton.tsx|HomeButton.tsx]]
+- [[_COMMUNITY_page.tsx|page.tsx]]
+- [[_COMMUNITY_PricingClient.tsx|PricingClient.tsx]]
+- [[_COMMUNITY_SRSStatsClient.tsx|SRSStatsClient.tsx]]
+- [[_COMMUNITY_page.tsx|page.tsx]]
+- [[_COMMUNITY_page.tsx|page.tsx]]
+- [[_COMMUNITY_layout.tsx|layout.tsx]]
+- [[_COMMUNITY_LocaleSwitcher.tsx|LocaleSwitcher.tsx]]
+- [[_COMMUNITY_GoProBanner.tsx|GoProBanner.tsx]]
+- [[_COMMUNITY_LogoutButton.tsx|LogoutButton.tsx]]
+- [[_COMMUNITY_ProBadge.tsx|ProBadge.tsx]]
+- [[_COMMUNITY_LanguageSetting.tsx|LanguageSetting.tsx]]
+- [[_COMMUNITY_CookieConsent.tsx|CookieConsent.tsx]]
+- [[_COMMUNITY_FlashLogoMark.tsx|FlashLogoMark.tsx]]
+- [[_COMMUNITY_NavLogo.tsx|NavLogo.tsx]]
+- [[_COMMUNITY_ConfirmDialog.tsx|ConfirmDialog.tsx]]
+- [[_COMMUNITY_Button()|Button()]]
+- [[_COMMUNITY_Modal.tsx|Modal.tsx]]
+- [[_COMMUNITY_EmptyState.tsx|EmptyState.tsx]]
+- [[_COMMUNITY_ModeSelector.tsx|ModeSelector.tsx]]
+- [[_COMMUNITY_AIImproveModal()|AIImproveModal()]]
+- [[_COMMUNITY_CardForm()|CardForm()]]
+- [[_COMMUNITY_getPalette()|getPalette()]]
+- [[_COMMUNITY_getBlogPost()|getBlogPost()]]
+- [[_COMMUNITY_rateLimit.ts|rateLimit.ts]]
+- [[_COMMUNITY_pdf.ts|pdf.ts]]
+- [[_COMMUNITY_storage.ts|storage.ts]]
+- [[_COMMUNITY_layout.tsx|layout.tsx]]
+- [[_COMMUNITY_page.tsx|page.tsx]]
+- [[_COMMUNITY_route.tsx|route.tsx]]
+- [[_COMMUNITY_Hero.tsx|Hero.tsx]]
+- [[_COMMUNITY_Navbar.tsx|Navbar.tsx]]
+- [[_COMMUNITY_SubjectHubs.tsx|SubjectHubs.tsx]]
+- [[_COMMUNITY_Features.tsx|Features.tsx]]
+- [[_COMMUNITY_HowItWorks.tsx|HowItWorks.tsx]]
+- [[_COMMUNITY_Footer.tsx|Footer.tsx]]
+- [[_COMMUNITY_MathContent.tsx|MathContent.tsx]]
+- [[_COMMUNITY_CTABanner.tsx|CTABanner.tsx]]
+- [[_COMMUNITY_BlogPreview.tsx|BlogPreview.tsx]]
+- [[_COMMUNITY_Textarea.tsx|Textarea.tsx]]
+- [[_COMMUNITY_Input.tsx|Input.tsx]]
+- [[_COMMUNITY_SplashPage.tsx|SplashPage.tsx]]
+- [[_COMMUNITY_AIGenerateModal.tsx|AIGenerateModal.tsx]]
+- [[_COMMUNITY_CardItem.tsx|CardItem.tsx]]
+- [[_COMMUNITY_StudyChart.tsx|StudyChart.tsx]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `Multi-Agent Product & Development Team` - 17 edges
-2. `ESLint Configuration` - 8 edges
-3. `Multi-Agent Workflow Order` - 7 edges
-4. `Icons SVG Sprite Sheet` - 6 edges
-5. `readUsers()` - 5 edges
-6. `React + TypeScript + Vite Project` - 5 edges
-7. `Critical Consultant Agent` - 5 edges
-8. `dev/progress.md (shared file)` - 5 edges
-9. `processFile()` - 4 edges
-10. `shuffle()` - 4 edges
+1. `POST()` - 28 edges
+2. `GET()` - 24 edges
+3. `generateMetadata()` - 9 edges
+4. `buildScaffold()` - 8 edges
+5. `PATCH()` - 7 edges
+6. `handleSubmit()` - 4 edges
+7. `toISODate()` - 4 edges
+8. `parseCards()` - 4 edges
+9. `generateWithGroq()` - 4 edges
+10. `generateWithOpenRouter()` - 4 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `Technical Writer Agent` --conceptually_related_to--> `React + TypeScript + Vite Project`  [INFERRED]
-  CLAUDE.md → README.md
-- `App Favicon (Lightning Bolt Logo)` --conceptually_related_to--> `Vite Logo SVG`  [INFERRED]
-  public/favicon.svg → src/assets/vite.svg
-- `Hero Image - Isometric Flashcard Stack` --conceptually_related_to--> `App Favicon (Lightning Bolt Logo)`  [INFERRED]
-  src/assets/hero.png → public/favicon.svg
-- `Vite Logo SVG` --conceptually_related_to--> `Purple Brand Color Theme`  [INFERRED]
-  src/assets/vite.svg → public/favicon.svg
-- `Documentation Icon Symbol` --conceptually_related_to--> `Purple Brand Color Theme`  [INFERRED]
-  public/icons.svg → public/favicon.svg
-
-## Hyperedges (group relationships)
-- **Product Team Shared Communication Pattern** — claude_product_researcher, claude_marketing_manager, claude_product_owner, claude_critical_consultant, claude_growth_hacker, claude_shared_product_research, claude_shared_product_strategy, claude_shared_product_decisions, claude_shared_product_feedback [EXTRACTED 0.95]
-- **Development Team Shared Communication Pattern** — claude_project_manager, claude_backend_developer, claude_frontend_developer, claude_qa_tester, claude_devops, claude_code_reviewer, claude_security_auditor, claude_shared_dev_tasks, claude_shared_dev_progress, claude_shared_dev_decisions [EXTRACTED 0.95]
-- **React + TypeScript + Vite + ESLint Tech Stack** — readme_react_typescript_vite, readme_vite_plugin_react, readme_eslint_config, readme_tsconfig_app, readme_tsconfig_node [EXTRACTED 0.90]
+- `generateMetadata()` --calls--> `getDeckBySlug()`  [EXTRACTED]
+  app/[locale]/pricing/page.tsx → app/[locale]/explore/[slug]/page.tsx
+- `generateMetadata()` --calls--> `getCreatorByUsername()`  [EXTRACTED]
+  app/[locale]/pricing/page.tsx → app/[locale]/creators/[username]/page.tsx
+- `POST()` --calls--> `invalidResponse()`  [EXTRACTED]
+  app/api/stripe/checkout/route.ts → app/api/auth/refresh/route.ts
+- `POST()` --calls--> `clearBothCookies()`  [EXTRACTED]
+  app/api/stripe/checkout/route.ts → app/api/auth/refresh/route.ts
+- `POST()` --calls--> `issueSession()`  [EXTRACTED]
+  app/api/stripe/checkout/route.ts → app/api/auth/login/route.ts
 
 ## Communities
 
-### Community 0 - "Multi-Agent Team Structure"
-Cohesion: 0.14
-Nodes (24): .claude/agents/ (agent profiles directory), Backend Developer Agent, Code Reviewer Agent, Critical Consultant Agent, DevOps Agent, Frontend Developer Agent, Graphify Knowledge Graph (graphify-out/), Growth Hacker Agent (+16 more)
+### Community 0 - "Account & Admin API Routes"
+Cohesion: 0.09
+Nodes (15): buildQuery(), buildScaffold(), DELETE(), failRedirect(), formatCard(), formatDayLabel(), formatMonthLabel(), formatWeekLabel() (+7 more)
 
-### Community 1 - "React Build & Lint Config"
-Cohesion: 0.17
-Nodes (12): ESLint Configuration, eslint-plugin-react-dom, eslint-plugin-react-x, React Compiler, React + TypeScript + Vite Project, tsconfig.app.json, tsconfig.node.json, tseslint.configs.recommendedTypeChecked (+4 more)
+### Community 1 - "Auth & Admin Management API"
+Cohesion: 0.09
+Nodes (7): activateSubscription(), clearBothCookies(), deactivateSubscription(), invalidResponse(), issueSession(), POST(), slugify()
 
-### Community 2 - "Brand Assets & Visual Identity"
-Cohesion: 0.22
-Nodes (11): Hero Image - Isometric Flashcard Stack, Vite Logo SVG, Purple Brand Color Theme, App Favicon (Lightning Bolt Logo), Bluesky Social Icon Symbol, Discord Icon Symbol, Documentation Icon Symbol, GitHub Icon Symbol (+3 more)
+### Community 2 - "Public Content Pages"
+Cohesion: 0.12
+Nodes (4): generateMetadata(), getCreatorByUsername(), getDeckBySlug(), getOptionalUser()
 
-### Community 3 - "Database User Operations"
-Cohesion: 0.57
-Nodes (6): createUser(), ensureDb(), findByEmail(), findById(), readUsers(), writeUsers()
+### Community 3 - "PWA Install Prompt"
+Cohesion: 0.29
+Nodes (5): handleAppInstalled(), handleDismiss(), handleInstall(), saveDismissal(), saveInstalled()
 
-### Community 4 - "Flashcard Study Logic"
-Cohesion: 0.67
-Nodes (4): buildScoreDeck(), buildTurboDeck(), exportBoxAsJson(), shuffle()
+### Community 4 - "Auth Utilities"
+Cohesion: 0.24
+Nodes (4): getAuthUser(), getClientIp(), isValidIp(), verifyAccessToken()
 
-### Community 5 - "Image Upload Component"
-Cohesion: 0.8
+### Community 5 - "Admin Dashboard"
+Cohesion: 0.25
+Nodes (0): 
+
+### Community 6 - "AI Generation"
+Cohesion: 0.54
+Nodes (7): buildUserPrompt(), generateFlashcards(), generateFlashcardsFromPdf(), generateWithGroq(), generateWithOpenRouter(), isRateLimitError(), parseCards()
+
+### Community 7 - "SRS Engine"
+Cohesion: 0.38
+Nodes (3): previewIntervals(), previewIntervalsFromSrsState(), schedule()
+
+### Community 8 - "Admin Auth"
+Cohesion: 0.38
+Nodes (4): checkAdminCredentials(), getAdminUser(), safeEqual(), verifyAdminToken()
+
+### Community 9 - "Email Verification Flow"
+Cohesion: 0.47
+Nodes (3): handleDigit(), handlePaste(), submit()
+
+### Community 10 - "Legal Pages"
+Cohesion: 0.33
+Nodes (1): Section()
+
+### Community 11 - "Dashboard & Settings"
+Cohesion: 0.5
+Nodes (3): calculateStreak(), getDashboardData(), getUserFromCookie()
+
+### Community 12 - "Auth Pages"
+Cohesion: 0.5
+Nodes (2): calculateAge(), handleSubmit()
+
+### Community 13 - "Cram Study Session"
+Cohesion: 0.5
+Nodes (2): restart(), shuffle()
+
+### Community 14 - "OTP System"
+Cohesion: 0.5
+Nodes (2): generateOtpCode(), storeAndSendOtp()
+
+### Community 15 - "Flashcard Study Logic"
+Cohesion: 0.6
+Nodes (3): buildScoreDeck(), buildTurboDeck(), shuffle()
+
+### Community 16 - "Delete Account UI"
+Cohesion: 0.5
+Nodes (0): 
+
+### Community 17 - "Image Upload"
+Cohesion: 0.83
 Nodes (3): handleChange(), handleDrop(), processFile()
 
-### Community 6 - "Study Session UI"
-Cohesion: 0.6
-Nodes (3): grade(), restart(), reveal()
+### Community 18 - "Database Layer"
+Cohesion: 0.83
+Nodes (3): getDbPool(), getPool(), query()
 
-### Community 7 - "Utility Helpers"
-Cohesion: 0.6
-Nodes (3): formatDate(), generateId(), scoreColor()
+### Community 19 - "Flashcard Helpers"
+Cohesion: 0.5
+Nodes (0): 
 
-### Community 8 - "Auth Middleware"
-Cohesion: 1.0
-Nodes (2): middleware(), verifyToken()
-
-### Community 9 - "Login Page"
+### Community 20 - "i18n Layout"
 Cohesion: 0.67
-Nodes (1): handleSubmit()
+Nodes (0): 
 
-### Community 10 - "Confirm Dialog"
+### Community 21 - "2FA Toggle"
 Cohesion: 0.67
-Nodes (1): ConfirmDialog()
+Nodes (0): 
 
-### Community 11 - "Button Component"
+### Community 22 - "Edit Profile Form"
 Cohesion: 0.67
-Nodes (1): Button()
+Nodes (0): 
 
-### Community 12 - "Modal Component"
+### Community 23 - "Offline Page"
 Cohesion: 0.67
-Nodes (1): Modal()
+Nodes (0): 
 
-### Community 13 - "Empty State Component"
+### Community 24 - "Admin Overview"
+Cohesion: 1.0
+Nodes (2): AdminPage(), getStats()
+
+### Community 25 - "PWA Install Button"
 Cohesion: 0.67
-Nodes (1): EmptyState()
+Nodes (0): 
 
-### Community 14 - "Study Mode Selector"
+### Community 26 - "Bottom Navigation"
+Cohesion: 1.0
+Nodes (2): BottomNav(), stripLocale()
+
+### Community 27 - "Explore Deck Card"
+Cohesion: 1.0
+Nodes (2): ExploreDeckCard(), getPalette()
+
+### Community 28 - "App Navigation"
 Cohesion: 0.67
-Nodes (1): ModeSelector()
+Nodes (0): 
 
-### Community 15 - "Card Form Component"
+### Community 29 - "Explore Grid"
 Cohesion: 0.67
-Nodes (1): CardForm()
+Nodes (0): 
 
-### Community 16 - "Box List Component"
+### Community 30 - "Study Session"
 Cohesion: 0.67
-Nodes (1): handleImport()
+Nodes (0): 
 
-### Community 17 - "Box Form Component"
+### Community 31 - "Card List"
 Cohesion: 0.67
-Nodes (1): BoxForm()
+Nodes (0): 
 
-### Community 18 - "Boxes Hook"
+### Community 32 - "Box List"
 Cohesion: 0.67
-Nodes (1): useBoxes()
+Nodes (0): 
 
-### Community 19 - "Cards Hook"
+### Community 33 - "Share Deck Panel"
 Cohesion: 0.67
-Nodes (1): useCards()
+Nodes (0): 
 
-### Community 20 - "Local Storage Layer"
+### Community 34 - "Box Form"
 Cohesion: 0.67
-Nodes (1): safeGet()
+Nodes (0): 
 
-### Community 21 - "Next.js Root Layout"
+### Community 35 - "Auth Fetch Helper"
+Cohesion: 1.0
+Nodes (2): fetchWithRefresh(), tryRefresh()
+
+### Community 36 - "SEO Hreflang"
+Cohesion: 1.0
+Nodes (2): hreflangAlternates(), localeUrl()
+
+### Community 37 - "Email & OTP Sender"
+Cohesion: 1.0
+Nodes (2): otpHtml(), sendOtpEmail()
+
+### Community 38 - "robots.ts"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 22 - "Next.js Home Page"
+### Community 39 - "sitemap.ts"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 23 - "Flashcards Dashboard"
+### Community 40 - "SubscriptionSection.tsx"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 24 - "Logout Button"
+### Community 41 - "page.tsx"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 25 - "Server-Side Auth"
+### Community 42 - "CopyDeckButton.tsx"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 26 - "JWT Auth Routes"
+### Community 43 - "HomeButton.tsx"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 27 - "Navigation Bar"
+### Community 44 - "page.tsx"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 28 - "Footer Component"
+### Community 45 - "PricingClient.tsx"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 29 - "Root App Component"
+### Community 46 - "SRSStatsClient.tsx"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 30 - "Next.js Config"
+### Community 47 - "page.tsx"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 31 - "Next.js Types"
+### Community 48 - "page.tsx"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 32 - "Tailwind Config"
+### Community 49 - "layout.tsx"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 33 - "ESLint Config File"
+### Community 50 - "LocaleSwitcher.tsx"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 34 - "Vite Config"
+### Community 51 - "GoProBanner.tsx"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 35 - "PostCSS Config"
+### Community 52 - "LogoutButton.tsx"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 36 - "Flashcard Types"
+### Community 53 - "ProBadge.tsx"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 37 - "Express Server Entry"
+### Community 54 - "LanguageSetting.tsx"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 38 - "Marketing Hero Section"
+### Community 55 - "CookieConsent.tsx"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 39 - "Marketing Features Section"
+### Community 56 - "FlashLogoMark.tsx"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 40 - "CTA Banner"
+### Community 57 - "NavLogo.tsx"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 41 - "Textarea (Next.js)"
+### Community 58 - "ConfirmDialog.tsx"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 42 - "Input (Next.js)"
+### Community 59 - "Button()"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 43 - "Splash Page (Next.js)"
+### Community 60 - "Modal.tsx"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 44 - "Card List (Next.js)"
+### Community 61 - "EmptyState.tsx"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 45 - "Card Item (Next.js)"
+### Community 62 - "ModeSelector.tsx"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 46 - "Box Card (Next.js)"
+### Community 63 - "AIImproveModal()"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 47 - "Vite Entry Point"
+### Community 64 - "CardForm()"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 48 - "App Type Definitions"
+### Community 65 - "getPalette()"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 49 - "Textarea (Vite)"
+### Community 66 - "getBlogPost()"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 50 - "Input (Vite)"
+### Community 67 - "rateLimit.ts"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 51 - "Splash Page (Vite)"
+### Community 68 - "pdf.ts"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 52 - "Card List (Vite)"
+### Community 69 - "storage.ts"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 53 - "Card Item (Vite)"
+### Community 70 - "layout.tsx"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 54 - "Box Card (Vite)"
+### Community 71 - "page.tsx"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 55 - "Product Feedback Log"
+### Community 72 - "route.tsx"
 Cohesion: 1.0
-Nodes (1): product/feedback.md (shared file)
+Nodes (0): 
 
-### Community 56 - "React Logo Asset"
+### Community 73 - "Hero.tsx"
 Cohesion: 1.0
-Nodes (1): React Logo SVG
+Nodes (0): 
+
+### Community 74 - "Navbar.tsx"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 75 - "SubjectHubs.tsx"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 76 - "Features.tsx"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 77 - "HowItWorks.tsx"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 78 - "Footer.tsx"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 79 - "MathContent.tsx"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 80 - "CTABanner.tsx"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 81 - "BlogPreview.tsx"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 82 - "Textarea.tsx"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 83 - "Input.tsx"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 84 - "SplashPage.tsx"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 85 - "AIGenerateModal.tsx"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 86 - "CardItem.tsx"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 87 - "StudyChart.tsx"
+Cohesion: 1.0
+Nodes (0): 
 
 ## Knowledge Gaps
-- **20 isolated node(s):** `@vitejs/plugin-react (Oxc)`, `@vitejs/plugin-react-swc (SWC)`, `React Compiler`, `tseslint.configs.recommendedTypeChecked`, `tseslint.configs.strictTypeChecked` (+15 more)
-  These have ≤1 connection - possible missing edges or undocumented components.
-- **Thin community `Next.js Root Layout`** (2 nodes): `layout.tsx`, `RootLayout()`
+- **Thin community `robots.ts`** (2 nodes): `robots.ts`, `robots()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Next.js Home Page`** (2 nodes): `page.tsx`, `HomePage()`
+- **Thin community `sitemap.ts`** (2 nodes): `sitemap.ts`, `sitemap()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Flashcards Dashboard`** (2 nodes): `page.tsx`, `handleDeleteBox()`
+- **Thin community `SubscriptionSection.tsx`** (2 nodes): `SubscriptionSection.tsx`, `openPortal()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Logout Button`** (2 nodes): `LogoutButton.tsx`, `LogoutButton()`
+- **Thin community `page.tsx`** (2 nodes): `page.tsx`, `FlashcardsPage()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Server-Side Auth`** (2 nodes): `page.tsx`, `getUserFromCookie()`
+- **Thin community `CopyDeckButton.tsx`** (2 nodes): `CopyDeckButton.tsx`, `handleCopy()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `JWT Auth Routes`** (2 nodes): `signToken()`, `auth.js`
+- **Thin community `HomeButton.tsx`** (2 nodes): `HomeButton.tsx`, `HomeButton()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Navigation Bar`** (2 nodes): `Navbar.tsx`, `Navbar()`
+- **Thin community `page.tsx`** (2 nodes): `page.tsx`, `ImpressumPage()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Footer Component`** (2 nodes): `Footer.tsx`, `Footer()`
+- **Thin community `PricingClient.tsx`** (2 nodes): `PricingClient.tsx`, `handleUpgrade()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Root App Component`** (2 nodes): `handleDeleteBox()`, `App.tsx`
+- **Thin community `SRSStatsClient.tsx`** (2 nodes): `SRSStatsClient.tsx`, `cellColor()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Next.js Config`** (1 nodes): `next.config.js`
+- **Thin community `page.tsx`** (2 nodes): `page.tsx`, `getUser()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Next.js Types`** (1 nodes): `next-env.d.ts`
+- **Thin community `page.tsx`** (2 nodes): `page.tsx`, `handleContinue()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Tailwind Config`** (1 nodes): `tailwind.config.ts`
+- **Thin community `layout.tsx`** (2 nodes): `layout.tsx`, `AdminLayout()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `ESLint Config File`** (1 nodes): `eslint.config.js`
+- **Thin community `LocaleSwitcher.tsx`** (2 nodes): `LocaleSwitcher.tsx`, `LocaleSwitcher()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Vite Config`** (1 nodes): `vite.config.ts`
+- **Thin community `GoProBanner.tsx`** (2 nodes): `GoProBanner.tsx`, `GoProBanner()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `PostCSS Config`** (1 nodes): `postcss.config.js`
+- **Thin community `LogoutButton.tsx`** (2 nodes): `LogoutButton.tsx`, `LogoutButton()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Flashcard Types`** (1 nodes): `flashcard.ts`
+- **Thin community `ProBadge.tsx`** (2 nodes): `ProBadge.tsx`, `ProBadge()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Express Server Entry`** (1 nodes): `index.js`
+- **Thin community `LanguageSetting.tsx`** (2 nodes): `LanguageSetting.tsx`, `switchLocale()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Marketing Hero Section`** (1 nodes): `Hero.tsx`
+- **Thin community `CookieConsent.tsx`** (2 nodes): `CookieConsent.tsx`, `CookieConsent()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Marketing Features Section`** (1 nodes): `Features.tsx`
+- **Thin community `FlashLogoMark.tsx`** (2 nodes): `FlashLogoMark.tsx`, `FlashLogoMark()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `CTA Banner`** (1 nodes): `CTABanner.tsx`
+- **Thin community `NavLogo.tsx`** (2 nodes): `NavLogo.tsx`, `NavLogo()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Textarea (Next.js)`** (1 nodes): `Textarea.tsx`
+- **Thin community `ConfirmDialog.tsx`** (2 nodes): `ConfirmDialog.tsx`, `ConfirmDialog()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Input (Next.js)`** (1 nodes): `Input.tsx`
+- **Thin community `Button()`** (2 nodes): `Button()`, `Button.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Splash Page (Next.js)`** (1 nodes): `SplashPage.tsx`
+- **Thin community `Modal.tsx`** (2 nodes): `Modal.tsx`, `Modal()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Card List (Next.js)`** (1 nodes): `CardList.tsx`
+- **Thin community `EmptyState.tsx`** (2 nodes): `EmptyState.tsx`, `EmptyState()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Card Item (Next.js)`** (1 nodes): `CardItem.tsx`
+- **Thin community `ModeSelector.tsx`** (2 nodes): `ModeSelector.tsx`, `ModeSelector()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Box Card (Next.js)`** (1 nodes): `BoxCard.tsx`
+- **Thin community `AIImproveModal()`** (2 nodes): `AIImproveModal()`, `AIImproveModal.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Vite Entry Point`** (1 nodes): `main.tsx`
+- **Thin community `CardForm()`** (2 nodes): `CardForm()`, `CardForm.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `App Type Definitions`** (1 nodes): `index.ts`
+- **Thin community `getPalette()`** (2 nodes): `getPalette()`, `BoxCard.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Textarea (Vite)`** (1 nodes): `Textarea.tsx`
+- **Thin community `getBlogPost()`** (2 nodes): `getBlogPost()`, `blog.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Input (Vite)`** (1 nodes): `Input.tsx`
+- **Thin community `rateLimit.ts`** (2 nodes): `rateLimit.ts`, `checkRateLimit()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Splash Page (Vite)`** (1 nodes): `SplashPage.tsx`
+- **Thin community `pdf.ts`** (2 nodes): `pdf.ts`, `extractTextFromPdf()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Card List (Vite)`** (1 nodes): `CardList.tsx`
+- **Thin community `storage.ts`** (2 nodes): `storage.ts`, `safeGet()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Card Item (Vite)`** (1 nodes): `CardItem.tsx`
+- **Thin community `layout.tsx`** (1 nodes): `layout.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Box Card (Vite)`** (1 nodes): `BoxCard.tsx`
+- **Thin community `page.tsx`** (1 nodes): `page.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Product Feedback Log`** (1 nodes): `product/feedback.md (shared file)`
+- **Thin community `route.tsx`** (1 nodes): `route.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `React Logo Asset`** (1 nodes): `React Logo SVG`
+- **Thin community `Hero.tsx`** (1 nodes): `Hero.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Navbar.tsx`** (1 nodes): `Navbar.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `SubjectHubs.tsx`** (1 nodes): `SubjectHubs.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Features.tsx`** (1 nodes): `Features.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `HowItWorks.tsx`** (1 nodes): `HowItWorks.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Footer.tsx`** (1 nodes): `Footer.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `MathContent.tsx`** (1 nodes): `MathContent.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `CTABanner.tsx`** (1 nodes): `CTABanner.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `BlogPreview.tsx`** (1 nodes): `BlogPreview.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Textarea.tsx`** (1 nodes): `Textarea.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Input.tsx`** (1 nodes): `Input.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `SplashPage.tsx`** (1 nodes): `SplashPage.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `AIGenerateModal.tsx`** (1 nodes): `AIGenerateModal.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `CardItem.tsx`** (1 nodes): `CardItem.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `StudyChart.tsx`** (1 nodes): `StudyChart.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `React + TypeScript + Vite Project` connect `React Build & Lint Config` to `Multi-Agent Team Structure`?**
-  _High betweenness centrality (0.023) - this node is a cross-community bridge._
-- **Why does `Technical Writer Agent` connect `Multi-Agent Team Structure` to `React Build & Lint Config`?**
-  _High betweenness centrality (0.022) - this node is a cross-community bridge._
-- **What connects `@vitejs/plugin-react (Oxc)`, `@vitejs/plugin-react-swc (SWC)`, `React Compiler` to the rest of the system?**
-  _20 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `Multi-Agent Team Structure` be split into smaller, more focused modules?**
-  _Cohesion score 0.14 - nodes in this community are weakly interconnected._
+- **Why does `POST()` connect `Auth & Admin Management API` to `Account & Admin API Routes`?**
+  _High betweenness centrality (0.025) - this node is a cross-community bridge._
+- **Should `Account & Admin API Routes` be split into smaller, more focused modules?**
+  _Cohesion score 0.09 - nodes in this community are weakly interconnected._
+- **Should `Auth & Admin Management API` be split into smaller, more focused modules?**
+  _Cohesion score 0.09 - nodes in this community are weakly interconnected._
+- **Should `Public Content Pages` be split into smaller, more focused modules?**
+  _Cohesion score 0.12 - nodes in this community are weakly interconnected._
