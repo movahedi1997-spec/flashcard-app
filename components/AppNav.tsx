@@ -48,17 +48,26 @@ export default function AppNav({ username, activePage }: Props) {
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
           <NavLogo />
 
-          {/* Mobile right side: locale switcher + settings shortcut on dashboard */}
+          {/* Mobile right side: locale switcher + stats + settings shortcuts on dashboard */}
           <div className="flex items-center gap-1 sm:hidden">
             <LocaleSwitcher />
             {activePage === 'dashboard' && (
-              <Link
-                href="/settings"
-                aria-label="Settings"
-                className="flex items-center justify-center h-9 w-9 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition"
-              >
-                <Settings className="h-4 w-4" />
-              </Link>
+              <>
+                <Link
+                  href="/stats"
+                  aria-label="Analytics"
+                  className="flex items-center justify-center h-9 w-9 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition"
+                >
+                  <BarChart2 className="h-4 w-4" />
+                </Link>
+                <Link
+                  href="/settings"
+                  aria-label="Settings"
+                  className="flex items-center justify-center h-9 w-9 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition"
+                >
+                  <Settings className="h-4 w-4" />
+                </Link>
+              </>
             )}
           </div>
 

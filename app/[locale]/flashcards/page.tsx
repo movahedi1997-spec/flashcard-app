@@ -366,7 +366,7 @@ export default function FlashcardsPage() {
                 </button>
               </div>
 
-              <div className="ms-auto">
+              <div className="ms-auto hidden sm:block">
                 <Link href="/dashboard" className="text-sm text-slate-500 hover:text-indigo-600 transition-colors">
                   ← Dashboard
                 </Link>
