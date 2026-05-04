@@ -93,11 +93,11 @@ function Heatmap({ data, less, more }: { data: Array<{ date: string; count: numb
 
 // ── Forecast bar chart ────────────────────────────────────────────────────────
 
-function ForecastChart({ data, todayLabel, tmrwLabel }: { data: Array<{ label: string; count: number }>; todayLabel: string; tmrwLabel: string }) {
+function ForecastChart({ data }: { data: Array<{ label: string; count: number }> }) {
   const max = Math.max(1, ...data.map((d) => d.count));
 
   return (
-    <div className="flex items-end gap-1 h-28">
+    <div className="flex items-end gap-1.5 h-28">
       {data.map((d, i) => {
         const isToday = i === 0;
         const heightPct = Math.max(4, (d.count / max) * 100);
@@ -110,7 +110,7 @@ function ForecastChart({ data, todayLabel, tmrwLabel }: { data: Array<{ label: s
               style={{ height: `${heightPct}%` }}
             />
             <span className={`text-[9px] truncate w-full text-center ${isToday ? 'text-indigo-600 font-bold' : 'text-gray-400'}`}>
-              {i === 0 ? todayLabel : i === 1 ? tmrwLabel : d.label.split(' ')[1] ? d.label.split(' ')[1] : d.label}
+              {d.label}
             </span>
           </div>
         );
@@ -447,7 +447,7 @@ export default function SRSStatsClient() {
       <div className="rounded-2xl bg-white border border-gray-200 p-5 shadow-sm">
         <h2 className="text-sm font-bold text-gray-700 mb-1">{t('dueForecast')}</h2>
         <p className="text-xs text-gray-400 mb-4">{t('cardsScheduled')}</p>
-        <ForecastChart data={stats.forecast} todayLabel={t('today')} tmrwLabel={t('tomorrow')} />
+        <ForecastChart data={stats.forecast} />
       </div>
 
       {/* ── Advanced analytics ───────────────────────────────────────────── */}

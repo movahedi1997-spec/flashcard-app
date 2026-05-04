@@ -86,13 +86,13 @@ export async function GET(req: NextRequest) {
       [userId],
     ),
 
-    // Due forecast: cards due per day in next 14 days
+    // Due forecast: cards due per day in next 7 days
     query<{ due_day: string; count: string }>(
       `SELECT DATE(due_date AT TIME ZONE 'UTC')::text AS due_day, COUNT(*)::text AS count
        FROM srs_state
        WHERE user_id = $1
          AND due_date >= NOW()
-         AND due_date < NOW() + INTERVAL '14 days'
+         AND due_date < NOW() + INTERVAL '7 days'
        GROUP BY due_day
        ORDER BY due_day`,
       [userId],
@@ -147,13 +147,15 @@ export async function GET(req: NextRequest) {
     mature:   parseInt(m?.mature_count   ?? '0', 10),
   };
 
-  // ── Forecast (fill missing days with 0) ──────────────────────────────────────
+  // ── Forecast (fill missing days with 0, 7-day window) ────────────────────────
+  const DAY_NAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   const forecastMap = new Map(forecastRes.rows.map((r) => [r.due_day, parseInt(r.count, 10)]));
-  const forecast = Array.from({ length: 14 }, (_, i) => {
+  const forecast = Array.from({ length: 7 }, (_, i) => {
     const d = new Date();
     d.setUTCDate(d.getUTCDate() + i);
     const iso = toISODate(d);
-    return { date: iso, label: dayLabel(iso), count: forecastMap.get(iso) ?? 0 };
+    const label = i === 0 ? 'Today' : i === 1 ? 'Tmrw' : DAY_NAMES[d.getUTCDay()];
+    return { date: iso, label, count: forecastMap.get(iso) ?? 0 };
   });
 
   // ── Heatmap ──────────────────────────────────────────────────────────────────
