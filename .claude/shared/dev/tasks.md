@@ -750,6 +750,201 @@
 
 ---
 
+---
+
+## Phase 5 — UX Polish, Content Expansion & Quiz Mode
+### Target: Month 4–6 post-launch | Gate: Phase 4 QA sign-off (TASK-042)
+### Source: Founder brief 2026-05-04
+
+---
+
+### TASK-045
+- **Title:** Dashboard forecast — trim to 7-day view
+- **Owner:** Frontend
+- **Priority:** Medium
+- **Dependencies:** TASK-043 (Advanced SRS Analytics complete)
+- **Description:** The "Due Forecast" bar chart on the dashboard currently shows 14 days. Shorten the window to 7 days so it reads as a weekly view (Mon–Sun or Today + 6). This makes the chart feel actionable rather than overwhelming. Also label days as Mon/Tue/Wed etc. when the window is exactly 7 days (instead of "Jan 5", "Jan 6") so the user immediately reads it as a week.
+  (1) Change the forecast API response from 14 entries to 7 (`/api/stats/srs` `forecast` array, currently built with a 14-day loop).
+  (2) Update `ForecastChart` in `SRSStatsClient.tsx` to use short day-of-week labels for the 7-day window.
+  (3) Today column remains highlighted indigo; remaining columns slate/indigo-200 as before.
+- **Acceptance Criteria:**
+  - Chart shows exactly 7 bars (today + 6 days)
+  - Day labels are Mon/Tue/Wed/Thu/Fri/Sat/Sun (short weekday), not calendar dates
+  - Today column is visually distinct
+  - API returns 7 entries, not 14
+
+---
+
+### TASK-046
+- **Title:** Splash/hook page redesign — auto-redirect, AI-forward layout
+- **Owner:** Frontend
+- **Priority:** Medium
+- **Dependencies:** None
+- **Description:** The current splash page (`SplashPage` component) requires the user to click a button to proceed to their deck list. This creates unnecessary friction. Replace it with an auto-redirect that takes the user directly to the deck list after a brief branded moment (1.5–2s). Redesign the splash content to reflect current product capabilities (AI generation, Anki import, SRS, multilingual).
+  (1) Remove the CTA button — the page auto-navigates to the deck list after ~1.8s (or immediately on any tap/click).
+  (2) Redesign the visual to highlight: AI flashcard generation, Anki import, spaced repetition, 5 languages. Use the existing indigo/violet gradient brand palette. Keep it under 4 lines of copy total.
+  (3) Add a subtle animated progress indicator (thin bar or pulsing dots) so the user knows it's loading, not frozen.
+  (4) If the user has no decks yet (first visit), show a slightly longer version (2.5s) with a "Getting started" headline.
+- **Acceptance Criteria:**
+  - No button required — page transitions automatically
+  - Any tap or click skips the wait immediately
+  - New copy references AI generation, Anki import, and SRS
+  - Progress indicator visible during the wait
+  - First-time users (0 decks) see the extended variant
+
+---
+
+### TASK-047
+- **Title:** Settings page redesign — consolidated, clean UX
+- **Owner:** Frontend
+- **Priority:** Medium
+- **Dependencies:** None
+- **Description:** The current settings page is confusing — sections are scattered, visually heavy, and lack clear grouping. Redesign it as a clean single-column layout with logical section groupings. No new settings are added; this is a pure UX reorganisation.
+  Proposed grouping:
+  - **Account** — display name, email (read-only), profile photo, change password
+  - **Study preferences** — daily review limit, study reminder time, catch-up mode toggle
+  - **Appearance** — language/locale switcher, theme (if applicable)
+  - **Subscription** — current plan badge, upgrade/manage billing button (links to Stripe portal)
+  - **Privacy & Data** — download my data, delete account (destructive, red, requires confirmation)
+  Each section gets a subtle card container, a section heading, and a divider. Related fields sit inside the same card. Destructive actions (delete account) are visually separated at the bottom and require a typed confirmation.
+- **Acceptance Criteria:**
+  - All existing settings accessible — nothing removed
+  - 5 named sections, each in its own card
+  - Delete account requires explicit text confirmation ("DELETE")
+  - Mobile layout correct (single column, full-width cards)
+  - No visual clutter — each setting has a label, optional sublabel, and one control
+
+---
+
+### TASK-048
+- **Title:** Report a profile — user reporting flow + admin moderation
+- **Owner:** Frontend + Backend
+- **Priority:** Medium
+- **Dependencies:** TASK-022 (GDPR/security complete)
+- **Description:** Allow users to report another user's profile for abuse, spam, or inappropriate content. Build the full report → review → action loop.
+  (1) **Report trigger:** "Report this profile" option in the three-dot menu on public profile pages. Opens a modal with a reason selector (Spam, Harassment, Inappropriate content, Impersonation, Other) and an optional free-text field (max 300 chars).
+  (2) **API:** `POST /api/reports/profile` stores: reporter_user_id, reported_user_id, reason, description, created_at. Rate-limit: 5 reports per user per day.
+  (3) **Admin panel:** `/admin/reports/profiles` lists open reports with: reported user, reporter, reason, description, date. Actions: Dismiss (no action), Warn user (trigger email), Suspend account (set `suspended_at`), Ban account (set `banned_at`).
+  (4) **Suspension effect:** suspended users can still log in and access their own data but their public profile and decks are hidden from explore/search until suspension lifted.
+  (5) **Notifications:** reporter receives an email "We've received your report and will review it." Admin receives a daily digest of new reports (not per-report to avoid noise).
+- **Acceptance Criteria:**
+  - Report modal accessible from any public profile page
+  - Report saved to DB with all required fields
+  - Rate limit enforced (5/day per reporter)
+  - Admin list view shows all open reports with filter by status (open/dismissed/actioned)
+  - Suspension hides profile and decks from public without deleting data
+  - Reporter confirmation email sent
+
+---
+
+### TASK-049
+- **Title:** Report a deck — deck reporting flow + admin moderation
+- **Owner:** Frontend + Backend
+- **Priority:** Medium
+- **Dependencies:** TASK-048 (profile report infrastructure reusable)
+- **Description:** Allow users to report a public deck for plagiarism, medical misinformation, or inappropriate content. Admin can remove or demote the deck.
+  (1) **Report trigger:** "Report this deck" option in the deck's share/options menu on the explore page and on public deck detail pages. Opens a modal: reason selector (Medical misinformation, Plagiarism, Inappropriate content, Copyright violation, Spam, Other) + optional description (max 300 chars).
+  (2) **API:** `POST /api/reports/deck` stores: reporter_user_id, deck_id, reason, description, created_at. Rate-limit: 3 deck reports per user per day.
+  (3) **Admin panel:** `/admin/reports/decks` lists open deck reports. Actions: Dismiss, Warn creator, Remove from explore (sets `is_public = false` + `removal_reason`), Delete deck entirely.
+  (4) **Creator notification:** when admin removes a deck from explore, the creator receives an email: "Your deck [title] has been removed from the Explore page. Reason: [reason]. You can appeal by replying to this email."
+  (5) **Medical accuracy flag:** reports with reason "Medical misinformation" are automatically escalated (shown at top of admin queue with a red badge) because incorrect medical content poses a patient safety risk.
+- **Acceptance Criteria:**
+  - Report modal on explore page deck cards and deck detail pages
+  - Medical misinformation reports auto-escalated in admin queue
+  - Admin can remove deck from explore without deleting user's private copy
+  - Creator email sent on removal with reason
+  - Rate limit enforced
+
+---
+
+### TASK-050
+- **Title:** Mobile navbar redesign — minimal 4-tab bottom nav, settings in dashboard
+- **Owner:** Frontend
+- **Priority:** Medium
+- **Dependencies:** None
+- **Description:** The current mobile navbar is a shrunk version of the desktop nav and carries too many items. Redesign for mobile-native navigation patterns.
+  (1) **Bottom navigation bar** (mobile only, `sm:hidden`): 4 tabs only — Dashboard, My Decks, Explore, Profile. Each tab has an icon + label. Active tab is indigo. No Settings tab.
+  (2) **Settings access on mobile:** add a gear icon button in the top-right of the Dashboard page header (mobile only). Tapping it navigates to settings. This pattern matches iOS Settings conventions.
+  (3) **Top navbar on mobile:** simplify to logo + locale switcher + notification bell only. Remove all text links (they move to the bottom nav).
+  (4) **Desktop nav:** unchanged — keep the current horizontal top nav with all items.
+  (5) Ensure the bottom nav does not overlap page content — add `pb-20` padding to pages when on mobile.
+- **Acceptance Criteria:**
+  - Bottom nav visible only on mobile (`< sm` breakpoint), hidden on desktop
+  - Exactly 4 tabs: Dashboard, My Decks, Explore, Profile
+  - Settings accessible via gear icon inside Dashboard header (mobile)
+  - Active tab highlighted correctly
+  - No page content hidden behind bottom nav
+  - Desktop nav visually unchanged
+
+---
+
+### TASK-051
+- **Title:** Explore page redesign — topic-agnostic, feed layout, global search
+- **Owner:** Frontend + Backend
+- **Priority:** High
+- **Dependencies:** TASK-050 (mobile nav, explore is a primary tab)
+- **Description:** The current explore page has a rigid medical/pharmacy topic structure with header sections that limits discoverability. Redesign as an open, feed-style page.
+  (1) **Remove subject header sections** — no more "Medicine", "Pharmacy", "Chemistry" grouping at the top. All decks enter a single unified feed.
+  (2) **Open taxonomy:** add new subjects/tags to support non-medical content: Languages (French, Spanish, Japanese, etc.), Law, Natural Sciences, History, Mathematics, Computer Science, and a catch-all "Other". Update the deck creation form's subject selector to include these.
+  (3) **Feed layout:** card-based feed resembling X/Twitter — each deck card is a compact row (emoji, title, creator handle, card count, copy count, subject tag, like/bookmark). Infinite scroll or "Load more" pagination. No fixed category headers.
+  (4) **Trending / Recent tabs:** two feed views — "Trending" (sorted by copy_count + recency score) and "Recent" (sorted by created_at desc). Tab switcher at the top of the feed.
+  (5) **Global search:** a full-width search bar at the top of Explore. Searches across deck titles, descriptions, and creator names in real time (debounced, 300ms). Results show both decks and user profiles.
+  (6) **User profile search results:** show creator avatar/initials, handle, deck count, follower count (if implemented). Clicking a profile navigates to their public profile page.
+  (7) **Filter pill row** (below search): Subject pills (scrollable horizontal list) — All, Languages, Medicine, Law, Natural Sciences, Computer Science, etc. Selecting a pill filters the feed. Multiple pills can be active simultaneously.
+- **Acceptance Criteria:**
+  - No hardcoded subject sections — single unified feed
+  - At least 10 subject tags available in deck creation and filter pills
+  - Search returns deck + profile results, debounced
+  - Trending and Recent tabs both functional with real data
+  - Feed renders correctly on mobile (bottom nav + feed, no horizontal overflow)
+  - Filter pills scroll horizontally on mobile without wrapping
+
+---
+
+### TASK-052
+- **Title:** Quiz mode — deck quiz generator + AI quiz creator + explore filter
+- **Owner:** Frontend + Backend
+- **Priority:** High
+- **Dependencies:** TASK-051 (explore filter row needed for quiz-deck filter)
+- **Description:** Add a third study mode: Quiz. Unlike SRS (adaptive recall) and Cram (rapid review), Quiz presents multiple-choice questions generated from the deck's cards. Quizzes can be AI-generated or manually set up.
+  (1) **Quiz data model:** new table `quizzes (id, deck_id, user_id, is_public, created_at)` and `quiz_questions (id, quiz_id, card_id, question_text, correct_answer, distractors jsonb, explanation text)`. `distractors` is an array of 3 wrong answers. `explanation` is shown after answering.
+  (2) **Manual quiz creation:** on the deck detail page, a "Create Quiz" button opens a quiz builder. For each card, the user confirms or edits: the question text (defaults to card front), the correct answer (defaults to card back), and 3 distractors (user types them). Optional explanation field.
+  (3) **AI quiz generation:** on the quiz builder, an "Generate with AI" button sends the card's front/back to the AI and returns: a polished question, the correct answer, 3 plausible distractors, and a 1–2 sentence explanation. The user can accept or edit each generated question before saving.
+  (4) **Quiz play mode:** `StudyMode = 'quiz'` renders a multiple-choice UI. 4 options displayed in a 2×2 grid. After selecting, correct = green highlight, wrong = red + correct revealed. Explanation shown below. "Next" button advances. Score shown at the end (X/N correct, percentage).
+  (5) **Public quiz decks:** quizzes can be made public (`is_public = true`). Public quiz decks appear in Explore with a "Quiz" badge.
+  (6) **Explore filter:** add "Quiz" pill to the filter row in Explore (TASK-051). When active, only decks with a public quiz attached are shown.
+  (7) **AI quota:** AI quiz generation counts against the same AI card quota (Free: 189/month, Pro: unlimited) — each generated question counts as 1.
+- **Acceptance Criteria:**
+  - Quiz builder accessible from deck detail page
+  - AI generates question + 3 distractors + explanation per card in under 3s
+  - Quiz play mode renders 4-option MCQ, reveals answer on selection
+  - Score screen shown at end of quiz
+  - Public quiz decks visible in Explore with "Quiz" badge
+  - "Quiz" filter pill in Explore filters correctly
+  - AI quota correctly debited for generated questions
+
+---
+
+### TASK-053
+- **Title:** Phase 5 QA — full regression across web + mobile (all locales, new features)
+- **Owner:** QA Tester
+- **Priority:** High
+- **Dependencies:** TASK-045 through TASK-052, TASK-040 (iOS), TASK-042 (web i18n QA)
+- **Description:** Full QA gate for Phase 5 before Phase 6.
+  (1) Re-run the P0 web checklist in all 5 locales after all Phase 5 changes.
+  (2) New feature QA: dashboard 7-day forecast, splash auto-redirect, settings redesign, report flows (profile + deck), mobile bottom nav, explore redesign, quiz mode.
+  (3) iOS P0 regression (TASK-040 deliverables): signup, login, deck creation, study session, push notifications, offline sync.
+  (4) Admin panel: verify report queues for both profile and deck reports, test all moderation actions (dismiss, warn, suspend, remove).
+  (5) Cross-feature: quiz in all 5 locales (quiz strings must be translated), explore search returns results in correct locale.
+- **Acceptance Criteria:**
+  - All P0 flows pass on Chrome, Safari, Firefox (desktop + mobile web)
+  - All new Phase 5 features pass their individual acceptance criteria
+  - iOS P0 regression complete
+  - Admin moderation flows tested end-to-end
+  - QA sign-off logged in dev/progress.md
+
+---
+
 ## Hard Launch Blockers — All Must Pass Before Launch Day
 
 | Task | Blocker |
