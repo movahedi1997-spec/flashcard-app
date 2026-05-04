@@ -122,6 +122,7 @@ export async function generateFlashcardsFromPdf(
   const base64 = pdfBuffer.toString('base64');
   const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
+    signal: AbortSignal.timeout(45_000),
     headers: {
       'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
       'Content-Type': 'application/json',
@@ -213,6 +214,7 @@ export async function generateQuizQuestionsFromPdf(pdfBuffer: Buffer, count: num
   const base64 = pdfBuffer.toString('base64');
   const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
+    signal: AbortSignal.timeout(45_000),
     headers: {
       'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
       'Content-Type': 'application/json',
@@ -234,7 +236,10 @@ export async function generateQuizQuestionsFromPdf(pdfBuffer: Buffer, count: num
       response_format: { type: 'json_object' },
     }),
   });
-  if (!res.ok) throw new Error(`OpenRouter ${res.status}`);
+  if (!res.ok) {
+    const err = await res.text().catch(() => '');
+    throw new Error(`OpenRouter ${res.status}: ${err}`);
+  }
   const data = await res.json() as { choices: { message: { content: string } }[] };
   const questions = await parseQuestions(data.choices[0]?.message?.content ?? '');
   return { questions, provider: 'openrouter', model: 'gemini-2.0-flash (vision)' };
@@ -264,10 +269,12 @@ export async function generateQuizQuestions(text: string, count: number): Promis
   // Fallback: OpenRouter
   const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
+    signal: AbortSignal.timeout(45_000),
     headers: {
       'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
       'Content-Type': 'application/json',
       'HTTP-Referer': 'https://flashcardai.app',
+      'X-Title': 'FlashcardAI',
     },
     body: JSON.stringify({
       model: 'google/gemini-2.0-flash-001',
@@ -279,7 +286,10 @@ export async function generateQuizQuestions(text: string, count: number): Promis
       response_format: { type: 'json_object' },
     }),
   });
-  if (!res.ok) throw new Error(`OpenRouter ${res.status}`);
+  if (!res.ok) {
+    const err = await res.text().catch(() => '');
+    throw new Error(`OpenRouter ${res.status}: ${err}`);
+  }
   const data = await res.json() as { choices: { message: { content: string } }[] };
   const questions = await parseQuestions(data.choices[0]?.message?.content ?? '');
   return { questions, provider: 'openrouter', model: 'gemini-2.0-flash' };

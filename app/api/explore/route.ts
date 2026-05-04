@@ -13,16 +13,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getAuthUser } from '@/lib/auth';
 import { query } from '@/lib/db';
 import type { Subject } from '@/types/api';
+import { VALID_SUBJECTS } from '@/lib/subjects';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
-
-const VALID_SUBJECTS: Subject[] = [
-  'medicine', 'pharmacy', 'chemistry',
-  'languages', 'law', 'science', 'history', 'mathematics', 'computer_science',
-  'physics', 'biology', 'philosophy', 'psychology', 'literature', 'economics',
-  'other',
-];
 const MAX_LIMIT = 50;
 const DEFAULT_LIMIT = 20;
 type DeckTypeFilter = 'all' | 'flashcard' | 'quiz';

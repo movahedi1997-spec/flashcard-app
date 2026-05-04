@@ -106,14 +106,14 @@ export async function POST(req: NextRequest) {
   let result;
   try {
     if (file) {
-      if (!file.type.includes('pdf') && !file.name.endsWith('.pdf')) {
-        return NextResponse.json({ error: 'Only PDF files are supported.' }, { status: 400 });
-      }
       if (file.size > 20 * 1024 * 1024) {
         return NextResponse.json({ error: 'File too large. Maximum size is 20 MB.' }, { status: 400 });
       }
-      // Send PDF directly to Gemini vision — handles text, diagrams, scanned pages
       const buffer = Buffer.from(await file.arrayBuffer());
+      const isPdf  = buffer[0] === 0x25 && buffer[1] === 0x50 && buffer[2] === 0x44 && buffer[3] === 0x46; // %PDF
+      if (!isPdf) {
+        return NextResponse.json({ error: 'Only PDF files are supported.' }, { status: 400 });
+      }
       result = await generateFlashcardsFromPdf(buffer, count);
     } else {
       if (!rawText || rawText.trim().length < 50) {

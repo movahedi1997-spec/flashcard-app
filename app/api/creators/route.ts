@@ -32,7 +32,7 @@ interface CreatorRow {
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const search   = searchParams.get('search')?.trim() ?? '';
+  const search   = (searchParams.get('search')?.trim() ?? '').slice(0, 100);
   const rawPage  = parseInt(searchParams.get('page') ?? '0', 10);
   const page     = Math.max(0, isNaN(rawPage) ? 0 : rawPage);
   const rawLimit = parseInt(searchParams.get('limit') ?? String(DEFAULT_LIMIT), 10);
@@ -57,7 +57,15 @@ export async function GET(req: NextRequest) {
     const nBase = values.length;
 
     const countRow = await query<{ total: string }>(
-      `SELECT COUNT(*)::text AS total FROM users u ${where}`,
+      `SELECT COUNT(*)::text AS total
+         FROM (
+           SELECT u.id
+             FROM users u
+             LEFT JOIN decks d ON d.user_id = u.id AND d.is_public = true
+             ${where}
+             GROUP BY u.id
+             HAVING COUNT(DISTINCT d.id) > 0
+         ) sub`,
       values,
     );
     const total = parseInt(countRow.rows[0]?.total ?? '0', 10);
@@ -75,6 +83,7 @@ export async function GET(req: NextRequest) {
          LEFT JOIN decks d ON d.user_id = u.id AND d.is_public = true
          ${where}
          GROUP BY u.id
+         HAVING COUNT(DISTINCT d.id) > 0
          ORDER BY
            COALESCE(u.is_verified_creator, false) DESC,
            COUNT(DISTINCT d.id) DESC,

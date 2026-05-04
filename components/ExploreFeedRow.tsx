@@ -1,31 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { BadgeCheck, Copy, Check, Loader2 } from 'lucide-react';
 import type { PublicDeck } from '@/types/api';
 import { fetchWithRefresh } from '@/lib/fetchWithRefresh';
-
-// ── Subject labels ────────────────────────────────────────────────────────────
-
-const SUBJECT_LABELS: Record<string, string> = {
-  medicine:        'Medicine',
-  pharmacy:        'Pharmacy',
-  chemistry:       'Chemistry',
-  languages:       'Languages',
-  law:             'Law',
-  science:         'Science',
-  history:         'History',
-  mathematics:     'Mathematics',
-  computer_science:'CS',
-  physics:         'Physics',
-  biology:         'Biology',
-  philosophy:      'Philosophy',
-  psychology:      'Psychology',
-  literature:      'Literature',
-  economics:       'Economics',
-  other:           'Other',
-};
+import { SUBJECT_LABELS } from '@/lib/subjects';
+import { avatarColor, initials } from '@/lib/avatar';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -43,24 +24,6 @@ function timeAgo(iso: string): string {
   return `${Math.floor(mo / 12)}y`;
 }
 
-const AVATAR_COLORS = [
-  'bg-indigo-500', 'bg-violet-500', 'bg-emerald-500',
-  'bg-amber-500',  'bg-rose-500',   'bg-sky-500',
-  'bg-teal-500',   'bg-pink-500',   'bg-orange-500',
-];
-
-function avatarColor(seed: string): string {
-  let h = 0;
-  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
-  return AVATAR_COLORS[h % AVATAR_COLORS.length];
-}
-
-function initials(name: string): string {
-  const parts = name.trim().split(/\s+/);
-  if (parts.length === 1) return (parts[0]?.[0] ?? '?').toUpperCase();
-  return ((parts[0]?.[0] ?? '') + (parts[parts.length - 1]?.[0] ?? '')).toUpperCase();
-}
-
 // ── Component ─────────────────────────────────────────────────────────────────
 
 interface Props {
@@ -69,6 +32,7 @@ interface Props {
 }
 
 export default function ExploreFeedRow({ deck, onCopied }: Props) {
+  const router = useRouter();
   const [copying, setCopying]       = useState(false);
   const [justCopied, setJustCopied] = useState(false);
   const [error, setError]           = useState('');
@@ -103,25 +67,40 @@ export default function ExploreFeedRow({ deck, onCopied }: Props) {
     }
   }
 
+  const creatorHref = deck.creatorUsername ? `/creators/${deck.creatorUsername}` : null;
+
+  function handleCardClick(e: React.MouseEvent) {
+    // Let inner interactive elements handle their own clicks
+    const target = e.target as HTMLElement;
+    if (target.closest('button, a')) return;
+    router.push(`/explore/${deck.slug}`);
+  }
+
   return (
-    <Link
-      href={`/explore/${deck.slug}`}
-      className="flex gap-3 px-4 py-3.5 bg-white hover:bg-gray-50/60 transition-colors border-b border-gray-100 last:border-b-0 no-underline"
+    <div
+      role="link"
+      tabIndex={0}
+      onClick={handleCardClick}
+      onKeyDown={(e) => { if (e.key === 'Enter') router.push(`/explore/${deck.slug}`); }}
+      className="flex gap-3 px-4 py-3.5 bg-white hover:bg-gray-50/60 transition-colors border-b border-gray-100 last:border-b-0 cursor-pointer"
     >
       {/* Left — avatar */}
       <div className="flex-shrink-0 pt-0.5">
-        {/* Link to creator profile, stops the outer card navigation */}
-        <a
-          href={deck.creatorUsername ? `/creators/${deck.creatorUsername}` : '#'}
-          onClick={(e) => e.stopPropagation()}
-          className="block"
-          tabIndex={-1}
-          aria-label={`View ${deck.creatorName}'s profile`}
-        >
+        {creatorHref ? (
+          <a
+            href={creatorHref}
+            aria-label={`View ${deck.creatorName}'s profile`}
+            className="block"
+          >
+            <div className={`w-9 h-9 rounded-full ${avatarBg} flex items-center justify-center text-xs font-bold text-white select-none`}>
+              {initials(deck.creatorName)}
+            </div>
+          </a>
+        ) : (
           <div className={`w-9 h-9 rounded-full ${avatarBg} flex items-center justify-center text-xs font-bold text-white select-none`}>
             {initials(deck.creatorName)}
           </div>
-        </a>
+        )}
       </div>
 
       {/* Right — content */}
@@ -129,13 +108,18 @@ export default function ExploreFeedRow({ deck, onCopied }: Props) {
 
         {/* Row 1: username + verified + time */}
         <div className="flex items-center gap-1 min-w-0">
-          <a
-            href={deck.creatorUsername ? `/creators/${deck.creatorUsername}` : '#'}
-            onClick={(e) => e.stopPropagation()}
-            className="text-xs font-semibold text-gray-800 hover:text-indigo-600 transition-colors truncate max-w-[140px]"
-          >
-            @{handle}
-          </a>
+          {creatorHref ? (
+            <a
+              href={creatorHref}
+              className="text-xs font-semibold text-gray-800 hover:text-indigo-600 transition-colors truncate max-w-[140px]"
+            >
+              @{handle}
+            </a>
+          ) : (
+            <span className="text-xs font-semibold text-gray-800 truncate max-w-[140px]">
+              @{handle}
+            </span>
+          )}
           {deck.isVerifiedCreator && (
             <BadgeCheck className="h-3.5 w-3.5 text-indigo-500 flex-shrink-0" />
           )}
@@ -204,6 +188,6 @@ export default function ExploreFeedRow({ deck, onCopied }: Props) {
 
         {error && <p className="text-xs text-red-500 mt-0.5">{error}</p>}
       </div>
-    </Link>
+    </div>
   );
 }

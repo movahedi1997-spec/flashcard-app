@@ -8,6 +8,7 @@ import Button from '@/components/ui/Button';
 import Link from 'next/link';
 import { Lock } from 'lucide-react';
 import type { Subject } from '@/types/api';
+import { VALID_SUBJECTS } from '@/lib/subjects';
 
 // ── Palette options (must match BoxCard PALETTES keys) ────────────────────────
 
@@ -36,23 +37,8 @@ const EMOJI_PRESETS = [
 // ── Props ─────────────────────────────────────────────────────────────────────
 
 const SUBJECT_OPTIONS: { value: Subject | ''; label: string }[] = [
-  { value: '',               label: 'No subject' },
-  { value: 'medicine',       label: 'Medicine' },
-  { value: 'pharmacy',       label: 'Pharmacy' },
-  { value: 'chemistry',      label: 'Chemistry' },
-  { value: 'biology',        label: 'Biology' },
-  { value: 'physics',        label: 'Physics' },
-  { value: 'mathematics',    label: 'Mathematics' },
-  { value: 'computer_science', label: 'Computer Science' },
-  { value: 'languages',      label: 'Languages' },
-  { value: 'history',        label: 'History' },
-  { value: 'philosophy',     label: 'Philosophy' },
-  { value: 'psychology',     label: 'Psychology' },
-  { value: 'literature',     label: 'Literature' },
-  { value: 'economics',      label: 'Economics' },
-  { value: 'law',            label: 'Law' },
-  { value: 'science',        label: 'Science' },
-  { value: 'other',          label: 'Other' },
+  { value: '', label: 'No subject' },
+  ...VALID_SUBJECTS.map((s) => ({ value: s, label: s === 'computer_science' ? 'Computer Science' : s.charAt(0).toUpperCase() + s.slice(1) })),
 ];
 
 export interface DeckFormValues {

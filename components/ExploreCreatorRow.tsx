@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { BadgeCheck } from 'lucide-react';
+import { avatarColor, initials } from '@/lib/avatar';
 
 export interface CreatorResult {
   id:               string;
@@ -13,25 +14,6 @@ export interface CreatorResult {
   deckCount:        number;
   totalCopies:      number;
   joinedAt:         string;
-}
-
-// Deterministic color from username
-const AVATAR_COLORS = [
-  'bg-indigo-500', 'bg-violet-500', 'bg-emerald-500',
-  'bg-amber-500',  'bg-rose-500',   'bg-sky-500',
-  'bg-teal-500',   'bg-pink-500',   'bg-orange-500',
-];
-
-function avatarColor(username: string): string {
-  let h = 0;
-  for (let i = 0; i < username.length; i++) h = (h * 31 + username.charCodeAt(i)) >>> 0;
-  return AVATAR_COLORS[h % AVATAR_COLORS.length];
-}
-
-function initials(name: string): string {
-  const parts = name.trim().split(/\s+/);
-  if (parts.length === 1) return (parts[0]?.[0] ?? '?').toUpperCase();
-  return ((parts[0]?.[0] ?? '') + (parts[parts.length - 1]?.[0] ?? '')).toUpperCase();
 }
 
 interface Props {

@@ -81,11 +81,15 @@ export async function POST(req: NextRequest) {
   if (!file && (!text || typeof text !== 'string' || text.trim().length < 30))
     return NextResponse.json({ error: 'Provide a PDF file or at least 30 characters of text.' }, { status: 400 });
 
-  if (file && !file.type.includes('pdf') && !file.name.endsWith('.pdf'))
-    return NextResponse.json({ error: 'Only PDF files are supported.' }, { status: 400 });
-
   if (file && file.size > 20 * 1024 * 1024)
     return NextResponse.json({ error: 'File too large. Maximum size is 20 MB.' }, { status: 400 });
+
+  if (file) {
+    const header = Buffer.from(await file.slice(0, 4).arrayBuffer());
+    const isPdf  = header[0] === 0x25 && header[1] === 0x50 && header[2] === 0x44 && header[3] === 0x46; // %PDF
+    if (!isPdf)
+      return NextResponse.json({ error: 'Only PDF files are supported.' }, { status: 400 });
+  }
 
   const deckCheck = await query<{ id: string }>('SELECT id FROM quiz_decks WHERE id=$1 AND user_id=$2', [quizDeckId, userId]);
   if (!deckCheck.rows[0]) return NextResponse.json({ error: 'Quiz deck not found.' }, { status: 404 });

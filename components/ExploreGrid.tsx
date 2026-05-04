@@ -5,31 +5,10 @@ import { Search, X, Loader2, TrendingUp, Clock, LayoutList, Users, ChevronDown, 
 import type { PublicDeck, Subject } from '@/types/api';
 import ExploreFeedRow from './ExploreFeedRow';
 import ExploreCreatorRow, { type CreatorResult } from './ExploreCreatorRow';
+import { SUBJECTS } from '@/lib/subjects';
 
 type DeckTypeFilter = 'all' | 'flashcard' | 'quiz';
 type ExploreTab = 'decks' | 'people';
-
-// ── Subject filter pills ──────────────────────────────────────────────────────
-
-const SUBJECTS: { value: Subject | 'all'; label: string; emoji: string }[] = [
-  { value: 'all',             label: 'All',          emoji: '🌐' },
-  { value: 'medicine',        label: 'Medicine',     emoji: '🩺' },
-  { value: 'pharmacy',        label: 'Pharmacy',     emoji: '💊' },
-  { value: 'chemistry',       label: 'Chemistry',    emoji: '⚗️' },
-  { value: 'biology',         label: 'Biology',      emoji: '🧬' },
-  { value: 'physics',         label: 'Physics',      emoji: '⚛️' },
-  { value: 'mathematics',     label: 'Mathematics',  emoji: '📐' },
-  { value: 'computer_science',label: 'CS',           emoji: '💻' },
-  { value: 'languages',       label: 'Languages',    emoji: '🗣️' },
-  { value: 'history',         label: 'History',      emoji: '🏛️' },
-  { value: 'philosophy',      label: 'Philosophy',   emoji: '🤔' },
-  { value: 'psychology',      label: 'Psychology',   emoji: '🧠' },
-  { value: 'literature',      label: 'Literature',   emoji: '📖' },
-  { value: 'economics',       label: 'Economics',    emoji: '📊' },
-  { value: 'law',             label: 'Law',          emoji: '⚖️' },
-  { value: 'science',         label: 'Science',      emoji: '🔬' },
-  { value: 'other',           label: 'Other',        emoji: '📚' },
-];
 
 type SortMode = 'recent' | 'trending';
 
