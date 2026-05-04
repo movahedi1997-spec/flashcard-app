@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { BadgeCheck, Copy, Check, Loader2 } from 'lucide-react';
+import { BadgeCheck, Copy, Check, Loader2, Heart, Share2 } from 'lucide-react';
 import type { PublicDeck } from '@/types/api';
 import { fetchWithRefresh } from '@/lib/fetchWithRefresh';
 import { SUBJECT_LABELS } from '@/lib/subjects';
@@ -35,6 +35,8 @@ export default function ExploreFeedRow({ deck, onCopied }: Props) {
   const router = useRouter();
   const [copying, setCopying]       = useState(false);
   const [justCopied, setJustCopied] = useState(false);
+  const [liked, setLiked]           = useState(false);
+  const [justShared, setJustShared] = useState(false);
   const [error, setError]           = useState('');
 
   const isCopied = deck.alreadyCopied || justCopied;
@@ -67,10 +69,23 @@ export default function ExploreFeedRow({ deck, onCopied }: Props) {
     }
   }
 
+  function handleShare(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    const url = `${window.location.origin}/explore/${deck.slug}`;
+    if (navigator.share) {
+      navigator.share({ title: deck.title, url }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(url).then(() => {
+        setJustShared(true);
+        setTimeout(() => setJustShared(false), 1500);
+      }).catch(() => {});
+    }
+  }
+
   const creatorHref = deck.creatorUsername ? `/creators/${deck.creatorUsername}` : null;
 
-  function handleCardClick(e: React.MouseEvent) {
-    // Let inner interactive elements handle their own clicks
+  function handleRowClick(e: React.MouseEvent) {
     const target = e.target as HTMLElement;
     if (target.closest('button, a')) return;
     router.push(`/explore/${deck.slug}`);
@@ -80,31 +95,29 @@ export default function ExploreFeedRow({ deck, onCopied }: Props) {
     <div
       role="link"
       tabIndex={0}
-      onClick={handleCardClick}
+      onClick={handleRowClick}
       onKeyDown={(e) => { if (e.key === 'Enter') router.push(`/explore/${deck.slug}`); }}
       className="flex gap-3 px-4 py-3.5 bg-white hover:bg-gray-50/60 transition-colors border-b border-gray-100 last:border-b-0 cursor-pointer"
     >
-      {/* Left — avatar */}
-      <div className="flex-shrink-0 pt-0.5">
+      {/* Left — avatar + thread line */}
+      <div className="flex flex-col items-center flex-shrink-0 pt-0.5">
         {creatorHref ? (
-          <a
-            href={creatorHref}
-            aria-label={`View ${deck.creatorName}'s profile`}
-            className="block"
-          >
+          <a href={creatorHref} aria-label={`View ${deck.creatorName}'s profile`} className="block flex-shrink-0">
             <div className={`w-9 h-9 rounded-full ${avatarBg} flex items-center justify-center text-xs font-bold text-white select-none`}>
               {initials(deck.creatorName)}
             </div>
           </a>
         ) : (
-          <div className={`w-9 h-9 rounded-full ${avatarBg} flex items-center justify-center text-xs font-bold text-white select-none`}>
+          <div className={`w-9 h-9 rounded-full ${avatarBg} flex items-center justify-center text-xs font-bold text-white select-none flex-shrink-0`}>
             {initials(deck.creatorName)}
           </div>
         )}
+        {/* Thread line */}
+        <div className="w-px flex-1 mt-2 bg-gray-200 rounded-full" />
       </div>
 
       {/* Right — content */}
-      <div className="flex-1 min-w-0 flex flex-col gap-0.5">
+      <div className="flex-1 min-w-0 flex flex-col gap-1.5 pb-1">
 
         {/* Row 1: username + verified + time */}
         <div className="flex items-center gap-1 min-w-0">
@@ -123,67 +136,91 @@ export default function ExploreFeedRow({ deck, onCopied }: Props) {
           {deck.isVerifiedCreator && (
             <BadgeCheck className="h-3.5 w-3.5 text-indigo-500 flex-shrink-0" />
           )}
-          <span className="text-xs text-gray-300 flex-shrink-0">·</span>
           <span className="text-xs text-gray-400 flex-shrink-0 ms-auto">{ago}</span>
         </div>
 
-        {/* Row 2: emoji + title + quiz badge */}
-        <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="text-base leading-none">{deck.emoji}</span>
-          <span className="text-sm font-semibold text-gray-900 leading-snug">
-            {deck.title}
-          </span>
-          {deck.deckType === 'quiz' && (
-            <span className="text-[10px] font-bold bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded-full flex-shrink-0">
-              Quiz
-            </span>
-          )}
-        </div>
-
-        {/* Row 3: description */}
+        {/* Row 2: description */}
         {deck.description && (
-          <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">
+          <p className="text-sm text-gray-600 line-clamp-2 leading-relaxed">
             {deck.description}
           </p>
         )}
 
-        {/* Row 4: meta + copy button */}
-        <div className="flex items-center gap-2 mt-1">
-          <div className="flex items-center gap-1.5 text-xs text-gray-400 flex-1 min-w-0 flex-wrap">
-            <span>{deck.cardCount} {deck.deckType === 'quiz' ? 'questions' : 'cards'}</span>
-            {subjectLabel && (
-              <>
-                <span className="text-gray-200">·</span>
-                <span>{subjectLabel}</span>
-              </>
-            )}
-            {(deck.copyCount ?? 0) > 0 && (
-              <>
-                <span className="text-gray-200">·</span>
-                <span>{deck.copyCount} copies</span>
-              </>
+        {/* Deck card */}
+        <div className="mt-0.5 rounded-2xl border border-gray-200 bg-gray-50 overflow-hidden">
+          {/* Card header: emoji + title — navigation handled by outer row */}
+          <div className="flex items-center gap-2 px-3.5 py-2.5 hover:bg-gray-100/70 transition-colors">
+            <span className="text-base leading-none flex-shrink-0">{deck.emoji}</span>
+            <span className="text-sm font-semibold text-gray-900 leading-snug truncate">{deck.title}</span>
+            {deck.deckType === 'quiz' && (
+              <span className="ms-auto text-[10px] font-bold bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded-full flex-shrink-0">
+                Quiz
+              </span>
             )}
           </div>
 
-          <button
-            onClick={handleCopy}
-            disabled={isCopied || copying}
-            aria-label={isCopied ? 'Already in library' : 'Copy to library'}
-            className={`flex-shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition active:scale-95 ${
-              isCopied
-                ? 'bg-emerald-50 text-emerald-600 border border-emerald-200 cursor-default'
-                : 'bg-indigo-50 text-indigo-600 hover:bg-indigo-100'
-            } disabled:opacity-60`}
-          >
-            {copying ? (
-              <Loader2 className="h-3 w-3 animate-spin" />
-            ) : isCopied ? (
-              <Check className="h-3 w-3" />
-            ) : (
-              <Copy className="h-3 w-3" />
-            )}
-            {isCopied ? 'Saved' : 'Copy'}
-          </button>
+          {/* Card footer: meta + actions */}
+          <div className="flex items-center gap-2 px-3.5 py-2 border-t border-gray-200/70">
+            {/* Meta */}
+            <div className="flex items-center gap-1.5 text-xs text-gray-400 flex-1 min-w-0">
+              <span>{deck.cardCount} {deck.deckType === 'quiz' ? 'questions' : 'cards'}</span>
+              {subjectLabel && (
+                <>
+                  <span className="text-gray-200">·</span>
+                  <span className="truncate">{subjectLabel}</span>
+                </>
+              )}
+              {(deck.copyCount ?? 0) > 0 && (
+                <>
+                  <span className="text-gray-200">·</span>
+                  <span className="flex-shrink-0">{deck.copyCount} copies</span>
+                </>
+              )}
+            </div>
+
+            {/* Action buttons */}
+            <div className="flex items-center gap-0.5 flex-shrink-0">
+              <button
+                onClick={handleCopy}
+                disabled={isCopied || copying}
+                aria-label={isCopied ? 'Already in library' : 'Copy to library'}
+                className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition active:scale-95 ${
+                  isCopied
+                    ? 'bg-emerald-50 text-emerald-600 border border-emerald-200 cursor-default'
+                    : 'bg-indigo-50 text-indigo-600 hover:bg-indigo-100'
+                } disabled:opacity-60`}
+              >
+                {copying ? (
+                  <Loader2 className="h-3 w-3 animate-spin" />
+                ) : isCopied ? (
+                  <Check className="h-3 w-3" />
+                ) : (
+                  <Copy className="h-3 w-3" />
+                )}
+                {isCopied ? 'Saved' : 'Copy'}
+              </button>
+
+              <button
+                onClick={(e) => { e.preventDefault(); e.stopPropagation(); setLiked((l) => !l); }}
+                aria-label={liked ? 'Unlike' : 'Like'}
+                className={`flex items-center gap-1 px-2 py-1 rounded-lg text-xs transition active:scale-95 ${
+                  liked ? 'text-rose-400' : 'text-gray-400 hover:text-rose-400'
+                }`}
+              >
+                <Heart className="h-3.5 w-3.5" />
+              </button>
+
+              <button
+                onClick={handleShare}
+                aria-label="Share deck"
+                className={`flex items-center gap-1 px-2 py-1 rounded-lg text-xs transition active:scale-95 ${
+                  justShared ? 'text-indigo-500' : 'text-gray-400 hover:text-indigo-500'
+                }`}
+              >
+                {justShared ? <Check className="h-3.5 w-3.5" /> : <Share2 className="h-3.5 w-3.5" />}
+              </button>
+            </div>
+          </div>
         </div>
 
         {error && <p className="text-xs text-red-500 mt-0.5">{error}</p>}

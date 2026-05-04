@@ -91,7 +91,7 @@ export default function AppNav({ username, activePage }: Props) {
         </div>
       </header>
 
-      <BottomNav username={username} />
+      <BottomNav username={username} activeOverride={activePage} />
     </>
   );
 }

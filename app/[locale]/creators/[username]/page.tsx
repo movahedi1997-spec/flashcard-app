@@ -9,8 +9,8 @@
 
 import type { Metadata } from 'next';
 import { notFound }      from 'next/navigation';
-import Link              from 'next/link';
-import { BadgeCheck, BookOpen, Copy } from 'lucide-react';
+import { Link }          from '@/i18n/navigation';
+import { BadgeCheck, BookOpen, Copy, ArrowLeft } from 'lucide-react';
 import { cookies }        from 'next/headers';
 import { jwtVerify }      from 'jose';
 import { query }          from '@/lib/db';
@@ -177,7 +177,7 @@ export default async function CreatorProfilePage({ params }: Props) {
     <div className="min-h-screen">
       {/* Nav */}
       {authUser ? (
-        <AppNav username={authUser.username} activePage="profile" />
+        <AppNav username={authUser.username} activePage={isOwnProfile ? 'profile' : 'explore'} />
       ) : (
         <header className="sticky top-0 z-50 border-b border-gray-100/80 bg-white/80 backdrop-blur-xl">
           <nav className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3.5">
@@ -192,6 +192,17 @@ export default async function CreatorProfilePage({ params }: Props) {
       )}
 
       <main className="mx-auto max-w-5xl px-6 py-10 pb-24 sm:pb-10">
+        {/* Back to Explore — only when viewing someone else's profile */}
+        {!isOwnProfile && (
+          <Link
+            href="/explore"
+            className="mb-8 inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-gray-800 transition"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" />
+            Back to Explore
+          </Link>
+        )}
+
         {/* Profile header */}
         <div className="flex flex-col items-center text-center sm:flex-row sm:text-start sm:items-start gap-6 mb-12">
           {creator.avatar_url ? (

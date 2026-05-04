@@ -6,8 +6,11 @@ import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { LayoutDashboard, Compass, BookOpen, User, type LucideIcon } from 'lucide-react';
 
+type ActivePage = 'dashboard' | 'decks' | 'explore' | 'profile' | 'settings' | 'stats';
+
 interface Props {
   username?: string | null;
+  activeOverride?: ActivePage;
 }
 
 type BottomNavItem = {
@@ -25,7 +28,7 @@ function stripLocale(pathname: string): string {
   return pathname.replace(LOCALE_PREFIX, '') || '/';
 }
 
-export default function BottomNav({ username }: Props) {
+export default function BottomNav({ username, activeOverride }: Props) {
   const pathname = usePathname();
   const t = useTranslations('common.appNav');
   const profileHref = username ? `/creators/${username}` : '/settings';
@@ -49,7 +52,7 @@ export default function BottomNav({ username }: Props) {
     >
       <div className="flex items-center h-14">
         {items.map(({ key, href, icon: Icon, labelKey, match }) => {
-          const active = stripped.startsWith(match);
+          const active = activeOverride ? key === activeOverride : stripped.startsWith(match);
           return (
             <Link
               key={key}

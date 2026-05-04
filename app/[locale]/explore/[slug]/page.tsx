@@ -27,6 +27,7 @@ import { hreflangAlternates } from '@/lib/hreflang';
 import AppNav from '@/components/AppNav';
 import CopyDeckButton from './CopyDeckButton';
 import ReportDeckButton from '@/components/ReportDeckButton';
+import ScrollToTopButton from '@/components/ScrollToTopButton';
 
 export const revalidate = 3600; // ISR: re-render at most once per hour
 
@@ -392,6 +393,7 @@ export default async function DeckLandingPage({ params }: Props) {
           </div>
         </div>
       </main>
+      <ScrollToTopButton />
     </div>
   );
 }
