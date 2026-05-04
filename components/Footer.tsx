@@ -63,6 +63,13 @@ export default function Footer() {
               <Link href="/signup"    className="transition hover:text-indigo-600">{t('signupLink')}</Link>
               <Link href="/dashboard" className="transition hover:text-indigo-600">{t('dashboard')}</Link>
               <Link href="/settings"  className="transition hover:text-indigo-600">{t('settingsLink')}</Link>
+              <a
+                href="/downloads/flashcardai.apk"
+                download
+                className="inline-flex items-center gap-1.5 transition hover:text-indigo-600"
+              >
+                📱 Android APK
+              </a>
             </nav>
           </div>
         </div>

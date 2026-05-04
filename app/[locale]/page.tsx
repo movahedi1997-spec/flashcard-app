@@ -4,6 +4,7 @@ import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import HowItWorks from '@/components/HowItWorks';
 import Features from '@/components/Features';
+import AppDownload from '@/components/AppDownload';
 import SubjectHubs from '@/components/SubjectHubs';
 import BlogPreview from '@/components/BlogPreview';
 import CTABanner from '@/components/CTABanner';
@@ -31,6 +32,7 @@ export default function HomePage() {
         <Hero />
         <HowItWorks />
         <Features />
+        <AppDownload />
         <SubjectHubs />
         <BlogPreview />
         <CTABanner />
