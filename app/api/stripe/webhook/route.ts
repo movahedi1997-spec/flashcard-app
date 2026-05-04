@@ -21,6 +21,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
   }
 
+  // ── Idempotency: skip events we have already processed ───────────────────
+  const dedupe = await query(
+    `INSERT INTO stripe_events (event_id) VALUES ($1) ON CONFLICT DO NOTHING`,
+    [event.id],
+  );
+  if ((dedupe.rowCount ?? 0) === 0) {
+    return NextResponse.json({ received: true });
+  }
+
   try {
     switch (event.type) {
       case 'checkout.session.completed': {

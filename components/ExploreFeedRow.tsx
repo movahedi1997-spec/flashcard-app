@@ -217,25 +217,27 @@ export default function ExploreFeedRow({ deck, onCopied, isAuthenticated, onAuth
 
       {/* ── Twitter-style action row ────────────────────────────────────────── */}
       <div className="flex items-center px-4 pb-3.5 pt-1 border-t border-gray-50 gap-1">
-        <button
-          onClick={handleCopy}
-          disabled={isCopied || copying}
-          aria-label={isCopied ? 'Already in library' : 'Copy to library'}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition active:scale-95 ${
-            isCopied
-              ? 'bg-emerald-50 text-emerald-600 border border-emerald-200 cursor-default'
-              : 'bg-indigo-50 text-indigo-600 hover:bg-indigo-100'
-          } disabled:opacity-60`}
-        >
-          {copying ? (
-            <Loader2 className="h-3.5 w-3.5 animate-spin" />
-          ) : isCopied ? (
-            <Check className="h-3.5 w-3.5" />
-          ) : (
-            <Copy className="h-3.5 w-3.5" />
-          )}
-          {isCopied ? 'Saved' : 'Copy'}
-        </button>
+        {deck.deckType !== 'quiz' && (
+          <button
+            onClick={handleCopy}
+            disabled={isCopied || copying}
+            aria-label={isCopied ? 'Already in library' : 'Copy to library'}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition active:scale-95 ${
+              isCopied
+                ? 'bg-emerald-50 text-emerald-600 border border-emerald-200 cursor-default'
+                : 'bg-indigo-50 text-indigo-600 hover:bg-indigo-100'
+            } disabled:opacity-60`}
+          >
+            {copying ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            ) : isCopied ? (
+              <Check className="h-3.5 w-3.5" />
+            ) : (
+              <Copy className="h-3.5 w-3.5" />
+            )}
+            {isCopied ? 'Saved' : 'Copy'}
+          </button>
+        )}
 
         <div className="flex items-center ms-auto gap-0.5">
           <button

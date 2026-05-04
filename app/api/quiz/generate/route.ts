@@ -98,6 +98,34 @@ export async function POST(req: NextRequest) {
   const deckCheck = await query<{ id: string }>('SELECT id FROM quiz_decks WHERE id=$1 AND user_id=$2', [quizDeckId, userId]);
   if (!deckCheck.rows[0]) return NextResponse.json({ error: 'Quiz deck not found.' }, { status: 404 });
 
+  // ── Pre-debit quota to prevent double-spend on concurrent requests ─────────
+  const toClaim     = Math.min(count, totalAvailable);
+  const fromMonthly = Math.min(toClaim, monthlyRemaining);
+  const fromCredits = toClaim - fromMonthly;
+
+  if (fromMonthly > 0) {
+    await query(
+      `INSERT INTO ai_usage (user_id, month, cards_generated) VALUES ($1,$2,$3)
+       ON CONFLICT (user_id, month) DO UPDATE SET cards_generated = ai_usage.cards_generated + $3`,
+      [userId, month, fromMonthly],
+    );
+  }
+  if (fromCredits > 0) {
+    await query('UPDATE users SET ai_credits = GREATEST(0, ai_credits - $1) WHERE id = $2', [fromCredits, userId]);
+  }
+
+  const refundQuota = async (n: number) => {
+    const refundMonthly = Math.min(n, fromMonthly);
+    const refundCredits = n - refundMonthly;
+    if (refundMonthly > 0)
+      await query(
+        `UPDATE ai_usage SET cards_generated = GREATEST(0, cards_generated - $1) WHERE user_id = $2 AND month = $3`,
+        [refundMonthly, userId, month],
+      ).catch(() => {});
+    if (refundCredits > 0)
+      await query('UPDATE users SET ai_credits = ai_credits + $1 WHERE id = $2', [refundCredits, userId]).catch(() => {});
+  };
+
   let result;
   try {
     if (file) {
@@ -108,46 +136,42 @@ export async function POST(req: NextRequest) {
     }
   } catch (err) {
     console.error('[quiz/generate]', err);
+    await refundQuota(toClaim);
     return NextResponse.json({ error: 'AI generation failed. Please try again.' }, { status: 500 });
   }
 
-  const questions = result.questions.slice(0, totalAvailable);
-  if (questions.length === 0)
+  const questions = result.questions.slice(0, toClaim);
+  if (questions.length === 0) {
+    await refundQuota(toClaim);
     return NextResponse.json({ error: 'No questions could be generated.' }, { status: 422 });
+  }
 
   const inserted = [];
-  for (const q of questions) {
-    const r = await query<{ id: string; created_at: string }>(
-      `INSERT INTO quiz_questions (quiz_deck_id, user_id, question_text, correct_answer, option_a, option_b, explanation, ai_generated)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,true) RETURNING id, created_at`,
-      [quizDeckId, userId, q.question_text, q.correct_answer, q.option_a, q.option_b, q.explanation || null],
-    );
-    const row = r.rows[0]!;
-    inserted.push({
-      id: row.id, quizDeckId, userId,
-      questionText: q.question_text, correctAnswer: q.correct_answer,
-      optionA: q.option_a, optionB: q.option_b,
-      explanation: q.explanation || null, aiGenerated: true,
-      srs: null, createdAt: row.created_at,
-    });
+  try {
+    for (const q of questions) {
+      const r = await query<{ id: string; created_at: string }>(
+        `INSERT INTO quiz_questions (quiz_deck_id, user_id, question_text, correct_answer, option_a, option_b, explanation, ai_generated)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,true) RETURNING id, created_at`,
+        [quizDeckId, userId, q.question_text, q.correct_answer, q.option_a, q.option_b, q.explanation || null],
+      );
+      const row = r.rows[0]!;
+      inserted.push({
+        id: row.id, quizDeckId, userId,
+        questionText: q.question_text, correctAnswer: q.correct_answer,
+        optionA: q.option_a, optionB: q.option_b,
+        explanation: q.explanation || null, aiGenerated: true,
+        srs: null, createdAt: row.created_at,
+      });
+    }
+  } catch (err) {
+    console.error('[quiz/generate] insert failed', err);
+    await refundQuota(toClaim);
+    return NextResponse.json({ error: 'Failed to save generated questions. Please try again.' }, { status: 500 });
   }
 
-  const fromMonthly = Math.min(inserted.length, monthlyRemaining);
-  const fromCredits = inserted.length - fromMonthly;
-
-  if (fromMonthly > 0) {
-    await query(
-      `INSERT INTO ai_usage (user_id, month, cards_generated) VALUES ($1,$2,$3)
-       ON CONFLICT (user_id, month) DO UPDATE SET cards_generated = ai_usage.cards_generated + $3`,
-      [userId, month, fromMonthly],
-    );
-  }
-  if (fromCredits > 0) {
-    await query(
-      'UPDATE users SET ai_credits = GREATEST(0, ai_credits - $1) WHERE id = $2',
-      [fromCredits, userId],
-    );
-  }
+  // Refund unused quota if AI returned fewer questions than claimed
+  const unused = toClaim - inserted.length;
+  if (unused > 0) await refundQuota(unused);
 
   return NextResponse.json({ questions: inserted, generated: inserted.length });
 }

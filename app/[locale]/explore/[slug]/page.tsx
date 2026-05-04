@@ -53,6 +53,7 @@ interface DeckRow {
   is_public: boolean;
   copy_count: number;
   created_at: string;
+  deck_type: 'flashcard' | 'quiz';
 }
 
 interface CardRow {
@@ -84,10 +85,21 @@ async function getDeckBySlug(slug: string) {
     `SELECT d.id, d.user_id, u.name AS creator_name,
             COALESCE(u.is_verified_creator, false) AS is_verified_creator,
             d.title, d.description, d.color, d.emoji, d.slug, d.subject,
-            d.is_public, COALESCE(d.copy_count, 0) AS copy_count, d.created_at
+            d.is_public, COALESCE(d.copy_count, 0) AS copy_count, d.created_at,
+            'flashcard'::text AS deck_type
        FROM decks d
        JOIN users u ON u.id = d.user_id
-      WHERE d.slug = $1 AND d.is_public = true`,
+      WHERE d.slug = $1 AND d.is_public = true
+      UNION ALL
+     SELECT qd.id, qd.user_id, u.name AS creator_name,
+            COALESCE(u.is_verified_creator, false) AS is_verified_creator,
+            qd.title, qd.description, qd.color, qd.emoji, qd.slug, qd.subject,
+            qd.is_public, 0 AS copy_count, qd.created_at,
+            'quiz'::text AS deck_type
+       FROM quiz_decks qd
+       JOIN users u ON u.id = qd.user_id
+      WHERE qd.slug = $1 AND qd.is_public = true
+      LIMIT 1`,
     [slug],
   );
   return deckResult.rows[0] ?? null;
@@ -105,9 +117,11 @@ async function getPreviewCards(deckId: string, showBack: boolean) {
   return result.rows;
 }
 
-async function getTotalCards(deckId: string) {
+async function getTotalCards(deckId: string, deckType: 'flashcard' | 'quiz') {
+  const table = deckType === 'quiz' ? 'quiz_questions' : 'cards';
+  const col   = deckType === 'quiz' ? 'quiz_deck_id'   : 'deck_id';
   const result = await query<CountRow>(
-    'SELECT COUNT(*)::text AS total FROM cards WHERE deck_id = $1',
+    `SELECT COUNT(*)::text AS total FROM ${table} WHERE ${col} = $1`,
     [deckId],
   );
   return parseInt(result.rows[0]?.total ?? '0', 10);
@@ -180,14 +194,16 @@ export default async function DeckLandingPage({ params }: Props) {
   const isOwner   = userId === deck.user_id;
   const showBack  = !!userId; // authenticated users see both faces
 
+  const isQuiz = deck.deck_type === 'quiz';
+
   const [cards, totalCards] = await Promise.all([
-    getPreviewCards(deck.id, showBack),
-    getTotalCards(deck.id),
+    isQuiz ? Promise.resolve([]) : getPreviewCards(deck.id, showBack),
+    getTotalCards(deck.id, deck.deck_type),
   ]);
 
-  // alreadyCopied check (only for non-owners)
+  // alreadyCopied check (only for non-owners of flashcard decks)
   let alreadyCopied = false;
-  if (userId && !isOwner) {
+  if (!isQuiz && userId && !isOwner) {
     const check = await query<{ id: string }>(
       'SELECT id FROM decks WHERE user_id = $1 AND copied_from_id = $2 LIMIT 1',
       [userId, deck.id],
@@ -241,11 +257,16 @@ export default async function DeckLandingPage({ params }: Props) {
                     </p>
                   )}
                   <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-white/70">
+                    {isQuiz && (
+                      <span className="rounded-full bg-white/20 px-2.5 py-0.5 text-xs font-semibold">
+                        Quiz
+                      </span>
+                    )}
                     <span className="flex items-center gap-1">
                       <BookOpen className="h-4 w-4" />
-                      {totalCards} {totalCards === 1 ? t('card') : t('cards')}
+                      {totalCards} {isQuiz ? 'questions' : (totalCards === 1 ? t('card') : t('cards'))}
                     </span>
-                    {deck.copy_count > 0 && (
+                    {!isQuiz && deck.copy_count > 0 && (
                       <span className="flex items-center gap-1">
                         <Copy className="h-4 w-4" />
                         {deck.copy_count.toLocaleString()} {deck.copy_count === 1 ? t('copy') : t('copies')}
@@ -267,7 +288,8 @@ export default async function DeckLandingPage({ params }: Props) {
               </div>
             </div>
 
-            {/* Preview cards */}
+            {/* Preview cards — flashcard decks only */}
+            {!isQuiz && (
             <div>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="font-bold text-gray-900">
@@ -325,6 +347,7 @@ export default async function DeckLandingPage({ params }: Props) {
                 </p>
               )}
             </div>
+            )}
           </div>
 
           {/* ── Right column: sticky CTA panel ─────────────────────────────── */}
@@ -356,8 +379,12 @@ export default async function DeckLandingPage({ params }: Props) {
                 </div>
               </div>
 
-              {/* Copy button — client component for interactivity */}
-              {isOwner ? (
+              {/* Copy button — flashcard decks only */}
+              {isQuiz ? (
+                <div className="rounded-xl bg-gray-50 border border-gray-200 px-4 py-3 text-sm text-gray-600 text-center">
+                  Open in the app to study this quiz
+                </div>
+              ) : isOwner ? (
                 <div className="rounded-xl bg-gray-50 border border-gray-200 px-4 py-3 text-sm text-gray-600 text-center">
                   {t('yourDeck')}
                 </div>

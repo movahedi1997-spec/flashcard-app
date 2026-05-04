@@ -104,49 +104,25 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Deck not found.' }, { status: 404 });
   }
 
-  // ── Generate ──────────────────────────────────────────────────────────────
-  let result;
-  try {
-    if (file) {
-      if (file.size > 20 * 1024 * 1024) {
-        return NextResponse.json({ error: 'File too large. Maximum size is 20 MB.' }, { status: 400 });
-      }
-      const buffer = Buffer.from(await file.arrayBuffer());
-      const isPdf  = buffer[0] === 0x25 && buffer[1] === 0x50 && buffer[2] === 0x44 && buffer[3] === 0x46; // %PDF
-      if (!isPdf) {
-        return NextResponse.json({ error: 'Only PDF files are supported.' }, { status: 400 });
-      }
-      result = await generateFlashcardsFromPdf(buffer, count);
-    } else {
-      if (!rawText || rawText.trim().length < 50) {
-        return NextResponse.json({ error: 'Not enough text to generate flashcards.' }, { status: 400 });
-      }
-      result = await generateFlashcards(rawText, count);
+  // ── Validate input before touching quota ──────────────────────────────────
+  let buffer: Buffer | null = null;
+  if (file) {
+    if (file.size > 20 * 1024 * 1024) {
+      return NextResponse.json({ error: 'File too large. Maximum size is 20 MB.' }, { status: 400 });
     }
-  } catch (err) {
-    console.error('[POST /api/ai/generate]', err);
-    return NextResponse.json({ error: 'AI generation failed. Please try again.' }, { status: 500 });
+    buffer = Buffer.from(await file.arrayBuffer());
+    const isPdf = buffer[0] === 0x25 && buffer[1] === 0x50 && buffer[2] === 0x44 && buffer[3] === 0x46;
+    if (!isPdf) {
+      return NextResponse.json({ error: 'Only PDF files are supported.' }, { status: 400 });
+    }
+  } else if (!rawText || rawText.trim().length < 50) {
+    return NextResponse.json({ error: 'Not enough text to generate flashcards.' }, { status: 400 });
   }
 
-  if (result.cards.length === 0) {
-    return NextResponse.json({ error: 'No cards could be generated from this content.' }, { status: 422 });
-  }
-
-  // Cap at total available (monthly + credits)
-  const cards = result.cards.slice(0, totalAvailable);
-
-  // ── Insert cards ──────────────────────────────────────────────────────────
-  for (const card of cards) {
-    await query(
-      `INSERT INTO cards (deck_id, user_id, front, back, ai_generated)
-       VALUES ($1, $2, $3, $4, true)`,
-      [deckId, userId, card.front, card.back],
-    );
-  }
-
-  // ── Update quota: monthly first, then bonus credits ──────────────────────
-  const fromMonthly = Math.min(cards.length, monthlyRemaining);
-  const fromCredits = cards.length - fromMonthly;
+  // ── Pre-debit quota to prevent double-spend on concurrent requests ─────────
+  const toClaim    = Math.min(count, totalAvailable);
+  const fromMonthly = Math.min(toClaim, monthlyRemaining);
+  const fromCredits = toClaim - fromMonthly;
 
   if (fromMonthly > 0) {
     await query(
@@ -164,7 +140,56 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const newUsed = used + fromMonthly;
+  const refundQuota = async (n: number) => {
+    const refundMonthly = Math.min(n, fromMonthly);
+    const refundCredits = n - refundMonthly;
+    if (refundMonthly > 0)
+      await query(
+        `UPDATE ai_usage SET cards_generated = GREATEST(0, cards_generated - $1) WHERE user_id = $2 AND month = $3`,
+        [refundMonthly, userId, month],
+      ).catch(() => {});
+    if (refundCredits > 0)
+      await query('UPDATE users SET ai_credits = ai_credits + $1 WHERE id = $2', [refundCredits, userId]).catch(() => {});
+  };
+
+  // ── Generate ──────────────────────────────────────────────────────────────
+  let result;
+  try {
+    result = buffer
+      ? await generateFlashcardsFromPdf(buffer, count)
+      : await generateFlashcards(rawText!, count);
+  } catch (err) {
+    console.error('[POST /api/ai/generate]', err);
+    await refundQuota(toClaim);
+    return NextResponse.json({ error: 'AI generation failed. Please try again.' }, { status: 500 });
+  }
+
+  if (result.cards.length === 0) {
+    await refundQuota(toClaim);
+    return NextResponse.json({ error: 'No cards could be generated from this content.' }, { status: 422 });
+  }
+
+  const cards = result.cards.slice(0, toClaim);
+
+  // ── Insert cards ──────────────────────────────────────────────────────────
+  try {
+    for (const card of cards) {
+      await query(
+        `INSERT INTO cards (deck_id, user_id, front, back, ai_generated) VALUES ($1, $2, $3, $4, true)`,
+        [deckId, userId, card.front, card.back],
+      );
+    }
+  } catch (err) {
+    console.error('[POST /api/ai/generate] insert failed', err);
+    await refundQuota(toClaim);
+    return NextResponse.json({ error: 'Failed to save generated cards. Please try again.' }, { status: 500 });
+  }
+
+  // Refund unused quota if AI returned fewer cards than claimed
+  const unused = toClaim - cards.length;
+  if (unused > 0) await refundQuota(unused);
+
+  const newUsed = used + fromMonthly - Math.min(unused, fromMonthly);
   return NextResponse.json({
     generated: cards.length,
     provider: result.provider,
