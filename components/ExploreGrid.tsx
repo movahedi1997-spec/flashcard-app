@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Search, X, Loader2, TrendingUp, Clock, LayoutList, Users } from 'lucide-react';
+import { Search, X, Loader2, TrendingUp, Clock, LayoutList, Users, ChevronDown, Check } from 'lucide-react';
 import type { PublicDeck, Subject } from '@/types/api';
 import ExploreFeedRow from './ExploreFeedRow';
 import ExploreCreatorRow, { type CreatorResult } from './ExploreCreatorRow';
@@ -48,6 +48,91 @@ interface CreatorsResponse {
 }
 
 const PAGE_SIZE = 20;
+
+// ── Subject picker — dropdown on mobile, pills on desktop ─────────────────────
+
+interface SubjectPickerProps {
+  value: Subject | 'all';
+  onChange: (v: Subject | 'all') => void;
+  mobileOnly?: boolean;
+  desktopOnly?: boolean;
+}
+
+function SubjectPicker({ value, onChange, mobileOnly, desktopOnly }: SubjectPickerProps) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const current = SUBJECTS.find((s) => s.value === value) ?? SUBJECTS[0]!;
+
+  useEffect(() => {
+    if (!open) return;
+    function handleOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener('mousedown', handleOutside);
+    return () => document.removeEventListener('mousedown', handleOutside);
+  }, [open]);
+
+  if (desktopOnly) {
+    return (
+      <div className="hidden sm:flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+        {SUBJECTS.map((s) => (
+          <button
+            key={s.value}
+            type="button"
+            onClick={() => onChange(s.value)}
+            className={`flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition flex-shrink-0 ${
+              value === s.value
+                ? 'bg-indigo-600 text-white shadow-sm'
+                : 'bg-white text-gray-600 border border-gray-200 hover:border-indigo-200 hover:text-indigo-600'
+            }`}
+          >
+            <span>{s.emoji}</span> {s.label}
+          </button>
+        ))}
+      </div>
+    );
+  }
+
+  // mobileOnly — dropdown button
+  return (
+    <div className={`relative ${mobileOnly ? 'sm:hidden' : ''}`} ref={ref}>
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition ${
+          value !== 'all'
+            ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
+            : 'bg-white text-gray-600 border-gray-200'
+        }`}
+      >
+        <span>{current.emoji}</span>
+        <span>{current.label}</span>
+        <ChevronDown size={12} className={`transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
+      </button>
+
+      {open && (
+        <div className="absolute start-0 top-full mt-1.5 z-50 w-64 rounded-2xl border border-gray-100 bg-white shadow-xl overflow-hidden">
+          <div className="grid grid-cols-2 gap-px bg-gray-100">
+            {SUBJECTS.map((s) => (
+              <button
+                key={s.value}
+                type="button"
+                onClick={() => { onChange(s.value); setOpen(false); }}
+                className={`flex items-center gap-2 px-3 py-2.5 text-xs font-semibold transition bg-white ${
+                  value === s.value ? 'text-indigo-600' : 'text-gray-700 hover:text-indigo-600 hover:bg-indigo-50'
+                }`}
+              >
+                <span className="text-base leading-none">{s.emoji}</span>
+                <span className="truncate">{s.label}</span>
+                {value === s.value && <Check size={11} className="ms-auto text-indigo-500 flex-shrink-0" />}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
 // ── Decks sub-grid ────────────────────────────────────────────────────────────
 
@@ -150,7 +235,8 @@ function DecksTab() {
           </div>
         </div>
 
-        <div className="flex items-center gap-1.5">
+        {/* Type filter + mobile subject button on same row */}
+        <div className="flex items-center gap-1.5 flex-wrap">
           {(['all', 'flashcard', 'quiz'] as DeckTypeFilter[]).map((dt) => (
             <button
               key={dt}
@@ -160,19 +246,11 @@ function DecksTab() {
               {dt === 'all' ? 'All Types' : dt === 'flashcard' ? '🃏 Flashcards' : '🧠 Quizzes'}
             </button>
           ))}
-        </div>
+          {/* Subject dropdown pill — mobile only, lives on same row as type filters */}
+          <SubjectPicker value={subject} onChange={setSubject} mobileOnly /></div>
 
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-          {SUBJECTS.map((s) => (
-            <button
-              key={s.value}
-              onClick={() => setSubject(s.value)}
-              className={`flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition flex-shrink-0 ${subject === s.value ? 'bg-indigo-600 text-white shadow-sm' : 'bg-white text-gray-600 border border-gray-200 hover:border-indigo-200 hover:text-indigo-600'}`}
-            >
-              <span>{s.emoji}</span> {s.label}
-            </button>
-          ))}
-        </div>
+        {/* Subject pills — desktop only */}
+        <SubjectPicker value={subject} onChange={setSubject} desktopOnly />
       </div>
 
       {!loading && (
