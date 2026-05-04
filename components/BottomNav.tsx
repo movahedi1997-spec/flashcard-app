@@ -28,19 +28,18 @@ function stripLocale(pathname: string): string {
   return pathname.replace(LOCALE_PREFIX, '') || '/';
 }
 
-export default function BottomNav({ username, activeOverride }: Props) {
+export default function BottomNav({ activeOverride }: Props) {
   const pathname = usePathname();
   const t = useTranslations('common.appNav');
-  const profileHref = username ? `/creators/${username}` : '/settings';
 
   const items: BottomNavItem[] = useMemo(
     () => [
       { key: 'decks',     href: '/flashcards', icon: BookOpen,  labelKey: 'myDecks',   match: '/flashcards' },
       { key: 'explore',   href: '/explore',    icon: Compass,   labelKey: 'explore',   match: '/explore'    },
       { key: 'dashboard', href: '/dashboard',  icon: BarChart2, labelKey: 'dashboard', match: '/dashboard'  },
-      { key: 'profile',   href: profileHref,   icon: User,      labelKey: 'profile',   match: '/creators'   },
+      { key: 'profile',   href: '/settings',   icon: User,      labelKey: 'profile',   match: '/settings'   },
     ],
-    [profileHref],
+    [],
   );
 
   const stripped = stripLocale(pathname ?? '/');

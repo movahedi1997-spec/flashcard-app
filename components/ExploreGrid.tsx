@@ -36,9 +36,10 @@ interface SubjectPickerProps {
   onChange: (v: Subject | 'all') => void;
   mobileOnly?: boolean;
   desktopOnly?: boolean;
+  label?: string;
 }
 
-function SubjectPicker({ value, onChange, mobileOnly, desktopOnly }: SubjectPickerProps) {
+function SubjectPicker({ value, onChange, mobileOnly, desktopOnly, label }: SubjectPickerProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const current = SUBJECTS.find((s) => s.value === value) ?? SUBJECTS[0]!;
@@ -54,21 +55,24 @@ function SubjectPicker({ value, onChange, mobileOnly, desktopOnly }: SubjectPick
 
   if (desktopOnly) {
     return (
-      <div className="hidden sm:flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-        {SUBJECTS.map((s) => (
-          <button
-            key={s.value}
-            type="button"
-            onClick={() => onChange(s.value)}
-            className={`flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition flex-shrink-0 ${
-              value === s.value
-                ? 'bg-indigo-600 text-white shadow-sm'
-                : 'bg-white text-gray-600 border border-gray-200 hover:border-indigo-200 hover:text-indigo-600'
-            }`}
-          >
-            <span>{s.emoji}</span> {s.label}
-          </button>
-        ))}
+      <div className="hidden sm:flex flex-col gap-2">
+        {label && <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">{label}</span>}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+          {SUBJECTS.map((s) => (
+            <button
+              key={s.value}
+              type="button"
+              onClick={() => onChange(s.value)}
+              className={`flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition flex-shrink-0 ${
+                value === s.value
+                  ? 'bg-indigo-600 text-white shadow-sm'
+                  : 'bg-white text-gray-600 border border-gray-200 hover:border-indigo-200 hover:text-indigo-600'
+              }`}
+            >
+              <span>{s.emoji}</span> {s.label}
+            </button>
+          ))}
+        </div>
       </div>
     );
   }
@@ -136,6 +140,7 @@ function DecksTab({ isAuthenticated, onAuthRequired }: DecksTabProps) {
   const [search, setSearch]     = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [showLiked, setShowLiked] = useState(false);
+  const [searchFocused, setSearchFocused] = useState(false);
 
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
@@ -200,34 +205,29 @@ function DecksTab({ isAuthenticated, onAuthRequired }: DecksTabProps) {
     return () => observer.disconnect();
   }, [hasMore, loadingMore, loading, page, fetchPage]);
 
+  const searchExpanded = searchFocused || !!search;
+
   return (
     <div className="space-y-4">
       <div className="flex flex-col gap-3">
+        {/* Row 1: Sort + search (search expands to full width when focused) */}
         <div className="flex items-center gap-2">
-          <div className="flex items-center bg-gray-100 rounded-xl p-1 gap-0.5">
-            <button
-              onClick={() => { setSort('trending'); setShowLiked(false); }}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${!showLiked && sort === 'trending' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
-            >
-              <TrendingUp size={13} /> Trending
-            </button>
-            <button
-              onClick={() => { setSort('recent'); setShowLiked(false); }}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${!showLiked && sort === 'recent' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
-            >
-              <Clock size={13} /> Recent
-            </button>
-            <button
-              onClick={() => {
-                if (!isAuthenticated) { onAuthRequired(); return; }
-                setShowLiked((v) => !v);
-              }}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${showLiked ? 'bg-white text-rose-500 shadow-sm' : 'text-gray-500 hover:text-rose-400'}`}
-            >
-              <Heart size={13} className={showLiked ? 'fill-rose-400 text-rose-400' : ''} /> Liked
-            </button>
-          </div>
-
+          {!searchExpanded && (
+            <div className="flex items-center bg-gray-100 rounded-xl p-1 gap-0.5 flex-shrink-0">
+              <button
+                onClick={() => setSort('trending')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${sort === 'trending' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+              >
+                <TrendingUp size={13} /> Trending
+              </button>
+              <button
+                onClick={() => setSort('recent')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${sort === 'recent' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+              >
+                <Clock size={13} /> Recent
+              </button>
+            </div>
+          )}
           <div className="relative flex-1">
             <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400 pointer-events-none" />
             <input
@@ -235,6 +235,8 @@ function DecksTab({ isAuthenticated, onAuthRequired }: DecksTabProps) {
               placeholder="Search decks…"
               value={search}
               onChange={(e) => handleSearchChange(e.target.value)}
+              onFocus={() => setSearchFocused(true)}
+              onBlur={() => setSearchFocused(false)}
               className="w-full rounded-xl border border-gray-200 bg-white py-2 ps-9 pe-8 text-sm text-gray-800 placeholder:text-gray-400 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-100"
             />
             {search && (
@@ -249,22 +251,36 @@ function DecksTab({ isAuthenticated, onAuthRequired }: DecksTabProps) {
           </div>
         </div>
 
-        {/* Type filter + mobile subject button on same row */}
+        {/* Row 2: Type + Liked filters + mobile subject picker */}
         <div className="flex items-center gap-1.5 flex-wrap">
-          {(['all', 'flashcard', 'quiz'] as DeckTypeFilter[]).map((dt) => (
+          <div className="flex items-center bg-gray-100 rounded-xl p-1 gap-0.5">
             <button
-              key={dt}
-              onClick={() => setDeckType(dt)}
-              className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition ${deckType === dt ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm' : 'bg-white text-gray-600 border-gray-200 hover:border-indigo-200 hover:text-indigo-600'}`}
+              onClick={() => setDeckType(deckType === 'flashcard' ? 'all' : 'flashcard')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${deckType === 'flashcard' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
             >
-              {dt === 'all' ? 'All Types' : dt === 'flashcard' ? '🃏 Flashcards' : '🧠 Quizzes'}
+              🃏 Flashcards
             </button>
-          ))}
-          {/* Subject dropdown pill — mobile only, lives on same row as type filters */}
-          <SubjectPicker value={subject} onChange={setSubject} mobileOnly /></div>
+            <button
+              onClick={() => setDeckType(deckType === 'quiz' ? 'all' : 'quiz')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${deckType === 'quiz' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+            >
+              🧠 Quizzes
+            </button>
+            <button
+              onClick={() => {
+                if (!isAuthenticated) { onAuthRequired(); return; }
+                setShowLiked((v) => !v);
+              }}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${showLiked ? 'bg-white text-rose-500 shadow-sm' : 'text-gray-500 hover:text-rose-400'}`}
+            >
+              <Heart size={13} className={showLiked ? 'fill-rose-400 text-rose-400' : ''} /> Liked
+            </button>
+          </div>
+          <SubjectPicker value={subject} onChange={setSubject} mobileOnly />
+        </div>
 
-        {/* Subject pills — desktop only */}
-        <SubjectPicker value={subject} onChange={setSubject} desktopOnly />
+        {/* Row 3: Subject pills — desktop only */}
+        <SubjectPicker value={subject} onChange={setSubject} desktopOnly label="Filter by subject" />
       </div>
 
       {!loading && (

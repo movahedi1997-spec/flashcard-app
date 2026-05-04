@@ -11,9 +11,9 @@
  *    and delegates creation to the parent via onImport(deckTitle, rawCards)
  */
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { Plus, BookOpen, Upload, Loader2, AlertCircle } from 'lucide-react';
+import { Plus, BookOpen, Upload, Loader2, AlertCircle, ChevronDown } from 'lucide-react';
 import type { Deck, Subject } from '@/types/api';
 import type { DeckUpdate } from '@/hooks/useBoxes';
 import BoxCard from './BoxCard';
@@ -84,7 +84,20 @@ export default function BoxList({
   const [editDeck, setEditDeck] = useState<Deck | null>(null);
   const [importing, setImporting] = useState(false);
   const [ankiOpen, setAnkiOpen] = useState(false);
+  const [importMenuOpen, setImportMenuOpen] = useState(false);
   const importRef = useRef<HTMLInputElement>(null);
+  const importMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!importMenuOpen) return;
+    function handleOutside(e: MouseEvent) {
+      if (importMenuRef.current && !importMenuRef.current.contains(e.target as Node)) {
+        setImportMenuOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleOutside);
+    return () => document.removeEventListener('mousedown', handleOutside);
+  }, [importMenuOpen]);
 
   // ── JSON import ──────────────────────────────────────────────────────────────
 
@@ -146,23 +159,34 @@ export default function BoxList({
             className="hidden"
             onChange={handleImport}
           />
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => importRef.current?.click()}
-            disabled={importing}
-          >
-            {importing ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
-            <span className="hidden sm:inline">Import</span>
-          </Button>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => setAnkiOpen(true)}
-          >
-            <Upload size={14} />
-            <span className="hidden sm:inline">Anki</span>
-          </Button>
+          <div className="relative" ref={importMenuRef}>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => setImportMenuOpen((o) => !o)}
+              disabled={importing}
+            >
+              {importing ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
+              <span className="hidden sm:inline">Import</span>
+              <ChevronDown size={11} className={`transition-transform duration-150 ${importMenuOpen ? 'rotate-180' : ''}`} />
+            </Button>
+            {importMenuOpen && (
+              <div className="absolute end-0 top-full mt-1 z-50 w-36 rounded-xl border border-gray-100 bg-white shadow-xl overflow-hidden">
+                <button
+                  className="flex w-full items-center gap-2 px-3 py-2.5 text-xs font-medium text-gray-700 hover:bg-gray-50 transition"
+                  onClick={() => { setImportMenuOpen(false); importRef.current?.click(); }}
+                >
+                  <Upload size={12} /> JSON file
+                </button>
+                <button
+                  className="flex w-full items-center gap-2 px-3 py-2.5 text-xs font-medium text-gray-700 hover:bg-gray-50 transition border-t border-gray-50"
+                  onClick={() => { setImportMenuOpen(false); setAnkiOpen(true); }}
+                >
+                  <Upload size={12} /> Anki deck
+                </button>
+              </div>
+            )}
+          </div>
           <Button size="sm" onClick={() => setCreateOpen(true)}>
             <Plus size={14} />
             <span className="hidden sm:inline">New Deck</span>

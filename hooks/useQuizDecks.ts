@@ -65,7 +65,7 @@ export function useQuizDecks() {
       if ('title' in updates) body.title = updates.title;
       if ('description' in updates) body.description = updates.description;
       if ('subject' in updates) body.subject = updates.subject;
-      if ('isPublic' in updates) body.is_public = updates.isPublic;
+      if ('isPublic' in updates) body.isPublic = updates.isPublic;
       if ('color' in updates) body.color = updates.color;
       if ('emoji' in updates) body.emoji = updates.emoji;
       const res = await fetchWithRefresh(`/api/quiz/decks/${id}`, {

@@ -63,20 +63,33 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    // Build shared filter conditions (used in both halves of UNION)
+    // Build shared filter conditions.
+    // COUNT queries have no JOIN to users, so unqualified column names are fine.
+    // UNION halves JOIN to users (which also has subject/title/description),
+    // so those need table-qualified names to avoid PostgreSQL ambiguity errors.
     const sharedConds: string[] = [];
+    const sharedCondsD: string[] = [];   // for flashcard half (alias d)
+    const sharedCondsQD: string[] = [];  // for quiz half (alias qd)
     const sharedVals: unknown[] = [];
 
     if (subject) {
       sharedVals.push(subject);
-      sharedConds.push(`subject = $${sharedVals.length}`);
+      const p = sharedVals.length;
+      sharedConds.push(`subject = $${p}`);
+      sharedCondsD.push(`d.subject = $${p}`);
+      sharedCondsQD.push(`qd.subject = $${p}`);
     }
     if (search) {
       sharedVals.push(`%${search.toLowerCase()}%`);
-      sharedConds.push(`(LOWER(title) LIKE $${sharedVals.length} OR LOWER(description) LIKE $${sharedVals.length})`);
+      const p = sharedVals.length;
+      sharedConds.push(`(LOWER(title) LIKE $${p} OR LOWER(description) LIKE $${p})`);
+      sharedCondsD.push(`(LOWER(d.title) LIKE $${p} OR LOWER(d.description) LIKE $${p})`);
+      sharedCondsQD.push(`(LOWER(qd.title) LIKE $${p} OR LOWER(qd.description) LIKE $${p})`);
     }
 
-    const extraWhere = sharedConds.length > 0 ? ' AND ' + sharedConds.join(' AND ') : '';
+    const extraWhere   = sharedConds.length   > 0 ? ' AND ' + sharedConds.join(' AND ')   : '';
+    const extraWhereD  = sharedCondsD.length  > 0 ? ' AND ' + sharedCondsD.join(' AND ')  : '';
+    const extraWhereQD = sharedCondsQD.length > 0 ? ' AND ' + sharedCondsQD.join(' AND ') : '';
     const nShared = sharedVals.length;
 
     // Handle liked filter — pre-fetch the user's liked deck IDs
@@ -151,7 +164,7 @@ export async function GET(req: NextRequest) {
         FROM decks d
         JOIN users u ON u.id=d.user_id
         LEFT JOIN cards c ON c.deck_id=d.id
-        WHERE d.is_public=true${extraWhere}${likedFlashcardWhere}
+        WHERE d.is_public=true${extraWhereD}${likedFlashcardWhere}
         GROUP BY d.id,u.name,u.username,u.avatar_url,u.is_verified_creator`;
     } else if (deckType === 'quiz') {
       unionSql = `
@@ -164,7 +177,7 @@ export async function GET(req: NextRequest) {
         FROM quiz_decks qd
         JOIN users u ON u.id=qd.user_id
         LEFT JOIN quiz_questions qq ON qq.quiz_deck_id=qd.id
-        WHERE qd.is_public=true${extraWhere}${likedQuizWhere}
+        WHERE qd.is_public=true${extraWhereQD}${likedQuizWhere}
         GROUP BY qd.id,u.name,u.username,u.avatar_url,u.is_verified_creator`;
     } else {
       unionSql = `
@@ -176,7 +189,7 @@ export async function GET(req: NextRequest) {
                COALESCE(d.copy_count::text,'0') AS copy_count,
                d.created_at, d.updated_at, 'flashcard'::text AS deck_type
         FROM decks d JOIN users u ON u.id=d.user_id LEFT JOIN cards c ON c.deck_id=d.id
-        WHERE d.is_public=true${extraWhere}${likedFlashcardWhere}
+        WHERE d.is_public=true${extraWhereD}${likedFlashcardWhere}
         GROUP BY d.id,u.name,u.username,u.avatar_url,u.is_verified_creator
         UNION ALL
         SELECT qd.id, qd.user_id, u.name, u.username,
@@ -186,7 +199,7 @@ export async function GET(req: NextRequest) {
                COUNT(qq.id)::text, '0',
                qd.created_at, qd.updated_at, 'quiz'::text
         FROM quiz_decks qd JOIN users u ON u.id=qd.user_id LEFT JOIN quiz_questions qq ON qq.quiz_deck_id=qd.id
-        WHERE qd.is_public=true${extraWhere}${likedQuizWhere}
+        WHERE qd.is_public=true${extraWhereQD}${likedQuizWhere}
         GROUP BY qd.id,u.name,u.username,u.avatar_url,u.is_verified_creator`;
     }
 
