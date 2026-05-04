@@ -188,7 +188,7 @@ export default function FlashcardsPage() {
     return null;
   }
 
-  if (showSplash) return <SplashPage onStart={() => setShowSplash(false)} />;
+  if (showSplash) return <SplashPage onStart={() => setShowSplash(false)} isFirstVisit={!decksLoading && decks.length === 0} />;
 
   const activeDeck = getCurrentDeck();
   const backAction = getBackAction();
