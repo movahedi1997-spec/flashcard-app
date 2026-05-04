@@ -61,7 +61,7 @@ const pwaConfig = {
       // ── Study session API — NetworkFirst so data is always fresh ──────────
       // Falls back to cache when offline so user can review cached decks.
       {
-        urlPattern: /^\/api\/(decks|cards|study).*/i,
+        urlPattern: ({ url }) => /^\/api\/(decks|cards|study)/i.test(url.pathname),
         handler: 'NetworkFirst',
         options: {
           cacheName: 'study-api-cache',
@@ -76,13 +76,13 @@ const pwaConfig = {
       },
       // Auth endpoints — NetworkOnly (never cache credentials)
       {
-        urlPattern: /^\/api\/auth\/.*/i,
+        urlPattern: ({ url }) => /^\/api\/auth\//i.test(url.pathname),
         handler: 'NetworkOnly',
       },
       // ── Study & dashboard pages — StaleWhileRevalidate ───────────────────
       // Renders from cache instantly, revalidates in background.
       {
-        urlPattern: /^\/((?:de|fr|es|fa)\/)?(?:dashboard|flashcards)/i,
+        urlPattern: ({ url }) => /^\/((?:de|fr|es|fa)\/)?(?:dashboard|flashcards)(?:\/|$)/i.test(url.pathname),
         handler: 'StaleWhileRevalidate',
         options: {
           cacheName: 'study-pages',
