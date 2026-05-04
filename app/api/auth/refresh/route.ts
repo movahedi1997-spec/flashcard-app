@@ -87,8 +87,12 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // ── Read + verify refresh token JWT ───────────────────────────────────────
-  const rawToken = req.cookies.get(REFRESH_COOKIE_NAME)?.value;
+  // ── Read refresh token: cookie (web) or request body (mobile/Flutter) ────
+  let rawToken = req.cookies.get(REFRESH_COOKIE_NAME)?.value;
+  if (!rawToken) {
+    const body = await req.json().catch(() => null) as Record<string, unknown> | null;
+    rawToken = typeof body?.refreshToken === 'string' ? body.refreshToken : undefined;
+  }
   if (!rawToken) return invalidResponse();
 
   const refreshPayload = await verifyRefreshToken(rawToken);
@@ -173,9 +177,11 @@ export async function POST(req: NextRequest) {
       client.release();
     }
 
-    // ── Issue new cookies ──────────────────────────────────────────────────
+    // ── Issue new cookies + return tokens in body for mobile clients ─────────
     const response = NextResponse.json({
       user: { userId: user.id, email: user.email, name: user.name },
+      accessToken,
+      refreshToken: newRefresh.token,
     });
 
     response.cookies.set(COOKIE_NAME, accessToken, COOKIE_OPTIONS);

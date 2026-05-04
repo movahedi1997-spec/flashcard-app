@@ -167,9 +167,18 @@ export async function verifyRefreshToken(token: string): Promise<RefreshPayload 
  *   if (!user) return NextResponse.json({ error: 'Not authenticated.' }, { status: 401 });
  */
 export async function getAuthUser(req: NextRequest): Promise<JwtPayload | null> {
-  const token = req.cookies.get(COOKIE_NAME)?.value;
-  if (!token) return null;
-  return verifyAccessToken(token);
+  // Cookie-based auth (web) — preferred path
+  const cookieToken = req.cookies.get(COOKIE_NAME)?.value;
+  if (cookieToken) return verifyAccessToken(cookieToken);
+
+  // Bearer token auth (mobile/Flutter) — fallback
+  const authHeader = req.headers.get('authorization') ?? '';
+  if (authHeader.startsWith('Bearer ')) {
+    const bearerToken = authHeader.slice(7).trim();
+    if (bearerToken) return verifyAccessToken(bearerToken);
+  }
+
+  return null;
 }
 
 /**

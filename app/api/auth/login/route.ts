@@ -123,8 +123,12 @@ export async function issueSession(user: { id: string; name: string; email: stri
     [refresh.jti, user.id, refresh.expiresAt],
   );
 
+  // Return tokens in the body so mobile clients (Flutter) can read them.
+  // Web clients ignore these fields and rely on the httpOnly cookies set below.
   const response = NextResponse.json({
     user: { id: user.id, name: user.name, email: user.email },
+    accessToken,
+    refreshToken: refresh.token,
   });
   response.cookies.set(COOKIE_NAME, accessToken, COOKIE_OPTIONS);
   response.cookies.set(REFRESH_COOKIE_NAME, refresh.token, REFRESH_COOKIE_OPTIONS);
