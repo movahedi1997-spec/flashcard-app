@@ -17,6 +17,13 @@
     "settings": "Paramètres",
     "profile": "Profil"
   },
+  "pwa": {
+    "installApp": "Installer l'application",
+    "install": "Installer",
+    "installOnIPhone": "Installer sur iPhone",
+    "iosInstallHint": "Dans Safari, appuie sur \"Partager\" puis choisis \"Ajouter à l'écran d'accueil\".",
+    "gotIt": "Compris"
+  },
   "footer": {
     "tagline": "Apprentissage intelligent avec la répétition espacée — gratuit, conforme au RGPD et disponible hors ligne.",
     "madeIn": "🇩🇪 Fabriqué en Allemagne",

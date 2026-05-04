@@ -10,6 +10,16 @@
   "copyCount": "{count, plural, one {# کپی} other {# کپی}}",
   "emptyTitle": "هنوز دسته‌ای نداری",
   "emptySubtitle": "اولین دسته‌ات را بساز تا شروع کنی",
+  "deckNameLabel": "نام دسته",
+  "deckNamePlaceholder": "مثلاً واژگان اسپانیایی",
+  "deckNameRequired": "نام دسته نمی‌تواند خالی باشد.",
+  "descriptionOptional": "(اختیاری)",
+  "colourLabel": "رنگ",
+  "iconLabel": "آیکون",
+  "emojiPlaceholder": "یا ایموجی تایپ کنید",
+  "cancel": "انصراف",
+  "proOnly": "فقط Pro",
+  "upgradeForColors": "برای رنگ‌های بیشتر به Pro ارتقا دهید",
   "createDeck": {
     "title": "ایجاد دسته جدید",
     "titleLabel": "عنوان",
@@ -39,10 +49,21 @@
   "card": {
     "front": "روی کارت",
     "back": "پشت کارت",
+    "answer": "جواب",
+    "noText": "بدون متن",
     "addCard": "افزودن کارت",
     "editCard": "ویرایش کارت",
     "deleteCard": "حذف کارت",
+    "deleteConfirm": "مطمئنی که می‌خوای این کارت را حذف کنی؟ این عمل قابل بازگشت نیست.",
     "aiImprove": "بهبود با هوش مصنوعی",
-    "aiGenerated": "تولیدشده با هوش مصنوعی"
+    "aiGenerated": "تولیدشده با هوش مصنوعی",
+    "emptyTitle": "هنوز کارتی نداری",
+    "emptySubtitle": "اولین کارت فلش کارتت را به این دسته اضافه کن.",
+    "srsNew": "جدید",
+    "srsDue": "سررسید",
+    "nextReview": "مرور بعدی",
+    "improveWithAI": "بهبود با هوش مصنوعی",
+    "expandCard": "باز کردن کارت",
+    "collapseCard": "بستن کارت"
   }
 }

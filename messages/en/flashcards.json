@@ -10,6 +10,16 @@
   "copyCount": "{count} {count, plural, one {copy} other {copies}}",
   "emptyTitle": "No decks yet",
   "emptySubtitle": "Create your first deck to get started",
+  "deckNameLabel": "Deck name",
+  "deckNamePlaceholder": "e.g. Spanish Vocabulary",
+  "deckNameRequired": "Deck name cannot be empty.",
+  "descriptionOptional": "(optional)",
+  "colourLabel": "Colour",
+  "iconLabel": "Icon",
+  "emojiPlaceholder": "or type any emoji",
+  "cancel": "Cancel",
+  "proOnly": "Pro only",
+  "upgradeForColors": "Upgrade to Pro for more colours",
   "createDeck": {
     "title": "Create New Deck",
     "titleLabel": "Title",
@@ -39,10 +49,21 @@
   "card": {
     "front": "Front",
     "back": "Back",
+    "answer": "Answer",
+    "noText": "No text",
     "addCard": "Add Card",
     "editCard": "Edit Card",
     "deleteCard": "Delete Card",
+    "deleteConfirm": "Are you sure you want to delete this card? This cannot be undone.",
     "aiImprove": "AI Improve",
-    "aiGenerated": "AI generated"
+    "aiGenerated": "AI generated",
+    "emptyTitle": "No cards yet",
+    "emptySubtitle": "Add your first flashcard to this deck.",
+    "srsNew": "New",
+    "srsDue": "Due",
+    "nextReview": "Next review",
+    "improveWithAI": "Improve with AI",
+    "expandCard": "Expand card",
+    "collapseCard": "Collapse card"
   }
 }

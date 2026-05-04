@@ -9,6 +9,7 @@
  */
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Pencil, Trash2, ChevronDown, ChevronUp, ImageIcon, Brain, Sparkles } from 'lucide-react';
 import type { ApiCard } from '@/types/api';
 import ConfirmDialog from '@/components/ui/ConfirmDialog';
@@ -23,6 +24,7 @@ interface Props {
 }
 
 export default function CardItem({ card, onEdit, onDelete, onImprove }: Props) {
+  const t = useTranslations('flashcards');
   const [expanded, setExpanded] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [improveOpen, setImproveOpen] = useState(false);
@@ -32,8 +34,8 @@ export default function CardItem({ card, onEdit, onDelete, onImprove }: Props) {
     if (!card.srs) return null;
     const due = new Date(card.srs.dueDate);
     const now = new Date();
-    if (card.srs.reviewCount === 0) return { text: 'New', cls: 'bg-blue-50 text-blue-500 border-blue-100' };
-    if (due <= now) return { text: 'Due', cls: 'bg-amber-50 text-amber-600 border-amber-100' };
+    if (card.srs.reviewCount === 0) return { text: t('card.srsNew'), cls: 'bg-blue-50 text-blue-500 border-blue-100' };
+    if (due <= now) return { text: t('card.srsDue'), cls: 'bg-amber-50 text-amber-600 border-amber-100' };
     const diffDays = Math.ceil((due.getTime() - now.getTime()) / 86_400_000);
     const label = diffDays < 7 ? `${diffDays}d` : diffDays < 30 ? `${Math.round(diffDays / 7)}w` : `${Math.round(diffDays / 30)}mo`;
     return { text: label, cls: 'bg-emerald-50 text-emerald-600 border-emerald-100' };
@@ -57,7 +59,7 @@ export default function CardItem({ card, onEdit, onDelete, onImprove }: Props) {
               )}
               {card.front
                 ? <MathContent text={card.front} className="text-sm font-medium text-slate-800 line-clamp-2" />
-                : <span className="italic text-slate-400 text-sm">No text</span>
+                : <span className="italic text-slate-400 text-sm">{t('card.noText')}</span>
               }
             </div>
 
@@ -72,7 +74,7 @@ export default function CardItem({ card, onEdit, onDelete, onImprove }: Props) {
                 )}
                 <div className="pt-2 border-t border-slate-100">
                   <p className="text-xs text-slate-500 mb-1 font-medium uppercase tracking-wide flex items-center gap-1">
-                    Answer
+                    {t('card.answer')}
                     {card.backImageUrl && (
                       <span className="inline-flex items-center gap-1 text-indigo-500 bg-indigo-50 px-1.5 py-0.5 rounded-md border border-indigo-100 normal-case">
                         <ImageIcon size={10} /> img
@@ -81,7 +83,7 @@ export default function CardItem({ card, onEdit, onDelete, onImprove }: Props) {
                   </p>
                   {card.back
                     ? <MathContent text={card.back} block className="text-sm text-slate-700" />
-                    : <span className="italic text-slate-400 text-sm">No text</span>
+                    : <span className="italic text-slate-400 text-sm">{t('card.noText')}</span>
                   }
                   {card.backImageUrl && (
                     <img
@@ -99,36 +101,36 @@ export default function CardItem({ card, onEdit, onDelete, onImprove }: Props) {
             {srsLabel && (
               <span
                 className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${srsLabel.cls}`}
-                title="Next review"
+                title={t('card.nextReview')}
               >
                 {srsLabel.text}
               </span>
             )}
             <button
               onClick={() => setExpanded((p) => !p)}
-              aria-label={expanded ? 'Collapse card' : 'Expand card'}
+              aria-label={expanded ? t('card.collapseCard') : t('card.expandCard')}
               className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
             >
               {expanded ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
             </button>
             <button
               onClick={() => setImproveOpen(true)}
-              aria-label="Improve card with AI"
-              title="Improve with AI"
+              aria-label={t('card.improveWithAI')}
+              title={t('card.improveWithAI')}
               className="p-1.5 rounded-lg text-slate-400 hover:text-violet-600 hover:bg-violet-50 transition-colors cursor-pointer"
             >
               <Sparkles size={15} />
             </button>
             <button
               onClick={onEdit}
-              aria-label="Edit card"
+              aria-label={t('card.editCard')}
               className="p-1.5 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors cursor-pointer"
             >
               <Pencil size={15} />
             </button>
             <button
               onClick={() => setConfirmOpen(true)}
-              aria-label="Delete card"
+              aria-label={t('card.deleteCard')}
               className="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
             >
               <Trash2 size={15} />
@@ -141,8 +143,8 @@ export default function CardItem({ card, onEdit, onDelete, onImprove }: Props) {
         open={confirmOpen}
         onClose={() => setConfirmOpen(false)}
         onConfirm={onDelete}
-        title="Delete Card"
-        message="Are you sure you want to delete this card? This cannot be undone."
+        title={t('card.deleteCard')}
+        message={t('card.deleteConfirm')}
       />
 
       <AIImproveModal

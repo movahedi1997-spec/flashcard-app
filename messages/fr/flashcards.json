@@ -10,6 +10,16 @@
   "copyCount": "{count} {count, plural, one {copie} other {copies}}",
   "emptyTitle": "Aucun deck pour l'instant",
   "emptySubtitle": "Crée ton premier deck pour commencer",
+  "deckNameLabel": "Nom du deck",
+  "deckNamePlaceholder": "ex. Vocabulaire espagnol",
+  "deckNameRequired": "Le nom du deck ne peut pas être vide.",
+  "descriptionOptional": "(optionnel)",
+  "colourLabel": "Couleur",
+  "iconLabel": "Icône",
+  "emojiPlaceholder": "ou tapez un emoji",
+  "cancel": "Annuler",
+  "proOnly": "Pro uniquement",
+  "upgradeForColors": "Passez à Pro pour plus de couleurs",
   "createDeck": {
     "title": "Créer un nouveau deck",
     "titleLabel": "Titre",
@@ -39,10 +49,21 @@
   "card": {
     "front": "Recto",
     "back": "Verso",
+    "answer": "Réponse",
+    "noText": "Pas de texte",
     "addCard": "Ajouter une fiche",
     "editCard": "Modifier la fiche",
     "deleteCard": "Supprimer la fiche",
+    "deleteConfirm": "Es-tu sûr de vouloir supprimer cette fiche ? Cette action est irréversible.",
     "aiImprove": "Améliorer avec l'IA",
-    "aiGenerated": "Généré par l'IA"
+    "aiGenerated": "Généré par l'IA",
+    "emptyTitle": "Aucune fiche pour l'instant",
+    "emptySubtitle": "Ajoutez votre première fiche à ce deck.",
+    "srsNew": "Nouveau",
+    "srsDue": "À faire",
+    "nextReview": "Prochaine révision",
+    "improveWithAI": "Améliorer avec l'IA",
+    "expandCard": "Développer la fiche",
+    "collapseCard": "Réduire la fiche"
   }
 }

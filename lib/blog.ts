@@ -16,7 +16,7 @@ export const BLOG_POSTS: BlogPost[] = [
     excerpt: 'Anki ist mächtig aber komplex. Quizlet sammelt deine Daten und schaltet Werbung. FlashcardAI ist das Beste aus beiden Welten — kostenlos, datenschutzkonform, und direkt im Browser.',
     date: '2025-04-10',
     readTime: 5,
-    category: 'Produkt',
+    category: 'product',
     coverEmoji: '⚡',
     content: `
 <h2>Anki, Quizlet — und dann noch eine App?</h2>
@@ -45,7 +45,7 @@ export const BLOG_POSTS: BlogPost[] = [
     excerpt: 'Der Vergessenskurve-Effekt wurde 1885 entdeckt. Heute steckt die Forschung dahinter in deiner Karteikarten-App. Wie funktioniert das eigentlich?',
     date: '2025-04-05',
     readTime: 7,
-    category: 'Wissenschaft',
+    category: 'science',
     coverEmoji: '🧠',
     content: `
 <h2>Hermann Ebbinghaus und die Vergessenskurve</h2>
@@ -76,7 +76,7 @@ export const BLOG_POSTS: BlogPost[] = [
     excerpt: 'FlashcardAI wird in Deutschland entwickelt und betrieben. Was das für deine Daten bedeutet, warum wir keine Werbung schalten und wie wir DSGVO-Konformität konkret umsetzen.',
     date: '2025-03-28',
     readTime: 4,
-    category: 'Datenschutz',
+    category: 'privacy',
     coverEmoji: '🔒',
     content: `
 <h2>Warum Datenschutz bei einer Lern-App wichtig ist</h2>
@@ -105,7 +105,7 @@ export const BLOG_POSTS: BlogPost[] = [
     excerpt: 'Die richtigen Karteikarten zu erstellen ist eine Fähigkeit für sich. Diese Strategien helfen dir, ein System aufzubauen, das dich durch Step 1, Step 2 CK und NAPLEX trägt.',
     date: '2025-03-20',
     readTime: 6,
-    category: 'Lerntipps',
+    category: 'studyTips',
     coverEmoji: '🩺',
     content: `
 <h2>Das Problem mit schlechten Karteikarten</h2>
@@ -143,7 +143,7 @@ export const BLOG_POSTS: BlogPost[] = [
     excerpt: 'FlashcardAI ist eine Progressive Web App. Das bedeutet: installieren ohne App Store, offline nutzen, und eine native App-Erfahrung — auf iOS, Android und Desktop.',
     date: '2025-03-15',
     readTime: 3,
-    category: 'Anleitung',
+    category: 'tutorial',
     coverEmoji: '📱',
     content: `
 <h2>Was ist eine Progressive Web App (PWA)?</h2>

@@ -17,6 +17,13 @@
     "settings": "Settings",
     "profile": "Profile"
   },
+  "pwa": {
+    "installApp": "Install app",
+    "install": "Install",
+    "installOnIPhone": "Install on iPhone",
+    "iosInstallHint": "Tap the Share button in Safari, then choose \"Add to Home Screen\".",
+    "gotIt": "Got it"
+  },
   "footer": {
     "tagline": "Intelligent learning with Spaced Repetition — free, privacy-compliant, and offline-capable.",
     "madeIn": "🇩🇪 Made in Germany",

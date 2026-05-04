@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { Download } from 'lucide-react';
 
 interface BeforeInstallPromptEvent extends Event {
@@ -9,6 +10,7 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 export default function InstallPWAButton() {
+  const t = useTranslations('common');
   const [prompt, setPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isIOS, setIsIOS] = useState(false);
   const [showIOSHint, setShowIOSHint] = useState(false);
@@ -56,22 +58,22 @@ export default function InstallPWAButton() {
       <button
         onClick={handleClick}
         className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-100 hover:text-indigo-600"
-        title="Install app"
+        title={t('pwa.installApp')}
       >
         <Download className="h-4 w-4" />
-        <span className="hidden sm:inline">Install</span>
+        <span className="hidden sm:inline">{t('pwa.install')}</span>
       </button>
 
       {/* iOS tip popover */}
       {showIOSHint && (
         <div className="absolute end-0 top-full mt-2 w-64 rounded-2xl border border-gray-100 bg-white p-4 shadow-xl z-50 text-sm text-gray-600">
-          <p className="font-semibold text-gray-900 mb-1">Install on iPhone</p>
-          <p>Tap the <span className="font-semibold">Share</span> button in Safari, then choose <span className="font-semibold">"Add to Home Screen"</span>.</p>
+          <p className="font-semibold text-gray-900 mb-1">{t('pwa.installOnIPhone')}</p>
+          <p>{t('pwa.iosInstallHint')}</p>
           <button
             onClick={() => setShowIOSHint(false)}
             className="mt-3 text-xs text-gray-400 hover:text-gray-600"
           >
-            Got it ✕
+            {t('pwa.gotIt')} ✕
           </button>
         </div>
       )}

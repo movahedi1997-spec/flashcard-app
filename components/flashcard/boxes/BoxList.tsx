@@ -12,6 +12,7 @@
  */
 
 import { useState, useRef } from 'react';
+import { useTranslations } from 'next-intl';
 import { Plus, BookOpen, Upload, Loader2, AlertCircle } from 'lucide-react';
 import type { Deck } from '@/types/api';
 import type { DeckUpdate } from '@/hooks/useBoxes';
@@ -75,6 +76,7 @@ export default function BoxList({
   onStudyBox,
   onImport,
 }: Props) {
+  const t = useTranslations('flashcards');
   const [createOpen, setCreateOpen] = useState(false);
   const [editDeck, setEditDeck] = useState<Deck | null>(null);
   const [importing, setImporting] = useState(false);
@@ -169,11 +171,11 @@ export default function BoxList({
       {decks.length === 0 ? (
         <EmptyState
           icon={<BookOpen size={36} />}
-          title="No decks yet"
-          description="Create your first deck to start organizing your flashcards."
+          title={t('emptyTitle')}
+          description={t('emptySubtitle')}
           action={
             <Button onClick={() => setCreateOpen(true)}>
-              <Plus size={14} /> Create Deck
+              <Plus size={14} /> {t('createDeck.submit')}
             </Button>
           }
         />

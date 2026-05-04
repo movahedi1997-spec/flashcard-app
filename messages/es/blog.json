@@ -14,5 +14,12 @@
   "ctaHeading": "¿Listo para aprender de forma más inteligente?",
   "ctaSubheading": "Empieza gratis — no necesitas cuenta para explorar.",
   "ctaButton": "Regístrate gratis ahora",
-  "moreArticles": "Más artículos"
+  "moreArticles": "Más artículos",
+  "category": {
+    "product": "Producto",
+    "science": "Ciencia",
+    "privacy": "Privacidad",
+    "studyTips": "Consejos de estudio",
+    "tutorial": "Tutorial"
+  }
 }

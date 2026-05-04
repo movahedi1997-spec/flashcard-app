@@ -14,5 +14,12 @@
   "ctaHeading": "Ready to learn smarter?",
   "ctaSubheading": "Start for free — no account needed to browse.",
   "ctaButton": "Sign up for free now",
-  "moreArticles": "More articles"
+  "moreArticles": "More articles",
+  "category": {
+    "product": "Product",
+    "science": "Science",
+    "privacy": "Privacy",
+    "studyTips": "Study Tips",
+    "tutorial": "Tutorial"
+  }
 }

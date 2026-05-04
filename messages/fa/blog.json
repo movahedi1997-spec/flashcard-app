@@ -14,5 +14,12 @@
   "ctaHeading": "آماده‌ای هوشمندتر یاد بگیری؟",
   "ctaSubheading": "رایگان شروع کن — برای مرور نیازی به حساب نیست.",
   "ctaButton": "همین حالا رایگان ثبت‌نام کن",
-  "moreArticles": "مقالات بیشتر"
+  "moreArticles": "مقالات بیشتر",
+  "category": {
+    "product": "محصول",
+    "science": "علم",
+    "privacy": "حریم خصوصی",
+    "studyTips": "نکات یادگیری",
+    "tutorial": "آموزش"
+  }
 }

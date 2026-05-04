@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import Modal from '@/components/ui/Modal';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
@@ -52,6 +53,7 @@ interface Props {
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function BoxForm({ open, onClose, onSubmit, initial, mode, isPro = false }: Props) {
+  const t = useTranslations('flashcards');
   const [name, setName]               = useState(initial?.name        ?? '');
   const [description, setDescription] = useState(initial?.description ?? '');
   const [color, setColor]             = useState(initial?.color       ?? 'indigo');
@@ -72,7 +74,7 @@ export default function BoxForm({ open, onClose, onSubmit, initial, mode, isPro 
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!name.trim()) { setNameError('Deck name cannot be empty.'); return; }
+    if (!name.trim()) { setNameError(t('deckNameRequired')); return; }
     onSubmit({ name: name.trim(), description: description.trim(), color, emoji });
     onClose();
   }
@@ -86,14 +88,14 @@ export default function BoxForm({ open, onClose, onSubmit, initial, mode, isPro 
     <Modal
       open={open}
       onClose={handleClose}
-      title={mode === 'create' ? 'New Deck' : 'Edit Deck'}
+      title={t(mode === 'create' ? 'createDeck.title' : 'editDeck.title')}
       maxWidth="max-w-lg"
     >
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         {/* Name */}
         <Input
-          label="Deck name"
-          placeholder="e.g. Spanish Vocabulary"
+          label={t('deckNameLabel')}
+          placeholder={t('deckNamePlaceholder')}
           value={name}
           onChange={(e) => { setName(e.target.value); setNameError(''); }}
           error={nameError}
@@ -103,12 +105,12 @@ export default function BoxForm({ open, onClose, onSubmit, initial, mode, isPro 
         {/* Description */}
         <div className="flex flex-col gap-1.5">
           <label className="text-sm font-medium text-slate-700">
-            Description <span className="text-slate-400 font-normal">(optional)</span>
+            {t('createDeck.descriptionLabel')} <span className="text-slate-400 font-normal">{t('descriptionOptional')}</span>
           </label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="What is this deck about?"
+            placeholder={t('createDeck.descriptionPlaceholder')}
             rows={2}
             maxLength={300}
             className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-none"
@@ -117,7 +119,7 @@ export default function BoxForm({ open, onClose, onSubmit, initial, mode, isPro 
 
         {/* Colour picker */}
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-slate-700">Colour</label>
+          <label className="text-sm font-medium text-slate-700">{t('colourLabel')}</label>
           <div className="flex flex-wrap gap-2.5">
             {FREE_COLORS.map((c) => (
               <button
@@ -150,7 +152,7 @@ export default function BoxForm({ open, onClose, onSubmit, initial, mode, isPro 
                 <Link
                   key={c.key}
                   href="/pricing"
-                  title={`${c.label} — Pro only`}
+                  title={`${c.label} — ${t('proOnly')}`}
                   className={`relative h-8 w-8 rounded-full ${c.swatch} opacity-40 flex items-center justify-center`}
                 >
                   <Lock size={11} className="text-white drop-shadow" />
@@ -160,14 +162,14 @@ export default function BoxForm({ open, onClose, onSubmit, initial, mode, isPro 
           </div>
           {!isPro && (
             <p className="text-xs text-indigo-500">
-              <Link href="/pricing" className="hover:underline font-medium">Upgrade to Pro</Link> for Violet, Fuchsia, Teal, Gold, and Charcoal
+              <Link href="/pricing" className="hover:underline font-medium">Upgrade to Pro</Link>{' '}{t('upgradeForColors')}
             </p>
           )}
         </div>
 
         {/* Emoji picker */}
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-slate-700">Icon</label>
+          <label className="text-sm font-medium text-slate-700">{t('iconLabel')}</label>
           {/* Preset grid */}
           <div className="grid grid-cols-10 gap-1">
             {EMOJI_PRESETS.map((e) => (
@@ -196,7 +198,7 @@ export default function BoxForm({ open, onClose, onSubmit, initial, mode, isPro 
                 const val = [...e.target.value].slice(0, 2).join('');
                 if (val) setEmoji(val);
               }}
-              placeholder="or type any emoji"
+              placeholder={t('emojiPlaceholder')}
               className="flex-1 rounded-lg border border-slate-200 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
             />
           </div>
@@ -205,10 +207,10 @@ export default function BoxForm({ open, onClose, onSubmit, initial, mode, isPro 
         {/* Actions */}
         <div className="flex gap-3 justify-end pt-1">
           <Button variant="secondary" type="button" onClick={handleClose}>
-            Cancel
+            {t('cancel')}
           </Button>
           <Button type="submit">
-            {mode === 'create' ? 'Create Deck' : 'Save Changes'}
+            {t(mode === 'create' ? 'createDeck.submit' : 'editDeck.submit')}
           </Button>
         </div>
       </form>

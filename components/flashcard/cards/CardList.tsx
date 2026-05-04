@@ -12,6 +12,7 @@
  */
 
 import { useState, useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import { Plus, Search, SlidersHorizontal, CreditCard, Play, Loader2, AlertCircle, Share2, Sparkles } from 'lucide-react';
 import AIGenerateModal from './AIGenerateModal';
 import type { Deck, ApiCard } from '@/types/api';
@@ -73,6 +74,7 @@ export default function CardList({
   onAddCardOpenChange,
   onReloadCards,
 }: Props) {
+  const t = useTranslations('flashcards');
   const [internalCreateOpen, setInternalCreateOpen] = useState(false);
   const createOpen = externalAddCardOpen ?? internalCreateOpen;
   function setCreateOpen(v: boolean) {
@@ -239,11 +241,11 @@ export default function CardList({
       {!loading && cards.length === 0 && (
         <EmptyState
           icon={<CreditCard size={36} />}
-          title="No cards yet"
-          description="Add your first flashcard to this deck."
+          title={t('card.emptyTitle')}
+          description={t('card.emptySubtitle')}
           action={
             <Button onClick={() => setCreateOpen(true)}>
-              <Plus size={14} /> Add Card
+              <Plus size={14} /> {t('card.addCard')}
             </Button>
           }
         />

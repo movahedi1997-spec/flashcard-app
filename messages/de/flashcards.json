@@ -10,6 +10,16 @@
   "copyCount": "{count} {count, plural, one {Kopie} other {Kopien}}",
   "emptyTitle": "Noch keine Decks",
   "emptySubtitle": "Erstelle dein erstes Deck, um loszulegen",
+  "deckNameLabel": "Deck-Name",
+  "deckNamePlaceholder": "z. B. Spanischer Wortschatz",
+  "deckNameRequired": "Deck-Name darf nicht leer sein.",
+  "descriptionOptional": "(optional)",
+  "colourLabel": "Farbe",
+  "iconLabel": "Symbol",
+  "emojiPlaceholder": "oder Emoji eingeben",
+  "cancel": "Abbrechen",
+  "proOnly": "Nur Pro",
+  "upgradeForColors": "Auf Pro upgraden für mehr Farben",
   "createDeck": {
     "title": "Neues Deck erstellen",
     "titleLabel": "Titel",
@@ -39,10 +49,21 @@
   "card": {
     "front": "Vorderseite",
     "back": "Rückseite",
+    "answer": "Antwort",
+    "noText": "Kein Text",
     "addCard": "Karte hinzufügen",
     "editCard": "Karte bearbeiten",
     "deleteCard": "Karte löschen",
+    "deleteConfirm": "Möchtest du diese Karte wirklich löschen? Dies kann nicht rückgängig gemacht werden.",
     "aiImprove": "KI verbessern",
-    "aiGenerated": "KI-generiert"
+    "aiGenerated": "KI-generiert",
+    "emptyTitle": "Noch keine Karten",
+    "emptySubtitle": "Füge deine erste Karteikarte zu diesem Deck hinzu.",
+    "srsNew": "Neu",
+    "srsDue": "Fällig",
+    "nextReview": "Nächste Wiederholung",
+    "improveWithAI": "Mit KI verbessern",
+    "expandCard": "Karte ausklappen",
+    "collapseCard": "Karte einklappen"
   }
 }

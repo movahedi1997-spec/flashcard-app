@@ -17,6 +17,13 @@
     "settings": "Einstellungen",
     "profile": "Profil"
   },
+  "pwa": {
+    "installApp": "App installieren",
+    "install": "Installieren",
+    "installOnIPhone": "Auf iPhone installieren",
+    "iosInstallHint": "Tippe in Safari auf \"Teilen\" und wähle dann \"Zum Home-Bildschirm\".",
+    "gotIt": "Verstanden"
+  },
   "footer": {
     "tagline": "Intelligentes Lernen mit Spaced Repetition — kostenlos, datenschutzkonform und offline-fähig.",
     "madeIn": "🇩🇪 Made in Germany",

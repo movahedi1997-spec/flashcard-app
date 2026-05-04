@@ -14,5 +14,12 @@
   "ctaHeading": "Bereit, smarter zu lernen?",
   "ctaSubheading": "Kostenlos starten — kein Account nötig zum Stöbern.",
   "ctaButton": "Jetzt kostenlos registrieren",
-  "moreArticles": "Weitere Artikel"
+  "moreArticles": "Weitere Artikel",
+  "category": {
+    "product": "Produkt",
+    "science": "Wissenschaft",
+    "privacy": "Datenschutz",
+    "studyTips": "Lerntipps",
+    "tutorial": "Anleitung"
+  }
 }

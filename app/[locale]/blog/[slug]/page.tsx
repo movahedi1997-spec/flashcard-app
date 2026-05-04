@@ -33,11 +33,11 @@ export function generateStaticParams() {
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
-  Produkt:     'bg-indigo-50 text-indigo-700',
-  Wissenschaft:'bg-violet-50 text-violet-700',
-  Datenschutz: 'bg-emerald-50 text-emerald-700',
-  Lerntipps:   'bg-amber-50 text-amber-700',
-  Anleitung:   'bg-sky-50 text-sky-700',
+  product:   'bg-indigo-50 text-indigo-700',
+  science:   'bg-violet-50 text-violet-700',
+  privacy:   'bg-emerald-50 text-emerald-700',
+  studyTips: 'bg-amber-50 text-amber-700',
+  tutorial:  'bg-sky-50 text-sky-700',
 };
 
 export default async function BlogPostPage({ params }: Props) {
@@ -75,7 +75,7 @@ export default async function BlogPostPage({ params }: Props) {
 
             <div className="mb-4 flex flex-wrap items-center gap-3">
               <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${CATEGORY_COLORS[post.category] ?? 'bg-gray-100 text-gray-600'}`}>
-                {post.category}
+                {t(`category.${post.category}`)}
               </span>
               <span className="flex items-center gap-1 text-xs text-slate-400">
                 <Clock className="h-3 w-3" />

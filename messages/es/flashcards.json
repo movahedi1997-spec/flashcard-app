@@ -10,6 +10,16 @@
   "copyCount": "{count} {count, plural, one {copia} other {copias}}",
   "emptyTitle": "Sin mazos todavía",
   "emptySubtitle": "Crea tu primer mazo para empezar",
+  "deckNameLabel": "Nombre del mazo",
+  "deckNamePlaceholder": "ej. Vocabulario español",
+  "deckNameRequired": "El nombre del mazo no puede estar vacío.",
+  "descriptionOptional": "(opcional)",
+  "colourLabel": "Color",
+  "iconLabel": "Icono",
+  "emojiPlaceholder": "o escribe un emoji",
+  "cancel": "Cancelar",
+  "proOnly": "Solo Pro",
+  "upgradeForColors": "Actualiza a Pro para más colores",
   "createDeck": {
     "title": "Crear nuevo mazo",
     "titleLabel": "Título",
@@ -39,10 +49,21 @@
   "card": {
     "front": "Anverso",
     "back": "Reverso",
+    "answer": "Respuesta",
+    "noText": "Sin texto",
     "addCard": "Añadir tarjeta",
     "editCard": "Editar tarjeta",
     "deleteCard": "Eliminar tarjeta",
+    "deleteConfirm": "¿Seguro que quieres eliminar esta tarjeta? Esta acción no se puede deshacer.",
     "aiImprove": "Mejorar con IA",
-    "aiGenerated": "Generado por IA"
+    "aiGenerated": "Generado por IA",
+    "emptyTitle": "Sin tarjetas todavía",
+    "emptySubtitle": "Añade tu primera tarjeta a este mazo.",
+    "srsNew": "Nueva",
+    "srsDue": "Pendiente",
+    "nextReview": "Próxima revisión",
+    "improveWithAI": "Mejorar con IA",
+    "expandCard": "Expandir tarjeta",
+    "collapseCard": "Contraer tarjeta"
   }
 }
