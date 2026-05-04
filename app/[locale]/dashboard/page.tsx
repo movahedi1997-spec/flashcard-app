@@ -9,6 +9,7 @@ import ProBadge from '@/components/ProBadge';
 import GoProBanner from '@/components/GoProBanner';
 import { query } from '@/lib/db';
 import { getTranslations } from 'next-intl/server';
+import DashboardLaunchGuard from './DashboardLaunchGuard';
 
 const secret = new TextEncoder().encode(
   process.env.ACCESS_JWT_SECRET ?? 'dev-access-secret-change-in-production-32x',
@@ -102,6 +103,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <DashboardLaunchGuard />
       <AppNav username={data.username} activePage="dashboard" />
 
       <main className="mx-auto max-w-6xl px-4 py-8 pb-24 sm:pb-8 space-y-6">
