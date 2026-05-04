@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { Link } from '@/i18n/navigation';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
@@ -28,18 +28,31 @@ function stripLocale(pathname: string): string {
   return pathname.replace(LOCALE_PREFIX, '') || '/';
 }
 
-export default function BottomNav({ activeOverride }: Props) {
+export default function BottomNav({ username: usernameProp, activeOverride }: Props) {
   const pathname = usePathname();
   const t = useTranslations('common.appNav');
+
+  // If username is not provided by the parent (e.g. the flashcards client page),
+  // fetch it from /api/auth/me so the profile link is always correct.
+  const [username, setUsername] = useState<string | null | undefined>(usernameProp);
+  useEffect(() => {
+    if (usernameProp !== undefined) { setUsername(usernameProp); return; }
+    fetch('/api/auth/me')
+      .then((r) => r.ok ? r.json() : null)
+      .then((d) => setUsername(d?.user?.username ?? null))
+      .catch(() => setUsername(null));
+  }, [usernameProp]);
+
+  const profileHref = username ? `/creators/${username}` : '/settings';
 
   const items: BottomNavItem[] = useMemo(
     () => [
       { key: 'decks',     href: '/flashcards', icon: BookOpen,  labelKey: 'myDecks',   match: '/flashcards' },
       { key: 'explore',   href: '/explore',    icon: Compass,   labelKey: 'explore',   match: '/explore'    },
       { key: 'dashboard', href: '/dashboard',  icon: BarChart2, labelKey: 'dashboard', match: '/dashboard'  },
-      { key: 'profile',   href: '/settings',   icon: User,      labelKey: 'profile',   match: '/settings'   },
+      { key: 'profile',   href: profileHref,   icon: User,      labelKey: 'profile',   match: '/creators'   },
     ],
-    [],
+    [profileHref],
   );
 
   const stripped = stripLocale(pathname ?? '/');
