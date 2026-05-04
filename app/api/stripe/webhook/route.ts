@@ -28,6 +28,15 @@ export async function POST(req: NextRequest) {
         if (session.mode === 'subscription' && session.subscription) {
           const sub = await stripe.subscriptions.retrieve(session.subscription as string);
           await activateSubscription(sub);
+        } else if (session.mode === 'payment') {
+          const creditsToAdd = parseInt(session.metadata?.creditsToAdd ?? '0', 10);
+          const userId = session.metadata?.userId;
+          if (userId && creditsToAdd > 0) {
+            await query(
+              'UPDATE users SET ai_credits = ai_credits + $1 WHERE id = $2',
+              [creditsToAdd, userId],
+            );
+          }
         }
         break;
       }

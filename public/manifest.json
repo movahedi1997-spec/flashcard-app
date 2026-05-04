@@ -2,7 +2,7 @@
   "name": "FlashCard — Study Smarter",
   "short_name": "FlashCard",
   "description": "Create beautiful flashcards, organize your knowledge, and master any subject with intelligent spaced repetition.",
-  "start_url": "/dashboard",
+  "start_url": "/flashcards",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
@@ -68,17 +68,17 @@
   ],
   "shortcuts": [
     {
-      "name": "Study Now",
-      "short_name": "Study",
-      "description": "Jump straight into your study session",
-      "url": "/dashboard?action=study",
-      "icons": [{ "src": "/icons/icon-96x96.png", "sizes": "96x96" }]
-    },
-    {
       "name": "My Decks",
       "short_name": "Decks",
       "description": "Browse and manage your flashcard decks",
-      "url": "/dashboard",
+      "url": "/flashcards",
+      "icons": [{ "src": "/icons/icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Explore",
+      "short_name": "Explore",
+      "description": "Discover public decks from other learners",
+      "url": "/explore",
       "icons": [{ "src": "/icons/icon-96x96.png", "sizes": "96x96" }]
     }
   ],

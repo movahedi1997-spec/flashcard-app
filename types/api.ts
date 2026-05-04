@@ -48,6 +48,8 @@ export interface PublicDeck extends Omit<Deck, 'slug'> {
   copyCount?: number;         // denormalised copy count (explore feed + deck page)
   isVerifiedCreator?: boolean; // verified badge shown next to creator name
   deckType?: 'flashcard' | 'quiz';
+  isLiked?: boolean;          // true when the authenticated user has liked this deck
+  creatorAvatarUrl?: string | null;
 }
 
 /**

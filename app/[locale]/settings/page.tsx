@@ -1,7 +1,8 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { jwtVerify } from 'jose';
-import { User, ShieldCheck, Languages, CreditCard, LogOut } from 'lucide-react';
+import { User, ShieldCheck, Languages, CreditCard, LogOut, Coins } from 'lucide-react';
+import { Link } from '@/i18n/navigation';
 import { getTranslations } from 'next-intl/server';
 import TwoFAToggle from './TwoFAToggle';
 import AppNav from '@/components/AppNav';
@@ -132,7 +133,22 @@ export default async function SettingsPage() {
           <TwoFAToggle initialEnabled={profile.two_fa_enabled} />
         </Section>
 
-        {/* ── 4. Subscription ────────────────────────────────────────────────── */}
+        {/* ── 4. Credits & Billing ───────────────────────────────────────────── */}
+        <Section
+          icon={<Coins className="h-4 w-4" />}
+          title="Credits &amp; Billing"
+          subtitle="View usage, buy credits, and manage your plan"
+        >
+          <Link
+            href={'/settings/billing' as Parameters<typeof Link>[0]['href']}
+            className="flex items-center justify-between w-full rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-700 hover:border-indigo-300 hover:text-indigo-600 hover:bg-indigo-50 transition"
+          >
+            <span>Open Credits &amp; Billing</span>
+            <span className="text-gray-400">→</span>
+          </Link>
+        </Section>
+
+        {/* ── 5. Subscription ────────────────────────────────────────────────── */}
         <SubscriptionSection isPro={profile.is_pro} subscriptionStatus={profile.subscription_status} />
 
         {/* ── 5. Sign out + Danger zone ──────────────────────────────────────── */}

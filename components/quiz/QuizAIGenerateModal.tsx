@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import { Loader2, Sparkles, Upload, FileText, X } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Loader2, Sparkles, Upload, FileText, X, Zap } from 'lucide-react';
 import Modal from '@/components/ui/Modal';
 import Button from '@/components/ui/Button';
 import type { QuizQuestion } from '@/types/api';
@@ -14,6 +14,54 @@ interface Props {
   onGenerated: (questions: QuizQuestion[]) => void;
 }
 
+interface Quota {
+  isPro: boolean;
+  used: number;
+  quizLimit: number;
+  quizRemaining: number;
+  credits: number;
+}
+
+function QuotaBar({ quota }: { quota: Quota }) {
+  const totalAvailable = quota.quizRemaining + quota.credits;
+  if (quota.isPro) return null;
+  const pct = Math.min(100, Math.round((quota.used / quota.quizLimit) * 100));
+  const isWarning = pct >= 60 && pct < 90;
+  const isDanger  = pct >= 90;
+
+  return (
+    <div className={`rounded-xl px-4 py-3 text-sm ${
+      isDanger  ? 'bg-red-50 border border-red-100' :
+      isWarning ? 'bg-amber-50 border border-amber-100' :
+                  'bg-indigo-50 border border-indigo-100'
+    }`}>
+      <div className="flex justify-between mb-2">
+        <span className={`font-medium ${isDanger ? 'text-red-700' : isWarning ? 'text-amber-700' : 'text-indigo-700'}`}>
+          {isDanger ? '⚠️ Almost out of free questions!' : isWarning ? '🔥 Using up fast…' : '✨ Free monthly questions'}
+        </span>
+        <span className={`font-bold tabular-nums ${isDanger ? 'text-red-700' : isWarning ? 'text-amber-700' : 'text-indigo-700'}`}>
+          {quota.quizRemaining} left
+        </span>
+      </div>
+      <div className="h-2 bg-white/60 rounded-full overflow-hidden">
+        <div
+          className={`h-full rounded-full transition-all duration-500 ${isDanger ? 'bg-red-500' : isWarning ? 'bg-amber-500' : 'bg-indigo-500'}`}
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+      <p className={`text-xs mt-1.5 ${isDanger ? 'text-red-500' : isWarning ? 'text-amber-500' : 'text-indigo-400'}`}>
+        {quota.used} / {quota.quizLimit} questions used this month · Resets next month
+        {quota.credits > 0 && ` · +${quota.credits} bonus credits`}
+      </p>
+      {totalAvailable === 0 && (
+        <a href="/settings/billing" className="mt-2 flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:underline">
+          <Zap className="h-3 w-3" /> Buy more credits or upgrade to Pro
+        </a>
+      )}
+    </div>
+  );
+}
+
 export default function QuizAIGenerateModal({ open, onClose, quizDeckId, onGenerated }: Props) {
   const [tab, setTab]     = useState<'pdf' | 'text'>('pdf');
   const [file, setFile]   = useState<File | null>(null);
@@ -21,7 +69,16 @@ export default function QuizAIGenerateModal({ open, onClose, quizDeckId, onGener
   const [count, setCount] = useState(10);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [quota, setQuota] = useState<Quota | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    fetch('/api/ai/quota', { credentials: 'include' })
+      .then((r) => r.json())
+      .then((d) => setQuota(d as Quota))
+      .catch(() => {});
+  }, [open]);
 
   async function handleGenerate() {
     if (tab === 'pdf' && !file)              { setError('Select a PDF file.'); return; }
@@ -52,11 +109,38 @@ export default function QuizAIGenerateModal({ open, onClose, quizDeckId, onGener
     }
   }
 
-  const canGenerate = tab === 'pdf' ? !!file : text.trim().length >= 30;
+  const totalAvailable = quota ? quota.quizRemaining + quota.credits : null;
+  const isExhausted    = totalAvailable === 0;
+  const canGenerate    = !isExhausted && (tab === 'pdf' ? !!file : text.trim().length >= 30);
 
   return (
     <Modal open={open} onClose={onClose} title="Generate Questions with AI" maxWidth="max-w-xl">
       <div className="flex flex-col gap-4">
+        {/* Quota bar */}
+        {quota && <QuotaBar quota={quota} />}
+
+        {/* Exhausted state */}
+        {isExhausted ? (
+          <div className="flex flex-col items-center py-8 gap-4 text-center">
+            <div className="h-16 w-16 rounded-2xl bg-red-50 flex items-center justify-center">
+              <Zap className="h-8 w-8 text-red-400" />
+            </div>
+            <div>
+              <p className="text-base font-bold text-gray-900">Monthly limit reached</p>
+              <p className="text-sm text-gray-500 mt-1">
+                You've used all free AI questions for this month.<br />
+                Buy credits or upgrade to Pro for more.
+              </p>
+            </div>
+            <a
+              href="/settings/billing"
+              className="flex items-center justify-center gap-2 w-full rounded-xl bg-indigo-600 py-3 text-sm font-bold text-white hover:bg-indigo-700 transition-colors"
+            >
+              <Zap className="h-4 w-4" /> Buy credits or upgrade
+            </a>
+          </div>
+        ) : (
+          <>
         <div className="flex items-start gap-3 bg-indigo-50 rounded-xl px-4 py-3">
           <Sparkles className="h-4 w-4 text-indigo-500 mt-0.5 shrink-0" />
           <p className="text-sm text-indigo-700">
@@ -168,6 +252,8 @@ export default function QuizAIGenerateModal({ open, onClose, quizDeckId, onGener
             {loading ? 'Generating…' : `Generate ${count} questions`}
           </Button>
         </div>
+          </>
+        )}
       </div>
     </Modal>
   );

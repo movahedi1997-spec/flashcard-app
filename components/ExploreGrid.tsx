@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Search, X, Loader2, TrendingUp, Clock, LayoutList, Users, ChevronDown, Check } from 'lucide-react';
+import { Search, X, Loader2, TrendingUp, Clock, LayoutList, Users, ChevronDown, Check, Heart } from 'lucide-react';
 import type { PublicDeck, Subject } from '@/types/api';
 import ExploreFeedRow from './ExploreFeedRow';
 import ExploreCreatorRow, { type CreatorResult } from './ExploreCreatorRow';
+import AuthGateModal from './AuthGateModal';
 import { SUBJECTS } from '@/lib/subjects';
 
 type DeckTypeFilter = 'all' | 'flashcard' | 'quiz';
@@ -115,7 +116,12 @@ function SubjectPicker({ value, onChange, mobileOnly, desktopOnly }: SubjectPick
 
 // ── Decks sub-grid ────────────────────────────────────────────────────────────
 
-function DecksTab() {
+interface DecksTabProps {
+  isAuthenticated: boolean | null;
+  onAuthRequired: () => void;
+}
+
+function DecksTab({ isAuthenticated, onAuthRequired }: DecksTabProps) {
   const [decks, setDecks]             = useState<PublicDeck[]>([]);
   const [total, setTotal]             = useState(0);
   const [page, setPage]               = useState(0);
@@ -129,8 +135,11 @@ function DecksTab() {
   const [deckType, setDeckType] = useState<DeckTypeFilter>('all');
   const [search, setSearch]     = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [showLiked, setShowLiked] = useState(false);
 
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
   function handleSearchChange(val: string) {
     setSearch(val);
     if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -145,6 +154,7 @@ function DecksTab() {
       if (subject && subject !== 'all') params.set('subject', subject);
       if (deckType !== 'all') params.set('deckType', deckType);
       if (debouncedSearch) params.set('search', debouncedSearch);
+      if (showLiked) params.set('liked', 'true');
 
       const res = await fetch(`/api/explore?${params.toString()}`);
       if (!res.ok) throw new Error('Failed to load decks.');
@@ -160,7 +170,7 @@ function DecksTab() {
       setLoading(false);
       setLoadingMore(false);
     }
-  }, [sort, subject, deckType, debouncedSearch]);
+  }, [sort, subject, deckType, debouncedSearch, showLiked]);
 
   useEffect(() => {
     setDecks([]);
@@ -174,22 +184,47 @@ function DecksTab() {
 
   const hasMore = page + 1 < totalPages;
 
+  // Infinite scroll — auto-fetch next page when sentinel enters viewport
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting && hasMore && !loadingMore && !loading) {
+          void fetchPage(page + 1, true);
+        }
+      },
+      { rootMargin: '300px' },
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [hasMore, loadingMore, loading, page, fetchPage]);
+
   return (
     <div className="space-y-4">
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-2">
           <div className="flex items-center bg-gray-100 rounded-xl p-1 gap-0.5">
             <button
-              onClick={() => setSort('trending')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${sort === 'trending' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+              onClick={() => { setSort('trending'); setShowLiked(false); }}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${!showLiked && sort === 'trending' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
             >
               <TrendingUp size={13} /> Trending
             </button>
             <button
-              onClick={() => setSort('recent')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${sort === 'recent' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+              onClick={() => { setSort('recent'); setShowLiked(false); }}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${!showLiked && sort === 'recent' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
             >
               <Clock size={13} /> Recent
+            </button>
+            <button
+              onClick={() => {
+                if (!isAuthenticated) { onAuthRequired(); return; }
+                setShowLiked((v) => !v);
+              }}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${showLiked ? 'bg-white text-rose-500 shadow-sm' : 'text-gray-500 hover:text-rose-400'}`}
+            >
+              <Heart size={13} className={showLiked ? 'fill-rose-400 text-rose-400' : ''} /> Liked
             </button>
           </div>
 
@@ -243,9 +278,9 @@ function DecksTab() {
       )}
 
       {loading && (
-        <div className="rounded-2xl border border-gray-100 bg-white overflow-hidden">
+        <div className="flex flex-col gap-3">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="flex items-center gap-3 px-4 py-3.5 border-b border-gray-100 last:border-b-0 animate-pulse">
+            <div key={i} className="flex items-center gap-3 px-4 py-3.5 bg-white rounded-2xl border border-gray-100 shadow-sm animate-pulse">
               <div className="w-10 h-10 rounded-xl bg-gray-100 flex-shrink-0" />
               <div className="flex-1 space-y-2">
                 <div className="h-3.5 w-2/5 rounded bg-gray-100" />
@@ -258,9 +293,15 @@ function DecksTab() {
       )}
 
       {!loading && decks.length > 0 && (
-        <div className="rounded-2xl border border-gray-100 bg-white overflow-hidden">
+        <div className="flex flex-col gap-3">
           {decks.map((deck) => (
-            <ExploreFeedRow key={deck.id} deck={deck} onCopied={handleCopied} />
+            <ExploreFeedRow
+              key={deck.id}
+              deck={deck}
+              onCopied={handleCopied}
+              isAuthenticated={isAuthenticated}
+              onAuthRequired={onAuthRequired}
+            />
           ))}
         </div>
       )}
@@ -272,11 +313,11 @@ function DecksTab() {
           </div>
           <p className="text-gray-600 font-semibold">No decks found</p>
           <p className="text-sm text-gray-400 mt-1">
-            {debouncedSearch ? `No results for "${debouncedSearch}"` : 'No public decks in this category yet.'}
+            {showLiked ? 'You haven\'t liked any decks yet.' : debouncedSearch ? `No results for "${debouncedSearch}"` : 'No public decks in this category yet.'}
           </p>
-          {(debouncedSearch || subject !== 'all') && (
+          {(debouncedSearch || subject !== 'all' || showLiked) && (
             <button
-              onClick={() => { setSearch(''); setDebouncedSearch(''); setSubject('all'); }}
+              onClick={() => { setSearch(''); setDebouncedSearch(''); setSubject('all'); setShowLiked(false); }}
               className="mt-4 text-sm text-indigo-600 hover:underline"
             >
               Clear filters
@@ -285,16 +326,11 @@ function DecksTab() {
         </div>
       )}
 
-      {hasMore && !loading && (
-        <div className="flex justify-center pt-2">
-          <button
-            onClick={() => fetchPage(page + 1, true)}
-            disabled={loadingMore}
-            className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-6 py-2.5 text-sm font-semibold text-gray-700 transition hover:border-indigo-200 hover:text-indigo-600 disabled:opacity-50"
-          >
-            {loadingMore && <Loader2 className="h-4 w-4 animate-spin" />}
-            {loadingMore ? 'Loading…' : 'Load more'}
-          </button>
+      {/* Infinite scroll sentinel */}
+      <div ref={sentinelRef} className="h-4" />
+      {loadingMore && (
+        <div className="flex justify-center py-4">
+          <Loader2 className="h-5 w-5 animate-spin text-gray-300" />
         </div>
       )}
     </div>
@@ -314,7 +350,9 @@ function PeopleTab() {
   const [search, setSearch]           = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
 
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const debounceRef  = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const sentinelRef2 = useRef<HTMLDivElement>(null);
+
   function handleSearchChange(val: string) {
     setSearch(val);
     if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -351,6 +389,21 @@ function PeopleTab() {
   }, [fetchPage]);
 
   const hasMore = page + 1 < totalPages;
+
+  useEffect(() => {
+    const sentinel = sentinelRef2.current;
+    if (!sentinel) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting && hasMore && !loadingMore && !loading) {
+          void fetchPage(page + 1, true);
+        }
+      },
+      { rootMargin: '300px' },
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [hasMore, loadingMore, loading, page, fetchPage]);
 
   return (
     <div className="space-y-4">
@@ -427,16 +480,11 @@ function PeopleTab() {
         </div>
       )}
 
-      {hasMore && !loading && (
-        <div className="flex justify-center pt-2">
-          <button
-            onClick={() => fetchPage(page + 1, true)}
-            disabled={loadingMore}
-            className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-6 py-2.5 text-sm font-semibold text-gray-700 transition hover:border-indigo-200 hover:text-indigo-600 disabled:opacity-50"
-          >
-            {loadingMore && <Loader2 className="h-4 w-4 animate-spin" />}
-            {loadingMore ? 'Loading…' : 'Load more'}
-          </button>
+      {/* Infinite scroll sentinel */}
+      <div ref={sentinelRef2} className="h-4" />
+      {loadingMore && (
+        <div className="flex justify-center py-4">
+          <Loader2 className="h-5 w-5 animate-spin text-gray-300" />
         </div>
       )}
     </div>
@@ -447,9 +495,21 @@ function PeopleTab() {
 
 export default function ExploreGrid() {
   const [tab, setTab] = useState<ExploreTab>('decks');
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [showAuthGate, setShowAuthGate] = useState(false);
+
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then((r) => setIsAuthenticated(r.ok))
+      .catch(() => setIsAuthenticated(false));
+  }, []);
+
+  const requireAuth = useCallback(() => setShowAuthGate(true), []);
 
   return (
     <div className="space-y-4">
+      {showAuthGate && <AuthGateModal onClose={() => setShowAuthGate(false)} />}
+
       {/* Top-level tab switcher */}
       <div className="flex items-center gap-1 border-b border-gray-100 pb-0">
         <button
@@ -463,7 +523,10 @@ export default function ExploreGrid() {
           <LayoutList size={14} /> Decks
         </button>
         <button
-          onClick={() => setTab('people')}
+          onClick={() => {
+            if (!isAuthenticated) { requireAuth(); return; }
+            setTab('people');
+          }}
           className={`flex items-center gap-1.5 px-4 py-2.5 text-sm font-semibold border-b-2 -mb-px transition ${
             tab === 'people'
               ? 'border-indigo-600 text-indigo-600'
@@ -474,7 +537,7 @@ export default function ExploreGrid() {
         </button>
       </div>
 
-      {tab === 'decks'  && <DecksTab />}
+      {tab === 'decks'  && <DecksTab isAuthenticated={isAuthenticated} onAuthRequired={requireAuth} />}
       {tab === 'people' && <PeopleTab />}
     </div>
   );

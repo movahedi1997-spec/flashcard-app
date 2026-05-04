@@ -3,6 +3,19 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getAuthUser } from '@/lib/auth';
 import { query } from '@/lib/db';
 
+function generateSlug(title: string): string {
+  const base = title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .slice(0, 50)
+    .replace(/-$/, '');
+  const suffix = Math.random().toString(36).slice(2, 8);
+  return `${base || 'quiz'}-${suffix}`;
+}
+
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
@@ -51,12 +64,51 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   if (typeof body.subject     !== 'undefined') push('subject',  body.subject ?? null);
   if (typeof body.isPublic    === 'boolean') push('is_public',  body.isPublic);
 
-  if (fields.length === 0) return NextResponse.json({ ok: true });
+  // Auto-generate slug when making public for the first time
+  if (body.isPublic === true) {
+    const existing = await query<{ slug: string | null; title: string }>(
+      'SELECT slug, title FROM quiz_decks WHERE id=$1 AND user_id=$2',
+      [params.id, user.userId],
+    );
+    if ((existing.rowCount ?? 0) > 0 && !existing.rows[0]!.slug) {
+      const deckTitle = (typeof body.title === 'string' ? body.title.trim() : null) ?? existing.rows[0]!.title;
+      let slug = generateSlug(deckTitle);
+      for (let attempt = 0; attempt < 5; attempt++) {
+        const collision = await query<{ id: string }>('SELECT id FROM quiz_decks WHERE slug=$1', [slug]);
+        if ((collision.rowCount ?? 0) === 0) break;
+        slug = generateSlug(deckTitle);
+      }
+      push('slug', slug);
+    }
+  }
 
   push('updated_at', new Date().toISOString());
   vals.push(params.id);
-  await query(`UPDATE quiz_decks SET ${fields.join(', ')} WHERE id=$${vals.length}`, vals);
-  return NextResponse.json({ ok: true });
+
+  type UpdatedRow = {
+    id: string; title: string; description: string; color: string; emoji: string;
+    is_public: boolean; slug: string | null; subject: string | null;
+    created_at: string; updated_at: string;
+  };
+  const result = await query<UpdatedRow>(
+    `UPDATE quiz_decks SET ${fields.join(', ')} WHERE id=$${vals.length}
+     RETURNING id, title, description, color, emoji, is_public, slug, subject, created_at, updated_at`,
+    vals,
+  );
+  const d = result.rows[0];
+  if (!d) return NextResponse.json({ error: 'Not found.' }, { status: 404 });
+
+  const qCount = await query<{ count: string }>(
+    'SELECT COUNT(*)::text AS count FROM quiz_questions WHERE quiz_deck_id=$1',
+    [params.id],
+  );
+
+  return NextResponse.json({ ok: true, deck: {
+    id: d.id, userId: user.userId, title: d.title, description: d.description,
+    color: d.color, emoji: d.emoji, isPublic: d.is_public, slug: d.slug,
+    subject: d.subject, questionCount: parseInt(qCount.rows[0]?.count ?? '0', 10),
+    createdAt: d.created_at, updatedAt: d.updated_at,
+  } });
 }
 
 export async function DELETE(req: NextRequest, { params }: Params) {

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
-import { BookOpen, ArrowLeft, Play, Plus, HelpCircle } from 'lucide-react';
+import { BookOpen, ArrowLeft, Play, Plus, HelpCircle, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useBoxes } from '@/hooks/useBoxes';
 import { useCards } from '@/hooks/useCards';
@@ -232,6 +232,7 @@ export default function FlashcardsPage() {
           onAppendQuestions={appendQuestions}
           onStudy={() => goToQuizStudy(view.deckId)}
           onBack={() => setView({ type: 'quiz-home' })}
+          onUpdateDeck={(updates) => updateQuizDeck(view.deckId, updates)}
         />
       );
     }
@@ -323,6 +324,10 @@ export default function FlashcardsPage() {
   if (showSplash) return <SplashPage onStart={() => setShowSplash(false)} isFirstVisit={!decksLoading && decks.length === 0} />;
 
   const activeDeck = getCurrentDeck();
+  const activeQuizDeck = getCurrentQuizDeck();
+  const activeQuizDeckQuestions = view.type === 'quiz-box'
+    ? questions.filter((q) => q.quizDeckId === view.deckId)
+    : [];
   const backAction = getBackAction();
   const isHomeView = view.type === 'home' || view.type === 'quiz-home';
 
@@ -396,7 +401,7 @@ export default function FlashcardsPage() {
                     aria-label="Add card"
                   >
                     <Plus size={16} />
-                    <span className="text-xs font-semibold hidden sm:inline">Add</span>
+                    <span className="text-xs font-semibold">Add</span>
                   </button>
                   <button
                     onClick={() => goToStudy(view.deckId)}
@@ -404,9 +409,21 @@ export default function FlashcardsPage() {
                     className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-indigo-600 text-white text-xs font-bold hover:bg-indigo-700 active:scale-95 transition"
                   >
                     <Play size={14} />
-                    <span className="hidden sm:inline">Study</span>
+                    <span>Study</span>
                   </button>
                 </div>
+              ) : view.type === 'quiz-box' && activeQuizDeck ? (
+                <button
+                  onClick={() => goToQuizStudy(view.deckId)}
+                  disabled={activeQuizDeckQuestions.length === 0}
+                  aria-label="Study"
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-indigo-600 text-white text-xs font-bold hover:bg-indigo-700 active:scale-95 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {questionsLoading && activeQuizDeckQuestions.length === 0
+                    ? <Loader2 size={14} className="animate-spin" />
+                    : <Play size={14} />}
+                  <span>Study</span>
+                </button>
               ) : (
                 <div className="w-16 sm:w-20" />
               )}

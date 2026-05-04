@@ -47,13 +47,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  // Check pro status
-  const userRow = await query<{ is_pro: boolean }>(
-    'SELECT is_pro FROM users WHERE id = $1', [userId],
+  // Check pro status + bonus credits
+  const userRow = await query<{ is_pro: boolean; ai_credits: number }>(
+    'SELECT is_pro, COALESCE(ai_credits, 0) AS ai_credits FROM users WHERE id = $1', [userId],
   );
   isPro = userRow.rows[0]?.is_pro ?? false;
+  const bonusCredits = userRow.rows[0]?.ai_credits ?? 0;
 
-  // ── Quota check (monthly) ─────────────────────────────────────────────────
+  // ── Quota check (monthly + bonus credits) ─────────────────────────────────
   const month = new Date().toISOString().slice(0, 7); // YYYY-MM
   const usageRow = await query<{ cards_generated: number }>(
     `SELECT cards_generated FROM ai_usage WHERE user_id = $1 AND month = $2`,
@@ -61,9 +62,10 @@ export async function POST(req: NextRequest) {
   );
   const used = usageRow.rows[0]?.cards_generated ?? 0;
   const limit = isPro ? PRO_MONTHLY_LIMIT : FREE_MONTHLY_LIMIT;
-  const remaining = limit - used;
+  const monthlyRemaining = Math.max(0, limit - used);
+  const totalAvailable   = monthlyRemaining + bonusCredits;
 
-  if (used >= limit) {
+  if (totalAvailable <= 0) {
     return NextResponse.json(
       {
         error: `Monthly limit reached. You've used all ${limit} AI cards for this month.`,
@@ -130,8 +132,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'No cards could be generated from this content.' }, { status: 422 });
   }
 
-  // Cap at remaining quota
-  const cards = result.cards.slice(0, remaining);
+  // Cap at total available (monthly + credits)
+  const cards = result.cards.slice(0, totalAvailable);
 
   // ── Insert cards ──────────────────────────────────────────────────────────
   for (const card of cards) {
@@ -142,22 +144,33 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // ── Update quota ──────────────────────────────────────────────────────────
-  await query(
-    `INSERT INTO ai_usage (user_id, month, cards_generated)
-     VALUES ($1, $2, $3)
-     ON CONFLICT (user_id, month) DO UPDATE
-     SET cards_generated = ai_usage.cards_generated + $3`,
-    [userId, month, cards.length],
-  );
+  // ── Update quota: monthly first, then bonus credits ──────────────────────
+  const fromMonthly = Math.min(cards.length, monthlyRemaining);
+  const fromCredits = cards.length - fromMonthly;
 
-  const newUsed = used + cards.length;
+  if (fromMonthly > 0) {
+    await query(
+      `INSERT INTO ai_usage (user_id, month, cards_generated)
+       VALUES ($1, $2, $3)
+       ON CONFLICT (user_id, month) DO UPDATE
+       SET cards_generated = ai_usage.cards_generated + $3`,
+      [userId, month, fromMonthly],
+    );
+  }
+  if (fromCredits > 0) {
+    await query(
+      'UPDATE users SET ai_credits = GREATEST(0, ai_credits - $1) WHERE id = $2',
+      [fromCredits, userId],
+    );
+  }
+
+  const newUsed = used + fromMonthly;
   return NextResponse.json({
     generated: cards.length,
     provider: result.provider,
     model: result.model,
     used: newUsed,
     limit,
-    remaining: limit - newUsed,
+    remaining: Math.max(0, limit - newUsed),
   });
 }
