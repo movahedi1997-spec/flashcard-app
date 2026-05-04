@@ -7,6 +7,7 @@ import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 import Link from 'next/link';
 import { Lock } from 'lucide-react';
+import type { Subject } from '@/types/api';
 
 // ── Palette options (must match BoxCard PALETTES keys) ────────────────────────
 
@@ -34,30 +35,48 @@ const EMOJI_PRESETS = [
 
 // ── Props ─────────────────────────────────────────────────────────────────────
 
+const SUBJECT_OPTIONS: { value: Subject | ''; label: string }[] = [
+  { value: '',               label: 'No subject' },
+  { value: 'medicine',       label: 'Medicine' },
+  { value: 'pharmacy',       label: 'Pharmacy' },
+  { value: 'chemistry',      label: 'Chemistry' },
+  { value: 'languages',      label: 'Languages' },
+  { value: 'law',            label: 'Law' },
+  { value: 'science',        label: 'Science' },
+  { value: 'history',        label: 'History' },
+  { value: 'mathematics',    label: 'Mathematics' },
+  { value: 'computer_science', label: 'Computer Science' },
+  { value: 'other',          label: 'Other' },
+];
+
 export interface DeckFormValues {
   name: string;
   description: string;
   color: string;
   emoji: string;
+  subject: Subject | null;
 }
 
 interface Props {
   open: boolean;
   onClose: () => void;
   onSubmit: (values: DeckFormValues) => void;
-  initial?: Partial<DeckFormValues>;
+  initial?: Partial<DeckFormValues & { subject?: Subject | null }>;
   mode: 'create' | 'edit';
   isPro?: boolean;
+  /** Override the modal title (defaults to "Create Deck" / "Edit Deck"). */
+  titleOverride?: string;
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function BoxForm({ open, onClose, onSubmit, initial, mode, isPro = false }: Props) {
+export default function BoxForm({ open, onClose, onSubmit, initial, mode, isPro = false, titleOverride }: Props) {
   const t = useTranslations('flashcards');
   const [name, setName]               = useState(initial?.name        ?? '');
   const [description, setDescription] = useState(initial?.description ?? '');
   const [color, setColor]             = useState(initial?.color       ?? 'indigo');
   const [emoji, setEmoji]             = useState(initial?.emoji       ?? '📚');
+  const [subject, setSubject]         = useState<Subject | ''>(initial?.subject ?? '');
   const [nameError, setNameError]     = useState('');
 
   // Sync when the modal opens with pre-filled values (edit mode)
@@ -67,6 +86,7 @@ export default function BoxForm({ open, onClose, onSubmit, initial, mode, isPro 
       setDescription(initial?.description ?? '');
       setColor(initial?.color       ?? 'indigo');
       setEmoji(initial?.emoji       ?? '📚');
+      setSubject(initial?.subject   ?? '');
       setNameError('');
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -75,7 +95,7 @@ export default function BoxForm({ open, onClose, onSubmit, initial, mode, isPro 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!name.trim()) { setNameError(t('deckNameRequired')); return; }
-    onSubmit({ name: name.trim(), description: description.trim(), color, emoji });
+    onSubmit({ name: name.trim(), description: description.trim(), color, emoji, subject: subject || null });
     onClose();
   }
 
@@ -88,7 +108,7 @@ export default function BoxForm({ open, onClose, onSubmit, initial, mode, isPro 
     <Modal
       open={open}
       onClose={handleClose}
-      title={t(mode === 'create' ? 'createDeck.title' : 'editDeck.title')}
+      title={titleOverride ?? t(mode === 'create' ? 'createDeck.title' : 'editDeck.title')}
       maxWidth="max-w-lg"
     >
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -115,6 +135,22 @@ export default function BoxForm({ open, onClose, onSubmit, initial, mode, isPro 
             maxLength={300}
             className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-none"
           />
+        </div>
+
+        {/* Subject */}
+        <div className="flex flex-col gap-1.5">
+          <label className="text-sm font-medium text-slate-700">
+            Subject <span className="text-slate-400 font-normal">(optional)</span>
+          </label>
+          <select
+            value={subject}
+            onChange={(e) => setSubject(e.target.value as Subject | '')}
+            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          >
+            {SUBJECT_OPTIONS.map((o) => (
+              <option key={o.value} value={o.value}>{o.label}</option>
+            ))}
+          </select>
         </div>
 
         {/* Colour picker */}

@@ -102,7 +102,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <AppNav username={data.username} />
+      <AppNav username={data.username} activePage="dashboard" />
 
       <main className="mx-auto max-w-6xl px-4 py-8 pb-24 sm:pb-8 space-y-6">
         {/* ── Welcome + profile ────────────────────────────────────────── */}

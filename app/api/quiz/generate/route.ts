@@ -1,0 +1,95 @@
+// POST /api/quiz/generate
+// Body: { quizDeckId, text, count? }
+// Generates MCQ questions using AI and inserts them into the quiz deck.
+import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
+import { jwtVerify } from 'jose';
+import { query } from '@/lib/db';
+import { generateQuizQuestions } from '@/lib/ai';
+
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
+const FREE_MONTHLY_LIMIT = 189;
+const PRO_MONTHLY_LIMIT  = 499;
+
+const secret = new TextEncoder().encode(
+  process.env.ACCESS_JWT_SECRET ?? 'dev-access-secret-change-in-production-32x',
+);
+
+export async function POST(req: NextRequest) {
+  const token = cookies().get('token')?.value;
+  if (!token) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+  let userId: string;
+  try {
+    const { payload } = await jwtVerify(token, secret);
+    userId = payload.userId as string;
+  } catch {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const userRow = await query<{ is_pro: boolean }>('SELECT is_pro FROM users WHERE id=$1', [userId]);
+  const isPro = userRow.rows[0]?.is_pro ?? false;
+
+  const month = new Date().toISOString().slice(0, 7);
+  const usageRow = await query<{ cards_generated: number }>(
+    'SELECT cards_generated FROM ai_usage WHERE user_id=$1 AND month=$2', [userId, month],
+  );
+  const used = usageRow.rows[0]?.cards_generated ?? 0;
+  const limit = isPro ? PRO_MONTHLY_LIMIT : FREE_MONTHLY_LIMIT;
+
+  if (used >= limit)
+    return NextResponse.json({ error: `Monthly limit reached (${limit} AI items).`, code: 'QUOTA_EXCEEDED', used, limit }, { status: 402 });
+
+  const body = await req.json().catch(() => null) as Record<string, unknown> | null;
+  const { quizDeckId, text, count } = body ?? {};
+
+  if (!quizDeckId || typeof quizDeckId !== 'string')
+    return NextResponse.json({ error: 'quizDeckId required.' }, { status: 400 });
+  if (!text || typeof text !== 'string' || text.trim().length < 30)
+    return NextResponse.json({ error: 'Provide at least 30 characters of text.' }, { status: 400 });
+
+  const deckCheck = await query<{ id: string }>('SELECT id FROM quiz_decks WHERE id=$1 AND user_id=$2', [quizDeckId, userId]);
+  if (!deckCheck.rows[0]) return NextResponse.json({ error: 'Quiz deck not found.' }, { status: 404 });
+
+  const n = Math.min(50, Math.max(1, parseInt(String(count ?? 10), 10)));
+  const remaining = limit - used;
+
+  let result;
+  try {
+    result = await generateQuizQuestions(text.trim(), n);
+  } catch (err) {
+    console.error('[quiz/generate]', err);
+    return NextResponse.json({ error: 'AI generation failed. Please try again.' }, { status: 500 });
+  }
+
+  const questions = result.questions.slice(0, remaining);
+  if (questions.length === 0)
+    return NextResponse.json({ error: 'No questions could be generated.' }, { status: 422 });
+
+  const inserted = [];
+  for (const q of questions) {
+    const r = await query<{ id: string; created_at: string }>(
+      `INSERT INTO quiz_questions (quiz_deck_id, user_id, question_text, correct_answer, option_a, option_b, explanation, ai_generated)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,true) RETURNING id, created_at`,
+      [quizDeckId, userId, q.question_text, q.correct_answer, q.option_a, q.option_b, q.explanation || null],
+    );
+    const row = r.rows[0]!;
+    inserted.push({
+      id: row.id, quizDeckId, userId,
+      questionText: q.question_text, correctAnswer: q.correct_answer,
+      optionA: q.option_a, optionB: q.option_b,
+      explanation: q.explanation || null, aiGenerated: true,
+      srs: null, createdAt: row.created_at,
+    });
+  }
+
+  await query(
+    `INSERT INTO ai_usage (user_id, month, cards_generated) VALUES ($1,$2,$3)
+     ON CONFLICT (user_id, month) DO UPDATE SET cards_generated = ai_usage.cards_generated + $3`,
+    [userId, month, questions.length],
+  );
+
+  return NextResponse.json({ questions: inserted, generated: inserted.length });
+}

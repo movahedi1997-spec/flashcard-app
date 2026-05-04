@@ -159,3 +159,97 @@ export async function generateFlashcardsFromPdf(
   const cards = await parseCards(raw);
   return { cards, provider: 'openrouter', model: 'gemini-2.0-flash (vision)' };
 }
+
+// ── Quiz question generation ───────────────────────────────────────────────────
+
+export interface GeneratedQuestion {
+  question_text: string;
+  correct_answer: string;
+  option_a: string;
+  option_b: string;
+  explanation: string;
+}
+
+export interface GenerateQuizResult {
+  questions: GeneratedQuestion[];
+  provider: 'groq' | 'openrouter';
+  model: string;
+}
+
+const QUIZ_SYSTEM_PROMPT = `You are an expert MCQ quiz question creator.
+Given study material, generate challenging but fair multiple-choice questions for spaced repetition.
+
+Rules:
+- Each question has ONE clearly correct answer and TWO plausible but wrong distractors
+- Distractors must be realistic — not obviously wrong
+- question_text: the full question (avoid "which of the following")
+- correct_answer: the single correct answer
+- option_a, option_b: two wrong but plausible answers
+- explanation: 1-2 sentences explaining why the correct answer is right
+- Do NOT duplicate questions
+- Output ONLY valid JSON — no markdown, no explanation
+
+Output format:
+{"questions":[{"question_text":"...","correct_answer":"...","option_a":"...","option_b":"...","explanation":"..."}]}`;
+
+async function parseQuestions(raw: string): Promise<GeneratedQuestion[]> {
+  const cleaned = raw.replace(/\`\`\`json|\`\`\`/g, '').trim();
+  const json = JSON.parse(cleaned) as { questions: GeneratedQuestion[] };
+  if (!Array.isArray(json.questions)) throw new Error('Invalid response shape');
+  return json.questions.filter(
+    (q) =>
+      typeof q.question_text === 'string' && q.question_text &&
+      typeof q.correct_answer === 'string' && q.correct_answer &&
+      typeof q.option_a === 'string' && q.option_a &&
+      typeof q.option_b === 'string' && q.option_b &&
+      // Reject duplicates — would render as identical-looking MCQ buttons
+      q.correct_answer.trim() !== q.option_a.trim() &&
+      q.correct_answer.trim() !== q.option_b.trim() &&
+      q.option_a.trim() !== q.option_b.trim(),
+  );
+}
+
+export async function generateQuizQuestions(text: string, count: number): Promise<GenerateQuizResult> {
+  const userPrompt = `Generate exactly ${count} MCQ questions from the following content.\n\n${text.slice(0, 12000)}`;
+
+  try {
+    const client = new Groq({ apiKey: process.env.GROQ_API_KEY });
+    const completion = await client.chat.completions.create({
+      model: 'llama-3.3-70b-versatile',
+      messages: [
+        { role: 'system', content: QUIZ_SYSTEM_PROMPT },
+        { role: 'user',   content: userPrompt },
+      ],
+      temperature: 0.4,
+      response_format: { type: 'json_object' },
+    });
+    const raw = completion.choices[0]?.message?.content ?? '';
+    const questions = await parseQuestions(raw);
+    return { questions, provider: 'groq', model: 'llama-3.3-70b-versatile' };
+  } catch (err) {
+    if ((err as { status?: number }).status !== 429) throw err;
+  }
+
+  // Fallback: OpenRouter
+  const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+      'Content-Type': 'application/json',
+      'HTTP-Referer': 'https://flashcardai.app',
+    },
+    body: JSON.stringify({
+      model: 'google/gemini-2.0-flash-001',
+      messages: [
+        { role: 'system', content: QUIZ_SYSTEM_PROMPT },
+        { role: 'user',   content: userPrompt },
+      ],
+      temperature: 0.4,
+      response_format: { type: 'json_object' },
+    }),
+  });
+  if (!res.ok) throw new Error(`OpenRouter ${res.status}`);
+  const data = await res.json() as { choices: { message: { content: string } }[] };
+  const questions = await parseQuestions(data.choices[0]?.message?.content ?? '');
+  return { questions, provider: 'openrouter', model: 'gemini-2.0-flash' };
+}

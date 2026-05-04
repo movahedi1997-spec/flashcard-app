@@ -1,49 +1,54 @@
 'use client';
 
-/**
- * ExploreGrid — interactive deck feed for the Explore page.
- *
- * Handles: subject filter pills, debounced search, cursor-based pagination,
- * and copy-to-library. Runs entirely client-side after the server component
- * hands off initial rendered markup.
- */
-
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Search, X, Loader2, LayoutGrid } from 'lucide-react';
+import { Search, X, Loader2, TrendingUp, Clock, LayoutList } from 'lucide-react';
 import type { PublicDeck, Subject } from '@/types/api';
-import ExploreDeckCard from './ExploreDeckCard';
+import ExploreFeedRow from './ExploreFeedRow';
+
+type DeckTypeFilter = 'all' | 'flashcard' | 'quiz';
 
 // ── Subject filter pills ──────────────────────────────────────────────────────
 
 const SUBJECTS: { value: Subject | 'all'; label: string; emoji: string }[] = [
-  { value: 'all',       label: 'All',      emoji: '🌐' },
-  { value: 'medicine',  label: 'Medicine', emoji: '🩺' },
-  { value: 'pharmacy',  label: 'Pharmacy', emoji: '💊' },
-  { value: 'chemistry', label: 'Chemistry',emoji: '⚗️' },
-  { value: 'other',     label: 'Other',    emoji: '📚' },
+  { value: 'all',             label: 'All',          emoji: '🌐' },
+  { value: 'medicine',        label: 'Medicine',     emoji: '🩺' },
+  { value: 'pharmacy',        label: 'Pharmacy',     emoji: '💊' },
+  { value: 'chemistry',       label: 'Chemistry',    emoji: '⚗️' },
+  { value: 'languages',       label: 'Languages',    emoji: '🗣️' },
+  { value: 'law',             label: 'Law',          emoji: '⚖️' },
+  { value: 'science',         label: 'Science',      emoji: '🔬' },
+  { value: 'history',         label: 'History',      emoji: '🏛️' },
+  { value: 'mathematics',     label: 'Mathematics',  emoji: '📐' },
+  { value: 'computer_science',label: 'CS',           emoji: '💻' },
+  { value: 'other',           label: 'Other',        emoji: '📚' },
 ];
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+type SortMode = 'recent' | 'trending';
 
 interface ExploreResponse {
   decks:      PublicDeck[];
-  nextCursor: string | null;
   total:      number;
+  page:       number;
+  totalPages: number;
 }
+
+const PAGE_SIZE = 20;
 
 export default function ExploreGrid() {
   const [decks, setDecks]             = useState<PublicDeck[]>([]);
-  const [nextCursor, setNextCursor]   = useState<string | null>(null);
   const [total, setTotal]             = useState(0);
+  const [page, setPage]               = useState(0);
+  const [totalPages, setTotalPages]   = useState(0);
   const [loading, setLoading]         = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError]             = useState('');
 
+  const [sort, setSort]         = useState<SortMode>('trending');
   const [subject, setSubject]   = useState<Subject | 'all'>('all');
+  const [deckType, setDeckType] = useState<DeckTypeFilter>('all');
   const [search, setSearch]     = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
 
-  // Debounce search input by 350ms
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   function handleSearchChange(val: string) {
     setSearch(val);
@@ -51,90 +56,123 @@ export default function ExploreGrid() {
     debounceRef.current = setTimeout(() => setDebouncedSearch(val), 350);
   }
 
-  // ── Fetch decks ─────────────────────────────────────────────────────────────
-
-  const fetchDecks = useCallback(async (
-    cursor: string | null,
-    append: boolean,
-  ) => {
+  const fetchPage = useCallback(async (p: number, append: boolean) => {
     append ? setLoadingMore(true) : setLoading(true);
     setError('');
-
     try {
-      const params = new URLSearchParams({ limit: '20' });
+      const params = new URLSearchParams({
+        limit: String(PAGE_SIZE),
+        page:  String(p),
+        sort,
+      });
       if (subject && subject !== 'all') params.set('subject', subject);
-      if (debouncedSearch)              params.set('search',  debouncedSearch);
-      if (cursor)                       params.set('cursor',  cursor);
+      if (deckType !== 'all') params.set('deckType', deckType);
+      if (debouncedSearch) params.set('search', debouncedSearch);
 
       const res = await fetch(`/api/explore?${params.toString()}`);
       if (!res.ok) throw new Error('Failed to load decks.');
-
       const data = (await res.json()) as ExploreResponse;
 
       setDecks((prev) => append ? [...prev, ...data.decks] : data.decks);
-      setNextCursor(data.nextCursor);
       setTotal(data.total);
+      setPage(data.page);
+      setTotalPages(data.totalPages);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong.');
     } finally {
       setLoading(false);
       setLoadingMore(false);
     }
-  }, [subject, debouncedSearch]);
+  }, [sort, subject, deckType, debouncedSearch]);
 
-  // Re-fetch from scratch when filter/search changes
+  // Re-fetch from scratch when filter/search/sort changes
   useEffect(() => {
     setDecks([]);
-    setNextCursor(null);
-    fetchDecks(null, false);
-  }, [fetchDecks]);
-
-  // ── Copy handler — update alreadyCopied locally ──────────────────────────────
+    setPage(0);
+    fetchPage(0, false);
+  }, [fetchPage]);
 
   function handleCopied(deckId: string) {
-    setDecks((prev) =>
-      prev.map((d) => (d.id === deckId ? { ...d, alreadyCopied: true } : d)),
-    );
+    setDecks((prev) => prev.map((d) => d.id === deckId ? { ...d, alreadyCopied: true } : d));
   }
 
-  // ── Render ──────────────────────────────────────────────────────────────────
+  const hasMore = page + 1 < totalPages;
 
   return (
-    <div className="space-y-6">
-      {/* Search + filter row */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-        {/* Search input */}
-        <div className="relative flex-1 max-w-md">
-          <Search className="absolute start-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
-          <input
-            type="text"
-            placeholder="Search decks…"
-            value={search}
-            onChange={(e) => handleSearchChange(e.target.value)}
-            className="w-full rounded-xl border border-gray-200 bg-white py-2.5 ps-10 pe-9 text-sm text-gray-800 placeholder:text-gray-400 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-100"
-          />
-          {search && (
+    <div className="space-y-4">
+      {/* Sort tabs + search row */}
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center gap-2">
+          {/* Sort tabs */}
+          <div className="flex items-center bg-gray-100 rounded-xl p-1 gap-0.5">
             <button
-              onClick={() => { setSearch(''); setDebouncedSearch(''); }}
-              className="absolute end-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-              aria-label="Clear search"
+              onClick={() => setSort('trending')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                sort === 'trending' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+              }`}
             >
-              <X className="h-3.5 w-3.5" />
+              <TrendingUp size={13} /> Trending
             </button>
-          )}
+            <button
+              onClick={() => setSort('recent')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                sort === 'recent' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              <Clock size={13} /> Recent
+            </button>
+          </div>
+
+          {/* Search */}
+          <div className="relative flex-1">
+            <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400 pointer-events-none" />
+            <input
+              type="text"
+              placeholder="Search decks…"
+              value={search}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              className="w-full rounded-xl border border-gray-200 bg-white py-2 ps-9 pe-8 text-sm text-gray-800 placeholder:text-gray-400 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+            />
+            {search && (
+              <button
+                onClick={() => { setSearch(''); setDebouncedSearch(''); }}
+                className="absolute end-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                aria-label="Clear search"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            )}
+          </div>
         </div>
 
-        {/* Subject pills */}
-        <div className="flex items-center gap-1.5 flex-wrap">
+        {/* Deck type filter */}
+        <div className="flex items-center gap-1.5">
+          {(['all', 'flashcard', 'quiz'] as DeckTypeFilter[]).map((dt) => (
+            <button
+              key={dt}
+              onClick={() => setDeckType(dt)}
+              className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition ${
+                deckType === dt
+                  ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
+                  : 'bg-white text-gray-600 border-gray-200 hover:border-indigo-200 hover:text-indigo-600'
+              }`}
+            >
+              {dt === 'all' ? 'All Types' : dt === 'flashcard' ? '🃏 Flashcards' : '🧠 Quizzes'}
+            </button>
+          ))}
+        </div>
+
+        {/* Subject pills — horizontally scrollable */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
           {SUBJECTS.map((s) => (
             <button
               key={s.value}
               onClick={() => setSubject(s.value)}
-              className={`flex items-center gap-1 rounded-full px-3.5 py-1.5 text-xs font-semibold transition
-                ${subject === s.value
-                  ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-200'
+              className={`flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition flex-shrink-0 ${
+                subject === s.value
+                  ? 'bg-indigo-600 text-white shadow-sm'
                   : 'bg-white text-gray-600 border border-gray-200 hover:border-indigo-200 hover:text-indigo-600'
-                }`}
+              }`}
             >
               <span>{s.emoji}</span> {s.label}
             </button>
@@ -144,10 +182,10 @@ export default function ExploreGrid() {
 
       {/* Result count */}
       {!loading && (
-        <p className="text-sm text-gray-500">
+        <p className="text-xs text-gray-400">
           {total === 0
             ? 'No decks found'
-            : `${total.toLocaleString()} deck${total !== 1 ? 's' : ''} found`}
+            : `${total.toLocaleString()} deck${total !== 1 ? 's' : ''}`}
         </p>
       )}
 
@@ -160,25 +198,25 @@ export default function ExploreGrid() {
 
       {/* Loading skeleton */}
       {loading && (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="rounded-2xl border border-gray-100 bg-white overflow-hidden">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="rounded-3xl border border-gray-100 bg-white animate-pulse">
-              <div className="h-28 rounded-t-3xl bg-gray-100" />
-              <div className="p-5 space-y-3">
-                <div className="h-4 w-2/3 rounded bg-gray-100" />
-                <div className="h-3 w-full rounded bg-gray-100" />
-                <div className="h-9 w-full rounded-xl bg-gray-100" />
+            <div key={i} className="flex items-center gap-3 px-4 py-3.5 border-b border-gray-100 last:border-b-0 animate-pulse">
+              <div className="w-10 h-10 rounded-xl bg-gray-100 flex-shrink-0" />
+              <div className="flex-1 space-y-2">
+                <div className="h-3.5 w-2/5 rounded bg-gray-100" />
+                <div className="h-2.5 w-1/3 rounded bg-gray-100" />
               </div>
+              <div className="h-7 w-16 rounded-xl bg-gray-100 flex-shrink-0" />
             </div>
           ))}
         </div>
       )}
 
-      {/* Deck grid */}
+      {/* Feed */}
       {!loading && decks.length > 0 && (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="rounded-2xl border border-gray-100 bg-white overflow-hidden">
           {decks.map((deck) => (
-            <ExploreDeckCard key={deck.id} deck={deck} onCopied={handleCopied} />
+            <ExploreFeedRow key={deck.id} deck={deck} onCopied={handleCopied} />
           ))}
         </div>
       )}
@@ -187,13 +225,13 @@ export default function ExploreGrid() {
       {!loading && decks.length === 0 && !error && (
         <div className="flex flex-col items-center justify-center py-20 text-center">
           <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-100 mb-4">
-            <LayoutGrid className="h-7 w-7 text-gray-400" />
+            <LayoutList className="h-7 w-7 text-gray-400" />
           </div>
           <p className="text-gray-600 font-semibold">No decks found</p>
           <p className="text-sm text-gray-400 mt-1">
             {debouncedSearch
               ? `No results for "${debouncedSearch}"`
-              : 'No public decks in this category yet — be the first!'}
+              : 'No public decks in this category yet.'}
           </p>
           {(debouncedSearch || subject !== 'all') && (
             <button
@@ -207,12 +245,12 @@ export default function ExploreGrid() {
       )}
 
       {/* Load more */}
-      {nextCursor && !loading && (
-        <div className="flex justify-center pt-4">
+      {hasMore && !loading && (
+        <div className="flex justify-center pt-2">
           <button
-            onClick={() => fetchDecks(nextCursor, true)}
+            onClick={() => fetchPage(page + 1, true)}
             disabled={loadingMore}
-            className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-6 py-3 text-sm font-semibold text-gray-700 transition hover:border-indigo-200 hover:text-indigo-600 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-6 py-2.5 text-sm font-semibold text-gray-700 transition hover:border-indigo-200 hover:text-indigo-600 disabled:opacity-50"
           >
             {loadingMore && <Loader2 className="h-4 w-4 animate-spin" />}
             {loadingMore ? 'Loading…' : 'Load more'}

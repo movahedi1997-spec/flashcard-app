@@ -19,8 +19,17 @@ interface Stats {
   activeDay: number; activeWeek: number; activeMonth: number;
   aiCardsMonth: number; aiRegenMonth: number;
   pendingReports: number;
+  pendingProfileReports: number;
   timeline: TimelinePoint[];
   recentUsers: RecentUser[];
+}
+
+interface ProfileReport {
+  id: string; reported_user_id: string;
+  reported_name: string; reported_email: string; reported_username: string | null;
+  reporter_name: string | null; reporter_email: string | null;
+  reason: string; description: string | null; status: string;
+  admin_note: string | null; created_at: string; reviewed_at: string | null;
 }
 
 interface Report {
@@ -137,22 +146,25 @@ function ReasonBadge({ reason }: { reason: string }) {
 
 // ── Tab bar ───────────────────────────────────────────────────────────────────
 
-type Tab = 'overview' | 'reports' | 'users' | 'police';
+type Tab = 'overview' | 'reports' | 'profile-reports' | 'users' | 'police';
 
-function TabBar({ active, onChange, pendingReports }: { active: Tab; onChange: (t: Tab) => void; pendingReports: number }) {
+function TabBar({ active, onChange, pendingReports, pendingProfileReports }: {
+  active: Tab; onChange: (t: Tab) => void; pendingReports: number; pendingProfileReports: number;
+}) {
   const tabs: { key: Tab; label: string; icon: React.ElementType }[] = [
-    { key: 'overview', label: 'Overview',      icon: BarChart2 },
-    { key: 'reports',  label: 'Reports',        icon: Flag      },
-    { key: 'users',    label: 'Users',           icon: Users     },
-    { key: 'police',   label: 'Police Reports',  icon: FileText  },
+    { key: 'overview',        label: 'Overview',        icon: BarChart2 },
+    { key: 'reports',         label: 'Deck Reports',    icon: Flag      },
+    { key: 'profile-reports', label: 'User Reports',    icon: Shield    },
+    { key: 'users',           label: 'Users',            icon: Users     },
+    { key: 'police',          label: 'Police Reports',   icon: FileText  },
   ];
   return (
-    <div className="flex gap-1 border-b border-gray-200 mb-6">
+    <div className="flex gap-1 border-b border-gray-200 mb-6 overflow-x-auto">
       {tabs.map(({ key, label, icon: Icon }) => (
         <button
           key={key}
           onClick={() => onChange(key)}
-          className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium transition-colors relative ${
+          className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium transition-colors relative whitespace-nowrap ${
             active === key
               ? 'text-indigo-600 border-b-2 border-indigo-600 -mb-px'
               : 'text-gray-500 hover:text-gray-700'
@@ -163,6 +175,11 @@ function TabBar({ active, onChange, pendingReports }: { active: Tab; onChange: (
           {key === 'reports' && pendingReports > 0 && (
             <span className="ml-1 rounded-full bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 leading-none">
               {pendingReports}
+            </span>
+          )}
+          {key === 'profile-reports' && pendingProfileReports > 0 && (
+            <span className="ml-1 rounded-full bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 leading-none">
+              {pendingProfileReports}
             </span>
           )}
         </button>
@@ -343,6 +360,128 @@ function ReportsTab() {
                       className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-sm text-red-700 border border-red-200 transition disabled:opacity-50"
                     >
                       <Ban size={13} /> Remove Deck
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Profile reports tab ───────────────────────────────────────────────────────
+
+function ProfileReportsTab() {
+  const [status, setStatus]   = useState('pending');
+  const [reports, setReports] = useState<ProfileReport[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [expanded, setExpanded] = useState<string | null>(null);
+  const [actionNote, setActionNote] = useState('');
+  const [acting, setActing]   = useState<string | null>(null);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/admin/reports/profiles?status=${status}`, { credentials: 'include' });
+      const data = await res.json() as { reports: ProfileReport[] };
+      setReports(data.reports ?? []);
+    } finally { setLoading(false); }
+  }, [status]);
+
+  useEffect(() => { void load(); }, [load]);
+
+  async function act(reportId: string, action: string) {
+    setActing(reportId);
+    try {
+      await fetch('/api/admin/reports/profiles', {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reportId, action, adminNote: actionNote || undefined }),
+      });
+      setActionNote('');
+      setExpanded(null);
+      await load();
+    } finally { setActing(null); }
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-2 flex-wrap">
+        {['pending','dismissed','warned','suspended','banned'].map((s) => (
+          <button key={s} onClick={() => setStatus(s)}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition ${
+              status === s ? 'bg-indigo-600 text-white shadow-sm' : 'bg-white text-gray-500 border border-gray-200 hover:text-gray-700'
+            }`}
+          >{s}</button>
+        ))}
+        <button onClick={load} className="ml-auto text-gray-400 hover:text-gray-600">
+          <RefreshCw size={14} />
+        </button>
+      </div>
+
+      {loading ? (
+        <div className="text-gray-400 text-sm py-8 text-center">Loading…</div>
+      ) : reports.length === 0 ? (
+        <div className="text-gray-400 text-sm py-8 text-center">No {status} profile reports.</div>
+      ) : (
+        <div className="space-y-3">
+          {reports.map((r) => (
+            <div key={r.id} className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+              <div
+                className="flex items-start gap-4 p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+                onClick={() => setExpanded(expanded === r.id ? null : r.id)}
+              >
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap mb-1">
+                    <ReasonBadge reason={r.reason} />
+                    <span className="text-gray-800 font-medium text-sm">{r.reported_name}</span>
+                    {r.reported_username && (
+                      <span className="text-xs text-gray-400">@{r.reported_username}</span>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-400">
+                    {r.reported_email}
+                    {r.reporter_name && <> · Reported by: <span className="text-gray-600">{r.reporter_name}</span></>}
+                  </p>
+                  {r.description && <p className="text-xs text-gray-500 mt-1 line-clamp-1">"{r.description}"</p>}
+                </div>
+                <div className="shrink-0 text-right">
+                  <p className="text-xs text-gray-400">{r.created_at}</p>
+                </div>
+              </div>
+
+              {expanded === r.id && r.status === 'pending' && (
+                <div className="border-t border-gray-100 p-4 space-y-3 bg-gray-50">
+                  {r.description && (
+                    <p className="text-sm text-gray-700 bg-white border border-gray-100 rounded-lg p-3">"{r.description}"</p>
+                  )}
+                  <textarea
+                    value={actionNote}
+                    onChange={(e) => setActionNote(e.target.value)}
+                    placeholder="Admin note (optional)…"
+                    rows={2}
+                    className="w-full text-sm bg-white border border-gray-200 rounded-lg px-3 py-2 text-gray-700 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 resize-none"
+                  />
+                  <div className="flex gap-2 flex-wrap">
+                    <button onClick={() => act(r.id, 'dismiss')} disabled={acting !== null}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-gray-200 hover:bg-gray-100 text-sm text-gray-600 transition disabled:opacity-50">
+                      <X size={13} /> Dismiss
+                    </button>
+                    <button onClick={() => act(r.id, 'warn_user')} disabled={acting !== null}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-sm text-amber-700 border border-amber-200 transition disabled:opacity-50">
+                      <AlertTriangle size={13} /> Warn User
+                    </button>
+                    <button onClick={() => act(r.id, 'suspend_account')} disabled={acting !== null}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-orange-50 hover:bg-orange-100 text-sm text-orange-700 border border-orange-200 transition disabled:opacity-50">
+                      <Shield size={13} /> Suspend
+                    </button>
+                    <button onClick={() => act(r.id, 'ban_account')} disabled={acting !== null}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-sm text-red-700 border border-red-200 transition disabled:opacity-50">
+                      <Ban size={13} /> Ban Account
                     </button>
                   </div>
                 </div>
@@ -658,7 +797,7 @@ export default function AdminDashboardClient({ stats }: { stats: Stats }) {
           <div>
             <h1 className="text-xl font-bold text-gray-900">FlashcardAI Admin</h1>
             <p className="text-gray-400 text-xs mt-0.5">
-              {stats.total.toLocaleString()} users · {stats.proUsers} Pro · {stats.pendingReports} pending reports
+              {stats.total.toLocaleString()} users · {stats.proUsers} Pro · {stats.pendingReports + stats.pendingProfileReports} pending reports
             </p>
           </div>
           <button
@@ -669,12 +808,17 @@ export default function AdminDashboardClient({ stats }: { stats: Stats }) {
           </button>
         </div>
 
-        <TabBar active={tab} onChange={setTab} pendingReports={stats.pendingReports} />
+        <TabBar
+          active={tab} onChange={setTab}
+          pendingReports={stats.pendingReports}
+          pendingProfileReports={stats.pendingProfileReports}
+        />
 
-        {tab === 'overview' && <OverviewTab stats={stats} />}
-        {tab === 'reports'  && <ReportsTab />}
-        {tab === 'users'    && <UsersTab />}
-        {tab === 'police'   && <PoliceReportTab />}
+        {tab === 'overview'        && <OverviewTab stats={stats} />}
+        {tab === 'reports'         && <ReportsTab />}
+        {tab === 'profile-reports' && <ProfileReportsTab />}
+        {tab === 'users'           && <UsersTab />}
+        {tab === 'police'          && <PoliceReportTab />}
       </div>
     </div>
   );

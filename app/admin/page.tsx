@@ -10,7 +10,7 @@ async function getStats() {
   const [
     totalRow, proRow, bannedRow, decksRow, cardsRow,
     timelineRows, activeDay, activeWeek, activeMonth,
-    aiCardsRow, aiRegenRow, pendingReportsRow, recentUsers,
+    aiCardsRow, aiRegenRow, pendingReportsRow, pendingProfileReportsRow, recentUsers,
   ] = await Promise.all([
     query<{ count: string }>('SELECT COUNT(*)::text AS count FROM users'),
     query<{ count: string }>(`SELECT COUNT(*)::text AS count FROM users WHERE COALESCE(is_pro, false) = true`),
@@ -45,6 +45,9 @@ async function getStats() {
     ),
     query<{ count: string }>(
       `SELECT COUNT(*)::text AS count FROM deck_reports WHERE status = 'pending'`,
+    ),
+    query<{ count: string }>(
+      `SELECT COUNT(*)::text AS count FROM profile_reports WHERE status = 'pending'`,
     ),
     query<{ id: string; name: string; email: string; created_at: string; is_pro: boolean }>(
       `SELECT id, name, email, TO_CHAR(created_at, 'YYYY-MM-DD HH24:MI') AS created_at,
@@ -86,8 +89,9 @@ async function getStats() {
     activeMonth:    parseInt(activeMonth.rows[0]?.count ?? '0', 10),
     aiCardsMonth:   parseInt(aiCardsRow.rows[0]?.count ?? '0', 10),
     aiRegenMonth:   parseInt(aiRegenRow.rows[0]?.count ?? '0', 10),
-    pendingReports: parseInt(pendingReportsRow.rows[0]?.count ?? '0', 10),
-    timeline:       days,
+    pendingReports:        parseInt(pendingReportsRow.rows[0]?.count ?? '0', 10),
+    pendingProfileReports: parseInt(pendingProfileReportsRow.rows[0]?.count ?? '0', 10),
+    timeline:              days,
     recentUsers:    recentUsers.rows,
   };
 }

@@ -11,7 +11,10 @@
 
 // ── Subjects ──────────────────────────────────────────────────────────────────
 
-export type Subject = 'medicine' | 'pharmacy' | 'chemistry' | 'other';
+export type Subject =
+  | 'medicine' | 'pharmacy' | 'chemistry'
+  | 'languages' | 'law' | 'science' | 'history' | 'mathematics' | 'computer_science'
+  | 'other';
 
 // ── Deck (/api/decks) ─────────────────────────────────────────────────────────
 
@@ -39,9 +42,11 @@ export interface Deck {
 export interface PublicDeck extends Omit<Deck, 'slug'> {
   slug: string;               // guaranteed non-null for public decks
   creatorName: string;        // display name of the deck author
+  creatorUsername?: string | null;
   alreadyCopied: boolean;     // true when the authenticated user already has a copy
   copyCount?: number;         // denormalised copy count (explore feed + deck page)
   isVerifiedCreator?: boolean; // verified badge shown next to creator name
+  deckType?: 'flashcard' | 'quiz';
 }
 
 /**
@@ -54,6 +59,42 @@ export interface ExploreCategory {
   color: string;   // Tailwind gradient class string
   emoji: string;
   deckCount: number;
+}
+
+// ── Quiz Deck ─────────────────────────────────────────────────────────────────
+
+export interface QuizDeck {
+  id: string;
+  userId: string;
+  title: string;
+  description: string;
+  color: string;
+  emoji: string;
+  isPublic: boolean;
+  slug: string | null;
+  subject: Subject | null;
+  questionCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface QuizQuestion {
+  id: string;
+  quizDeckId: string;
+  userId: string;
+  questionText: string;
+  correctAnswer: string;
+  optionA: string;
+  optionB: string;
+  explanation: string | null;
+  aiGenerated: boolean;
+  srs?: {
+    interval: number;
+    easeFactor: number;
+    dueDate: string | null;
+    reviewCount: number;
+  } | null;
+  createdAt: string;
 }
 
 // ── SRS state (embedded in CardWithSrs) ───────────────────────────────────────

@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { hreflangAlternates } from '@/lib/hreflang';
-import { Compass } from 'lucide-react';
 import { cookies } from 'next/headers';
 import { jwtVerify } from 'jose';
 import { query } from '@/lib/db';
@@ -26,66 +25,24 @@ async function getOptionalUser() {
   }
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { locale: string };
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
   return {
     title: 'Explore Flashcard Decks — FlashcardAI',
     description:
-      'Browse thousands of free flashcard decks for medicine, pharmacy, chemistry, and more. ' +
-      'Copy any deck to your library and start studying with spaced repetition.',
+      'Browse free flashcard decks on medicine, languages, law, computer science, and more. ' +
+      'Copy any deck and study with spaced repetition.',
     openGraph: {
       title: 'Explore Flashcard Decks — FlashcardAI',
-      description: 'Free SRS flashcard decks for medicine, pharmacy, chemistry, and more.',
+      description: 'Free SRS flashcard decks — medicine, languages, law, CS, and more.',
       type: 'website',
     },
     alternates: hreflangAlternates(params.locale, '/explore'),
   };
 }
 
-const ORDERED_SUBJECTS = ['medicine', 'pharmacy', 'chemistry', 'other'];
-
-const SUBJECT_META: Record<string, { gradient: string; emoji: string }> = {
-  medicine:  { gradient: 'from-indigo-600 to-violet-600', emoji: '🩺' },
-  pharmacy:  { gradient: 'from-emerald-600 to-teal-600',  emoji: '💊' },
-  chemistry: { gradient: 'from-amber-500 to-orange-500',  emoji: '⚗️' },
-  other:     { gradient: 'from-sky-500 to-cyan-600',      emoji: '📖' },
-};
-
-async function getCategories() {
-  try {
-    const result = await query<{ subject: string; deck_count: string }>(
-      `SELECT subject, COUNT(*)::text AS deck_count
-         FROM decks
-        WHERE is_public = true
-          AND subject IS NOT NULL
-        GROUP BY subject`,
-    );
-    const countMap: Record<string, number> = {};
-    for (const row of result.rows) {
-      countMap[row.subject] = parseInt(row.deck_count, 10);
-    }
-    return ORDERED_SUBJECTS.map((subject) => ({
-      subject,
-      ...SUBJECT_META[subject],
-      deckCount: countMap[subject] ?? 0,
-    }));
-  } catch {
-    return ORDERED_SUBJECTS.map((subject) => ({
-      subject,
-      ...SUBJECT_META[subject],
-      deckCount: 0,
-    }));
-  }
-}
-
 export default async function ExplorePage() {
-  const [categories, user, t, tc] = await Promise.all([
-    getCategories(),
+  const [user, tc] = await Promise.all([
     getOptionalUser(),
-    getTranslations('explore'),
     getTranslations('common'),
   ]);
 
@@ -107,48 +64,15 @@ export default async function ExplorePage() {
         </header>
       )}
 
-      <main className="mx-auto max-w-7xl px-6 py-10 pb-24 sm:pb-10">
-        {/* ── Hero ─────────────────────────────────────────────────────────── */}
-        <div className="mb-10 text-center">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-indigo-50 px-4 py-1.5 text-sm font-semibold text-indigo-600">
-            <Compass className="h-4 w-4" />
-            {t('badge')}
-          </div>
-          <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
-            {t('title')}
-          </h1>
-          <p className="mt-3 text-lg text-gray-500 max-w-2xl mx-auto">
-            {t('subtitle')}
+      <main className="mx-auto max-w-3xl px-4 sm:px-6 py-8 pb-24 sm:pb-10">
+        <div className="mb-6">
+          <h1 className="text-2xl font-extrabold text-gray-900">Explore</h1>
+          <p className="text-sm text-gray-500 mt-1">
+            Discover and copy free flashcard decks from the community.
           </p>
         </div>
 
-        {/* ── Subject hub tiles ─────────────────────────────────────────────── */}
-        <section className="mb-10" aria-label={t('browseBySubject')}>
-          <h2 className="sr-only">{t('browseBySubject')}</h2>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {categories.map((cat) => (
-              <div
-                key={cat.subject}
-                className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${cat.gradient}
-                  p-5 text-white transition hover:scale-[1.02] hover:shadow-lg cursor-default`}
-              >
-                <p className="text-3xl mb-2">{cat.emoji}</p>
-                <p className="font-bold text-base">{t(`subjects.${cat.subject}.label`)}</p>
-                <p className="text-white/70 text-xs mt-0.5 line-clamp-2 hidden sm:block">
-                  {t(`subjects.${cat.subject}.description`)}
-                </p>
-                <p className="mt-3 text-white/80 text-xs font-semibold">
-                  {cat.deckCount} {cat.deckCount === 1 ? t('deck') : t('decks')}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ── Deck feed (client component) ─────────────────────────────────── */}
-        <section aria-label="Public deck feed">
-          <ExploreGrid />
-        </section>
+        <ExploreGrid />
       </main>
     </div>
   );

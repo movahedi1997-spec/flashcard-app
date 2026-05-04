@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { Link } from '@/i18n/navigation';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { LayoutDashboard, Compass, BookOpen, Settings, User, type LucideIcon } from 'lucide-react';
+import { LayoutDashboard, Compass, BookOpen, User, type LucideIcon } from 'lucide-react';
 
 interface Props {
   username?: string | null;
@@ -14,7 +14,7 @@ type BottomNavItem = {
   key: string;
   href: string;
   icon: LucideIcon;
-  labelKey: 'dashboard' | 'explore' | 'myDecks' | 'settings' | 'profile';
+  labelKey: 'dashboard' | 'explore' | 'myDecks' | 'profile';
   match: string;
 };
 
@@ -33,9 +33,8 @@ export default function BottomNav({ username }: Props) {
   const items: BottomNavItem[] = useMemo(
     () => [
       { key: 'dashboard', href: '/dashboard',  icon: LayoutDashboard, labelKey: 'dashboard', match: '/dashboard'  },
-      { key: 'explore',   href: '/explore',    icon: Compass,         labelKey: 'explore',   match: '/explore'    },
       { key: 'decks',     href: '/flashcards', icon: BookOpen,        labelKey: 'myDecks',   match: '/flashcards' },
-      { key: 'settings',  href: '/settings',   icon: Settings,        labelKey: 'settings',  match: '/settings'   },
+      { key: 'explore',   href: '/explore',    icon: Compass,         labelKey: 'explore',   match: '/explore'    },
       { key: 'profile',   href: profileHref,   icon: User,            labelKey: 'profile',   match: '/creators'   },
     ],
     [profileHref],

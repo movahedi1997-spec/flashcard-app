@@ -3,6 +3,7 @@ import { LayoutDashboard, BookOpen, Compass, User, Settings, BarChart2, type Luc
 import { useTranslations } from 'next-intl';
 import NavLogo from './NavLogo';
 import BottomNav from './BottomNav';
+import LocaleSwitcher from './LocaleSwitcher';
 
 export type ActivePage = 'dashboard' | 'decks' | 'explore' | 'profile' | 'settings' | 'stats';
 
@@ -46,6 +47,20 @@ export default function AppNav({ username, activePage }: Props) {
       >
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
           <NavLogo />
+
+          {/* Mobile right side: locale switcher + settings shortcut on dashboard */}
+          <div className="flex items-center gap-1 sm:hidden">
+            <LocaleSwitcher />
+            {activePage === 'dashboard' && (
+              <Link
+                href="/settings"
+                aria-label="Settings"
+                className="flex items-center justify-center h-9 w-9 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition"
+              >
+                <Settings className="h-4 w-4" />
+              </Link>
+            )}
+          </div>
 
           {/* Desktop nav only — BottomNav handles mobile */}
           <nav className="hidden sm:flex items-center gap-0.5">

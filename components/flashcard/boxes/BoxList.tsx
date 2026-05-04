@@ -14,7 +14,7 @@
 import { useState, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { Plus, BookOpen, Upload, Loader2, AlertCircle } from 'lucide-react';
-import type { Deck } from '@/types/api';
+import type { Deck, Subject } from '@/types/api';
 import type { DeckUpdate } from '@/hooks/useBoxes';
 import BoxCard from './BoxCard';
 import BoxForm, { type DeckFormValues } from './BoxForm';
@@ -39,7 +39,7 @@ interface Props {
   loading: boolean;
   error: string | null;
   isPro?: boolean;
-  onCreateBox: (name: string, description?: string, subject?: undefined, color?: string, emoji?: string) => Promise<Deck | null>;
+  onCreateBox: (name: string, description?: string, subject?: Subject | null, color?: string, emoji?: string) => Promise<Deck | null>;
   onUpdateBox: (id: string, updates: DeckUpdate) => Promise<void>;
   onDeleteBox: (id: string) => Promise<void>;
   onOpenBox: (deckId: string) => void;
@@ -214,8 +214,8 @@ export default function BoxList({
       <BoxForm
         open={createOpen}
         onClose={() => setCreateOpen(false)}
-        onSubmit={({ name, description, color, emoji }: DeckFormValues) =>
-          void onCreateBox(name, description, undefined, color, emoji)
+        onSubmit={({ name, description, color, emoji, subject }: DeckFormValues) =>
+          void onCreateBox(name, description, subject, color, emoji)
         }
         mode="create"
         isPro={isPro}
@@ -225,8 +225,8 @@ export default function BoxList({
       <BoxForm
         open={!!editDeck}
         onClose={() => setEditDeck(null)}
-        onSubmit={({ name, description, color, emoji }: DeckFormValues) => {
-          if (editDeck) void onUpdateBox(editDeck.id, { title: name, description, color, emoji });
+        onSubmit={({ name, description, color, emoji, subject }: DeckFormValues) => {
+          if (editDeck) void onUpdateBox(editDeck.id, { title: name, description, color, emoji, subject });
           setEditDeck(null);
         }}
         initial={editDeck ? {
@@ -234,6 +234,7 @@ export default function BoxList({
           description: editDeck.description,
           color: editDeck.color,
           emoji: editDeck.emoji,
+          subject: editDeck.subject,
         } : undefined}
         mode="edit"
         isPro={isPro}

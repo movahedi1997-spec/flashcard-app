@@ -97,7 +97,7 @@ export function useBoxes() {
     async (
       name: string,
       description = '',
-      subject?: Subject,
+      subject?: Subject | null,
       color = 'indigo',
       emoji = '📚',
     ): Promise<Deck | null> => {

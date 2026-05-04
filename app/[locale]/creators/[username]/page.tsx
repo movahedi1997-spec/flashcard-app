@@ -17,6 +17,7 @@ import { query }          from '@/lib/db';
 import AppNav             from '@/components/AppNav';
 import ExploreDeckCard    from '@/components/ExploreDeckCard';
 import ProBadge           from '@/components/ProBadge';
+import ReportProfileButton from '@/components/ReportProfileButton';
 import type { PublicDeck } from '@/types/api';
 
 const _secret = new TextEncoder().encode(
@@ -235,6 +236,16 @@ export default async function CreatorProfilePage({ params }: Props) {
               <span className="text-gray-300">·</span>
               <span>Joined {joinYear}</span>
             </div>
+
+            {/* Report button — only for authenticated non-own-profile viewers */}
+            {authUser && !isOwnProfile && (
+              <div className="mt-3">
+                <ReportProfileButton
+                  reportedUserId={creator.id}
+                  reportedName={creator.username ?? creator.name}
+                />
+              </div>
+            )}
           </div>
         </div>
 
