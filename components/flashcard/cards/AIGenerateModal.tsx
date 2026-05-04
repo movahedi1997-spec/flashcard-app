@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Sparkles, Upload, FileText, X, CheckCircle2, AlertCircle, Zap } from 'lucide-react';
+import { Sparkles, Upload, FileText, X, CheckCircle2, AlertCircle, Zap, Coins } from 'lucide-react';
 
 interface Props {
   deckId: string;
@@ -14,6 +14,7 @@ interface Quota {
   used: number;
   limit: number | null;
   remaining: number | null;
+  credits: number;
 }
 
 type Mode = 'idle' | 'loading' | 'done' | 'error';
@@ -153,6 +154,7 @@ function QuotaBar({ quota }: { quota: Quota }) {
       </div>
       <p className={`text-xs mt-1.5 ${isDanger ? 'text-red-500' : isWarning ? 'text-amber-500' : 'text-indigo-400'}`}>
         {quota.used} / {quota.limit} cards used this month · Resets next month
+        {quota.credits > 0 && ` · +${quota.credits} bonus credits`}
       </p>
     </div>
   );
@@ -177,10 +179,9 @@ export default function AIGenerateModal({ deckId, onClose, onGenerated }: Props)
       .catch(() => {});
   }, []);
 
-  // Cap count to remaining quota
-  const effectiveMax = quota?.remaining !== null && quota?.remaining !== undefined
-    ? Math.min(50, quota.remaining)
-    : 50;
+  const totalAvailable = (quota?.remaining ?? 0) + (quota?.credits ?? 0);
+  const isExhausted = quota !== null && totalAvailable === 0;
+  const effectiveMax = quota ? Math.min(50, totalAvailable) : 50;
 
   async function handleGenerate() {
     if (tab === 'pdf' && !file)              { setMessage('Please select a PDF file.'); return; }
@@ -213,8 +214,6 @@ export default function AIGenerateModal({ deckId, onClose, onGenerated }: Props)
       setMessage('Network error. Please try again.');
     }
   }
-
-  const isExhausted = !quota?.isPro && quota?.remaining === 0;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
@@ -261,29 +260,63 @@ export default function AIGenerateModal({ deckId, onClose, onGenerated }: Props)
           {/* Idle / error state */}
           {(mode === 'idle' || mode === 'error') && (
             <>
-              {/* Quota bar */}
-              {quota && <QuotaBar quota={quota} />}
+              {/* Quota bar — hidden when exhausted (redundant with the exhausted screen) */}
+              {quota && !isExhausted && <QuotaBar quota={quota} />}
 
               {/* Exhausted state */}
               {isExhausted ? (
-                <div className="flex flex-col items-center py-8 gap-4 text-center">
-                  <div className="h-16 w-16 rounded-2xl bg-red-50 flex items-center justify-center">
-                    <Zap className="h-8 w-8 text-red-400" />
+                quota?.isPro ? (
+                  /* Pro user — monthly 499 used up, offer credits */
+                  <div className="flex flex-col items-center py-6 gap-4 text-center">
+                    <div className="h-16 w-16 rounded-2xl bg-amber-50 flex items-center justify-center">
+                      <Coins className="h-8 w-8 text-amber-400" />
+                    </div>
+                    <div>
+                      <p className="text-base font-bold text-gray-900">Monthly quota used up</p>
+                      <p className="text-sm text-gray-500 mt-1">
+                        You've used all 499 Pro cards this month.<br />
+                        Buy bonus credits to keep going — they never expire.
+                      </p>
+                    </div>
+                    <a
+                      href="/settings/billing"
+                      className="flex items-center justify-center gap-2 w-full rounded-xl bg-indigo-600 py-3 text-sm font-bold text-white hover:bg-indigo-700 transition-colors"
+                    >
+                      <Coins className="h-4 w-4" /> Buy more credits
+                    </a>
+                    <p className="text-xs text-gray-400">One-time purchase · Never expire · Works for flashcards &amp; quizzes</p>
                   </div>
-                  <div>
-                    <p className="text-base font-bold text-gray-900">Monthly limit reached</p>
-                    <p className="text-sm text-gray-500 mt-1">
-                      You've used all 189 free AI cards for this month.<br />Your quota resets at the start of next month.
-                    </p>
+                ) : (
+                  /* Free user — offer Pro upgrade (primary) or buy credits (secondary) */
+                  <div className="flex flex-col items-center py-6 gap-4 text-center">
+                    <div className="h-16 w-16 rounded-2xl bg-red-50 flex items-center justify-center">
+                      <Zap className="h-8 w-8 text-red-400" />
+                    </div>
+                    <div>
+                      <p className="text-base font-bold text-gray-900">Monthly limit reached</p>
+                      <p className="text-sm text-gray-500 mt-1">
+                        You've used all 189 free AI cards this month.<br />
+                        Upgrade for more, or top up with credits.
+                      </p>
+                    </div>
+                    <a
+                      href="/pricing"
+                      className="flex items-center justify-center gap-2 w-full rounded-xl bg-indigo-600 py-3 text-sm font-bold text-white hover:bg-indigo-700 transition-colors"
+                    >
+                      <Sparkles className="h-4 w-4" /> Go Pro — 499 cards/month
+                    </a>
+                    <p className="text-xs text-gray-400">€6.99/month · Cancel anytime</p>
+                    <div className="w-full border-t border-gray-100 pt-3">
+                      <p className="text-xs text-gray-500 mb-2">Or top up without subscribing</p>
+                      <a
+                        href="/settings/billing"
+                        className="flex items-center justify-center gap-2 w-full rounded-xl border border-gray-200 py-2.5 text-sm font-semibold text-gray-700 hover:border-indigo-300 hover:text-indigo-600 hover:bg-indigo-50 transition"
+                      >
+                        <Coins className="h-4 w-4" /> Buy credits
+                      </a>
+                    </div>
                   </div>
-                  <a
-                    href="/pricing"
-                    className="flex items-center justify-center gap-2 w-full rounded-xl bg-indigo-600 py-3 text-sm font-bold text-white hover:bg-indigo-700 transition-colors"
-                  >
-                    <Zap className="h-4 w-4" /> Upgrade to Pro — unlimited cards
-                  </a>
-                  <p className="text-xs text-gray-400">From €6.99/month · Cancel anytime</p>
-                </div>
+                )
               ) : (
                 <>
                   {/* Privacy notice */}
@@ -371,7 +404,7 @@ export default function AIGenerateModal({ deckId, onClose, onGenerated }: Props)
                     />
                     <div className="flex justify-between text-xs text-gray-400 mt-1">
                       <span>5</span>
-                      <span>{effectiveMax} remaining this month</span>
+                      <span>{effectiveMax} available</span>
                     </div>
                   </div>
 

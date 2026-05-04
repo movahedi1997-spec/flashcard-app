@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Loader2, Sparkles, Upload, FileText, X, Zap } from 'lucide-react';
+import { Loader2, Sparkles, Upload, FileText, X, Zap, Coins } from 'lucide-react';
 import Modal from '@/components/ui/Modal';
 import Button from '@/components/ui/Button';
 import type { QuizQuestion } from '@/types/api';
@@ -116,29 +116,63 @@ export default function QuizAIGenerateModal({ open, onClose, quizDeckId, onGener
   return (
     <Modal open={open} onClose={onClose} title="Generate Questions with AI" maxWidth="max-w-xl">
       <div className="flex flex-col gap-4">
-        {/* Quota bar */}
-        {quota && <QuotaBar quota={quota} />}
+        {/* Quota bar — hidden when exhausted (redundant with the exhausted screen) */}
+        {quota && !isExhausted && <QuotaBar quota={quota} />}
 
         {/* Exhausted state */}
         {isExhausted ? (
-          <div className="flex flex-col items-center py-8 gap-4 text-center">
-            <div className="h-16 w-16 rounded-2xl bg-red-50 flex items-center justify-center">
-              <Zap className="h-8 w-8 text-red-400" />
+          quota?.isPro ? (
+            /* Pro user — 499 monthly used up, offer credits */
+            <div className="flex flex-col items-center py-6 gap-4 text-center">
+              <div className="h-16 w-16 rounded-2xl bg-amber-50 flex items-center justify-center">
+                <Coins className="h-8 w-8 text-amber-400" />
+              </div>
+              <div>
+                <p className="text-base font-bold text-gray-900">Monthly quota used up</p>
+                <p className="text-sm text-gray-500 mt-1">
+                  You've used all 499 Pro questions this month.<br />
+                  Buy bonus credits to keep going — they never expire.
+                </p>
+              </div>
+              <a
+                href="/settings/billing"
+                className="flex items-center justify-center gap-2 w-full rounded-xl bg-indigo-600 py-3 text-sm font-bold text-white hover:bg-indigo-700 transition-colors"
+              >
+                <Coins className="h-4 w-4" /> Buy more credits
+              </a>
+              <p className="text-xs text-gray-400">One-time purchase · Never expire · Works for flashcards &amp; quizzes</p>
             </div>
-            <div>
-              <p className="text-base font-bold text-gray-900">Monthly limit reached</p>
-              <p className="text-sm text-gray-500 mt-1">
-                You've used all free AI questions for this month.<br />
-                Buy credits or upgrade to Pro for more.
-              </p>
+          ) : (
+            /* Free user — offer Pro (primary) or buy credits (secondary) */
+            <div className="flex flex-col items-center py-6 gap-4 text-center">
+              <div className="h-16 w-16 rounded-2xl bg-red-50 flex items-center justify-center">
+                <Zap className="h-8 w-8 text-red-400" />
+              </div>
+              <div>
+                <p className="text-base font-bold text-gray-900">Monthly limit reached</p>
+                <p className="text-sm text-gray-500 mt-1">
+                  You've used all 94 free AI questions this month.<br />
+                  Upgrade for more, or top up with credits.
+                </p>
+              </div>
+              <a
+                href="/pricing"
+                className="flex items-center justify-center gap-2 w-full rounded-xl bg-indigo-600 py-3 text-sm font-bold text-white hover:bg-indigo-700 transition-colors"
+              >
+                <Sparkles className="h-4 w-4" /> Go Pro — 499 questions/month
+              </a>
+              <p className="text-xs text-gray-400">€6.99/month · Cancel anytime</p>
+              <div className="w-full border-t border-gray-100 pt-3">
+                <p className="text-xs text-gray-500 mb-2">Or top up without subscribing</p>
+                <a
+                  href="/settings/billing"
+                  className="flex items-center justify-center gap-2 w-full rounded-xl border border-gray-200 py-2.5 text-sm font-semibold text-gray-700 hover:border-indigo-300 hover:text-indigo-600 hover:bg-indigo-50 transition"
+                >
+                  <Coins className="h-4 w-4" /> Buy credits
+                </a>
+              </div>
             </div>
-            <a
-              href="/settings/billing"
-              className="flex items-center justify-center gap-2 w-full rounded-xl bg-indigo-600 py-3 text-sm font-bold text-white hover:bg-indigo-700 transition-colors"
-            >
-              <Zap className="h-4 w-4" /> Buy credits or upgrade
-            </a>
-          </div>
+          )
         ) : (
           <>
         <div className="flex items-start gap-3 bg-indigo-50 rounded-xl px-4 py-3">
