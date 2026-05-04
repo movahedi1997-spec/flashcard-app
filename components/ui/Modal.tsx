@@ -22,9 +22,9 @@ export default function Modal({ open, onClose, title, children, maxWidth = 'max-
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4 pt-4 pb-20 sm:p-4">
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
-      <div className={`relative bg-white rounded-2xl shadow-2xl w-full ${maxWidth} flex flex-col max-h-[90vh]`}>
+      <div className={`relative bg-white rounded-2xl shadow-2xl w-full ${maxWidth} flex flex-col max-h-[calc(100dvh-6rem)] sm:max-h-[90vh]`}>
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200">
           <h2 className="text-lg font-semibold text-slate-800">{title}</h2>
           <button
@@ -34,7 +34,7 @@ export default function Modal({ open, onClose, title, children, maxWidth = 'max-
             <X size={18} />
           </button>
         </div>
-        <div className="overflow-y-auto p-6" style={{ WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain' }}>{children}</div>
+        <div className="overflow-y-auto p-6 pb-8 sm:pb-6" style={{ WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain' }}>{children}</div>
       </div>
     </div>
   );
