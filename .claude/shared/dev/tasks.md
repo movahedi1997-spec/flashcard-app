@@ -762,7 +762,7 @@ after TASK-052 is complete and signed off.
 
 | Order | Task | Note |
 |-------|------|------|
-| 1 | TASK-044 | Campus ambassador tooling |
+| 1 | TASK-045 | Dashboard 7-day forecast |
 | 2 | TASK-046 | Splash page redesign |
 | 3 | TASK-047 | Settings redesign |
 | 4 | TASK-048 | Report a profile |
@@ -770,7 +770,7 @@ after TASK-052 is complete and signed off.
 | 6 | TASK-050 | Mobile bottom nav |
 | 7 | TASK-051 | Explore redesign |
 | 8 | TASK-052 | Quiz mode |
-| — | TASK-045 | 7-day forecast (after TASK-052) |
+| — | TASK-044 | Campus ambassador tooling (after TASK-052) |
 | — | TASK-040 | iOS/iPad app (after TASK-052) |
 | — | TASK-042 | Full web i18n QA (after TASK-052) |
 | — | TASK-053 | Phase 5 QA gate (final) |
