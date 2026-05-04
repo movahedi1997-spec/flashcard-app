@@ -66,11 +66,11 @@ export async function GET(req: NextRequest) {
     query<DeckMaturityRow>(
       `SELECT
          d.id, d.title, d.color, d.emoji,
-         COUNT(ss.card_id) FILTER (WHERE ss.review_count = 0)::text AS new_count,
+         COUNT(c.id) FILTER (WHERE ss.card_id IS NULL OR ss.review_count = 0)::text AS new_count,
          COUNT(ss.card_id) FILTER (WHERE ss.review_count BETWEEN 1 AND 2)::text AS learning_count,
          COUNT(ss.card_id) FILTER (WHERE ss.review_count > 2 AND ss.interval <= 20)::text AS young_count,
          COUNT(ss.card_id) FILTER (WHERE ss.interval > 20)::text AS mature_count,
-         COUNT(ss.card_id) FILTER (WHERE ss.due_date <= CURRENT_DATE)::text AS due_today,
+         COUNT(c.id) FILTER (WHERE ss.card_id IS NULL OR ss.due_date <= CURRENT_DATE)::text AS due_today,
          COUNT(c.id)::text AS total_cards
        FROM decks d
        LEFT JOIN cards c ON c.deck_id = d.id AND c.user_id = $1
