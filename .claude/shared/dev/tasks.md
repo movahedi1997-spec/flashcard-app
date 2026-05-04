@@ -756,6 +756,25 @@
 ### Target: Month 4–6 post-launch | Gate: Phase 4 QA sign-off (TASK-042)
 ### Source: Founder brief 2026-05-04
 
+### Execution Order
+Implement in this sequence. TASK-040, TASK-042, and TASK-045 are deferred until
+after TASK-052 is complete and signed off.
+
+| Order | Task | Note |
+|-------|------|------|
+| 1 | TASK-044 | Campus ambassador tooling |
+| 2 | TASK-046 | Splash page redesign |
+| 3 | TASK-047 | Settings redesign |
+| 4 | TASK-048 | Report a profile |
+| 5 | TASK-049 | Report a deck |
+| 6 | TASK-050 | Mobile bottom nav |
+| 7 | TASK-051 | Explore redesign |
+| 8 | TASK-052 | Quiz mode |
+| — | TASK-045 | 7-day forecast (after TASK-052) |
+| — | TASK-040 | iOS/iPad app (after TASK-052) |
+| — | TASK-042 | Full web i18n QA (after TASK-052) |
+| — | TASK-053 | Phase 5 QA gate (final) |
+
 ---
 
 ### TASK-045
@@ -902,45 +921,68 @@
 ---
 
 ### TASK-052
-- **Title:** Quiz mode — deck quiz generator + AI quiz creator + explore filter
+- **Title:** Quiz decks — standalone MCQ type, SM-2 integration, Turbo mode, AI + manual creation
 - **Owner:** Frontend + Backend
 - **Priority:** High
-- **Dependencies:** TASK-051 (explore filter row needed for quiz-deck filter)
-- **Description:** Add a third study mode: Quiz. Unlike SRS (adaptive recall) and Cram (rapid review), Quiz presents multiple-choice questions generated from the deck's cards. Quizzes can be AI-generated or manually set up.
-  (1) **Quiz data model:** new table `quizzes (id, deck_id, user_id, is_public, created_at)` and `quiz_questions (id, quiz_id, card_id, question_text, correct_answer, distractors jsonb, explanation text)`. `distractors` is an array of 3 wrong answers. `explanation` is shown after answering.
-  (2) **Manual quiz creation:** on the deck detail page, a "Create Quiz" button opens a quiz builder. For each card, the user confirms or edits: the question text (defaults to card front), the correct answer (defaults to card back), and 3 distractors (user types them). Optional explanation field.
-  (3) **AI quiz generation:** on the quiz builder, an "Generate with AI" button sends the card's front/back to the AI and returns: a polished question, the correct answer, 3 plausible distractors, and a 1–2 sentence explanation. The user can accept or edit each generated question before saving.
-  (4) **Quiz play mode:** `StudyMode = 'quiz'` renders a multiple-choice UI. 4 options displayed in a 2×2 grid. After selecting, correct = green highlight, wrong = red + correct revealed. Explanation shown below. "Next" button advances. Score shown at the end (X/N correct, percentage).
-  (5) **Public quiz decks:** quizzes can be made public (`is_public = true`). Public quiz decks appear in Explore with a "Quiz" badge.
-  (6) **Explore filter:** add "Quiz" pill to the filter row in Explore (TASK-051). When active, only decks with a public quiz attached are shown.
-  (7) **AI quota:** AI quiz generation counts against the same AI card quota (Free: 189/month, Pro: unlimited) — each generated question counts as 1.
+- **Dependencies:** TASK-051 (explore filter row), TASK-004 (SM-2 algorithm)
+- **Description:** Introduce Quiz Decks as a **completely separate entity from Flashcard Decks**. A quiz deck cannot contain flashcards; a flashcard deck cannot contain quiz questions. They are parallel content types that share the same owner/user model and explore page but have distinct schemas, creation flows, and study modes.
+
+  **Data model (new tables):**
+  - `quiz_decks (id, user_id, title, description, color, emoji, is_public, slug, subject, created_at, updated_at)` — mirrors the `decks` table structure but is a separate table. No foreign key to `decks`.
+  - `quiz_questions (id, quiz_deck_id, user_id, question_text, correct_answer, option_a, option_b, explanation, ai_generated, created_at, updated_at)` — 3-option MCQ: `correct_answer` is one of `option_a | option_b | correct_answer` (the correct answer is always stored explicitly; the 3 displayed options are `correct_answer`, `option_a`, `option_b`, shuffled on render).
+  - `quiz_srs_state (question_id, user_id, interval, ease_factor, due_date, review_count, created_at, updated_at)` — SM-2 state per question per user. Correct answer = "good" grade (SM-2 grade 4); wrong answer = "again" (SM-2 grade 1). This mirrors `srs_state` for flashcards exactly.
+  - `quiz_review_log (id, question_id, user_id, correct, reviewed_at)` — audit log for quiz attempts.
+
+  **Creation flows:**
+  - (1) **"New Quiz Deck" button** — separate from "New Deck" button in My Decks. Opens a creation form identical in structure to BoxForm (name, description, colour, emoji) but creates a `quiz_deck` row.
+  - (2) **Manual question creation:** inside a quiz deck, an "Add Question" form takes: question text, correct answer, option A, option B, optional explanation. User can add as many questions as needed. Each question is stored in `quiz_questions`.
+  - (3) **AI question generation:** "Generate with AI" button (same UX as flashcard AI generator). User pastes notes or a topic; AI generates N questions each with question text, correct answer, two plausible distractors, and a 1–2 sentence explanation. User reviews and accepts/edits before saving. Counts against the same AI quota (Free: 189 AI items/month, Pro: unlimited).
+
+  **Study modes for quiz decks:**
+  - (4) **SRS Quiz mode (default):** fetches due questions from `quiz_srs_state` (same SM-2 scheduling logic as flashcard SRS). Presents each as a 3-option MCQ — options shuffled randomly on each render. Correct → SM-2 grade 4 (good); Wrong → SM-2 grade 1 (again) + correct answer revealed + explanation shown. Session ends when all due questions answered.
+  - (5) **Turbo Quiz mode:** all questions in the deck, no scheduling, rapid fire. Same 3-option MCQ UI. Score screen at end (X/N correct, time taken). Does not update SM-2 state — Turbo is practice-only, no scheduling side effects.
+
+  **UI/UX — Quiz Deck pages:**
+  - (6) My Decks page shows both flashcard decks and quiz decks in the same grid. Quiz decks have a distinct badge ("Quiz") in the top-right corner of their card so users can distinguish them at a glance.
+  - (7) The mode selector for quiz decks shows "SRS Quiz" and "Turbo Quiz" — not "SRS Review" and "Cram" (those are flashcard modes only).
+  - (8) Quiz question list view (inside a quiz deck) shows question text, correct answer, and an expand toggle for options + explanation — mirrors CardItem layout.
+
+  **Explore integration:**
+  - (9) Public quiz decks appear in the Explore feed alongside flashcard decks. Each quiz deck card shows the "Quiz" badge. The "Quiz" filter pill in Explore (TASK-051) filters to show only quiz decks.
+
+  **AI quota:**
+  - (10) Each AI-generated question counts as 1 unit against the monthly AI quota (same pool as flashcard AI generation).
+
 - **Acceptance Criteria:**
-  - Quiz builder accessible from deck detail page
-  - AI generates question + 3 distractors + explanation per card in under 3s
-  - Quiz play mode renders 4-option MCQ, reveals answer on selection
-  - Score screen shown at end of quiz
-  - Public quiz decks visible in Explore with "Quiz" badge
-  - "Quiz" filter pill in Explore filters correctly
-  - AI quota correctly debited for generated questions
+  - `quiz_decks`, `quiz_questions`, `quiz_srs_state`, `quiz_review_log` tables created and migrated
+  - Quiz decks and flashcard decks are fully separate — no shared rows, no cross-type contamination
+  - 3-option MCQ renders with shuffled options on each question load
+  - Correct answer triggers SM-2 grade 4; wrong answer triggers SM-2 grade 1
+  - Turbo Quiz mode completes without writing to `quiz_srs_state`
+  - AI generation produces question + correct answer + 2 distractors + explanation
+  - AI quota correctly debited
+  - Quiz decks visible in Explore with "Quiz" badge
+  - "Quiz" filter pill in Explore shows only quiz decks (no flashcard decks)
+  - My Decks page shows both types with clear visual distinction
 
 ---
 
 ### TASK-053
-- **Title:** Phase 5 QA — full regression across web + mobile (all locales, new features)
+- **Title:** Phase 5 QA — full regression across web (all locales, all new features)
 - **Owner:** QA Tester
 - **Priority:** High
-- **Dependencies:** TASK-045 through TASK-052, TASK-040 (iOS), TASK-042 (web i18n QA)
-- **Description:** Full QA gate for Phase 5 before Phase 6.
+- **Dependencies:** TASK-044, TASK-046–052 (all complete); TASK-040, TASK-042, TASK-045 run in parallel or after
+- **Description:** Full QA gate for Phase 5 web features before Phase 6. iOS QA (TASK-042 + TASK-040) runs separately on its own track.
   (1) Re-run the P0 web checklist in all 5 locales after all Phase 5 changes.
-  (2) New feature QA: dashboard 7-day forecast, splash auto-redirect, settings redesign, report flows (profile + deck), mobile bottom nav, explore redesign, quiz mode.
-  (3) iOS P0 regression (TASK-040 deliverables): signup, login, deck creation, study session, push notifications, offline sync.
-  (4) Admin panel: verify report queues for both profile and deck reports, test all moderation actions (dismiss, warn, suspend, remove).
-  (5) Cross-feature: quiz in all 5 locales (quiz strings must be translated), explore search returns results in correct locale.
+  (2) New feature QA: splash auto-redirect, settings redesign, report flows (profile + deck), mobile bottom nav, explore redesign (feed, search, filter pills), quiz mode (SRS + Turbo, creation, AI generation).
+  (3) Admin panel: verify report queues for both profile and deck reports, test all moderation actions (dismiss, warn, suspend, remove).
+  (4) Cross-feature: quiz deck creation and study in all 5 locales (quiz strings translated), explore search returns deck and profile results, filter pills work correctly for both flashcard and quiz deck types.
+  (5) My Decks page: flashcard decks and quiz decks coexist without confusion, badges correct, no cross-type contamination.
 - **Acceptance Criteria:**
   - All P0 flows pass on Chrome, Safari, Firefox (desktop + mobile web)
-  - All new Phase 5 features pass their individual acceptance criteria
-  - iOS P0 regression complete
+  - All Phase 5 web features pass their acceptance criteria
   - Admin moderation flows tested end-to-end
+  - Quiz decks and flashcard decks confirmed fully separate in all flows
   - QA sign-off logged in dev/progress.md
 
 ---
