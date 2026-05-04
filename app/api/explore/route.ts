@@ -99,7 +99,7 @@ export async function GET(req: NextRequest) {
     }
 
     const orderClause = sort === 'trending'
-      ? 'COALESCE(copy_count,0) DESC, created_at DESC, id DESC'
+      ? 'COALESCE(copy_count::integer,0) DESC, created_at DESC, id DESC'
       : 'created_at DESC, id DESC';
 
     const queryVals = [...sharedVals, limit, offset];
@@ -121,7 +121,7 @@ export async function GET(req: NextRequest) {
                COALESCE(u.is_verified_creator,false) AS is_verified_creator,
                d.title, d.description, d.color, d.emoji, d.slug, d.subject,
                COUNT(c.id)::text AS item_count,
-               COALESCE(d.copy_count,0)::text AS copy_count,
+               COALESCE(d.copy_count::text,'0') AS copy_count,
                d.created_at, d.updated_at, 'flashcard'::text AS deck_type
         FROM decks d
         JOIN users u ON u.id=d.user_id
@@ -146,7 +146,7 @@ export async function GET(req: NextRequest) {
                COALESCE(u.is_verified_creator,false) AS is_verified_creator,
                d.title, d.description, d.color, d.emoji, d.slug, d.subject,
                COUNT(c.id)::text AS item_count,
-               COALESCE(d.copy_count,0)::text AS copy_count,
+               COALESCE(d.copy_count::text,'0') AS copy_count,
                d.created_at, d.updated_at, 'flashcard'::text AS deck_type
         FROM decks d JOIN users u ON u.id=d.user_id LEFT JOIN cards c ON c.deck_id=d.id
         WHERE d.is_public=true${extraWhere}
