@@ -82,7 +82,7 @@ const pwaConfig = {
       // ── Study & dashboard pages — StaleWhileRevalidate ───────────────────
       // Renders from cache instantly, revalidates in background.
       {
-        urlPattern: /^\/(dashboard|flashcards).*/i,
+        urlPattern: /^\/((?:de|fr|es|fa)\/)?(?:dashboard|flashcards)/i,
         handler: 'StaleWhileRevalidate',
         options: {
           cacheName: 'study-pages',

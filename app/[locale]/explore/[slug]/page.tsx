@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { query } from '@/lib/db';
 import { getTranslations } from 'next-intl/server';
+import { hreflangAlternates } from '@/lib/hreflang';
 import AppNav from '@/components/AppNav';
 import CopyDeckButton from './CopyDeckButton';
 
@@ -128,7 +129,7 @@ async function tryGetUser(): Promise<{ userId: string; username: string | null }
 
 // ── generateMetadata ──────────────────────────────────────────────────────────
 
-type Props = { params: { slug: string } };
+type Props = { params: { slug: string; locale: string } };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const deck = await getDeckBySlug(params.slug);
@@ -138,8 +139,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description = deck.description ||
     `Study "${deck.title}" with free spaced-repetition flashcards on FlashcardAI. Copy this deck and start learning today.`;
   const siteUrl     = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://flashcard.app';
-  const pageUrl     = `${siteUrl}/explore/${deck.slug}`;
+  const deckPath    = `/explore/${deck.slug}`;
   const ogImageUrl  = `${siteUrl}/api/og?deckId=${deck.id}&format=landscape`;
+  const ogUrl       = `${siteUrl}${params.locale === 'en' ? '' : `/${params.locale}`}${deckPath}`;
 
   return {
     title,
@@ -147,7 +149,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title,
       description,
-      url: pageUrl,
+      url: ogUrl,
       type: 'website',
       siteName: 'FlashcardAI',
       images: [{ url: ogImageUrl, width: 1200, height: 630, alt: deck.title }],
@@ -158,7 +160,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       images: [ogImageUrl],
     },
-    alternates: { canonical: pageUrl },
+    alternates: hreflangAlternates(params.locale, deckPath),
   };
 }
 
@@ -303,10 +305,9 @@ export default async function DeckLandingPage({ params }: Props) {
                           {showBack ? (
                             <p className="text-sm text-gray-800 leading-relaxed">{card.back}</p>
                           ) : (
-                            <div className="relative">
-                              <p className="text-sm text-gray-300 select-none blur-sm leading-relaxed">
-                                Hidden back content
-                              </p>
+                            <div className="space-y-1.5 pt-0.5">
+                              <div className="h-2.5 w-4/5 rounded-full bg-gray-200" />
+                              <div className="h-2.5 w-3/5 rounded-full bg-gray-200" />
                             </div>
                           )}
                         </div>

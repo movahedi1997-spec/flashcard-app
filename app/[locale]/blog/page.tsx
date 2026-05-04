@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { ArrowRight, Clock } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { BLOG_POSTS } from '@/lib/blog';
 import { hreflangAlternates } from '@/lib/hreflang';
+import { getTranslations } from 'next-intl/server';
 
 export async function generateMetadata({
   params,
@@ -27,8 +28,9 @@ const CATEGORY_COLORS: Record<string, string> = {
   Anleitung:  'bg-sky-50 text-sky-700',
 };
 
-export default function BlogPage() {
+export default async function BlogPage() {
   const [featured, ...rest] = BLOG_POSTS;
+  const t = await getTranslations('blog');
 
   return (
     <>
@@ -51,10 +53,10 @@ export default function BlogPage() {
               FlashcardAI Blog
             </span>
             <h1 className="text-4xl font-black text-white sm:text-5xl">
-              Lernen mit <span className="shimmer-text">Wissenschaft</span>
+              {t('heroHeadBefore')} <span className="shimmer-text">{t('heroHeadAccent')}</span>
             </h1>
             <p className="mx-auto mt-4 max-w-xl text-slate-400">
-              Tipps, Hintergründe und Anleitungen rund um intelligentes Lernen, Spaced Repetition und FlashcardAI.
+              {t('heroSubtitle')}
             </p>
           </div>
         </section>
@@ -76,7 +78,7 @@ export default function BlogPage() {
                 </span>
                 <span className="flex items-center gap-1 text-xs text-gray-400">
                   <Clock className="h-3 w-3" />
-                  {featured.readTime} Min.
+                  {featured.readTime} {t('minAbbr')}
                 </span>
               </div>
               <h2 className="text-xl font-bold text-gray-900 group-hover:text-indigo-600 transition">
@@ -84,7 +86,7 @@ export default function BlogPage() {
               </h2>
               <p className="mt-2 text-sm text-gray-500 line-clamp-3">{featured.excerpt}</p>
               <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-indigo-600">
-                Weiterlesen <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
+                {t('readMore')} <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
               </span>
             </div>
           </Link>
@@ -104,7 +106,7 @@ export default function BlogPage() {
                   </span>
                   <span className="flex items-center gap-1 text-xs text-gray-400">
                     <Clock className="h-3 w-3" />
-                    {post.readTime} Min.
+                    {post.readTime} {t('minAbbr')}
                   </span>
                 </div>
                 <h3 className="text-base font-bold text-gray-900 group-hover:text-indigo-600 transition line-clamp-2">
@@ -112,7 +114,7 @@ export default function BlogPage() {
                 </h3>
                 <p className="mt-2 flex-1 text-sm text-gray-500 line-clamp-3">{post.excerpt}</p>
                 <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-indigo-600">
-                  Lesen <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
+                  {t('read')} <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
                 </span>
               </Link>
             ))}

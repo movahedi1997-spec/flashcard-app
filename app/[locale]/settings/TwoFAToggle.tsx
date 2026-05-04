@@ -35,7 +35,7 @@ export default function TwoFAToggle({ initialEnabled }: { initialEnabled: boolea
         return;
       }
       setEnabled(data.two_fa_enabled as boolean);
-      setSuccess(data.two_fa_enabled ? '2FA enabled.' : '2FA disabled.');
+      setSuccess(data.two_fa_enabled ? t('twoFAEnabled') : t('twoFADisabled'));
     } catch {
       setError(t('errorNetworkError'));
     } finally {
@@ -65,7 +65,7 @@ export default function TwoFAToggle({ initialEnabled }: { initialEnabled: boolea
       setEnabled(false);
       setAwaitingCode(false);
       setCode('');
-      setSuccess('2FA disabled.');
+      setSuccess(t('twoFADisabled'));
     } catch {
       setError(t('errorNetworkError'));
     } finally {

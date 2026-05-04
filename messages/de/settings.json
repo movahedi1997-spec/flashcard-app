@@ -89,5 +89,7 @@
   "errorPasswordsMismatch": "Passwörter stimmen nicht überein.",
   "errorReasonTooShort": "Bitte gib einen Grund an (mindestens 6 Zeichen).",
   "errorDeleteFailed": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
-  "errorDeleteNetwork": "Netzwerkfehler. Bitte überprüfe deine Verbindung und versuche es erneut."
+  "errorDeleteNetwork": "Netzwerkfehler. Bitte überprüfe deine Verbindung und versuche es erneut.",
+  "twoFAEnabled": "2FA aktiviert.",
+  "twoFADisabled": "2FA deaktiviert."
 }

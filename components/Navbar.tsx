@@ -43,12 +43,12 @@ export default function Navbar() {
           >
             {t('subjects')}
           </a>
-          <a
+          <Link
             href="/blog"
             className="rounded-lg px-4 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-100 hover:text-gray-900"
           >
             {t('blog')}
-          </a>
+          </Link>
           <InstallPWAButton />
           <LocaleSwitcher />
           <div className="mx-2 h-5 w-px bg-gray-200" />
@@ -83,7 +83,7 @@ export default function Navbar() {
             <a href="#how-it-works" onClick={() => setOpen(false)} className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100">{t('howItWorks')}</a>
             <a href="#features"     onClick={() => setOpen(false)} className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100">{t('features')}</a>
             <a href="#subjects"     onClick={() => setOpen(false)} className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100">{t('subjects')}</a>
-            <a href="/blog"         onClick={() => setOpen(false)} className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100">{t('blog')}</a>
+            <Link href="/blog"      onClick={() => setOpen(false)} className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100">{t('blog')}</Link>
             <div className="my-1 h-px bg-gray-100" />
             <Link href="/login"  onClick={() => setOpen(false)} className="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100">{t('login')}</Link>
             <Link href="/signup" onClick={() => setOpen(false)} className="rounded-xl bg-indigo-600 px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-indigo-700">{t('getStarted')}</Link>

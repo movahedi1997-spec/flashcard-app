@@ -1,6 +1,7 @@
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { ArrowRight, Clock } from 'lucide-react';
 import { BLOG_POSTS } from '@/lib/blog';
+import { getTranslations } from 'next-intl/server';
 
 const CATEGORY_COLORS: Record<string, string> = {
   Produkt:     'bg-indigo-50 text-indigo-700',
@@ -10,7 +11,8 @@ const CATEGORY_COLORS: Record<string, string> = {
   Anleitung:   'bg-sky-50 text-sky-700',
 };
 
-export default function BlogPreview() {
+export default async function BlogPreview() {
+  const t = await getTranslations('blog');
   const posts = BLOG_POSTS.slice(0, 3);
 
   return (
@@ -22,15 +24,15 @@ export default function BlogPreview() {
               Blog
             </span>
             <h2 className="text-4xl font-black tracking-tight text-gray-900">
-              Wissen, das{' '}
-              <span className="gradient-text">hilft</span>
+              {t('sectionHeadBefore')}{' '}
+              <span className="gradient-text">{t('sectionHeadAccent')}</span>
             </h2>
           </div>
           <Link
             href="/blog"
             className="hidden items-center gap-1.5 text-sm font-semibold text-indigo-600 hover:underline sm:flex"
           >
-            Alle Artikel
+            {t('allArticles')}
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
@@ -49,14 +51,14 @@ export default function BlogPreview() {
                 </span>
                 <span className="flex items-center gap-1 text-xs text-gray-400">
                   <Clock className="h-3 w-3" />
-                  {post.readTime} Min.
+                  {post.readTime} {t('minAbbr')}
                 </span>
               </div>
               <h3 className="flex-1 text-sm font-bold text-gray-900 group-hover:text-indigo-600 transition line-clamp-3">
                 {post.title}
               </h3>
               <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-indigo-600">
-                Lesen <ArrowRight className="h-3 w-3 transition group-hover:translate-x-0.5" />
+                {t('read')} <ArrowRight className="h-3 w-3 transition group-hover:translate-x-0.5" />
               </span>
             </Link>
           ))}
@@ -64,7 +66,7 @@ export default function BlogPreview() {
 
         <div className="mt-8 text-center sm:hidden">
           <Link href="/blog" className="text-sm font-semibold text-indigo-600 hover:underline">
-            Alle Artikel ansehen →
+            {t('allArticlesMobile')}
           </Link>
         </div>
       </div>

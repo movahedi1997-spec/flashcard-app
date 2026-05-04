@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { ArrowLeft, Clock } from 'lucide-react';
+import { getTranslations } from 'next-intl/server';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { BLOG_POSTS, getBlogPost } from '@/lib/blog';
@@ -39,11 +40,12 @@ const CATEGORY_COLORS: Record<string, string> = {
   Anleitung:   'bg-sky-50 text-sky-700',
 };
 
-export default function BlogPostPage({ params }: Props) {
+export default async function BlogPostPage({ params }: Props) {
   const post = getBlogPost(params.slug);
   if (!post) notFound();
 
   const otherPosts = BLOG_POSTS.filter((p) => p.slug !== post.slug).slice(0, 3);
+  const t = await getTranslations('blog');
 
   return (
     <>
@@ -68,7 +70,7 @@ export default function BlogPostPage({ params }: Props) {
               className="mb-6 inline-flex items-center gap-1.5 text-sm font-medium text-slate-400 transition hover:text-white"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
-              Alle Artikel
+              {t('backToAll')}
             </Link>
 
             <div className="mb-4 flex flex-wrap items-center gap-3">
@@ -77,7 +79,7 @@ export default function BlogPostPage({ params }: Props) {
               </span>
               <span className="flex items-center gap-1 text-xs text-slate-400">
                 <Clock className="h-3 w-3" />
-                {post.readTime} Min. Lesezeit
+                {post.readTime} {t('readingTimeSuffix')}
               </span>
               <span className="text-xs text-slate-500">
                 {new Date(post.date).toLocaleDateString(DATE_LOCALE_MAP[params.locale] ?? 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
@@ -108,13 +110,13 @@ export default function BlogPostPage({ params }: Props) {
 
           {/* CTA */}
           <div className="mt-16 rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-600 p-8 text-center text-white">
-            <p className="text-lg font-bold">Bereit, smarter zu lernen?</p>
-            <p className="mt-1 text-sm text-indigo-200">Kostenlos starten — kein Account nötig zum Stöbern.</p>
+            <p className="text-lg font-bold">{t('ctaHeading')}</p>
+            <p className="mt-1 text-sm text-indigo-200">{t('ctaSubheading')}</p>
             <Link
               href="/signup"
               className="mt-5 inline-flex items-center gap-2 rounded-xl bg-white px-6 py-2.5 text-sm font-bold text-indigo-700 transition hover:bg-indigo-50"
             >
-              Jetzt kostenlos registrieren
+              {t('ctaButton')}
             </Link>
           </div>
         </article>
@@ -123,7 +125,7 @@ export default function BlogPostPage({ params }: Props) {
         {otherPosts.length > 0 && (
           <section className="border-t border-gray-100 bg-gray-50 py-14">
             <div className="mx-auto max-w-3xl px-6">
-              <h2 className="mb-6 text-lg font-bold text-gray-900">Weitere Artikel</h2>
+              <h2 className="mb-6 text-lg font-bold text-gray-900">{t('moreArticles')}</h2>
               <div className="grid gap-4 sm:grid-cols-3">
                 {otherPosts.map((p) => (
                   <Link
@@ -135,7 +137,7 @@ export default function BlogPostPage({ params }: Props) {
                     <p className="text-sm font-bold text-gray-900 group-hover:text-indigo-600 transition line-clamp-2">
                       {p.title}
                     </p>
-                    <p className="mt-1 text-xs text-gray-400">{p.readTime} Min.</p>
+                    <p className="mt-1 text-xs text-gray-400">{p.readTime} {t('minAbbr')}</p>
                   </Link>
                 ))}
               </div>

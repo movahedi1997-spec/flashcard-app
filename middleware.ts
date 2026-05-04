@@ -74,11 +74,14 @@ export async function middleware(request: NextRequest) {
   // ── Cookie-based locale redirect (persists user's explicit language choice) ─
   const savedLocale = request.cookies.get('NEXT_LOCALE')?.value;
   const hasLocalePrefix = /^\/(en|de|fr|es|fa)(\/|$)/.test(pathname);
+  // Static public files (SW, workbox chunks, manifest, images…) must never be redirected
+  const STATIC_EXT_RE = /\.(?:js|mjs|json|svg|jpg|jpeg|ico|txt|xml|webp|woff2?|ttf|map|css)$/i;
   if (
     !hasLocalePrefix &&
     savedLocale &&
     savedLocale !== routing.defaultLocale &&
-    (routing.locales as readonly string[]).includes(savedLocale)
+    (routing.locales as readonly string[]).includes(savedLocale) &&
+    !STATIC_EXT_RE.test(pathname)
   ) {
     const url = request.nextUrl.clone();
     url.pathname = `/${savedLocale}${pathname === '/' ? '' : pathname}`;
@@ -122,6 +125,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|sitemap\\.xml|robots\\.txt|icons|uploads|.*\\.png$).*)',
+    '/((?!_next/static|_next/image|favicon\\.ico|sitemap\\.xml|robots\\.txt|icons|uploads|.*\\.(?:png|jpg|jpeg|svg|js|mjs|json|webp|woff2?|ttf|map|css|ico|txt|xml)$).*)',
   ],
 };

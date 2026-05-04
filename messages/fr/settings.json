@@ -89,5 +89,7 @@
   "errorPasswordsMismatch": "Les mots de passe ne correspondent pas.",
   "errorReasonTooShort": "Veuillez fournir une raison (au moins 6 caractères).",
   "errorDeleteFailed": "Quelque chose s'est mal passé. Veuillez réessayer.",
-  "errorDeleteNetwork": "Erreur réseau. Veuillez vérifier ta connexion et réessayer."
+  "errorDeleteNetwork": "Erreur réseau. Veuillez vérifier ta connexion et réessayer.",
+  "twoFAEnabled": "2FA activé.",
+  "twoFADisabled": "2FA désactivé."
 }

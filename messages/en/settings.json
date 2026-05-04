@@ -89,5 +89,7 @@
   "errorPasswordsMismatch": "Passwords do not match.",
   "errorReasonTooShort": "Please provide a reason (at least 6 characters).",
   "errorDeleteFailed": "Something went wrong. Please try again.",
-  "errorDeleteNetwork": "Network error. Please check your connection and try again."
+  "errorDeleteNetwork": "Network error. Please check your connection and try again.",
+  "twoFAEnabled": "2FA enabled.",
+  "twoFADisabled": "2FA disabled."
 }
