@@ -8,6 +8,13 @@
  *
  * Free users: 189 AI cards/month
  * Pro users:  499 AI cards/month
+ *
+ * PRIVACY POLICY — TEMPORARY UPLOAD ONLY
+ * Uploaded PDFs and pasted source text are processed in memory for this
+ * single request only. They are NEVER written to disk, persisted to the
+ * database, or stored on any object store. After the AI provider returns
+ * generated cards, the input buffer/text is dropped and garbage-collected.
+ * Only the generated flashcards are saved (in `cards`).
  */
 
 import { NextRequest, NextResponse } from 'next/server';

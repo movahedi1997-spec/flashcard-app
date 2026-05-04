@@ -286,6 +286,11 @@ export default function AIGenerateModal({ deckId, onClose, onGenerated }: Props)
                 </div>
               ) : (
                 <>
+                  {/* Privacy notice */}
+                  <p className="text-xs text-gray-400">
+                    Your PDF and text are used only to generate cards and are never stored on our servers.
+                  </p>
+
                   {/* Tab switcher */}
                   <div className="flex gap-1 p-1 bg-gray-100 rounded-xl">
                     {(['pdf', 'text'] as const).map((t) => (

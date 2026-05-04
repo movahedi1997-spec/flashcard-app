@@ -3,6 +3,13 @@
 //   FormData: { quizDeckId, file?, text?, count? }
 //   JSON:     { quizDeckId, text, count? }
 // Generates MCQ questions using AI and inserts them into the quiz deck.
+//
+// PRIVACY POLICY — TEMPORARY UPLOAD ONLY
+// Uploaded PDFs and pasted source text are processed in memory for this
+// single request only. They are NEVER written to disk, persisted to the
+// database, or stored on any object store. After the AI provider returns
+// generated questions, the input buffer/text is dropped and garbage-collected.
+// Only the generated MCQ questions are saved (in `quiz_questions`).
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { jwtVerify } from 'jose';

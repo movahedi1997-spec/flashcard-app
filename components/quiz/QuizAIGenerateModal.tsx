@@ -64,6 +64,10 @@ export default function QuizAIGenerateModal({ open, onClose, quizDeckId, onGener
           </p>
         </div>
 
+        <p className="text-xs text-gray-400 -mt-2">
+          Your PDF and text are used only to generate questions and are never stored on our servers.
+        </p>
+
         {/* Tab switcher */}
         <div className="flex gap-1 p-1 bg-gray-100 rounded-xl">
           {(['pdf', 'text'] as const).map((t) => (
