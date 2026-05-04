@@ -55,7 +55,8 @@ export default function BottomNav({ username }: Props) {
               key={key}
               href={href}
               aria-current={active ? 'page' : undefined}
-              className={`flex flex-col items-center gap-0.5 flex-1 py-2 text-xs font-medium transition-colors ${
+              style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent' }}
+            className={`flex flex-col items-center gap-0.5 flex-1 py-2 text-xs font-medium transition-colors ${
                 active ? 'text-indigo-600' : 'text-gray-400 hover:text-gray-600'
               }`}
             >

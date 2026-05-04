@@ -209,6 +209,37 @@ async function parseQuestions(raw: string): Promise<GeneratedQuestion[]> {
   );
 }
 
+export async function generateQuizQuestionsFromPdf(pdfBuffer: Buffer, count: number): Promise<GenerateQuizResult> {
+  const base64 = pdfBuffer.toString('base64');
+  const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+      'Content-Type': 'application/json',
+      'HTTP-Referer': 'https://flashcardai.app',
+      'X-Title': 'FlashcardAI',
+    },
+    body: JSON.stringify({
+      model: 'google/gemini-2.0-flash-001',
+      messages: [
+        {
+          role: 'user',
+          content: [
+            { type: 'image_url', image_url: { url: `data:application/pdf;base64,${base64}` } },
+            { type: 'text', text: `${QUIZ_SYSTEM_PROMPT}\n\nGenerate exactly ${count} MCQ questions from this PDF. Include content from diagrams, charts, and images you can see — not just the text.` },
+          ],
+        },
+      ],
+      temperature: 0.4,
+      response_format: { type: 'json_object' },
+    }),
+  });
+  if (!res.ok) throw new Error(`OpenRouter ${res.status}`);
+  const data = await res.json() as { choices: { message: { content: string } }[] };
+  const questions = await parseQuestions(data.choices[0]?.message?.content ?? '');
+  return { questions, provider: 'openrouter', model: 'gemini-2.0-flash (vision)' };
+}
+
 export async function generateQuizQuestions(text: string, count: number): Promise<GenerateQuizResult> {
   const userPrompt = `Generate exactly ${count} MCQ questions from the following content.\n\n${text.slice(0, 12000)}`;
 

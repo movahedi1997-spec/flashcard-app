@@ -138,7 +138,7 @@ export default function BoxList({
     <div>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-slate-800">My Decks</h2>
-        <div className="flex gap-2">
+        <div className="flex gap-1.5 sm:gap-2">
           <input
             ref={importRef}
             type="file"
@@ -153,7 +153,7 @@ export default function BoxList({
             disabled={importing}
           >
             {importing ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
-            Import
+            <span className="hidden sm:inline">Import</span>
           </Button>
           <Button
             variant="secondary"
@@ -161,10 +161,11 @@ export default function BoxList({
             onClick={() => setAnkiOpen(true)}
           >
             <Upload size={14} />
-            Anki
+            <span className="hidden sm:inline">Anki</span>
           </Button>
           <Button size="sm" onClick={() => setCreateOpen(true)}>
-            <Plus size={14} /> New Deck
+            <Plus size={14} />
+            <span className="hidden sm:inline">New Deck</span>
           </Button>
         </div>
       </div>

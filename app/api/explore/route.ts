@@ -20,6 +20,7 @@ export const dynamic = 'force-dynamic';
 const VALID_SUBJECTS: Subject[] = [
   'medicine', 'pharmacy', 'chemistry',
   'languages', 'law', 'science', 'history', 'mathematics', 'computer_science',
+  'physics', 'biology', 'philosophy', 'psychology', 'literature', 'economics',
   'other',
 ];
 const MAX_LIMIT = 50;

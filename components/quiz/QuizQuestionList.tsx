@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Plus, Pencil, Trash2, ChevronDown, ChevronUp, Sparkles, Loader2, AlertCircle } from 'lucide-react';
-import type { QuizQuestion } from '@/types/api';
+import { Plus, Pencil, Trash2, ChevronDown, ChevronUp, Sparkles, Loader2, AlertCircle, Share2, Check } from 'lucide-react';
+import type { QuizDeck, QuizQuestion } from '@/types/api';
 import type { QuizQuestionUpdate } from '@/hooks/useQuizQuestions';
 import Button from '@/components/ui/Button';
 import ConfirmDialog from '@/components/ui/ConfirmDialog';
@@ -10,6 +10,7 @@ import QuizQuestionForm, { type QuizQuestionFormValues } from './QuizQuestionFor
 import QuizAIGenerateModal from './QuizAIGenerateModal';
 
 interface Props {
+  deck: QuizDeck;
   deckId: string;
   questions: QuizQuestion[];
   loading: boolean;
@@ -24,7 +25,7 @@ interface Props {
 }
 
 export default function QuizQuestionList({
-  deckId, questions, loading, error, isPro = false,
+  deck, deckId, questions, loading, error, isPro = false,
   onCreateQuestion, onUpdateQuestion, onDeleteQuestion, onAppendQuestions, onStudy,
 }: Props) {
   const [addOpen, setAddOpen] = useState(false);
@@ -32,8 +33,21 @@ export default function QuizQuestionList({
   const [confirmId, setConfirmId] = useState<string | null>(null);
   const [aiOpen, setAiOpen] = useState(false);
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   void isPro;
+
+  async function handleShare() {
+    if (!deck.isPublic || !deck.slug) return;
+    const url = `${window.location.origin}/explore/${deck.slug}`;
+    if (navigator.share) {
+      await navigator.share({ title: deck.title, url }).catch(() => {});
+    } else {
+      await navigator.clipboard.writeText(url).catch(() => {});
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  }
 
   async function handleCreate(values: QuizQuestionFormValues) {
     await onCreateQuestion(deckId, values);
@@ -59,11 +73,17 @@ export default function QuizQuestionList({
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-slate-800">Questions ({questions.length})</h2>
         <div className="flex gap-2">
+          {deck.isPublic && deck.slug && (
+            <Button variant="secondary" size="sm" onClick={() => void handleShare()}>
+              {copied ? <Check size={14} className="text-emerald-600" /> : <Share2 size={14} />}
+              <span className="hidden sm:inline">{copied ? 'Copied!' : 'Share'}</span>
+            </Button>
+          )}
           <Button variant="secondary" size="sm" onClick={() => setAiOpen(true)}>
-            <Sparkles size={14} /> AI Generate
+            <Sparkles size={14} /> <span className="hidden sm:inline">AI Generate</span>
           </Button>
           <Button size="sm" onClick={() => setAddOpen(true)}>
-            <Plus size={14} /> Add
+            <Plus size={14} /> <span className="hidden sm:inline">Add</span>
           </Button>
         </div>
       </div>

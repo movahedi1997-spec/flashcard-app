@@ -14,6 +14,7 @@
 export type Subject =
   | 'medicine' | 'pharmacy' | 'chemistry'
   | 'languages' | 'law' | 'science' | 'history' | 'mathematics' | 'computer_science'
+  | 'physics' | 'biology' | 'philosophy' | 'psychology' | 'literature' | 'economics'
   | 'other';
 
 // ── Deck (/api/decks) ─────────────────────────────────────────────────────────

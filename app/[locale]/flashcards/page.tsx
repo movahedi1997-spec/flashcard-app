@@ -220,6 +220,7 @@ export default function FlashcardsPage() {
       const deckQuestions = questions.filter((q) => q.quizDeckId === view.deckId);
       return (
         <QuizQuestionList
+          deck={quizDeck}
           deckId={view.deckId}
           questions={deckQuestions}
           loading={questionsLoading}

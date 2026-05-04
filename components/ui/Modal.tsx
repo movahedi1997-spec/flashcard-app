@@ -34,7 +34,7 @@ export default function Modal({ open, onClose, title, children, maxWidth = 'max-
             <X size={18} />
           </button>
         </div>
-        <div className="overflow-y-auto p-6">{children}</div>
+        <div className="overflow-y-auto p-6" style={{ WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain' }}>{children}</div>
       </div>
     </div>
   );

@@ -16,6 +16,12 @@ const SUBJECT_LABELS: Record<string, string> = {
   history:         'History',
   mathematics:     'Mathematics',
   computer_science:'CS',
+  physics:         'Physics',
+  biology:         'Biology',
+  philosophy:      'Philosophy',
+  psychology:      'Psychology',
+  literature:      'Literature',
+  economics:       'Economics',
   other:           'Other',
 };
 
@@ -29,6 +35,12 @@ const SUBJECT_COLORS: Record<string, string> = {
   history:         'bg-orange-50 text-orange-700 border-orange-100',
   mathematics:     'bg-rose-50 text-rose-700 border-rose-100',
   computer_science:'bg-teal-50 text-teal-700 border-teal-100',
+  physics:         'bg-blue-50 text-blue-700 border-blue-100',
+  biology:         'bg-green-50 text-green-700 border-green-100',
+  philosophy:      'bg-purple-50 text-purple-700 border-purple-100',
+  psychology:      'bg-pink-50 text-pink-700 border-pink-100',
+  literature:      'bg-yellow-50 text-yellow-700 border-yellow-100',
+  economics:       'bg-lime-50 text-lime-700 border-lime-100',
   other:           'bg-gray-50 text-gray-600 border-gray-100',
 };
 

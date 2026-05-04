@@ -16,7 +16,7 @@ const FEATURES = [
 ];
 
 export default function SplashPage({ onStart, isFirstVisit = false }: Props) {
-  const delay = isFirstVisit ? 2500 : 1800;
+  const delay = isFirstVisit ? 1500 : 800;
 
   useEffect(() => {
     const t = setTimeout(onStart, delay);

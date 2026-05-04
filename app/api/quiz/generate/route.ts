@@ -1,16 +1,18 @@
 // POST /api/quiz/generate
-// Body: { quizDeckId, text, count? }
+// Accepts multipart/form-data OR JSON:
+//   FormData: { quizDeckId, file?, text?, count? }
+//   JSON:     { quizDeckId, text, count? }
 // Generates MCQ questions using AI and inserts them into the quiz deck.
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { jwtVerify } from 'jose';
 import { query } from '@/lib/db';
-import { generateQuizQuestions } from '@/lib/ai';
+import { generateQuizQuestions, generateQuizQuestionsFromPdf } from '@/lib/ai';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-const FREE_MONTHLY_LIMIT = 189;
+const FREE_MONTHLY_LIMIT = 94;
 const PRO_MONTHLY_LIMIT  = 499;
 
 const secret = new TextEncoder().encode(
@@ -38,27 +40,57 @@ export async function POST(req: NextRequest) {
   );
   const used = usageRow.rows[0]?.cards_generated ?? 0;
   const limit = isPro ? PRO_MONTHLY_LIMIT : FREE_MONTHLY_LIMIT;
+  const remaining = limit - used;
 
   if (used >= limit)
     return NextResponse.json({ error: `Monthly limit reached (${limit} AI items).`, code: 'QUOTA_EXCEEDED', used, limit }, { status: 402 });
 
-  const body = await req.json().catch(() => null) as Record<string, unknown> | null;
-  const { quizDeckId, text, count } = body ?? {};
+  // ── Parse request (FormData with optional PDF, or JSON) ───────────────────
+  const contentType = req.headers.get('content-type') ?? '';
+  let quizDeckId: string | null = null;
+  let text: string | null = null;
+  let file: File | null = null;
+  let count = 10;
+
+  if (contentType.includes('multipart/form-data')) {
+    let formData: FormData;
+    try { formData = await req.formData(); } catch {
+      return NextResponse.json({ error: 'Invalid form data.' }, { status: 400 });
+    }
+    quizDeckId = formData.get('quizDeckId') as string | null;
+    text       = formData.get('text')       as string | null;
+    file       = formData.get('file')       as File   | null;
+    count      = Math.min(50, Math.max(1, parseInt(String(formData.get('count') ?? '10'), 10)));
+  } else {
+    const body = await req.json().catch(() => null) as Record<string, unknown> | null;
+    quizDeckId = body?.quizDeckId as string | null;
+    text       = body?.text       as string | null;
+    count      = Math.min(50, Math.max(1, parseInt(String(body?.count ?? '10'), 10)));
+  }
 
   if (!quizDeckId || typeof quizDeckId !== 'string')
     return NextResponse.json({ error: 'quizDeckId required.' }, { status: 400 });
-  if (!text || typeof text !== 'string' || text.trim().length < 30)
-    return NextResponse.json({ error: 'Provide at least 30 characters of text.' }, { status: 400 });
+
+  if (!file && (!text || typeof text !== 'string' || text.trim().length < 30))
+    return NextResponse.json({ error: 'Provide a PDF file or at least 30 characters of text.' }, { status: 400 });
+
+  if (file && !file.type.includes('pdf') && !file.name.endsWith('.pdf'))
+    return NextResponse.json({ error: 'Only PDF files are supported.' }, { status: 400 });
+
+  if (file && file.size > 20 * 1024 * 1024)
+    return NextResponse.json({ error: 'File too large. Maximum size is 20 MB.' }, { status: 400 });
 
   const deckCheck = await query<{ id: string }>('SELECT id FROM quiz_decks WHERE id=$1 AND user_id=$2', [quizDeckId, userId]);
   if (!deckCheck.rows[0]) return NextResponse.json({ error: 'Quiz deck not found.' }, { status: 404 });
 
-  const n = Math.min(50, Math.max(1, parseInt(String(count ?? 10), 10)));
-  const remaining = limit - used;
-
   let result;
   try {
-    result = await generateQuizQuestions(text.trim(), n);
+    if (file) {
+      const buffer = Buffer.from(await file.arrayBuffer());
+      result = await generateQuizQuestionsFromPdf(buffer, count);
+    } else {
+      result = await generateQuizQuestions((text as string).trim(), count);
+    }
   } catch (err) {
     console.error('[quiz/generate]', err);
     return NextResponse.json({ error: 'AI generation failed. Please try again.' }, { status: 500 });
