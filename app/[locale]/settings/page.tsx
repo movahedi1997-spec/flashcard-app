@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { jwtVerify } from 'jose';
-import { User, ShieldAlert, Globe, LogOut, ShieldCheck, Languages } from 'lucide-react';
+import { User, ShieldCheck, Languages, CreditCard, LogOut } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import TwoFAToggle from './TwoFAToggle';
 import AppNav from '@/components/AppNav';
@@ -39,6 +39,37 @@ interface ProfileRow {
   subscription_status: string | null;
 }
 
+// ── Shared section wrapper ────────────────────────────────────────────────────
+
+function Section({
+  icon,
+  title,
+  subtitle,
+  children,
+  danger,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  subtitle?: string;
+  children: React.ReactNode;
+  danger?: boolean;
+}) {
+  return (
+    <section className={`rounded-2xl bg-white p-6 shadow-sm border ${danger ? 'border-red-100' : 'border-gray-100'}`}>
+      <div className="flex items-center gap-3 mb-5">
+        <div className={`flex h-8 w-8 items-center justify-center rounded-xl ${danger ? 'bg-red-50 text-red-500' : 'bg-indigo-50 text-indigo-600'}`}>
+          {icon}
+        </div>
+        <div>
+          <h2 className="text-sm font-semibold text-gray-900">{title}</h2>
+          {subtitle && <p className="text-xs text-gray-400 mt-0.5">{subtitle}</p>}
+        </div>
+      </div>
+      {children}
+    </section>
+  );
+}
+
 export default async function SettingsPage() {
   const user = await getUserFromCookie();
   const t = await getTranslations('settings');
@@ -50,45 +81,31 @@ export default async function SettingsPage() {
             subscription_status
      FROM users WHERE id = $1`,
     [user!.userId],
-  ).catch(() => ({ rows: [{ username: null, bio: null, avatar_url: null, phone_number: null, two_fa_enabled: true, is_pro: false, subscription_status: null }] }));
+  ).catch(() => ({
+    rows: [{
+      username: null, bio: null, avatar_url: null, phone_number: null,
+      two_fa_enabled: true, is_pro: false, subscription_status: null,
+    }],
+  }));
 
-  const profile = profileResult.rows[0] ?? { username: null, bio: null, avatar_url: null, phone_number: null, two_fa_enabled: true, is_pro: false, subscription_status: null };
+  const profile = profileResult.rows[0] ?? {
+    username: null, bio: null, avatar_url: null, phone_number: null,
+    two_fa_enabled: true, is_pro: false, subscription_status: null,
+  };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-50">
       <AppNav username={profile.username} activePage="settings" />
 
-      <main className="mx-auto max-w-2xl px-6 py-12 pb-24 sm:pb-12 space-y-8">
-        <h1 className="text-2xl font-extrabold text-gray-900">{t('title')}</h1>
+      <main className="mx-auto max-w-xl px-4 py-10 pb-24 sm:pb-10 space-y-4">
+        <h1 className="text-xl font-bold text-gray-900 px-1">{t('title')}</h1>
 
-        {/* Account info */}
-        <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-          <div className="flex items-center gap-3 mb-5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
-              <User className="h-5 w-5" />
-            </div>
-            <h2 className="text-base font-semibold text-gray-900">{t('accountInfo')}</h2>
-          </div>
-          <dl className="space-y-3 text-sm">
-            <div className="flex gap-3">
-              <dt className="w-16 text-xs font-semibold text-gray-400 uppercase tracking-wide pt-0.5">{t('email')}</dt>
-              <dd className="text-gray-800 font-medium">{user!.email}</dd>
-            </div>
-          </dl>
-        </section>
-
-        {/* Public profile */}
-        <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-          <div className="flex items-center gap-3 mb-5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
-              <Globe className="h-5 w-5" />
-            </div>
-            <div>
-              <h2 className="text-base font-semibold text-gray-900">{t('publicProfile')}</h2>
-              <p className="text-xs text-gray-400">{t('publicProfileDesc')}</p>
-            </div>
-          </div>
-
+        {/* ── 1. Account ─────────────────────────────────────────────────────── */}
+        <Section
+          icon={<User className="h-4 w-4" />}
+          title={t('accountInfo')}
+          subtitle={user!.email}
+        >
           <EditProfileForm
             initialName={user!.name}
             initialUsername={profile.username}
@@ -96,61 +113,54 @@ export default async function SettingsPage() {
             initialAvatarUrl={profile.avatar_url}
             initialPhoneNumber={profile.phone_number}
           />
-        </section>
+        </Section>
 
-        {/* Language */}
-        <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-          <div className="flex items-center gap-3 mb-5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
-              <Languages className="h-5 w-5" />
-            </div>
-            <div>
-              <h2 className="text-base font-semibold text-gray-900">{t('language')}</h2>
-              <p className="text-xs text-gray-400">{t('languageDesc')}</p>
-            </div>
-          </div>
+        {/* ── 2. Language ────────────────────────────────────────────────────── */}
+        <Section
+          icon={<Languages className="h-4 w-4" />}
+          title={t('language')}
+          subtitle={t('languageDesc')}
+        >
           <LanguageSetting />
-        </section>
+        </Section>
 
-        {/* Subscription */}
+        {/* ── 3. Security ────────────────────────────────────────────────────── */}
+        <Section
+          icon={<ShieldCheck className="h-4 w-4" />}
+          title={t('security')}
+        >
+          <TwoFAToggle initialEnabled={profile.two_fa_enabled} />
+        </Section>
+
+        {/* ── 4. Subscription ────────────────────────────────────────────────── */}
         <SubscriptionSection isPro={profile.is_pro} subscriptionStatus={profile.subscription_status} />
 
-        {/* Security */}
-        <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-          <div className="flex items-center gap-3 mb-5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
-              <ShieldCheck className="h-5 w-5" />
+        {/* ── 5. Sign out + Danger zone ──────────────────────────────────────── */}
+        <Section
+          icon={<LogOut className="h-4 w-4" />}
+          title={t('signOut')}
+          danger
+        >
+          <div className="space-y-6">
+            {/* Sign out */}
+            <div>
+              <p className="text-sm text-gray-500 mb-3">{t('signOutDesc')}</p>
+              <LogoutButton />
             </div>
-            <h2 className="text-base font-semibold text-gray-900">{t('security')}</h2>
-          </div>
-          <TwoFAToggle initialEnabled={profile.two_fa_enabled} />
-        </section>
 
-        {/* Sign out */}
-        <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gray-50 text-gray-500">
-              <LogOut className="h-5 w-5" />
-            </div>
-            <h2 className="text-base font-semibold text-gray-900">{t('signOut')}</h2>
-          </div>
-          <p className="text-sm text-gray-500 mb-5">{t('signOutDesc')}</p>
-          <LogoutButton />
-        </section>
+            {/* Divider */}
+            <div className="border-t border-red-100" />
 
-        {/* Danger zone */}
-        <section className="rounded-2xl border border-red-100 bg-white p-6 shadow-sm">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-red-50 text-red-500">
-              <ShieldAlert className="h-5 w-5" />
+            {/* Delete account */}
+            <div>
+              <p className="text-sm font-semibold text-gray-700 mb-1">{t('dangerZone')}</p>
+              <p className="text-sm text-gray-400 mb-4 leading-relaxed">
+                {t('deleteWarningDetail')}
+              </p>
+              <DeleteAccountButton />
             </div>
-            <h2 className="text-base font-semibold text-gray-900">{t('dangerZone')}</h2>
           </div>
-          <p className="text-sm text-gray-500 mb-5 leading-relaxed">
-            {t('deleteWarningDetail')}
-          </p>
-          <DeleteAccountButton />
-        </section>
+        </Section>
       </main>
     </div>
   );
